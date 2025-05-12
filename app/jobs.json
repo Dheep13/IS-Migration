@@ -1,0 +1,463 @@
+{
+  "7718bfc4-3068-4c9f-8118-9ab49116de70": {
+    "id": "7718bfc4-3068-4c9f-8118-9ab49116de70",
+    "status": "completed",
+    "created": "2025-04-23T16:38:42.273787",
+    "last_updated": "2025-04-23T16:41:05.544145",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\7718bfc4-3068-4c9f-8118-9ab49116de70\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 93,
+      "xml_files": 15,
+      "properties_files": 0,
+      "json_files": 2,
+      "yaml_files": 1,
+      "raml_files": 39,
+      "dwl_files": 17,
+      "other_files": 19
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 11,
+      "subflows": 10,
+      "configs": 2,
+      "error_handlers": 2
+    },
+    "files": {
+      "markdown": "results\\7718bfc4-3068-4c9f-8118-9ab49116de70\\flow_documentation.md",
+      "html": "results\\7718bfc4-3068-4c9f-8118-9ab49116de70\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\7718bfc4-3068-4c9f-8118-9ab49116de70\\flow_visualization.html"
+    }
+  },
+  "d1991b83-7173-41fe-a64a-4f0b4cbf9c82": {
+    "id": "d1991b83-7173-41fe-a64a-4f0b4cbf9c82",
+    "status": "completed",
+    "created": "2025-04-23T17:37:30.469827",
+    "last_updated": "2025-04-23T17:38:28.266795",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\d1991b83-7173-41fe-a64a-4f0b4cbf9c82\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\d1991b83-7173-41fe-a64a-4f0b4cbf9c82\\flow_documentation.md",
+      "html": "results\\d1991b83-7173-41fe-a64a-4f0b4cbf9c82\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\d1991b83-7173-41fe-a64a-4f0b4cbf9c82\\flow_visualization.html"
+    }
+  },
+  "d06d2354-7ead-4884-a462-3fbf23c9138d": {
+    "id": "d06d2354-7ead-4884-a462-3fbf23c9138d",
+    "status": "completed",
+    "created": "2025-04-23T17:38:27.852101",
+    "last_updated": "2025-04-23T17:39:17.511143",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\d06d2354-7ead-4884-a462-3fbf23c9138d\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\d06d2354-7ead-4884-a462-3fbf23c9138d\\flow_documentation.md",
+      "html": "results\\d06d2354-7ead-4884-a462-3fbf23c9138d\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\d06d2354-7ead-4884-a462-3fbf23c9138d\\flow_visualization.html"
+    }
+  },
+  "a12e05d1-f42b-4b54-8288-5a96cc6716ff": {
+    "id": "a12e05d1-f42b-4b54-8288-5a96cc6716ff",
+    "status": "completed",
+    "created": "2025-04-23T21:03:50.477523",
+    "last_updated": "2025-04-23T21:04:39.051490",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\a12e05d1-f42b-4b54-8288-5a96cc6716ff\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\a12e05d1-f42b-4b54-8288-5a96cc6716ff\\flow_documentation.md",
+      "html": "results\\a12e05d1-f42b-4b54-8288-5a96cc6716ff\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\a12e05d1-f42b-4b54-8288-5a96cc6716ff\\flow_visualization.html"
+    }
+  },
+  "873013f7-6d72-4ff4-a489-f7f46da6951c": {
+    "id": "873013f7-6d72-4ff4-a489-f7f46da6951c",
+    "status": "completed",
+    "created": "2025-04-23T21:18:43.810603",
+    "last_updated": "2025-04-23T21:19:31.399612",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\873013f7-6d72-4ff4-a489-f7f46da6951c\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\873013f7-6d72-4ff4-a489-f7f46da6951c\\flow_documentation.md",
+      "html": "results\\873013f7-6d72-4ff4-a489-f7f46da6951c\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\873013f7-6d72-4ff4-a489-f7f46da6951c\\flow_visualization.html"
+    }
+  },
+  "1ae9cddb-a246-4bbd-b97e-0bb94a2ecf4f": {
+    "id": "1ae9cddb-a246-4bbd-b97e-0bb94a2ecf4f",
+    "status": "completed",
+    "created": "2025-04-23T21:39:18.163257",
+    "last_updated": "2025-04-23T21:39:44.900137",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\1ae9cddb-a246-4bbd-b97e-0bb94a2ecf4f\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\1ae9cddb-a246-4bbd-b97e-0bb94a2ecf4f\\flow_documentation.md",
+      "html": "results\\1ae9cddb-a246-4bbd-b97e-0bb94a2ecf4f\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\1ae9cddb-a246-4bbd-b97e-0bb94a2ecf4f\\flow_visualization.html"
+    }
+  },
+  "d65ca569-c891-4c8b-82ac-e4bd7cc9d4aa": {
+    "id": "d65ca569-c891-4c8b-82ac-e4bd7cc9d4aa",
+    "status": "completed",
+    "created": "2025-04-23T21:41:25.749466",
+    "last_updated": "2025-04-23T21:42:14.580099",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\d65ca569-c891-4c8b-82ac-e4bd7cc9d4aa\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\d65ca569-c891-4c8b-82ac-e4bd7cc9d4aa\\flow_documentation.md",
+      "html": "results\\d65ca569-c891-4c8b-82ac-e4bd7cc9d4aa\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\d65ca569-c891-4c8b-82ac-e4bd7cc9d4aa\\flow_visualization.html"
+    }
+  },
+  "e5bffed8-ac0b-4174-b078-d6949990e248": {
+    "id": "e5bffed8-ac0b-4174-b078-d6949990e248",
+    "status": "completed",
+    "created": "2025-04-25T13:16:11.848606",
+    "last_updated": "2025-04-25T13:18:50.793508",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\e5bffed8-ac0b-4174-b078-d6949990e248\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 93,
+      "xml_files": 15,
+      "properties_files": 0,
+      "json_files": 2,
+      "yaml_files": 1,
+      "raml_files": 39,
+      "dwl_files": 17,
+      "other_files": 19
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 11,
+      "subflows": 10,
+      "configs": 2,
+      "error_handlers": 2
+    },
+    "files": {
+      "markdown": "results\\e5bffed8-ac0b-4174-b078-d6949990e248\\flow_documentation.md",
+      "html": "results\\e5bffed8-ac0b-4174-b078-d6949990e248\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\e5bffed8-ac0b-4174-b078-d6949990e248\\flow_visualization.html"
+    }
+  },
+  "080519d2-49da-46da-9542-76f4b88ad044": {
+    "id": "080519d2-49da-46da-9542-76f4b88ad044",
+    "status": "completed",
+    "created": "2025-04-25T15:00:53.388578",
+    "last_updated": "2025-04-25T15:05:54.337958",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\080519d2-49da-46da-9542-76f4b88ad044\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 93,
+      "xml_files": 15,
+      "properties_files": 0,
+      "json_files": 2,
+      "yaml_files": 1,
+      "raml_files": 39,
+      "dwl_files": 17,
+      "other_files": 19
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 11,
+      "subflows": 10,
+      "configs": 2,
+      "error_handlers": 2
+    },
+    "files": {
+      "markdown": "results\\080519d2-49da-46da-9542-76f4b88ad044\\flow_documentation.md",
+      "html": "results\\080519d2-49da-46da-9542-76f4b88ad044\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\080519d2-49da-46da-9542-76f4b88ad044\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\080519d2-49da-46da-9542-76f4b88ad044\\iflow_match\\integration_match_report.html",
+      "summary": "results\\080519d2-49da-46da-9542-76f4b88ad044\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 29 potential matches"
+    }
+  },
+  "a2405a10-f64c-4ead-9762-5ac8ea6d90f3": {
+    "id": "a2405a10-f64c-4ead-9762-5ac8ea6d90f3",
+    "status": "completed",
+    "created": "2025-04-25T15:25:04.415786",
+    "last_updated": "2025-04-25T15:26:08.998722",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\a2405a10-f64c-4ead-9762-5ac8ea6d90f3\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\a2405a10-f64c-4ead-9762-5ac8ea6d90f3\\flow_documentation.md",
+      "html": "results\\a2405a10-f64c-4ead-9762-5ac8ea6d90f3\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\a2405a10-f64c-4ead-9762-5ac8ea6d90f3\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\a2405a10-f64c-4ead-9762-5ac8ea6d90f3\\iflow_match\\integration_match_report.html",
+      "summary": "results\\a2405a10-f64c-4ead-9762-5ac8ea6d90f3\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "03104b47-89e5-4d35-bc3d-d5bfbb247960": {
+    "id": "03104b47-89e5-4d35-bc3d-d5bfbb247960",
+    "status": "processing",
+    "created": "2025-04-25T15:30:10.300711",
+    "last_updated": "2025-04-25T15:30:10.783777",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\03104b47-89e5-4d35-bc3d-d5bfbb247960\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "visualization",
+    "processing_message": "Using enhanced documentation generator to include additional file types",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    }
+  },
+  "98cd5815-a863-49a5-813a-bfd97c0fb0ce": {
+    "id": "98cd5815-a863-49a5-813a-bfd97c0fb0ce",
+    "status": "completed",
+    "created": "2025-04-25T15:31:41.384360",
+    "last_updated": "2025-04-25T15:32:27.208994",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\98cd5815-a863-49a5-813a-bfd97c0fb0ce\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\98cd5815-a863-49a5-813a-bfd97c0fb0ce\\flow_documentation.md",
+      "html": "results\\98cd5815-a863-49a5-813a-bfd97c0fb0ce\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\98cd5815-a863-49a5-813a-bfd97c0fb0ce\\flow_visualization.html"
+    }
+  },
+  "fdcadc7f-fc45-4960-9cf6-203f0cf090ff": {
+    "id": "fdcadc7f-fc45-4960-9cf6-203f0cf090ff",
+    "status": "completed",
+    "created": "2025-04-25T15:35:27.573798",
+    "last_updated": "2025-04-25T15:36:11.968432",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\fdcadc7f-fc45-4960-9cf6-203f0cf090ff\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\fdcadc7f-fc45-4960-9cf6-203f0cf090ff\\flow_documentation.md",
+      "html": "results\\fdcadc7f-fc45-4960-9cf6-203f0cf090ff\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\fdcadc7f-fc45-4960-9cf6-203f0cf090ff\\flow_visualization.html"
+    }
+  },
+  "b4176e9a-e9e4-48c8-9132-89391fd94ced": {
+    "id": "b4176e9a-e9e4-48c8-9132-89391fd94ced",
+    "status": "completed",
+    "created": "2025-04-25T15:37:01.161346",
+    "last_updated": "2025-04-25T15:37:51.137262",
+    "enhance": true,
+    "input_directory": "C:\\Users\\Deepan\\OneDrive\\Documents\\DheepLearningNew\\66_FINAL MULE_TO_IS\\mule_cf_deployment\\app\\uploads\\b4176e9a-e9e4-48c8-9132-89391fd94ced\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\b4176e9a-e9e4-48c8-9132-89391fd94ced\\flow_documentation.md",
+      "html": "results\\b4176e9a-e9e4-48c8-9132-89391fd94ced\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\b4176e9a-e9e4-48c8-9132-89391fd94ced\\flow_visualization.html"
+    }
+  }
+}

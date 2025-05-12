@@ -1,0 +1,12 @@
+#%RAML 1.0 ResourceType
+get:
+  is: [ErrorResponses, Traceable]
+  description: <<getDescription>>
+  displayName: <<getDisplayName>>
+  queryParameters: <<queryParams>> 
+  responses:
+    200:
+      description: <<getResponseDescription>>
+      body:
+        application/json:
+          type: <<getResponseDatatype>>

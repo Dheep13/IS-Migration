@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MuleSoft Documentation Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="file"] {
+            border: 1px solid #ddd;
+            padding: 8px;
+            width: 100%;
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #a8d1ef;
+            cursor: not-allowed;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        .files {
+            margin-top: 15px;
+        }
+        .file-link {
+            display: block;
+            margin: 5px 0;
+            padding: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #3498db;
+        }
+        .file-link:hover {
+            background-color: #e0e6e8;
+        }
+        .nav {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .nav a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+        .button-group {
+            margin-top: 15px;
+        }
+        .sap-button {
+            background-color: #008B47;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .sap-button:hover {
+            background-color: #00703A;
+        }
+        .sap-button:disabled {
+            background-color: #B2D4C4;
+            cursor: not-allowed;
+        }
+        .file-info {
+            margin-top: 15px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-table th, .info-table td {
+            padding: 8px;
+            text-align: left;
+        }
+        .info-table th {
+            background-color: #f2f2f2;
+        }
+        .parsed-details {
+            margin-top: 15px;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 4px;
+            margin: 15px 0;
+            position: relative;
+        }
+        .progress-bar {
+            height: 25px;
+            background-color: #4CAF50;
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #333;
+            font-weight: bold;
+        }
+        .timer {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .status-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #3498db;
+            background-color: #ebf5fb;
+        }
+        #llm-message {
+            display: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #f39c12;
+            background-color: #fef5e7;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="/">Home</a>
+        <a href="/api_docs">API Documentation</a>
+    </div>
+
+    <h1>MuleSoft Documentation Generator</h1>
+    <p>Upload MuleSoft XML files to generate documentation.</p>
+
+    <form id="uploadForm">
+        <div class="form-group">
+            <label for="files">Select MuleSoft XML files or ZIP archive:</label>
+            <input type="file" id="files" name="files[]" multiple accept=".xml,.zip">
+            <p class="help-text" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                You can upload individual XML files or a ZIP archive containing MuleSoft XML files.
+            </p>
+        </div>
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="enhance" name="enhance" value="true">
+                Enhance documentation with AI
+            </label>
+            <p class="help-text" style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                Note: AI enhancement may take 1-2 minutes for complex APIs
+            </p>
+        </div>
+        <button type="submit" id="submitButton">Generate Documentation</button>
+    </form>
+
+    <div id="result"></div>
+    <div id="status"></div>
+    <div id="llm-message">
+        The LLM enhancement process is running and may take 1-2 minutes to complete.
+        Documentation generation will continue automatically without requiring page refreshes.
+    </div>
+
+    <script>
+        // Global variables
+        let pollInterval = null;
+        let pollCount = 0;
+        let startTime = null;
+        let isEnhancementRequested = false;
+
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const files = document.getElementById('files').files;
+            const enhance = document.getElementById('enhance').checked;
+            isEnhancementRequested = enhance;
+
+            if (files.length === 0) {
+                alert('Please select at least one XML file.');
+                return;
+            }
+
+            // Disable submit button to prevent multiple submissions
+            document.getElementById('submitButton').disabled = true;
+
+            const formData = new FormData();
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+            }
+
+            formData.append('enhance', enhance);
+
+            const resultDiv = document.getElementById('result');
+            const statusDiv = document.getElementById('status');
+
+            resultDiv.innerHTML = 'Uploading files and starting documentation generation...';
+            resultDiv.style.display = 'block';
+            statusDiv.style.display = 'none';
+
+            // Show LLM message if enhancement is requested
+            if (enhance) {
+                document.getElementById('llm-message').style.display = 'block';
+            }
+
+            fetch('/api/generate-docs', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                resultDiv.innerHTML = `
+                    <h2>Documentation Generation Started</h2>
+                    <p>Job ID: ${data.job_id}</p>
+                    <p>Status: ${data.status}</p>
+                    <p>${data.message}</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar" style="width: 5%;"></div>
+                        <div class="progress-text" id="progressText">Initializing...</div>
+                    </div>
+                    <div class="timer" id="timer">Elapsed time: 0s</div>
+                    <div class="status-message" id="statusMessage">Job started successfully. Processing files...</div>
+                `;
+
+                // Start timer
+                startTime = new Date();
+                updateTimer();
+
+                // Auto-start polling for status updates
+                startPolling(data.job_id);
+            })
+            .catch(error => {
+                resultDiv.innerHTML = `<h2>Error</h2><p>${error.message}</p>`;
+                document.getElementById('submitButton').disabled = false;
+            });
+        });
+
+        function startPolling(jobId) {
+            // Clear any existing interval
+            if (pollInterval) {
+                clearInterval(pollInterval);
+            }
+
+            pollCount = 0;
+
+            // Start polling at 2-second intervals
+            pollInterval = setInterval(() => {
+                pollCount++;
+                checkJobStatus(jobId, false);
+
+                // Gradually increase the polling interval if LLM enhancement is happening
+                if (isEnhancementRequested && pollCount > 15) {
+                    clearInterval(pollInterval);
+                    pollInterval = setInterval(() => {
+                        checkJobStatus(jobId, false);
+                    }, 5000); // Poll every 5 seconds after 30 seconds have passed
+
+                    // Update status message
+                    document.getElementById('statusMessage').textContent =
+                        "AI enhancement in progress. This may take 1-2 minutes...";
+                }
+            }, 2000);
+        }
+
+        function updateTimer() {
+            if (!startTime) return;
+
+            const now = new Date();
+            const elapsedSeconds = Math.floor((now - startTime) / 1000);
+            const minutes = Math.floor(elapsedSeconds / 60);
+            const seconds = elapsedSeconds % 60;
+
+            document.getElementById('timer').textContent =
+                `Elapsed time: ${minutes}m ${seconds}s`;
+
+            // Call again after 1 second
+            setTimeout(updateTimer, 1000);
+        }
+
+        function updateProgressBar(status, processingStep) {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            let percentage = 5; // Default starting percentage
+
+            if (status === 'queued') {
+                percentage = 5;
+                progressText.textContent = "Queued...";
+            } else if (status === 'processing') {
+                // Calculate percentage based on processing step
+                if (processingStep === 'file_analysis') {
+                    percentage = 15;
+                    progressText.textContent = "Analyzing files...";
+                } else if (processingStep === 'mule_parsing') {
+                    percentage = 30;
+                    progressText.textContent = "Parsing MuleSoft files...";
+                } else if (processingStep === 'visualization') {
+                    percentage = 45;
+                    progressText.textContent = "Generating visualization...";
+                } else if (processingStep === 'llm_enhancing') {
+                    percentage = 60;
+                    progressText.textContent = "AI Enhancement...";
+                } else if (processingStep === 'llm_complete') {
+                    percentage = 85;
+                    progressText.textContent = "Finalizing...";
+                } else if (processingStep === 'llm_failed') {
+                    percentage = 85;
+                    progressText.textContent = "LLM failed, finishing...";
+                    progressBar.style.backgroundColor = "#f39c12"; // Warning orange
+                } else {
+                    // Fallback to the old calculation if processing step is not available
+                    if (isEnhancementRequested) {
+                        percentage = Math.min(80, 10 + (pollCount * 2));
+                    } else {
+                        percentage = Math.min(90, 10 + (pollCount * 5));
+                    }
+                    progressText.textContent = "Processing...";
+                }
+            } else if (status === 'completed') {
+                percentage = 100;
+                progressText.textContent = "Completed!";
+            } else if (status === 'failed') {
+                percentage = 100;
+                progressText.textContent = "Failed";
+                progressBar.style.backgroundColor = "#e74c3c";
+            }
+
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function checkJobStatus(jobId, isManualCheck = true) {
+            // If manual check, show a message
+            if (isManualCheck) {
+                document.getElementById('status').innerHTML = 'Checking job status...';
+                document.getElementById('status').style.display = 'block';
+            }
+
+            fetch(`/api/jobs/${jobId}`)
+            .then(response => response.json())
+            .then(data => {
+                // Update progress bar
+                updateProgressBar(data.status, data.processing_step);
+
+                let statusHtml = `
+                    <h2>Job Status: ${data.status}</h2>
+                    <p>Job ID: ${data.id}</p>
+                    <p>Created: ${new Date(data.created).toLocaleString()}</p>
+                    <p>Last Updated: ${new Date(data.last_updated).toLocaleString()}</p>
+                `;
+
+                if (data.status === 'completed') {
+                    // Stop polling
+                    if (pollInterval) {
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                    }
+
+                    // Hide LLM message
+                    document.getElementById('llm-message').style.display = 'none';
+
+                    // Update status message only if it hasn't been updated by iFlow match process
+                    if (!data.iflow_match_status || data.iflow_match_status !== 'completed') {
+                        document.getElementById('statusMessage').textContent =
+                            data.processing_message || "Documentation generation completed successfully!";
+                    }
+
+                    // Re-enable submit button
+                    document.getElementById('submitButton').disabled = false;
+
+                    statusHtml += `
+                        <h3>Documentation Files:</h3>
+                        <div class="files">
+                            <a class="file-link" href="/api/docs/${jobId}/html" target="_blank">View HTML Documentation with Mermaid</a>
+                            <a class="file-link" href="/api/docs/${jobId}/markdown" target="_blank">View Markdown Documentation</a>
+                            <a class="file-link" href="/api/docs/${jobId}/visualization" target="_blank">View Flow Visualization</a>
+                        </div>
+                        <div class="button-group">
+                            <h3>SAP Integration Suite Options:</h3>
+                            <button id="generateSapCode" class="sap-button" data-job-id="${jobId}">Generate SAP Integration Suite Equivalent</button>
+                            <button id="deployToSap" class="sap-button" data-job-id="${jobId}" disabled>Deploy to SAP Integration Suite</button>
+                        </div>
+                    `;
+                } else if (data.status === 'failed') {
+                    // Stop polling
+                    if (pollInterval) {
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                    }
+
+                    // Hide LLM message
+                    document.getElementById('llm-message').style.display = 'none';
+
+                    // Update status message
+                    document.getElementById('statusMessage').textContent =
+                        data.processing_message || `Error: ${data.error || "Unknown error occurred"}`;
+
+                    // Re-enable submit button
+                    document.getElementById('submitButton').disabled = false;
+
+                    statusHtml += `<p>Error: ${data.error}</p>`;
+                } else {
+                    // Still processing - use the processing_message if available
+                    if (data.processing_message) {
+                        document.getElementById('statusMessage').textContent = data.processing_message;
+                    } else if (isEnhancementRequested && data.status === 'processing') {
+                        document.getElementById('statusMessage').textContent =
+                            "AI enhancement in progress. This may take 1-2 minutes...";
+                    } else {
+                        document.getElementById('statusMessage').textContent =
+                            `Job status: ${data.status}. Processing files...`;
+                    }
+                }
+
+                // Add file information if available
+                if (data.file_info) {
+                    statusHtml += `
+                        <div class="file-info">
+                            <h3>File Analysis:</h3>
+                            <table class="info-table">
+                                <tr>
+                                    <th>File Type</th>
+                                    <th>Count</th>
+                                </tr>
+                                <tr>
+                                    <td>XML Files</td>
+                                    <td>${data.file_info.xml_files}</td>
+                                </tr>
+                                <tr>
+                                    <td>Properties Files</td>
+                                    <td>${data.file_info.properties_files}</td>
+                                </tr>
+                                <tr>
+                                    <td>JSON Files</td>
+                                    <td>${data.file_info.json_files}</td>
+                                </tr>
+                                <tr>
+                                    <td>Other Files</td>
+                                    <td>${data.file_info.other_files}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Total Files</strong></td>
+                                    <td><strong>${data.file_info.total_files}</strong></td>
+                                </tr>
+                            </table>
+                        </div>
+                    `;
+
+                    // If parsed data is available
+                    if (data.parsed_details) {
+                        statusHtml += `
+                            <div class="parsed-details">
+                                <h3>Parsed MuleSoft Components:</h3>
+                                <ul>
+                                    <li>Flows: ${data.parsed_details.flows}</li>
+                                    <li>Subflows: ${data.parsed_details.subflows}</li>
+                                    <li>Configurations: ${data.parsed_details.configs}</li>
+                                    <li>Error Handlers: ${data.parsed_details.error_handlers}</li>
+                                </ul>
+                            </div>
+                        `;
+                    }
+                }
+
+                document.getElementById('status').innerHTML = statusHtml;
+                document.getElementById('status').style.display = 'block';
+
+                if (data.status === 'completed') {
+                    // Add event listeners for SAP Integration Suite buttons
+                    document.getElementById('generateSapCode').addEventListener('click', function() {
+                        const jobId = this.getAttribute('data-job-id');
+                        generateSapCode(jobId);
+                    });
+
+                    document.getElementById('deployToSap').addEventListener('click', function() {
+                        const jobId = this.getAttribute('data-job-id');
+                        deployToSap(jobId);
+                    });
+                }
+            })
+            .catch(error => {
+                if (isManualCheck) {
+                    document.getElementById('status').innerHTML = `<h2>Error</h2><p>${error.message}</p>`;
+                }
+                console.error("Error checking job status:", error);
+
+                // Don't stop polling automatically on error
+                // This allows temporary network issues to resolve
+            });
+        }
+
+        function generateSapCode(jobId) {
+            const statusDiv = document.getElementById('status');
+            const sapCodeButton = document.getElementById('generateSapCode');
+
+            // Disable button to prevent multiple clicks
+            sapCodeButton.disabled = true;
+
+            statusDiv.innerHTML += '<p>Generating SAP Integration Suite Equivalents...</p>';
+
+            // Call the API endpoint to generate iFlow matches
+            fetch(`/api/generate-iflow-match/${jobId}`, {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success' || data.status === 'processing') {
+                    statusDiv.innerHTML += '<p>SAP Integration Suite equivalent search started. This may take a moment...</p>';
+
+                    // Start polling for iFlow match status
+                    pollIflowMatchStatus(jobId);
+                } else {
+                    statusDiv.innerHTML += `<p>Error: ${data.error || 'Unknown error occurred'}</p>`;
+                    sapCodeButton.disabled = false;
+                }
+            })
+            .catch(error => {
+                statusDiv.innerHTML += `<p>Error: ${error.message}</p>`;
+                sapCodeButton.disabled = false;
+            });
+        }
+
+        // Keep track of whether we've already shown the iFlow match results
+        let iflowResultsShown = false;
+
+        function pollIflowMatchStatus(jobId) {
+            // Poll for iFlow match status every 2 seconds
+            const iflowPollInterval = setInterval(() => {
+                // Use a separate endpoint to check iFlow match status to avoid conflicts with the main job status
+                fetch(`/api/iflow-match/${jobId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const statusDiv = document.getElementById('status');
+                    const sapCodeButton = document.getElementById('generateSapCode');
+
+                    // Check if iFlow match data exists and we haven't shown the results yet
+                    if (data.status && !iflowResultsShown) {
+                        if (data.status === 'completed') {
+                            // Clear polling interval
+                            clearInterval(iflowPollInterval);
+
+                            // Mark results as shown to prevent duplicate updates
+                            iflowResultsShown = true;
+
+                            // Update status message
+                            const iflowResultsDiv = document.createElement('div');
+                            iflowResultsDiv.innerHTML = `
+                                <p>${data.message || 'SAP Integration Suite equivalent search completed!'}</p>
+                                <h3>SAP Integration Suite Equivalents:</h3>
+                                <div class="files">
+                                    <a class="file-link" href="/api/iflow-match/${jobId}/report" target="_blank">View Integration Match Report</a>
+                                    <a class="file-link" href="/api/iflow-match/${jobId}/summary" target="_blank">View Match Summary (JSON)</a>
+                                </div>
+                            `;
+
+                            // Check if there are chart files
+                            if (data.files) {
+                                let chartLinks = '';
+
+                                // Look for chart files
+                                for (const [key, path] of Object.entries(data.files)) {
+                                    if (key.startsWith('chart_')) {
+                                        const chartName = key.replace('chart_', '');
+                                        chartLinks += `<a class="file-link" href="/api/iflow-match/${jobId}/charts/${chartName}.html" target="_blank">View ${chartName.replace('_', ' ')} Chart</a>`;
+                                    }
+                                }
+
+                                // If we found chart files, add them to the results div
+                                if (chartLinks) {
+                                    iflowResultsDiv.innerHTML += `
+                                        <h3>Visualization Charts:</h3>
+                                        <div class="files">
+                                            ${chartLinks}
+                                        </div>
+                                    `;
+                                }
+                            }
+
+                            // Add the results to the status div
+                            statusDiv.appendChild(iflowResultsDiv);
+
+                            // Update status message
+                            const statusMessage = document.getElementById('statusMessage');
+                            if (statusMessage) {
+                                statusMessage.textContent = data.message || 'SAP Integration Suite equivalent search completed!';
+                            }
+
+                            // Enable deploy button
+                            document.getElementById('deployToSap').disabled = false;
+                            sapCodeButton.disabled = false;
+                        } else if (data.status === 'failed') {
+                            // Clear polling interval
+                            clearInterval(iflowPollInterval);
+
+                            // Mark results as shown to prevent duplicate updates
+                            iflowResultsShown = true;
+
+                            // Update status message
+                            statusDiv.innerHTML += `<p>Error: ${data.message || 'Failed to generate SAP Integration Suite equivalents'}</p>`;
+                            sapCodeButton.disabled = false;
+                        } else {
+                            // Still processing - update status message
+                            const statusMessage = document.getElementById('statusMessage');
+                            if (statusMessage && data.message) {
+                                statusMessage.textContent = data.message;
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Error checking iFlow match status:", error);
+                    // Don't stop polling on network errors
+                });
+            }, 2000);
+
+            // Stop polling after 5 minutes (300 seconds) to prevent indefinite polling
+            setTimeout(() => {
+                if (iflowPollInterval) {
+                    clearInterval(iflowPollInterval);
+                    const statusDiv = document.getElementById('status');
+                    const sapCodeButton = document.getElementById('generateSapCode');
+
+                    statusDiv.innerHTML += `<p>Warning: SAP Integration Suite equivalent search is taking longer than expected. Please check back later.</p>`;
+                    sapCodeButton.disabled = false;
+                }
+            }, 300000);
+        }
+
+        function deployToSap(jobId) {
+            const statusDiv = document.getElementById('status');
+            const deployButton = document.getElementById('deployToSap');
+
+            // Disable button to prevent multiple clicks
+            deployButton.disabled = true;
+
+            statusDiv.innerHTML += '<p>Deploying to SAP Integration Suite...</p>';
+
+            // This would normally call an API endpoint to deploy the code
+            // For now, we'll just simulate it
+            setTimeout(function() {
+                statusDiv.innerHTML += '<p>Successfully deployed to SAP Integration Suite!</p>';
+                deployButton.disabled = false;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

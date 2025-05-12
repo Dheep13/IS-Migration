@@ -1,0 +1,11 @@
+---
+applications:
+- name: it-resonance-api
+  memory: 512M
+  buildpacks:
+  - python_buildpack
+  path: .
+  random-route: true
+  command: python app.py
+  env:
+    FLASK_ENV: production

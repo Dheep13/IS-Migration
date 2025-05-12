@@ -1,0 +1,1 @@
+![resources/fsc-wealth-mgmt-integrations-impl_Architecture Diagram_Image_1.png](resources/fsc-wealth-mgmt-integrations-impl_Architecture Diagram_Image_1.png)
