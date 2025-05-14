@@ -1,0 +1,152 @@
+# MuleSoft Documentation Generator - Backend Deployment Guide
+
+## Overview
+
+This Python Flask application serves as the backend for the MuleSoft Documentation Generator. It provides APIs for uploading, processing, and analyzing MuleSoft XML files, generating comprehensive documentation, and finding SAP Integration Suite equivalents. The application can enhance documentation using AI services from Anthropic Claude or OpenAI.
+
+## Architecture
+
+### Core Components
+
+#### Web Application
+- **app.py**: Main Flask application handling HTTP requests, file uploads, and API endpoints
+- **run_app.py**: Entry point script configuring the environment and launching the application
+- **templates/**: HTML templates for the web interface
+- **static/**: Static assets (CSS, JS, images)
+
+#### Documentation Generation
+- **enhanced_doc_generator.py**: Documentation generator supporting multiple file types
+- **additional_file_parser.py**: Parser for DWL, YAML, RAML, and other file formats
+- **use_anthropic.py**: Integration with Anthropic Claude API
+
+#### Core Modules
+- **documentation_enhancer.py**: LLM-based documentation enhancement
+- **mule_flow_documentation.py**: MuleSoft flow parsing and documentation
+- **md_to_html_with_mermaid.py**: Markdown to HTML conversion with diagram support
+
+## Deployment to Cloud Foundry
+
+### Prerequisites
+
+1. Cloud Foundry CLI installed and configured
+2. Python 3.9+ installed (for local testing)
+3. API keys for Anthropic Claude and/or OpenAI (optional, for enhanced documentation)
+
+### Deployment Structure
+
+The application should be deployed with the following structure:
+
+```
+app/
+├── app.py                     # Main Flask application
+├── run_app.py                 # Entry point script
+├── requirements.txt           # Dependencies
+├── Procfile                   # CF deployment command
+├── runtime.txt                # Python version
+├── enhanced_doc_generator.py  # Documentation generator
+├── additional_file_parser.py  # File parser
+├── use_anthropic.py           # Anthropic integration
+├── static/                    # Static assets
+├── templates/                 # HTML templates
+├── uploads/                   # Upload directory
+└── results/                   # Results directory
+```
+
+### Deployment Steps
+
+1. **Prepare the application**:
+   ```bash
+   # Ensure all dependencies are in requirements.txt
+   pip freeze > requirements.txt
+   
+   # Create necessary directories
+   mkdir -p uploads results
+   touch uploads/.gitkeep results/.gitkeep
+   ```
+
+2. **Deploy to Cloud Foundry**:
+   ```bash
+   # Login to Cloud Foundry
+   cf login -a https://api.cf.region.hana.ondemand.com
+   
+   # Deploy the application
+   cf push -f manifest.yml
+   ```
+
+3. **Configure environment variables**:
+   ```bash
+   # Set API keys for LLM services
+   cf set-env mulesoft-documentation-generator ANTHROPIC_API_KEY your-anthropic-api-key
+   cf set-env mulesoft-documentation-generator OPENAI_API_KEY your-openai-api-key
+   
+   # Restage the application to apply changes
+   cf restage mulesoft-documentation-generator
+   ```
+
+4. **Verify deployment**:
+   ```bash
+   # Check application status
+   cf app mulesoft-documentation-generator
+   
+   # View application logs
+   cf logs mulesoft-documentation-generator --recent
+   ```
+
+## Environment Configuration
+
+The application uses the following environment variables:
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `PORT` | Port for the Flask application (set by CF) | Yes |
+| `ANTHROPIC_API_KEY` | API key for Anthropic Claude | No* |
+| `OPENAI_API_KEY` | API key for OpenAI | No* |
+| `FLASK_ENV` | Flask environment (production/development) | Yes |
+| `FLASK_DEBUG` | Enable/disable Flask debug mode | Yes |
+
+*At least one of the LLM API keys is required for enhanced documentation features.
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Application fails to start**:
+   - Check logs: `cf logs mulesoft-documentation-generator --recent`
+   - Verify Python buildpack is being used
+   - Ensure all dependencies are in requirements.txt
+
+2. **File upload issues**:
+   - Check disk quota: `cf app mulesoft-documentation-generator`
+   - Verify uploads directory exists and is writable
+   - Check file size limits in app.py
+
+3. **LLM enhancement not working**:
+   - Verify API keys are correctly set
+   - Check API rate limits and quotas
+   - Examine logs for API errors
+
+## Maintenance
+
+### Updating the Application
+
+```bash
+# Pull latest changes
+git pull
+
+# Deploy updates
+cf push -f manifest.yml
+
+# If dependencies changed
+cf restage mulesoft-documentation-generator
+```
+
+### Monitoring
+
+Monitor application health and performance using:
+- Cloud Foundry health checks
+- Application logs
+- SAP BTP Cockpit metrics
+
+## Support
+
+For issues or questions, contact IT Resonance support at support@itresonance.com.
