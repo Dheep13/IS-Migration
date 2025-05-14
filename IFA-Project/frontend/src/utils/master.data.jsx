@@ -1,0 +1,1 @@
+export const job_type = [ "1099", "Contract to Hire - C2C", "Contract To Hire - C2H", "Contract to Hire - W2", "Independent Contractor/Consultant", "India - Fulltime", "Part Time", "Sub Contractor", "W2 - Contract", "W2 - Fulltime"]

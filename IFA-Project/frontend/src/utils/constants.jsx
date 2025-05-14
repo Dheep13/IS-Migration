@@ -1,0 +1,10 @@
+export const APP_NAME = 'recruITR'
+export const CREDIT_NAME = 'IT Resonance, Inc.'
+export const DATE_FORMAT = 'DD-MM-YYYY'
+export const TIME_FORMAT = 'hh:mm a'
+export const DATETIME_FORMAT = DATE_FORMAT + ' ' + TIME_FORMAT
+export const JOB_ID_FORMAT = "ITRES_"
+export const DATA_USER = 5;
+export const RECRUITR = 4;
+export const RECRUITR_MANAGER = 3;
+export const MANAGER = 2;
