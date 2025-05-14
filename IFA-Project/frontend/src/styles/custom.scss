@@ -1,0 +1,149 @@
+html,
+body {
+    height: 100%;
+}
+
+@mixin transitionSidebar() {
+    transition: all ease 0.2s;
+}
+.main-navigation {
+    max-width: 5rem;
+    @include transitionSidebar();
+    > div {
+        overflow-x: hidden;
+        white-space: nowrap;
+        padding: 10px 17px 10px 20px;
+        @include transitionSidebar();
+        > ul > li > {
+            button > svg,
+            a > svg {
+                margin-right: 20px;
+                @include transitionSidebar();
+            }
+        }
+    }
+    .credit {
+        text-align: center;
+        overflow: hidden;
+        opacity: 0;
+        @include transitionSidebar();
+    }
+    &:hover {
+        max-width: 16rem;
+        > div {
+            padding: 10px;
+            > ul > li > {
+                button > svg,
+                a > svg {
+                    margin-right: 2px;
+                }
+            }
+        }
+        .credit {
+            opacity: 1;
+        }
+    }
+}
+
+@import "tailwindcss/utilities";
+.quill {
+    @apply w-full h-auto;
+    .ql-toolbar,
+    .ql-container {
+        @apply shadow-sm gap-3 border-medium border-default-200;
+    }
+    .ql-toolbar {
+        @apply rounded-t-medium;
+    }
+    .ql-container {
+        @apply h-auto rounded-b-medium;
+
+        .ql-editor {
+            min-height: 120px;
+        }
+        &.ql-disabled {
+            @apply rounded-medium mt-2;
+            max-height: 250px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            .ql-editor {
+                min-height: 0;
+            }
+        }
+    }
+    &.full {
+        .ql-container {
+            &.ql-disabled {
+                @apply mt-0;
+                max-height: none;
+            }
+        }
+    }
+}
+
+.ql-editor * {
+    all: revert; /* Unset all inherited styles */
+}
+
+$sizes: 10px, 12px, 14px, 16px, 18px, 20px, 24px, 30px, 36px;
+
+@each $size in $sizes {
+    .ql-snow .ql-picker.ql-size .ql-picker-label[data-value="#{$size}"]::before,
+    .ql-snow .ql-picker.ql-size .ql-picker-item[data-value="#{$size}"]::before {
+        content: "#{$size}";
+    }
+}
+
+$font-sans-serif: sans-serif;
+$font-serif: serif;
+$font-monospace: monospace;
+$font-arial: Arial, sans-serif;
+$font-calibri: Calibri, sans-serif;
+$font-times-new-roman: "Times New Roman", serif;
+$font-tahoma: Tahoma, sans-serif;
+
+@mixin font-picker-style($font-name, $font-family) {
+    .ql-picker.ql-font .ql-picker-label[data-value="#{$font-name}"]::before,
+    .ql-picker.ql-font .ql-picker-item[data-value="#{$font-name}"]::before {
+        content: $font-name !important;
+        font-family: $font-family;
+    }
+}
+
+@include font-picker-style("sans-serif", $font-sans-serif);
+@include font-picker-style("serif", $font-serif);
+@include font-picker-style("monospace", $font-monospace);
+@include font-picker-style("Arial", $font-arial);
+@include font-picker-style("Calibri", $font-calibri);
+@include font-picker-style("times-new-roman", $font-times-new-roman);
+@include font-picker-style("tahoma", $font-tahoma);
+
+.ql-editor {
+    &.ql-font-sans-serif {
+        font-family: $font-sans-serif;
+    }
+
+    &.ql-font-serif {
+        font-family: $font-serif;
+    }
+
+    &.ql-font-monospace {
+        font-family: $font-monospace;
+    }
+
+    &.ql-font-arial {
+        font-family: $font-arial;
+    }
+
+    &.ql-font-calibri {
+        font-family: $font-calibri;
+    }
+
+    &.ql-font-times-new-roman {
+        font-family: $font-times-new-roman;
+    }
+
+    &.ql-font-tahoma {
+        font-family: $font-tahoma;
+    }
+}
