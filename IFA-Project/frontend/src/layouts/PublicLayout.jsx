@@ -9,7 +9,7 @@ function PublicLayout() {
         <>
             <div className="flex items-center h-screen">
                 <div className="flex-none w-full md:w-1/3 px-20" style={styles.minWid}>
-                    <img className='w-1/2 flex-none' src={logo} alt={CREDIT_NAME} />
+                    <img className='h-24 -ms-1 flex-none mb-14' src={logo} alt={CREDIT_NAME} />
                     <Outlet />
                 </div>
                 <div className="hidden md:block flex-1 h-screen" style={styles.publicBg}>
