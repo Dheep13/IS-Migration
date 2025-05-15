@@ -12,12 +12,17 @@ function Navigation({ isExpanded }) {
     const defaultPage = 'candidates'
     const [activeSubmenu, setActiveSubmenu] = useState([]);
     const [activePage, setActivePage] = useState(defaultPage);
-    
+
     const navigation = [
         {
             label: "Home",
             link: '/',
             icon: 'DashboardSquare02',
+        },
+        {
+            label: "Projects",
+            link: '/projects',
+            icon: 'FolderDetailsReference',
         },
         {
             label: "API Docs",
