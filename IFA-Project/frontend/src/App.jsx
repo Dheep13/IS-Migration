@@ -7,6 +7,8 @@ import PrivateLayout from '@layouts/PrivateLayout';
 import { useSelector } from 'react-redux';
 import * as IFATool from '@pages/IFATool'
 import * as APIDocs from '@pages/APIDocs'
+import * as Projects from '@pages/Projects'
+import * as Home from '@pages/Home'
 import { useAuthActions } from '@/features/auth/authUtils'
 import { Toaster } from 'sonner';
 import { DATA_USER } from '@utils/constants'
@@ -39,8 +41,11 @@ function App() {
                                 </Route>
                             </> :
                             <Route path='/' element={<PrivateLayout />}>
-                                <Route index element={<IFATool.View />} />
+                                <Route index element={<Home.View />} />
                                 <Route path='/api-docs' element={<APIDocs.View />} />
+                                <Route path='/projects' element={<Projects.List />} />
+                                <Route path='/projects/:id' element={<Projects.View />} />
+                                <Route path='/create-flow' element={<IFATool.View />} />
                             </Route>
                     }
 
