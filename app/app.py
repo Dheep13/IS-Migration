@@ -893,10 +893,16 @@ def process_iflow_match(job_id, markdown_file_path):
             'iflow_match_message': 'Extracting terms from markdown and searching for matches...'
         })
 
+        # Get GitHub token from environment
+        github_token = os.environ.get("GITHUB_TOKEN")
+        if not github_token:
+            logging.warning("No GitHub token found in environment. SAP Integration Suite equivalent search may fail.")
+
         # Process the markdown file
         result = process_markdown_for_iflow(
             markdown_file_path=markdown_file_path,
-            output_dir=iflow_output_dir
+            output_dir=iflow_output_dir,
+            github_token=github_token
         )
 
         if result["status"] == "success":

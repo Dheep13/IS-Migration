@@ -16,8 +16,8 @@ import { DATA_USER } from '@utils/constants'
 function App() {
     const { checkAuth } = useAuthActions();
     const authToken = useSelector((state) => state.auth.authToken);
-    const user = useSelector((state) => state.auth.user);
-    const isDataOperator = user.role_id == DATA_USER;
+    const user = useSelector((state) => state.auth.user || {});
+    const isDataOperator = user && user.role_id === DATA_USER;
     const navigate = useNavigate();
 
     useEffect(() => {

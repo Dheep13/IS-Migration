@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use environment variable for API URL
-const API_URL = import.meta.env.VITE_API_URL;
+// Use relative URL to leverage Vite's proxy
+const API_URL = '/api';
 
 // Create an axios instance with the base URL
 const api = axios.create({

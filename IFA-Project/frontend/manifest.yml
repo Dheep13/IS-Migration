@@ -1,0 +1,11 @@
+---
+applications:
+- name: ifa-frontend
+  memory: 128M  # Increased memory to match your project folder
+  buildpacks:
+  - staticfile_buildpack
+  path: ./dist
+  command: null  # Explicitly set to null to use buildpack's default
+  random-route: true
+  env:
+    FORCE_HTTPS: true

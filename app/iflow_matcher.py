@@ -309,17 +309,84 @@ def process_markdown_for_iflow(markdown_file_path, output_dir=None, github_token
     """
     logger.info(f"Processing markdown file: {markdown_file_path}")
 
-    # Import the main processing function from the main module
-    from main import process_markdown_for_iflow as process_markdown_main
+    try:
+        # Import the main processing function from the main module
+        # Use a safer import approach to avoid reloading issues
+        import sys
+        import importlib.util
 
-    # Call the main processing function
-    result = process_markdown_main(
-        markdown_file_path=markdown_file_path,
-        output_dir=output_dir,
-        github_token=github_token
-    )
+        # Get the path to the main.py file
+        # Try both possible locations for main.py
+        main_path_in_getiflow = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "GetIflowEquivalent", "main.py")
+        main_path_in_app = os.path.join(os.path.dirname(os.path.abspath(__file__)), "main.py")
 
-    return result
+        # Check which path exists
+        if os.path.exists(main_path_in_getiflow):
+            main_path = main_path_in_getiflow
+            logger.info(f"Found main.py in GetIflowEquivalent directory")
+        elif os.path.exists(main_path_in_app):
+            main_path = main_path_in_app
+            logger.info(f"Found main.py in app directory")
+        else:
+            # Default to the app directory path for error reporting
+            main_path = main_path_in_app
+
+        # Check if the file exists
+        logger.info(f"Looking for main module at: {main_path}")
+        if not os.path.exists(main_path):
+            logger.error(f"Main module not found at: {main_path}")
+
+            # List files in the directory to help diagnose the issue
+            parent_dir = os.path.dirname(main_path)
+            if os.path.exists(parent_dir):
+                logger.info(f"Contents of {parent_dir}:")
+                for file in os.listdir(parent_dir):
+                    logger.info(f"  - {file}")
+            else:
+                logger.error(f"Parent directory does not exist: {parent_dir}")
+
+            return {
+                "status": "failed",
+                "message": f"Main module not found at: {main_path}"
+            }
+
+        # Import the module using importlib
+        spec = importlib.util.spec_from_file_location("iflow_main", main_path)
+        iflow_main = importlib.util.module_from_spec(spec)
+
+        # Add the directory containing the module to sys.path temporarily
+        # This helps with relative imports within the module
+        module_dir = os.path.dirname(main_path)
+        original_sys_path = sys.path.copy()
+        if module_dir not in sys.path:
+            sys.path.insert(0, module_dir)
+
+        try:
+            # Execute the module
+            spec.loader.exec_module(iflow_main)
+
+            # Call the main processing function
+            result = iflow_main.process_markdown_for_iflow(
+                markdown_file_path=markdown_file_path,
+                output_dir=output_dir,
+                github_token=github_token
+            )
+        finally:
+            # Restore the original sys.path
+            sys.path = original_sys_path
+
+        return result
+
+    except Exception as e:
+        logger.error(f"Error importing or calling main module: {str(e)}")
+        import traceback
+        traceback.print_exc()
+
+        return {
+            "status": "failed",
+            "message": f"Error processing markdown: {str(e)}"
+        }
 
 if __name__ == "__main__":
     import sys

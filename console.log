@@ -1,0 +1,488 @@
+chunk-NUMECXU6.js?v=4c7dd9f9:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+react-router-dom.js?v=4c7dd9f9:214 No routes matched location "/create-flow" 
+warning @ react-router-dom.js?v=4c7dd9f9:214
+useRoutesImpl @ react-router-dom.js?v=4c7dd9f9:3984
+useRoutes @ react-router-dom.js?v=4c7dd9f9:3936
+Routes @ react-router-dom.js?v=4c7dd9f9:4562
+renderWithHooks @ chunk-NUMECXU6.js?v=4c7dd9f9:11548
+mountIndeterminateComponent @ chunk-NUMECXU6.js?v=4c7dd9f9:14926
+beginWork @ chunk-NUMECXU6.js?v=4c7dd9f9:15914
+beginWork$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:19753
+performUnitOfWork @ chunk-NUMECXU6.js?v=4c7dd9f9:19198
+workLoopSync @ chunk-NUMECXU6.js?v=4c7dd9f9:19137
+renderRootSync @ chunk-NUMECXU6.js?v=4c7dd9f9:19116
+performConcurrentWorkOnRoot @ chunk-NUMECXU6.js?v=4c7dd9f9:18678
+workLoop @ chunk-NUMECXU6.js?v=4c7dd9f9:197
+flushWork @ chunk-NUMECXU6.js?v=4c7dd9f9:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=4c7dd9f9:384
+react-router-dom.js?v=4c7dd9f9:4394 ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+warnOnce @ react-router-dom.js?v=4c7dd9f9:4394
+logDeprecation @ react-router-dom.js?v=4c7dd9f9:4397
+logV6DeprecationWarnings @ react-router-dom.js?v=4c7dd9f9:4400
+(anonymous) @ react-router-dom.js?v=4c7dd9f9:5272
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=4c7dd9f9:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=4c7dd9f9:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=4c7dd9f9:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=4c7dd9f9:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=4c7dd9f9:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=4c7dd9f9:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=4c7dd9f9:19447
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:19328
+workLoop @ chunk-NUMECXU6.js?v=4c7dd9f9:197
+flushWork @ chunk-NUMECXU6.js?v=4c7dd9f9:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=4c7dd9f9:384
+react-router-dom.js?v=4c7dd9f9:4394 ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+warnOnce @ react-router-dom.js?v=4c7dd9f9:4394
+logDeprecation @ react-router-dom.js?v=4c7dd9f9:4397
+logV6DeprecationWarnings @ react-router-dom.js?v=4c7dd9f9:4403
+(anonymous) @ react-router-dom.js?v=4c7dd9f9:5272
+commitHookEffectListMount @ chunk-NUMECXU6.js?v=4c7dd9f9:16915
+commitPassiveMountOnFiber @ chunk-NUMECXU6.js?v=4c7dd9f9:18156
+commitPassiveMountEffects_complete @ chunk-NUMECXU6.js?v=4c7dd9f9:18129
+commitPassiveMountEffects_begin @ chunk-NUMECXU6.js?v=4c7dd9f9:18119
+commitPassiveMountEffects @ chunk-NUMECXU6.js?v=4c7dd9f9:18109
+flushPassiveEffectsImpl @ chunk-NUMECXU6.js?v=4c7dd9f9:19490
+flushPassiveEffects @ chunk-NUMECXU6.js?v=4c7dd9f9:19447
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:19328
+workLoop @ chunk-NUMECXU6.js?v=4c7dd9f9:197
+flushWork @ chunk-NUMECXU6.js?v=4c7dd9f9:176
+performWorkUntilDeadline @ chunk-NUMECXU6.js?v=4c7dd9f9:384
+api.js:40 Sending request to generate documentation
+api.js:19 API Request to: /api/generate-docs
+api.js:31 API Response from: /generate-docs 202
+api.js:50 Response received: {job_id: 'b02c4611-bf9d-43cb-bfee-a7014eca1c49', message: 'Documentation generation started', status: 'queued'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+JobResult.jsx:139 Generating iFlow for job b02c4611-bf9d-43cb-bfee-a7014eca1c49...
+api.js:210 Generating iFlow for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:180 iFlow API Request to: /api/generate-iflow/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:192 iFlow API Response from: /generate-iflow/b02c4611-bf9d-43cb-bfee-a7014eca1c49 202
+api.js:215 iFlow generation response: {job_id: '8baef666-0555-4e7f-9724-32f483a0e57f', message: 'iFlow generation started', status: 'queued'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:235 Getting iFlow generation status for job: 8baef666-0555-4e7f-9724-32f483a0e57f
+api.js:180 iFlow API Request to: /api/jobs/8baef666-0555-4e7f-9724-32f483a0e57f
+api.js:238 
+            
+            
+           GET http://localhost:5173/api/jobs/8baef666-0555-4e7f-9724-32f483a0e57f 404 (NOT FOUND)
+dispatchXhrRequest @ axios.js?v=4c7dd9f9:1648
+xhr @ axios.js?v=4c7dd9f9:1528
+dispatchRequest @ axios.js?v=4c7dd9f9:2003
+Promise.then
+_request @ axios.js?v=4c7dd9f9:2206
+request @ axios.js?v=4c7dd9f9:2115
+Axios.<computed> @ axios.js?v=4c7dd9f9:2243
+wrap @ axios.js?v=4c7dd9f9:8
+getIflowGenerationStatus @ api.js:238
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:197 iFlow API Error Response: 404 {error: 'Job not found'}
+(anonymous) @ api.js:197
+Promise.then
+_request @ axios.js?v=4c7dd9f9:2206
+request @ axios.js?v=4c7dd9f9:2115
+Axios.<computed> @ axios.js?v=4c7dd9f9:2243
+wrap @ axios.js?v=4c7dd9f9:8
+getIflowGenerationStatus @ api.js:238
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:243 Error getting iFlow generation status: AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+getIflowGenerationStatus @ api.js:243
+await in getIflowGenerationStatus
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:246 Response error data: {error: 'Job not found'}
+getIflowGenerationStatus @ api.js:246
+await in getIflowGenerationStatus
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:247 Response error status: 404
+getIflowGenerationStatus @ api.js:247
+await in getIflowGenerationStatus
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+JobResult.jsx:173 Error polling iFlow generation status: AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ JobResult.jsx:173
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:235 Getting iFlow generation status for job: 8baef666-0555-4e7f-9724-32f483a0e57f
+api.js:180 iFlow API Request to: /api/jobs/8baef666-0555-4e7f-9724-32f483a0e57f
+api.js:238 
+            
+            
+           GET http://localhost:5173/api/jobs/8baef666-0555-4e7f-9724-32f483a0e57f 404 (NOT FOUND)
+dispatchXhrRequest @ axios.js?v=4c7dd9f9:1648
+xhr @ axios.js?v=4c7dd9f9:1528
+dispatchRequest @ axios.js?v=4c7dd9f9:2003
+Promise.then
+_request @ axios.js?v=4c7dd9f9:2206
+request @ axios.js?v=4c7dd9f9:2115
+Axios.<computed> @ axios.js?v=4c7dd9f9:2243
+wrap @ axios.js?v=4c7dd9f9:8
+getIflowGenerationStatus @ api.js:238
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:197 iFlow API Error Response: 404 {error: 'Job not found'}
+(anonymous) @ api.js:197
+Promise.then
+_request @ axios.js?v=4c7dd9f9:2206
+request @ axios.js?v=4c7dd9f9:2115
+Axios.<computed> @ axios.js?v=4c7dd9f9:2243
+wrap @ axios.js?v=4c7dd9f9:8
+getIflowGenerationStatus @ api.js:238
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:243 Error getting iFlow generation status: AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+getIflowGenerationStatus @ api.js:243
+await in getIflowGenerationStatus
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:246 Response error data: {error: 'Job not found'}
+getIflowGenerationStatus @ api.js:246
+await in getIflowGenerationStatus
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:247 Response error status: 404
+getIflowGenerationStatus @ api.js:247
+await in getIflowGenerationStatus
+(anonymous) @ JobResult.jsx:154
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+JobResult.jsx:173 Error polling iFlow generation status: AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+(anonymous) @ JobResult.jsx:173
+setInterval
+handleGenerateIflow @ JobResult.jsx:152
+await in handleGenerateIflow
+callCallback2 @ chunk-NUMECXU6.js?v=4c7dd9f9:3674
+invokeGuardedCallbackDev @ chunk-NUMECXU6.js?v=4c7dd9f9:3699
+invokeGuardedCallback @ chunk-NUMECXU6.js?v=4c7dd9f9:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-NUMECXU6.js?v=4c7dd9f9:3736
+executeDispatch @ chunk-NUMECXU6.js?v=4c7dd9f9:7014
+processDispatchQueueItemsInOrder @ chunk-NUMECXU6.js?v=4c7dd9f9:7034
+processDispatchQueue @ chunk-NUMECXU6.js?v=4c7dd9f9:7043
+dispatchEventsForPlugins @ chunk-NUMECXU6.js?v=4c7dd9f9:7051
+(anonymous) @ chunk-NUMECXU6.js?v=4c7dd9f9:7174
+batchedUpdates$1 @ chunk-NUMECXU6.js?v=4c7dd9f9:18913
+batchedUpdates @ chunk-NUMECXU6.js?v=4c7dd9f9:3579
+dispatchEventForPluginEventSystem @ chunk-NUMECXU6.js?v=4c7dd9f9:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-NUMECXU6.js?v=4c7dd9f9:5478
+dispatchEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5472
+dispatchDiscreteEvent @ chunk-NUMECXU6.js?v=4c7dd9f9:5449
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}
+api.js:19 API Request to: /api/jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /jobs/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:119 Getting iFlow match status for job: b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:19 API Request to: /api/iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49
+api.js:31 API Response from: /iflow-match/b02c4611-bf9d-43cb-bfee-a7014eca1c49 200
+api.js:122 iFlow match status response: {message: 'SAP Integration Suite equivalent search has not been started', status: 'not_started'}

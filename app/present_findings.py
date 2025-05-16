@@ -2,6 +2,9 @@ import json
 import os
 import datetime
 from tabulate import tabulate
+# Set matplotlib backend to Agg (non-interactive) to avoid Tkinter issues
+import matplotlib
+matplotlib.use('Agg')  # This must be done before importing pyplot
 import matplotlib.pyplot as plt
 import numpy as np
 from termcolor import colored

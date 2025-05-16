@@ -18,7 +18,12 @@ import {
   getDocumentation,
   generateIflowMatch,
   getIflowMatchStatus,
-  getIflowMatchFile
+  getIflowMatchFile,
+  generateIflow,
+  getIflowGenerationStatus,
+  downloadGeneratedIflow,
+  downloadIflowDebugFile,
+  deployIflowToSap
 } from "@services/api"
 import { toast } from "react-hot-toast"
 
@@ -34,7 +39,6 @@ const JobResult = ({ jobInfo, onNewJob }) => {
   const [downloading, setDownloading] = useState({
     html: false,
     markdown: false,
-    visualization: false,
     iflowReport: false,
     iflowSummary: false,
     generatedIflow: false
@@ -120,29 +124,134 @@ const JobResult = ({ jobInfo, onNewJob }) => {
     }
   }
 
-  const handleGenerateIflow = () => {
-    setIsGeneratingIflow(true)
+  const [iflowJobId, setIflowJobId] = useState(null)
+  const [iflowGenerationStatus, setIflowGenerationStatus] = useState(null)
+  const [iflowGenerationMessage, setIflowGenerationMessage] = useState(null)
+  const [iflowGenerationFiles, setIflowGenerationFiles] = useState(null)
+  const [statusCheckInterval, setStatusCheckInterval] = useState(null)
 
-    // Simulate iFlow generation (would be an API call in a real app)
-    toast.success("Starting SAP API/iFlow generation...")
+  const handleGenerateIflow = async () => {
+    try {
+      setIsGeneratingIflow(true)
+      setIflowGenerationStatus("processing")
+      setIflowGenerationMessage("Starting SAP API/iFlow generation...")
 
-    // Simulate a delay for the generation process
-    setTimeout(() => {
+      console.log(`Generating iFlow for job ${jobInfo.id}...`)
+
+      // Call the API to generate the iFlow
+      const result = await generateIflow(jobInfo.id)
+      toast.success("SAP API/iFlow generation started")
+
+      // Store the iFlow job ID
+      setIflowJobId(result.job_id)
+
+      // Start polling for status
+      let failedAttempts = 0;
+      const maxFailedAttempts = 3; // Allow 3 failed attempts before trying alternative approach
+
+      const intervalId = setInterval(async () => {
+        try {
+          const statusResult = await getIflowGenerationStatus(result.job_id)
+          // Reset failed attempts counter on successful API call
+          failedAttempts = 0;
+
+          setIflowGenerationStatus(statusResult.status)
+          setIflowGenerationMessage(statusResult.message)
+
+          if (statusResult.status === "completed") {
+            setIflowGenerationFiles(statusResult.files || null)
+            clearInterval(intervalId)
+            setIsGeneratingIflow(false)
+            setIsIflowGenerated(true)
+            toast.success("iFlow generated successfully!")
+          } else if (statusResult.status === "failed") {
+            clearInterval(intervalId)
+            setIsGeneratingIflow(false)
+            toast.error(`iFlow generation failed: ${statusResult.message}`)
+          }
+        } catch (error) {
+          console.error("Error polling iFlow generation status:", error)
+          failedAttempts++;
+
+          // If we've had multiple consecutive failures, try to download the file directly
+          // This handles the case where the job completes but the status endpoint returns 404
+          if (failedAttempts >= maxFailedAttempts) {
+            console.log(`${maxFailedAttempts} consecutive status check failures. Trying direct download...`);
+
+            try {
+              // Try to download the file directly to see if it exists
+              await downloadGeneratedIflow(result.job_id);
+
+              // If download succeeds, the file exists and job is complete
+              clearInterval(intervalId);
+              setIflowGenerationStatus("completed");
+              setIflowGenerationMessage("iFlow generation completed successfully");
+              setIsGeneratingIflow(false);
+              setIsIflowGenerated(true);
+              toast.success("iFlow generated successfully!");
+              console.log("Direct download successful - assuming job is complete");
+
+              // Reset failed attempts
+              failedAttempts = 0;
+            } catch (downloadError) {
+              console.error("Direct download failed:", downloadError);
+              // Continue polling - don't reset failedAttempts
+            }
+          }
+        }
+      }, 5000) // Poll every 5 seconds
+
+      // Store the interval ID for cleanup
+      setStatusCheckInterval(intervalId)
+
+      // Clean up interval after 10 minutes (safety)
+      setTimeout(() => {
+        clearInterval(intervalId)
+        if (iflowGenerationStatus === "processing") {
+          setIflowGenerationStatus("unknown")
+          setIflowGenerationMessage("Status check timed out. Please refresh the page.")
+          setIsGeneratingIflow(false)
+        }
+      }, 600000) // 10 minutes
+    } catch (error) {
+      console.error("Error generating iFlow:", error)
+      toast.error("Failed to start SAP API/iFlow generation")
       setIsGeneratingIflow(false)
-      setIsIflowGenerated(true)
-      toast.success("SAP API/iFlow generated successfully!")
-    }, 3000)
+      setIflowGenerationStatus("failed")
+      setIflowGenerationMessage("Failed to start SAP API/iFlow generation")
+    }
   }
 
-  const handleDeployToSap = () => {
-    setIsDeploying(true)
+  const handleDeployToSap = async () => {
+    try {
+      setIsDeploying(true)
 
-    // Simulate deployment (would be an API call in a real app)
-    setTimeout(() => {
+      if (!jobInfo.id) {
+        toast.error("iFlow job ID not found. Please try generating the iFlow again.")
+        setIsDeploying(false)
+        return
+      }
+
+      console.log(`Deploying iFlow for job ${jobInfo.id} to SAP Integration Suite...`)
+
+      // Call the API to deploy the iFlow
+      // You can add a modal or form to collect package_id and description if needed
+      const result = await deployIflowToSap(jobInfo.id)
+
+      console.log("Deployment response:", result)
+
+      if (result.status === 'success') {
+        setIsDeployed(true)
+        toast.success("Deployed to SAP Integration Suite successfully!")
+      } else {
+        toast.error(`Deployment failed: ${result.message}`)
+      }
+    } catch (error) {
+      console.error("Error deploying to SAP:", error)
+      toast.error("Failed to deploy to SAP Integration Suite. Please try again.")
+    } finally {
       setIsDeploying(false)
-      setIsDeployed(true)
-      toast.success("Deployed to SAP Integration Suite successfully!")
-    }, 2000)
+    }
   }
 
   const getStatusIcon = () => {
@@ -249,35 +358,34 @@ const JobResult = ({ jobInfo, onNewJob }) => {
     }
   }
 
-  const downloadGeneratedIflow = () => {
+  const handleDownloadGeneratedIflow = async () => {
     try {
+      if (!iflowJobId) {
+        toast.error("iFlow job ID not found. Please try generating the iFlow again.")
+        return
+      }
+
       setDownloading(prev => ({ ...prev, generatedIflow: true }))
 
-      // Create a sample iFlow file (in a real app, this would be fetched from the server)
-      const iflowContent = `<?xml version="1.0" encoding="UTF-8"?>
-<iflow:process xmlns:iflow="http://www.sap.com/xi/XI/iflow/rt" id="Process_1">
-  <bpmn2:startEvent id="StartEvent_1" name="Start">
-    <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
-  </bpmn2:startEvent>
-  <bpmn2:endEvent id="EndEvent_1" name="End">
-    <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
-  </bpmn2:endEvent>
-  <bpmn2:task id="Task_1" name="Process Data">
-    <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-    <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
-  </bpmn2:task>
-  <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="StartEvent_1" targetRef="Task_1" />
-  <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="Task_1" targetRef="EndEvent_1" />
-</iflow:process>`
+      console.log(`Downloading generated iFlow for job ${iflowJobId}...`)
 
-      // Create a blob from the content
-      const blob = new Blob([iflowContent], { type: "application/xml" })
+      // Get the file using our API service
+      const blob = await downloadGeneratedIflow(iflowJobId)
+
+      console.log(`iFlow download response received, size: ${blob.size} bytes`)
+
+      if (blob.size === 0) {
+        toast.error("Empty file received. No content available for iFlow.")
+        console.error("Empty blob received for iFlow")
+        setDownloading(prev => ({ ...prev, generatedIflow: false }))
+        return
+      }
 
       // Create a download link
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement("a")
       a.href = url
-      a.download = `sap_generated_iflow_${jobInfo.id}.xml`
+      a.download = `sap_generated_iflow_${iflowJobId}.zip`
       document.body.appendChild(a)
       a.click()
 
@@ -423,42 +531,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 p-3 bg-gray-50 rounded-md">
-                <Play className="h-5 w-5 text-blue-500" />
-                <span className="font-medium text-gray-800">
-                  Flow Visualization
-                </span>
-
-                <div className="flex gap-2 ml-auto">
-                  <a
-                    href={`https://it-resonance-api.cfapps.us10-001.hana.ondemand.com/api/docs/${jobInfo.id}/visualization`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
-                    title="View in browser"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-
-                  <button
-                    onClick={() =>
-                      downloadFile(
-                        "visualization",
-                        `mulesoft_visualization_${jobInfo.id}.html`
-                      )
-                    }
-                    disabled={downloading.visualization}
-                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Download file"
-                  >
-                    {downloading.visualization ? (
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <Download className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
+              {/* Flow Visualization section removed */}
 
               <div className="p-3 bg-yellow-50 rounded-md flex items-start space-x-2">
                 <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
@@ -488,16 +561,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                         Direct Markdown Documentation Link
                       </a>
                     </li>
-                    <li>
-                      <a
-                        href={`https://it-resonance-api.cfapps.us10-001.hana.ondemand.com/api/docs/${jobInfo.id}/visualization`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Direct Flow Visualization Link
-                      </a>
-                    </li>
+                    {/* Direct Flow Visualization Link removed */}
                   </ul>
                 </div>
               </div>
@@ -506,8 +570,11 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
           <div>
             <h4 className="font-semibold text-gray-800 mb-3">
-              SAP Integration Suite Options:
+              SAP Integration Suite Options (Independent Actions):
             </h4>
+            <p className="text-sm text-gray-600 mb-2">
+              These actions can be performed independently. You can generate an iFlow directly from the documentation or find SAP equivalents first.
+            </p>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={handleGenerateIflowMatch}
@@ -545,14 +612,12 @@ const JobResult = ({ jobInfo, onNewJob }) => {
               <button
                 onClick={handleGenerateIflow}
                 disabled={
-                  iflowMatchStatus !== "completed" ||
                   isGeneratingIflow ||
                   isIflowGenerated
                 }
                 className={`
                   px-4 py-2 rounded-md font-medium flex items-center space-x-2
                   ${
-                    iflowMatchStatus !== "completed" ||
                     isGeneratingIflow ||
                     isIflowGenerated
                       ? "bg-gray-100 text-gray-500 cursor-not-allowed"
@@ -652,7 +717,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                           <a
                             href={`${
                               import.meta.env.VITE_API_URL
-                            }/iflow-match/${jobInfo.id}/report`}
+                            }/api/iflow-match/${jobInfo.id}/report`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
@@ -691,7 +756,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                           <a
                             href={`${
                               import.meta.env.VITE_API_URL
-                            }/iflow-match/${jobInfo.id}/summary`}
+                            }/api/iflow-match/${jobInfo.id}/summary`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
@@ -746,7 +811,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
                       <div className="flex gap-2 ml-auto">
                         <button
-                          onClick={downloadGeneratedIflow}
+                          onClick={handleDownloadGeneratedIflow}
                           disabled={downloading.generatedIflow}
                           className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Download file"
@@ -959,16 +1024,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
         </div>
       )}
 
-      {/* Add a prominent Upload New File button at the bottom */}
-      <div className="mt-8 flex justify-center">
-        <button
-          onClick={onNewJob}
-          className="px-6 py-3 bg-blue-600 text-white rounded-md font-medium flex items-center space-x-2 hover:bg-blue-700 transition-colors duration-200 shadow-md"
-        >
-          <Upload className="h-5 w-5" />
-          <span>Upload New File</span>
-        </button>
-      </div>
+      {/* Removed the Upload New File button */}
     </div>
   )
 }

@@ -59,10 +59,17 @@ def process_markdown_for_iflow(markdown_file_path, output_dir=None, github_token
         logger.info("Step 2: Searching SAP Integration Recipes via GitHub API...")
         searcher = SAPDiscoverySearcher(github_token=github_token)
         search_results = searcher.execute_search_strategy(search_terms)
-        logger.info(f"Found {search_results['total_count']} potential matches")
 
-        if search_results['total_count'] == 0:
-            result["message"] = "No matches found. Please check your search terms."
+        # Check if there's a warning in the results (e.g., no GitHub token)
+        if 'warning' in search_results:
+            logger.warning(f"Search warning: {search_results['warning']}")
+            result["message"] = search_results['warning']
+            return result
+
+        logger.info(f"Found {search_results.get('total_count', 0)} potential matches")
+
+        if search_results.get('total_count', 0) == 0:
+            result["message"] = "No matches found. Please check your search terms or GitHub token."
             return result
 
         # Step 3: Score and rank results

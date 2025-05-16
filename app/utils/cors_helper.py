@@ -32,10 +32,8 @@ def enable_cors(app):
 
     # Helper function to add CORS headers
     def _add_cors_headers(response):
-        origin = request.headers.get('Origin', '*')
-
-        # Always allow the actual origin that made the request
-        response.headers['Access-Control-Allow-Origin'] = origin
+        # Set a specific origin for local development
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept, Origin'
         response.headers['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS'
         response.headers['Access-Control-Allow-Credentials'] = 'true'

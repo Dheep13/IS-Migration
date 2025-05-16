@@ -81,7 +81,7 @@ function View() {
 
             <div className="grid grid-cols-3 gap-5">
                 {
-                    flowData.map(item => <FlowCard item={item} />)
+                    flowData.map(item => <FlowCard key={item.id} item={item} />)
                 }
             </div>
 
