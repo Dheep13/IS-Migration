@@ -41,11 +41,12 @@ function App() {
                                 </Route>
                             </> :
                             <Route path='/' element={<PrivateLayout />}>
-                                <Route index element={<Home.View />} />
+                                {/* <Route index element={<Home.View />} /> */}
+                                <Route index element={<Projects.List />} />
                                 <Route path='/api-docs' element={<APIDocs.View />} />
                                 <Route path='/projects' element={<Projects.List />} />
                                 <Route path='/projects/:id' element={<Projects.View />} />
-                                <Route path='/create-flow' element={<IFATool.View />} />
+                                <Route path='/projects/:id/flow' element={<IFATool.View />} />
                             </Route>
                     }
 

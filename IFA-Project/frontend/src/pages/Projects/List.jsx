@@ -1,111 +1,82 @@
 import CustomCard from '@components/Card'
-import { Button, Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/react'
+import { Button, Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, useDisclosure } from '@heroui/react'
 import { More01Icon, More02Icon } from 'hugeicons-react'
-import { ArrowRight, BeakerIcon, Brush, Calendar, CheckCircleIcon, CircleAlert, CircleCheck, Clock, ClockIcon, Cog, Ellipsis, Plus, User } from 'lucide-react'
+import { ArrowRight, BeakerIcon, Brush, Calendar, CheckCircleIcon, CircleAlert, CircleCheck, Clock, ClockIcon, Cog, Ellipsis, Plus, PlusCircle, User } from 'lucide-react'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import New from './New'
 
 export const projects = [
     {
-        "id": 1,
-        "project_name": "API Gateway Sync",
-        "description": "Establishes real-time data sync via API Gateway",
-        "created_by": "Astrid",
-        "created_date": "2024-11-15",
-        "status": "In Progress",
-        "priority": "Normal",
-        "last_updated": "2025-05-01",
-        "tech_stack": ["Mulesoft", "Java", "REST API"],
-        "integration_type": "Microservices"
+        id: 1,
+        project_name: "Order Service Migration",
+        customer: "Demo1 Corp",
+        source_platform: "Mulesoft",
+        target_platform: "SAP Integration Suite",
+        status: "In Progress",
+        created_date: "16-May-2025",
+        created_by: "Deepan",
+        jobs: [
+            {
+                job_id: 1,
+                job_name: "Order Conversion",
+                job_description: "Demo Flow Conversion",
+                file: "order_mapping.zip",
+                status: "In Progress",
+                created_on: "16-May-2025",
+                created_by: "Deepan"
+            }
+        ]
     },
+
     {
-        "id": 2,
-        "project_name": "Legacy Connector Hub",
-        "description": "Connects legacy ERP systems with Mulesoft APIs",
-        "created_by": "DevOps Team",
-        "created_date": "2024-09-20",
-        "status": "Completed",
-        "priority": "Medium",
-        "last_updated": "2025-03-18",
-        "tech_stack": ["SAP", "Mulesoft", "Oracle DB"],
-        "integration_type": "ERP"
+        id: 2,
+        project_name: "Inventory Sync Migration",
+        customer: "Demo2 Corp",
+        source_platform: "Mulesoft",
+        target_platform: "SAP Integration Suite",
+        status: "Draft",
+        created_date: "16-May-2025",
+        created_by: "Deepan",
+        jobs: [
+            {
+                job_id: 2,
+                job_name: "Inventory API Sync",
+                job_description: "Convert Inventory API to BTP iFlow",
+                file: "inventory_sync.zip",
+                status: "Pending",
+                created_on: "16-May-2025",
+                created_by: "Deepan",
+            }
+        ]
     },
+
     {
-        "id": 3,
-        "project_name": "Enterprise Data Flow",
-        "description": "Automates data flow between microservices",
-        "created_by": "Priya Sharma",
-        "created_date": "2025-01-10",
-        "status": "In Progress",
-        "priority": "Normal",
-        "last_updated": "2025-04-25",
-        "tech_stack": ["Node.js", "Kafka", "Mulesoft"],
-        "integration_type": "Data Streaming"
-    },
-    {
-        "id": 4,
-        "project_name": "Customer Insights API",
-        "description": "Gathers customer analytics across platforms",
-        "created_by": "Rahul Verma",
-        "created_date": "2025-02-05",
-        "status": "Development",
-        "priority": "Medium",
-        "last_updated": "2025-04-10",
-        "tech_stack": ["Python", "Mulesoft", "MongoDB"],
-        "integration_type": "Analytics"
-    },
-    {
-        "id": 5,
-        "project_name": "Inventory Sync Pro",
-        "description": "Ensures seamless inventory updates across systems",
-        "created_by": "Sarah Gupta",
-        "created_date": "2025-03-21",
-        "status": "Testing",
-        "priority": "Normal",
-        "last_updated": "2025-04-30",
-        "tech_stack": ["Mulesoft", "PostgreSQL", "AWS"],
-        "integration_type": "Inventory Management"
-    },
-    {
-        "id": 6,
-        "project_name": "Payment Gateway Integration",
-        "description": "Enables secure payment processing across multiple platforms",
-        "created_by": "Finance Team",
-        "created_date": "2025-04-01",
-        "status": "Planning",
-        "priority": "Critical",
-        "last_updated": "2025-05-10",
-        "tech_stack": ["Mulesoft", "Stripe API", "JavaScript"],
-        "integration_type": "Payment Processing"
-    },
-    {
-        "id": 7,
-        "project_name": "HR Workflow Automation",
-        "description": "Streamlines HR tasks like payroll, leave requests, and onboarding",
-        "created_by": "HR Team",
-        "created_date": "2025-02-15",
-        "status": "Development",
-        "priority": "Medium",
-        "last_updated": "2025-05-05",
-        "tech_stack": ["Mulesoft", "Workday API", "Python"],
-        "integration_type": "HR System"
-    },
-    {
-        "id": 8,
-        "project_name": "IoT Device Manager",
-        "description": "Integrates IoT sensors with enterprise analytics",
-        "created_by": "IoT Team",
-        "created_date": "2025-03-05",
-        "status": "Design Phase",
-        "priority": "Normal",
-        "last_updated": "2025-04-28",
-        "tech_stack": ["Mulesoft", "AWS IoT", "Node.js"],
-        "integration_type": "IoT & Cloud"
+        id: 3,
+        project_name: "Payment Workflow Migration",
+        customer: "Demo3 Corp",
+        source_platform: "Mulesoft",
+        target_platform: "SAP Integration Suite",
+        status: "Completed",
+        created_date: "16-May-2025",
+        created_by: "Deepan",
+        jobs: [
+            {
+                job_id: 3,
+                job_name: "Payment Flow Automation",
+                job_description: "Migrate and optimize payment logic",
+                file: "payment_flow.zip",
+                status: "Completed",
+                created_on: "16-May-2025",
+                created_by: "Deepan",
+            }
+        ]
     }
 ];
 
 function List() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { onOpen, onClose, isOpen } = useDisclosure()
     const StatusIcon = ({ status }) => {
         return status === "Completed" ? (
             <CircleCheck className="h-5 w-5 text-green-500 mr-2" />
@@ -120,14 +91,8 @@ function List() {
         );
     }
 
-    const PriorityIcon = ({ priority }) => {
-        return priority === "Critical" ? (
-            <CircleAlert className="h-5 w-5 text-red-500 mr-2" />
-        ) : priority === "Medium" ? (
-            <CircleAlert className="h-5 w-5 text-yellow-500 mr-2" />
-        ) : (
-            <CircleCheck className="h-5 w-5 text-green-500 mr-2" />
-        );
+    const handleCreateNewProject = () => {
+        onOpen()
     }
     const ProjectCard = ({ project }) => {
         return (
@@ -140,7 +105,10 @@ function List() {
                 radius='sm'
             >
                 <CardHeader className='flex justify-between items-center border-b-1'>
-                    <div className="font-semibold text-lg">{project.project_name}</div>
+                    <div className="font-semibold text-lg">
+                        {project.project_name} 
+                        <span className="font-normal ps-2 text-xs text-default-500">(PROJ-{project.id})</span>
+                    </div>
                     <Dropdown>
                         <DropdownTrigger>
                             <Button isIconOnly size='sm' variant='light'><Ellipsis /></Button>
@@ -154,34 +122,19 @@ function List() {
                     </Dropdown>
                 </CardHeader>
                 <CardBody className='flex flex-cols gap-1'>
-                    <p className="text-default-600 mb-3">{project.description}</p>
+                    {/* <p className="text-default-600 mb-3">{project.customer}</p> */}
 
-                    <p>⚙️ Tech Stack: {project.tech_stack.join(", ")}</p>
-                    <p>🔌 Integration Type: <span className="">{project.integration_type}</span></p>
+                    <p className='mb-1'>Customer: <span className="font-medium">{project.customer}</span></p>
+                    <div className="flex justify-between">
+                        <p>Source Platform: <span className="font-medium">{project.source_platform}</span></p>
+                        <p>Target Platform: <span className="font-medium">{project.target_platform}</span></p>
+                    </div>
+                    {/* <p>🔌 Integration Type: <span className="">{project.integration_type}</span></p> */}
 
-                    {/* <p className='text-default-600 flex items-center gap-1'>
-                        <User size={18} />
-                        Created By: {project.created_by}
-                    </p>
-                    <p className='text-default-600 flex items-center gap-1'>
-                        <Calendar size={18} />
-                        Created Date: {project.created_date}
-                    </p> */}
-
-                    <div className="flex items-center mt-2">
+                    <div className="flex items-center mt-5">
                         <StatusIcon status={project.status} />
                         <span className="font-medium">{project.status}</span>
                     </div>
-
-
-                    {/* <div className="flex items-center mt-2">
-                        {project.status === "Completed" ? (
-                            <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2" />
-                        ) : (
-                            <ClockIcon className="h-5 w-5 text-yellow-500 mr-2" />
-                        )}
-                        <span className="font-medium">{project.status}</span>
-                    </div> */}
 
                 </CardBody>
                 <CardFooter className='border-t-1 py-2 flex justify-between'>
@@ -206,7 +159,7 @@ function List() {
                     </p>
                 </div>
                 <div>
-                    <Button color='primary'><Plus size={16} /> Create new Project</Button>
+                    <Button onPress={handleCreateNewProject} color='primary'><Plus size={16} /> Create new Project</Button>
                 </div>
             </div>
 
@@ -215,7 +168,37 @@ function List() {
                 {projects.map((project, index) => (
                     <ProjectCard key={index} project={project} />
                 ))}
+
+                <Card
+                    classNames={{
+                        header: 'px-5',
+                        body: 'px-5',
+                        footer: 'px-5'
+                    }}
+                    radius='sm'
+                    isPressable
+                    onPress={handleCreateNewProject}
+                >
+                    <CardBody
+                        className='flex gap-1 items-center justify-center'
+                        style={{
+                            height: 265
+                        }}
+                    >
+                        <div className='flex flex-col items-center text-default-600'>
+                            <PlusCircle className='mb-2' size={32} />
+                            Create new Project
+                        </div>
+                    </CardBody>
+                </Card>
             </div>
+
+            {/* <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+            >
+            </Modal> */}
+            <New open={isOpen} onClose={onClose} />
         </>
     )
 }

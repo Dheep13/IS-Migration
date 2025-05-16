@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { projects } from './List'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, CardBody, CardHeader } from '@heroui/react';
 import { Calendar, Plus, User } from 'lucide-react';
 
 function View() {
     const { id } = useParams()
     const [current, setCurrent] = useState({});
-
-    const flowData = [
+    const navigate = useNavigate()
+    const [flowData, setFlowData] = useState([]);
+    /* const flowData = [
         {
             id: 1,
             file_name: 'project1.zip',
@@ -25,7 +26,7 @@ function View() {
             "created_by": "DevOps Team",
             "created_date": "2024-09-20",
         }
-    ]
+    ] */
 
     const statusColor = (status) => {
         return status === "Completed" ? ('text-green-500') :
@@ -36,6 +37,10 @@ function View() {
     useEffect(() => {
         const filtered = projects.filter(item => item.id == id)[0]
         setCurrent(filtered);
+
+        if(filtered.jobs.length > 0) {
+            setFlowData(filtered.jobs)
+        }
     }, [id]);
 
     const FlowCard = ({ item }) => {
@@ -46,16 +51,16 @@ function View() {
                 <div className={`text-sm mt-2 ${statusColor(item.status)}`}>{item.status}</div>
 
                 <div className="flex items-end">
-                    <div>
-                        <div className='text-lg font-semibold mt-2'>{item.file_name}</div>
-                        <div className='text-sm mt-1 text-default-600'>{item.description}</div>
+                    <div className='flex-1'>
+                        <div className='text-lg font-semibold mt-2'>{item.job_name}</div>
+                        <div className='text-sm mt-1 text-default-600'>{item.job_description}</div>
                     </div>
                     <div>
-                        <Button color='primary' className='font-semibold' radius='full' size='sm'>View</Button>
+                        <Button onPress={()  => navigate('flow')} color='primary' className='font-semibold' radius='full' size='sm'>View</Button>
                     </div>
                 </div>
                 <div className='text-sm text-default-500 flex items-center gap-1 mt-2 border-t pt-3 mt-3'>
-                    <Calendar size={16} /> {item.created_date}
+                    <Calendar size={16} /> {item.created_on}
                     <User className='ms-2' size={16} /> {item.created_by}
                 </div>
             </Card>
@@ -68,10 +73,10 @@ function View() {
             <div className="flex justify-between items-center mb-5">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-800 mb-1">
-                        {current?.project_name}
+                        Flows
                     </h1>
                     <p className="text-gray-600">
-                        {current?.description}
+                        {current?.project_name}
                     </p>
                 </div>
                 <div>
