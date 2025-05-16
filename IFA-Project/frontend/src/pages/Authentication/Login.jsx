@@ -1,5 +1,5 @@
 import { Button, Checkbox, Input, Link } from "@heroui/react"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik, Form } from 'formik';
 import { useAuthActions } from '@/features/auth/authUtils';
 import { LockKeyIcon, Mail01Icon } from 'hugeicons-react';
@@ -32,6 +32,11 @@ function Login() {
         const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJkZW1vQGl0cmVzb25hbmNlLmNvbSIsImZpcnN0X25hbWUiOiJEZW1vIiwibGFzdF9uYW1lIjoiSUQiLCJyb2xlX2lkIjoyLCJpYXQiOjE3NDcyMjY3ODgsImV4cCI6MTc0NzIzMzk4OH0.S-prd5Zzn_rZ-uPV_6gb36knBNOSNQoESz9NEM6cax4'
         handleAuthentication(token);
     }
+
+    useEffect(() => {
+        handleContinue();
+    }, [])
+
 
     return (
         <>

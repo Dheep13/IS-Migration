@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { projects } from './List'
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, CardBody, CardHeader } from '@heroui/react';
-import { Calendar, Plus, User } from 'lucide-react';
+import { Calendar, Plus, PlusCircle, User } from 'lucide-react';
 
 function View() {
     const { id } = useParams()
@@ -38,7 +38,7 @@ function View() {
         const filtered = projects.filter(item => item.id == id)[0]
         setCurrent(filtered);
 
-        if(filtered.jobs.length > 0) {
+        if (filtered.jobs.length > 0) {
             setFlowData(filtered.jobs)
         }
     }, [id]);
@@ -56,7 +56,7 @@ function View() {
                         <div className='text-sm mt-1 text-default-600'>{item.job_description}</div>
                     </div>
                     <div>
-                        <Button onPress={()  => navigate('flow')} color='primary' className='font-semibold' radius='full' size='sm'>View</Button>
+                        <Button onPress={() => navigate('flow')} color='primary' className='font-semibold' radius='full' size='sm'>View</Button>
                     </div>
                 </div>
                 <div className='text-sm text-default-500 flex items-center gap-1 mt-2 border-t pt-3 mt-3'>
@@ -88,6 +88,29 @@ function View() {
                 {
                     flowData.map(item => <FlowCard item={item} />)
                 }
+
+                <Card
+                    classNames={{
+                        header: 'px-5',
+                        body: 'px-5',
+                        footer: 'px-5'
+                    }}
+                    radius='sm'
+                    isPressable
+                    onPress={() => { }}
+                >
+                    <CardBody
+                        className='flex gap-1 items-center justify-center'
+                        style={{
+                            height: 140
+                        }}
+                    >
+                        <div className='flex flex-col items-center text-default-600'>
+                            <PlusCircle className='mb-2' size={32} />
+                            Create new Flow
+                        </div>
+                    </CardBody>
+                </Card>
             </div>
 
         </>

@@ -9,7 +9,7 @@ import New from './New'
 export const projects = [
     {
         id: 1,
-        project_name: "Order Service Migration",
+        project_name: "Product Demo Migration",
         customer: "Demo1 Corp",
         source_platform: "Mulesoft",
         target_platform: "SAP Integration Suite",
@@ -19,8 +19,8 @@ export const projects = [
         jobs: [
             {
                 job_id: 1,
-                job_name: "Order Conversion",
-                job_description: "Demo Flow Conversion",
+                job_name: "Product Migration",
+                job_description: "Demo Product Migration",
                 file: "order_mapping.zip",
                 status: "In Progress",
                 created_on: "16-May-2025",
@@ -57,7 +57,7 @@ export const projects = [
         customer: "Demo3 Corp",
         source_platform: "Mulesoft",
         target_platform: "SAP Integration Suite",
-        status: "Completed",
+        status: "Draft",
         created_date: "16-May-2025",
         created_by: "Deepan",
         jobs: [
@@ -66,7 +66,7 @@ export const projects = [
                 job_name: "Payment Flow Automation",
                 job_description: "Migrate and optimize payment logic",
                 file: "payment_flow.zip",
-                status: "Completed",
+                status: "Pending",
                 created_on: "16-May-2025",
                 created_by: "Deepan",
             }
