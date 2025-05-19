@@ -43,12 +43,29 @@ app = enable_cors(app)
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
-    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "final", ".env")
+
+    # First, try to load environment-specific .env file
+    env = os.getenv('FLASK_ENV', 'development')
+    env_file = f".env.{env}"
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), env_file)
+
     if os.path.exists(env_path):
         load_dotenv(env_path)
-        print(f"Loaded environment variables from: {env_path}")
+        print(f"Loaded environment variables from: {env_path} ({env} environment)")
     else:
-        print("No .env file found at expected location")
+        # Fall back to default .env file
+        env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+        if os.path.exists(env_path):
+            load_dotenv(env_path)
+            print(f"Loaded environment variables from: {env_path} (default)")
+        else:
+            print("No .env file found at expected locations")
+
+    # Log environment configuration
+    print(f"Environment: {env}")
+    print(f"API Port: {os.getenv('PORT', '5000')}")
+    print(f"iFlow API URL: {os.getenv('IFLOW_API_URL', 'http://localhost:5001')}")
+
 except ImportError:
     print("dotenv package not installed. Environment variables may not be loaded correctly.")
 
@@ -70,17 +87,28 @@ else:
 class CustomLLMDocumentationEnhancer:
     def __init__(self):
         # Use Anthropic instead of OpenAI
-        self.service = 'anthropic'
-        print(f"Using {self.service} for LLM enhancement")
+        self.service = os.getenv('LLM_SERVICE', 'anthropic')
+        logging.info(f"Using {self.service} for LLM enhancement")
+        logging.info(f"ANTHROPIC_API_KEY available: {bool(os.getenv('ANTHROPIC_API_KEY'))}")
+        logging.info(f"OPENAI_API_KEY available: {bool(os.getenv('OPENAI_API_KEY'))}")
 
         try:
             from documentation_enhancer import DocumentationEnhancer
             self.enhancer = DocumentationEnhancer(selected_service=self.service)
-            print(f"DocumentationEnhancer initialized with '{self.service}' service.")
+            logging.info(f"DocumentationEnhancer initialized with '{self.service}' service.")
         except Exception as e:
-            print(f"Error initializing DocumentationEnhancer: {str(e)}")
-            from documentation_enhancer import DocumentationEnhancer
-            self.enhancer = DocumentationEnhancer()
+            logging.error(f"Error initializing DocumentationEnhancer: {str(e)}")
+            logging.error(f"Error type: {type(e).__name__}")
+            try:
+                # Try to initialize with default settings
+                from documentation_enhancer import DocumentationEnhancer
+                self.enhancer = DocumentationEnhancer()
+                logging.info("DocumentationEnhancer initialized with default settings.")
+            except Exception as fallback_error:
+                logging.error(f"Failed to initialize DocumentationEnhancer with default settings: {str(fallback_error)}")
+                # Create a dummy enhancer that returns the original documentation
+                self.enhancer = None
+                logging.error("Using dummy enhancer that returns original documentation.")
 
     def enhance_documentation(self, base_documentation: str) -> str:
         """Enhance documentation using LLM.
@@ -91,22 +119,62 @@ class CustomLLMDocumentationEnhancer:
         Returns:
             Enhanced documentation
         """
-        print(f"Processing documentation as a single unit (size: {len(base_documentation)} chars)")
+        logging.info(f"Processing documentation as a single unit (size: {len(base_documentation)} chars)")
+
+        # If enhancer is None, return the original documentation
+        if self.enhancer is None:
+            logging.error("No enhancer available. Returning original documentation.")
+            return base_documentation
 
         try:
-            print(f"Starting LLM enhancement with {self.service} service")
-            enhanced_documentation = self.enhancer.enhance_documentation(base_documentation)
+            logging.info(f"Starting LLM enhancement with {self.service} service")
+
+            # Add a timeout to prevent hanging
+            import threading
+            import time
+
+            # Variable to store the result
+            result = {"enhanced_documentation": None, "error": None}
+
+            # Function to run in a separate thread
+            def run_enhancement():
+                try:
+                    result["enhanced_documentation"] = self.enhancer.enhance_documentation(base_documentation)
+                except Exception as e:
+                    result["error"] = e
+
+            # Create and start the thread
+            enhancement_thread = threading.Thread(target=run_enhancement)
+            enhancement_thread.daemon = True
+            enhancement_thread.start()
+
+            # Wait for the thread to complete with a timeout
+            enhancement_thread.join(timeout=600)  # 10 minutes timeout
+
+            # Check if the thread is still running (timeout occurred)
+            if enhancement_thread.is_alive():
+                logging.error("LLM enhancement timed out after 10 minutes")
+                return base_documentation
+
+            # Check if there was an error
+            if result["error"]:
+                logging.error(f"Error during LLM enhancement: {str(result['error'])}")
+                return base_documentation
+
+            # Get the enhanced documentation
+            enhanced_documentation = result["enhanced_documentation"]
 
             # If the result is identical to the input, enhancement likely failed
             if enhanced_documentation and enhanced_documentation != base_documentation:
-                print(f"Documentation successfully enhanced with {self.service}.")
+                logging.info(f"Documentation successfully enhanced with {self.service}.")
                 return enhanced_documentation
             else:
-                print(f"LLM enhancement did not produce different results - using original documentation.")
+                logging.warning(f"LLM enhancement did not produce different results - using original documentation.")
                 return base_documentation
 
         except Exception as e:
-            print(f"Error during LLM enhancement: {str(e)}")
+            logging.error(f"Error during LLM enhancement: {str(e)}")
+            logging.error(f"Error type: {type(e).__name__}")
             return base_documentation
 
 # Import the documentation generator

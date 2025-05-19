@@ -14,12 +14,56 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import threading
 
+# Import CORS configuration
+from cors_config import get_cors_origin
+
+# Set up NLTK data
+try:
+    import nltk_setup
+    logging.info("NLTK setup completed")
+except Exception as e:
+    logging.warning(f"Warning: NLTK setup failed: {str(e)}")
+
+# Run startup checks
+try:
+    import cf_startup_check
+    if cf_startup_check.check_imports():
+        logging.info("Startup checks completed successfully!")
+    else:
+        logging.warning("WARNING: Startup checks failed!")
+except Exception as e:
+    logging.error(f"Error running startup checks: {str(e)}")
+
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 # Load environment variables from .env file
-load_dotenv()
+try:
+    # First, try to load environment-specific .env file
+    env = os.getenv('FLASK_ENV', 'development')
+    env_file = f".env.{env}"
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), env_file)
+
+    if os.path.exists(env_path):
+        load_dotenv(env_path)
+        logger.info(f"Loaded environment variables from: {env_path} ({env} environment)")
+    else:
+        # Fall back to default .env file
+        env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+        if os.path.exists(env_path):
+            load_dotenv(env_path)
+            logger.info(f"Loaded environment variables from: {env_path} (default)")
+        else:
+            logger.warning("No .env file found at expected locations")
+
+    # Log environment configuration
+    logger.info(f"Environment: {env}")
+    logger.info(f"API Port: {os.getenv('PORT', '5001')}")
+    logger.info(f"Main API URL: {os.getenv('MAIN_API_URL', 'http://localhost:5000')}")
+
+except Exception as e:
+    logger.error(f"Error loading environment variables: {str(e)}")
 
 # Import the iFlow generator API
 from iflow_generator_api import generate_iflow_from_markdown
@@ -36,22 +80,28 @@ SAP_BTP_DEFAULT_PACKAGE = os.getenv('SAP_BTP_DEFAULT_PACKAGE')
 
 # Create the Flask application
 app = Flask(__name__)
+
+# Get the appropriate CORS origin
+cors_origin = get_cors_origin()
+logger.info(f"Using CORS origin: {cors_origin}")
+
 # Enable CORS for all routes with additional options
-CORS(app, resources={r"/*": {"origins": "*", "supports_credentials": False}})
+CORS(app, resources={r"/*": {"origins": cors_origin, "supports_credentials": True}})
 
 # Add a global CORS handler
 @app.after_request
 def after_request(response):
-    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Origin', cors_origin)
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    # Don't set Access-Control-Allow-Credentials since we're not using credentials
+    # Set Access-Control-Allow-Credentials to true for credential requests
+    response.headers.set('Access-Control-Allow-Credentials', 'true')
     return response
 
-# Get the Claude API key from the .env file
-CLAUDE_API_KEY = os.getenv('CLAUDE_API_KEY')
-if not CLAUDE_API_KEY:
-    logger.warning("No Claude API key found in .env file. API will not work without it.")
+# Get the Anthropic API key from the .env file
+ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
+if not ANTHROPIC_API_KEY:
+    logger.warning("No Anthropic API key found in .env file. API will not work without it.")
 
 # In-memory job storage (in a production environment, use a database)
 jobs = {}
@@ -68,10 +118,10 @@ def health_check():
     response = jsonify({
         'status': 'ok',
         'message': 'MuleToIS API is running',
-        'api_key_configured': bool(CLAUDE_API_KEY)
+        'api_key_configured': bool(ANTHROPIC_API_KEY)
     })
     # Add CORS headers
-    response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+    response.headers.set('Access-Control-Allow-Origin', cors_origin)
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.set('Access-Control-Allow-Credentials', 'true')
@@ -94,7 +144,7 @@ def generate_iflow(job_id=None):
     # Handle OPTIONS request for CORS preflight
     if request.method == 'OPTIONS':
         response = jsonify({'status': 'ok'})
-        response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         response.headers.set('Access-Control-Allow-Credentials', 'true')
@@ -102,10 +152,10 @@ def generate_iflow(job_id=None):
 
     try:
         # Check if API key is configured
-        if not CLAUDE_API_KEY:
+        if not ANTHROPIC_API_KEY:
             return jsonify({
                 'status': 'error',
-                'message': 'Claude API key not configured. Please set CLAUDE_API_KEY in .env file.'
+                'message': 'Anthropic API key not configured. Please set ANTHROPIC_API_KEY in .env file.'
             }), 500
 
         # If job_id is provided, fetch the markdown from the main API
@@ -113,8 +163,17 @@ def generate_iflow(job_id=None):
             try:
                 import requests
 
-                # Get the main API URL from environment variable or use default
+                # Get the main API URL from environment variables
                 MAIN_API_URL = os.getenv('MAIN_API_URL', 'http://localhost:5000')
+                MAIN_API_HOST = os.getenv('MAIN_API_HOST', 'localhost')
+                MAIN_API_PORT = os.getenv('MAIN_API_PORT', '5000')
+                MAIN_API_PROTOCOL = os.getenv('MAIN_API_PROTOCOL', 'http')
+
+                # Construct the URL if not provided directly
+                if not MAIN_API_URL:
+                    MAIN_API_URL = f"{MAIN_API_PROTOCOL}://{MAIN_API_HOST}"
+                    if MAIN_API_PORT and MAIN_API_PORT != '80' and MAIN_API_PORT != '443':
+                        MAIN_API_URL += f":{MAIN_API_PORT}"
 
                 # Fetch the markdown content from the main API
                 logger.info(f"Fetching markdown content for job {job_id} from {MAIN_API_URL}")
@@ -249,7 +308,7 @@ def process_iflow_generation(job_id, markdown_content, iflow_name=None):
 
         result = generate_iflow_from_markdown(
             markdown_content=markdown_content,
-            api_key=CLAUDE_API_KEY,
+            api_key=ANTHROPIC_API_KEY,
             output_dir=job_result_dir,
             iflow_name=iflow_name
         )
@@ -294,7 +353,7 @@ def get_job_status(job_id):
     # Handle OPTIONS request for CORS preflight
     if request.method == 'OPTIONS':
         response = jsonify({'status': 'ok'})
-        response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         response.headers.set('Access-Control-Allow-Credentials', 'true')
@@ -333,7 +392,7 @@ def get_job_status(job_id):
 
                 # Return the job info
                 response = jsonify(job_info)
-                response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+                response.headers.set('Access-Control-Allow-Origin', cors_origin)
                 response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
                 response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
                 response.headers.set('Access-Control-Allow-Credentials', 'true')
@@ -341,14 +400,14 @@ def get_job_status(job_id):
 
         # If we get here, the job doesn't exist
         response = jsonify({'error': 'Job not found'})
-        response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         response.headers.set('Access-Control-Allow-Credentials', 'true')
         return response, 404
 
     response = jsonify(jobs[job_id])
-    response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+    response.headers.set('Access-Control-Allow-Origin', cors_origin)
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     response.headers.set('Access-Control-Allow-Credentials', 'true')
@@ -454,7 +513,7 @@ def deploy_to_sap(job_id):
     # Handle OPTIONS request for CORS preflight
     if request.method == 'OPTIONS':
         response = jsonify({'status': 'ok'})
-        response.headers.set('Access-Control-Allow-Origin', 'http://localhost:5173')
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
         response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
         response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         response.headers.set('Access-Control-Allow-Credentials', 'true')

@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Temporary files
+*.log
+*.tmp
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Test files
+test_*.py
+tests/
+
+# Large data files
+*.zip
+*.csv
+*.json
+results/
+uploads/
+
+# Deployment scripts (keep these local)
+deploy.bat
+deploy.sh
+
+# Documentation
+README.md
+README_DEPLOYMENT.md

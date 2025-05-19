@@ -1,24 +1,32 @@
 {
-  "api_name": "Products API",
+  "api_name": "SAP OData Product Information API",
   "base_url": "/products",
   "endpoints": [
     {
       "method": "GET",
       "path": "/products",
-      "purpose": "Retrieves product details based on a product identifier",
+      "purpose": "Retrieve product details from SAP HANA database via OData service",
       "components": [
         {
           "type": "enricher",
-          "name": "Validate_Product_Identifier",
-          "id": "enricher_validate_product_1",
+          "name": "Validate_Product_ID",
+          "id": "enricher_validate_product",
           "config": {
-            "content": "The product identifier validation logic will be handled by a Groovy script"
+            "content": "${property.get(\"odata.productIdentifiers\").split(\",\").find { it == message.getProperty(\"productIdentifier\") } != null}"
+          }
+        },
+        {
+          "type": "enricher",
+          "name": "Set_IsExistProduct_Property",
+          "id": "enricher_set_property",
+          "config": {
+            "content": "${property.isExistProduct}"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Check_Product_Identifier",
-          "id": "groovy_check_product_1",
+          "name": "Product_Validation_Script",
+          "id": "script_validate_product",
           "config": {
             "script": "ValidateProductIdentifier.groovy"
           }
@@ -26,39 +34,35 @@
         {
           "type": "odata",
           "name": "Get_Product_Details",
-          "id": "odata_get_product_1",
+          "id": "odata_get_product",
           "config": {
-            "address": "${property.HANA_ODATA_SERVICE_URL}",
+            "address": "${property.odata.service.url}",
             "resource_path": "Products",
             "operation": "Query(GET)",
-            "query_options": "$filter=ProductId eq '${property.productIdentifier}' and $select=ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit"
+            "query_options": "$filter=ProductId eq '${property.productIdentifier}'&$select=ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit"
           }
         },
         {
           "type": "enricher",
-          "name": "Format_Response",
-          "id": "enricher_format_response_1",
+          "name": "Set_Error_Response",
+          "id": "enricher_error_response",
           "config": {
-            "content": "The response formatting will be handled by a Groovy script"
+            "content": "{ \"status\": \"error\", \"message\": \"The product identifier ${property.productIdentifier} was not found.\", \"errorCode\": \"PRODUCT_NOT_FOUND\" }"
           }
         }
       ],
       "sequence": [
-        "enricher_validate_product_1",
-        "groovy_check_product_1",
-        "odata_get_product_1",
-        "enricher_format_response_1"
+        "enricher_validate_product",
+        "enricher_set_property",
+        "script_validate_product",
+        "odata_get_product",
+        "enricher_error_response"
       ],
       "transformations": [
         {
           "name": "ValidateProductIdentifier.groovy",
           "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message;\nimport java.util.HashMap;\n\ndef Message processData(Message message) {\n    def body = message.getBody(String.class);\n    def headers = message.getHeaders();\n    def properties = message.getProperties();\n    \n    // Get query parameters\n    def map = message.getHeaders().get(\"SAP_MessageProcessingLogID\");\n    def productIdentifier = message.getProperty(\"productIdentifier\");\n    \n    // Get allowed product identifiers from property\n    def allowedProductIds = properties.get(\"odata.productIdentifiers\").split(\",\");\n    \n    // Check if product identifier is in the allowed list\n    boolean isValid = false;\n    for (String id : allowedProductIds) {\n        if (id.trim().equals(productIdentifier)) {\n            isValid = true;\n            break;\n        }\n    }\n    \n    // Set property for routing\n    message.setProperty(\"isExistProduct\", isValid);\n    \n    return message;\n}"
-        },
-        {
-          "name": "FormatErrorResponse.groovy",
-          "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message;\nimport groovy.json.JsonBuilder;\n\ndef Message processData(Message message) {\n    def body = message.getBody(String.class);\n    def headers = message.getHeaders();\n    def properties = message.getProperties();\n    \n    // Get product identifier from property\n    def productIdentifier = message.getProperty(\"productIdentifier\");\n    \n    // Create error response\n    def errorResponse = [\n        status: \"error\",\n        message: \"The product identifier \" + productIdentifier + \" was not found.\",\n        errorCode: \"PRODUCT_NOT_FOUND\"\n    ];\n    \n    // Convert to JSON\n    def jsonBuilder = new JsonBuilder(errorResponse);\n    message.setBody(jsonBuilder.toString());\n    \n    // Set content type header\n    message.setHeader(\"Content-Type\", \"application/json\");\n    \n    return message;\n}"
+          "script": "def productIdentifiers = property.get(\"odata.productIdentifiers\").split(\",\")\ndef requestedId = message.getProperty(\"productIdentifier\")\ndef isValid = productIdentifiers.find { it == requestedId } != null\nmessage.setProperty(\"isExistProduct\", isValid)\nreturn message"
         }
       ]
     }

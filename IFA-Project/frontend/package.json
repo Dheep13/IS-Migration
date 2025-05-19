@@ -16,6 +16,7 @@
       "@internationalized/date": "^3.8.0",
       "@react-aria/i18n": "^3.12.8",
       "@reduxjs/toolkit": "^2.2.5",
+      "@rollup/rollup-win32-x64-msvc": "^4.40.2",
       "axios": "^1.7.2",
       "dayjs": "^1.11.11",
       "formik": "^2.4.6",

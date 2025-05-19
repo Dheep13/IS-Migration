@@ -1,11 +1,25 @@
 ---
 applications:
-- name: it-resonance-api
+- name: it-resonance-api-wacky-panther-za
   memory: 512M
+  disk_quota: 1G
+  stack: cflinuxfs3
   buildpacks:
   - python_buildpack
   path: .
-  random-route: true
   command: python app.py
+  routes:
+  - route: it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com
   env:
     FLASK_ENV: production
+    FLASK_DEBUG: false
+    ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+    GITHUB_TOKEN: ${GITHUB_TOKEN}
+    IFLOW_API_URL: https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com
+    CORS_ORIGIN: https://ifa-frontend.cfapps.us10-001.hana.ondemand.com
+    CORS_ALLOW_CREDENTIALS: true
+    NLTK_DATA: /home/vcap/app/nltk_data
+    PYTHONUNBUFFERED: true
+  health-check-type: http
+  health-check-http-endpoint: /api/health
+  timeout: 600

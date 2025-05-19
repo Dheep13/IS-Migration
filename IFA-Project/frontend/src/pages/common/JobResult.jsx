@@ -11,9 +11,9 @@ import {
   Download,
   AlertTriangle,
   Search,
-  FileCode,
-  Upload
+  FileCode
 } from "lucide-react"
+
 import {
   getDocumentation,
   generateIflowMatch,
@@ -22,10 +22,16 @@ import {
   generateIflow,
   getIflowGenerationStatus,
   downloadGeneratedIflow,
-  downloadIflowDebugFile,
   deployIflowToSap
 } from "@services/api"
+
 import { toast } from "react-hot-toast"
+
+// Get environment variables for polling configuration
+const DISABLE_AUTO_POLLING = import.meta.env.VITE_DISABLE_AUTO_POLLING === 'true'
+const MAX_POLL_COUNT = parseInt(import.meta.env.VITE_MAX_POLL_COUNT || '30')
+const POLL_INTERVAL_MS = parseInt(import.meta.env.VITE_POLL_INTERVAL_MS || '5000')
+const MAX_FAILED_ATTEMPTS = parseInt(import.meta.env.VITE_MAX_FAILED_ATTEMPTS || '3')
 
 const JobResult = ({ jobInfo, onNewJob }) => {
   const [isGeneratingIflowMatch, setIsGeneratingIflowMatch] = useState(false)
@@ -78,6 +84,35 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       const result = await generateIflowMatch(jobInfo.id)
       toast.success("SAP Integration Suite equivalent search started")
 
+      // Check if auto-polling is disabled in production
+      if (DISABLE_AUTO_POLLING) {
+        console.log("Auto-polling is disabled by environment configuration. Making a single status check.");
+
+        // Make a single status check after a short delay
+        setTimeout(async () => {
+          try {
+            const statusResult = await getIflowMatchStatus(jobInfo.id);
+            setIflowMatchStatus(statusResult.status);
+            setIflowMatchMessage(statusResult.message);
+
+            if (statusResult.status === "completed") {
+              setIflowMatchFiles(statusResult.files || null);
+              setIsGeneratingIflowMatch(false);
+              toast.success("SAP Integration Suite equivalent search completed!");
+            } else {
+              setIsGeneratingIflowMatch(false);
+              toast.info("SAP Integration Suite equivalent search is in progress. Check back later for results.");
+            }
+          } catch (error) {
+            console.error("Error checking SAP equivalents status:", error);
+            setIsGeneratingIflowMatch(false);
+            toast.info("SAP Integration Suite equivalent search is in progress. Check back later for results.");
+          }
+        }, 5000); // Wait 5 seconds before checking
+
+        return;
+      }
+
       // Start polling for status
       const intervalId = setInterval(async () => {
         try {
@@ -100,7 +135,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
         } catch (error) {
           console.error("Error polling iFlow match status:", error)
         }
-      }, 2000) // Poll every 2 seconds
+      }, POLL_INTERVAL_MS) // Use configured polling interval
 
       // Clean up interval after 5 minutes (safety)
       setTimeout(() => {
@@ -130,8 +165,25 @@ const JobResult = ({ jobInfo, onNewJob }) => {
   const [iflowGenerationFiles, setIflowGenerationFiles] = useState(null)
   const [statusCheckInterval, setStatusCheckInterval] = useState(null)
 
+  // Clean up any existing intervals when component unmounts or when starting a new job
+  useEffect(() => {
+    return () => {
+      if (statusCheckInterval) {
+        console.log("Cleaning up status check interval on unmount");
+        clearInterval(statusCheckInterval);
+      }
+    };
+  }, [statusCheckInterval]);
+
   const handleGenerateIflow = async () => {
     try {
+      // Clear any existing interval first
+      if (statusCheckInterval) {
+        console.log("Clearing existing status check interval");
+        clearInterval(statusCheckInterval);
+        setStatusCheckInterval(null);
+      }
+
       setIsGeneratingIflow(true)
       setIflowGenerationStatus("processing")
       setIflowGenerationMessage("Starting SAP API/iFlow generation...")
@@ -140,18 +192,101 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
       // Call the API to generate the iFlow
       const result = await generateIflow(jobInfo.id)
+
+      // Check if the result has an error status
+      if (result.status === 'error') {
+        console.error("Error from iFlow generation API:", result.message);
+        toast.error(`Failed to start SAP API/iFlow generation: ${result.message}`);
+        setIsGeneratingIflow(false);
+        setIflowGenerationStatus("failed");
+        setIflowGenerationMessage(result.message);
+        return;
+      }
+
       toast.success("SAP API/iFlow generation started")
 
       // Store the iFlow job ID
       setIflowJobId(result.job_id)
 
+      // Check if auto-polling is disabled in production
+      if (DISABLE_AUTO_POLLING) {
+        console.log("Auto-polling is disabled by environment configuration. Making a single status check.");
+
+        // Make a single status check after a short delay
+        setTimeout(async () => {
+          try {
+            const statusResult = await getIflowGenerationStatus(result.job_id);
+
+            if (statusResult.status === "completed") {
+              setIflowGenerationStatus("completed");
+              setIflowGenerationMessage("iFlow generation completed successfully");
+              setIsGeneratingIflow(false);
+              setIsIflowGenerated(true);
+              toast.success("iFlow generated successfully!");
+            } else {
+              // If not completed yet, show a message to check back later
+              setIsGeneratingIflow(false);
+              toast.info("iFlow generation is in progress. Check back later for results.");
+            }
+          } catch (error) {
+            console.error("Error checking iFlow status:", error);
+            setIsGeneratingIflow(false);
+            toast.info("iFlow generation is in progress. Check back later for results.");
+          }
+        }, 5000); // Wait 5 seconds before checking
+
+        return;
+      }
+
       // Start polling for status
       let failedAttempts = 0;
-      const maxFailedAttempts = 3; // Allow 3 failed attempts before trying alternative approach
+      let pollCount = 0;
+
+      console.log(`Starting polling for iFlow generation job ${result.job_id}`);
+      console.log(`Polling configuration: Max polls: ${MAX_POLL_COUNT}, Interval: ${POLL_INTERVAL_MS}ms, Max failed attempts: ${MAX_FAILED_ATTEMPTS}`);
 
       const intervalId = setInterval(async () => {
         try {
+          pollCount++;
+          console.log(`Polling attempt ${pollCount} for job ${result.job_id}`);
+
+          // If we've reached the maximum number of polls, stop polling
+          if (pollCount >= MAX_POLL_COUNT) {
+            console.log(`Reached maximum number of polls (${MAX_POLL_COUNT}). Stopping.`);
+            clearInterval(intervalId);
+            setStatusCheckInterval(null);
+
+            // Try one final direct download
+            try {
+              await downloadGeneratedIflow(result.job_id);
+              setIflowGenerationStatus("completed");
+              setIflowGenerationMessage("iFlow generation completed successfully");
+              setIsGeneratingIflow(false);
+              setIsIflowGenerated(true);
+              toast.success("iFlow generated successfully!");
+            } catch (finalDownloadError) {
+              setIflowGenerationStatus("unknown");
+              setIflowGenerationMessage("Status check timed out. The iFlow may still be generating.");
+              setIsGeneratingIflow(false);
+              toast.warning("Status check timed out. Try downloading the iFlow manually.");
+            }
+            return;
+          }
+
           const statusResult = await getIflowGenerationStatus(result.job_id)
+
+          // If the result has an error status, handle it but don't stop polling yet
+          if (statusResult.status === 'error') {
+            console.warn("Error from status check:", statusResult.message);
+            failedAttempts++;
+
+            // Only if we've had multiple consecutive failures, try direct download
+            if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+              await handleDirectDownloadCheck(result.job_id, intervalId);
+            }
+            return;
+          }
+
           // Reset failed attempts counter on successful API call
           failedAttempts = 0;
 
@@ -161,11 +296,13 @@ const JobResult = ({ jobInfo, onNewJob }) => {
           if (statusResult.status === "completed") {
             setIflowGenerationFiles(statusResult.files || null)
             clearInterval(intervalId)
+            setStatusCheckInterval(null)
             setIsGeneratingIflow(false)
             setIsIflowGenerated(true)
             toast.success("iFlow generated successfully!")
           } else if (statusResult.status === "failed") {
             clearInterval(intervalId)
+            setStatusCheckInterval(null)
             setIsGeneratingIflow(false)
             toast.error(`iFlow generation failed: ${statusResult.message}`)
           }
@@ -174,51 +311,44 @@ const JobResult = ({ jobInfo, onNewJob }) => {
           failedAttempts++;
 
           // If we've had multiple consecutive failures, try to download the file directly
-          // This handles the case where the job completes but the status endpoint returns 404
-          if (failedAttempts >= maxFailedAttempts) {
-            console.log(`${maxFailedAttempts} consecutive status check failures. Trying direct download...`);
-
-            try {
-              // Try to download the file directly to see if it exists
-              await downloadGeneratedIflow(result.job_id);
-
-              // If download succeeds, the file exists and job is complete
-              clearInterval(intervalId);
-              setIflowGenerationStatus("completed");
-              setIflowGenerationMessage("iFlow generation completed successfully");
-              setIsGeneratingIflow(false);
-              setIsIflowGenerated(true);
-              toast.success("iFlow generated successfully!");
-              console.log("Direct download successful - assuming job is complete");
-
-              // Reset failed attempts
-              failedAttempts = 0;
-            } catch (downloadError) {
-              console.error("Direct download failed:", downloadError);
-              // Continue polling - don't reset failedAttempts
-            }
+          if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
+            await handleDirectDownloadCheck(result.job_id, intervalId);
           }
         }
-      }, 5000) // Poll every 5 seconds
+      }, POLL_INTERVAL_MS) // Use configured polling interval
 
       // Store the interval ID for cleanup
       setStatusCheckInterval(intervalId)
-
-      // Clean up interval after 10 minutes (safety)
-      setTimeout(() => {
-        clearInterval(intervalId)
-        if (iflowGenerationStatus === "processing") {
-          setIflowGenerationStatus("unknown")
-          setIflowGenerationMessage("Status check timed out. Please refresh the page.")
-          setIsGeneratingIflow(false)
-        }
-      }, 600000) // 10 minutes
     } catch (error) {
       console.error("Error generating iFlow:", error)
       toast.error("Failed to start SAP API/iFlow generation")
       setIsGeneratingIflow(false)
       setIflowGenerationStatus("failed")
       setIflowGenerationMessage("Failed to start SAP API/iFlow generation")
+    }
+  }
+
+  // Helper function to check if the file exists by trying to download it
+  const handleDirectDownloadCheck = async (jobId, intervalId) => {
+    console.log(`Multiple consecutive status check failures. Trying direct download for job ${jobId}...`);
+
+    try {
+      // Try to download the file directly to see if it exists
+      await downloadGeneratedIflow(jobId);
+
+      // If download succeeds, the file exists and job is complete
+      clearInterval(intervalId);
+      setStatusCheckInterval(null);
+      setIflowGenerationStatus("completed");
+      setIflowGenerationMessage("iFlow generation completed successfully");
+      setIsGeneratingIflow(false);
+      setIsIflowGenerated(true);
+      toast.success("iFlow generated successfully!");
+      console.log("Direct download successful - assuming job is complete");
+      return true;
+    } catch (downloadError) {
+      console.error("Direct download failed:", downloadError);
+      return false;
     }
   }
 
@@ -413,7 +543,15 @@ const JobResult = ({ jobInfo, onNewJob }) => {
         </div>
 
         <button
-          onClick={onNewJob}
+          onClick={() => {
+            // Clean up any intervals before calling onNewJob
+            if (statusCheckInterval) {
+              console.log("Cleaning up status check interval on New Job");
+              clearInterval(statusCheckInterval);
+              setStatusCheckInterval(null);
+            }
+            onNewJob();
+          }}
           className="text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1"
         >
           <RefreshCw className="h-4 w-4" />
@@ -465,7 +603,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
                 <div className="flex gap-2 ml-auto">
                   <a
-                    href={`https://it-resonance-api.cfapps.us10-001.hana.ondemand.com/api/docs/${jobInfo.id}/html`}
+                    href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/html`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
@@ -502,7 +640,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
                 <div className="flex gap-2 ml-auto">
                   <a
-                    href={`https://it-resonance-api.cfapps.us10-001.hana.ondemand.com/api/docs/${jobInfo.id}/markdown`}
+                    href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/markdown`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"

@@ -33,4 +33,4 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo Deployment completed successfully!
-echo API is now available at: https://it-resonance-api.cfapps.us10-001.hana.ondemand.com
+echo API is now available at: https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com

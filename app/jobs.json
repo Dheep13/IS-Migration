@@ -1026,5 +1026,452 @@
       "html": "results\\49b67982-8631-48e7-88ba-6437b57a439a\\flow_documentation_with_mermaid.html",
       "visualization": "results\\49b67982-8631-48e7-88ba-6437b57a439a\\flow_visualization.html"
     }
+  },
+  "8f59e1ef-22fa-4a6e-ac80-2f408f671cc2": {
+    "id": "8f59e1ef-22fa-4a6e-ac80-2f408f671cc2",
+    "status": "completed",
+    "created": "2025-05-16T17:02:56.785812",
+    "last_updated": "2025-05-16T17:04:58.308358",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\8f59e1ef-22fa-4a6e-ac80-2f408f671cc2\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\8f59e1ef-22fa-4a6e-ac80-2f408f671cc2\\flow_documentation.md",
+      "html": "results\\8f59e1ef-22fa-4a6e-ac80-2f408f671cc2\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\8f59e1ef-22fa-4a6e-ac80-2f408f671cc2\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\8f59e1ef-22fa-4a6e-ac80-2f408f671cc2\\iflow_match\\integration_match_report.html",
+      "summary": "results\\8f59e1ef-22fa-4a6e-ac80-2f408f671cc2\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "89407a5a-3d1d-4ceb-8a52-c614e34b1288": {
+    "id": "89407a5a-3d1d-4ceb-8a52-c614e34b1288",
+    "status": "completed",
+    "created": "2025-05-16T18:27:43.927892",
+    "last_updated": "2025-05-16T18:29:26.361984",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\89407a5a-3d1d-4ceb-8a52-c614e34b1288\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\89407a5a-3d1d-4ceb-8a52-c614e34b1288\\flow_documentation.md",
+      "html": "results\\89407a5a-3d1d-4ceb-8a52-c614e34b1288\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\89407a5a-3d1d-4ceb-8a52-c614e34b1288\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\89407a5a-3d1d-4ceb-8a52-c614e34b1288\\iflow_match\\integration_match_report.html",
+      "summary": "results\\89407a5a-3d1d-4ceb-8a52-c614e34b1288\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "129537c6-22ef-44eb-8165-4cb258c8fa54": {
+    "id": "129537c6-22ef-44eb-8165-4cb258c8fa54",
+    "status": "completed",
+    "created": "2025-05-16T18:43:01.034391",
+    "last_updated": "2025-05-16T19:02:27.086499",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\129537c6-22ef-44eb-8165-4cb258c8fa54\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\129537c6-22ef-44eb-8165-4cb258c8fa54\\flow_documentation.md",
+      "html": "results\\129537c6-22ef-44eb-8165-4cb258c8fa54\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\129537c6-22ef-44eb-8165-4cb258c8fa54\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\129537c6-22ef-44eb-8165-4cb258c8fa54\\iflow_match\\integration_match_report.html",
+      "summary": "results\\129537c6-22ef-44eb-8165-4cb258c8fa54\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "f29fea98-71b8-4198-a605-de0ff8ac527b": {
+    "id": "f29fea98-71b8-4198-a605-de0ff8ac527b",
+    "status": "completed",
+    "created": "2025-05-16T19:26:39.221408",
+    "last_updated": "2025-05-16T19:27:28.773057",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\f29fea98-71b8-4198-a605-de0ff8ac527b\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\f29fea98-71b8-4198-a605-de0ff8ac527b\\flow_documentation.md",
+      "html": "results\\f29fea98-71b8-4198-a605-de0ff8ac527b\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\f29fea98-71b8-4198-a605-de0ff8ac527b\\flow_visualization.html"
+    }
+  },
+  "a214ab54-e992-47d1-928d-5f1dfecaedbd": {
+    "id": "a214ab54-e992-47d1-928d-5f1dfecaedbd",
+    "status": "completed",
+    "created": "2025-05-16T19:30:42.828687",
+    "last_updated": "2025-05-16T19:40:38.312721",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\a214ab54-e992-47d1-928d-5f1dfecaedbd\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\a214ab54-e992-47d1-928d-5f1dfecaedbd\\flow_documentation.md",
+      "html": "results\\a214ab54-e992-47d1-928d-5f1dfecaedbd\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\a214ab54-e992-47d1-928d-5f1dfecaedbd\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\a214ab54-e992-47d1-928d-5f1dfecaedbd\\iflow_match\\integration_match_report.html",
+      "summary": "results\\a214ab54-e992-47d1-928d-5f1dfecaedbd\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "0d3fef21-6eac-4ac9-877c-fe6dfd4164e5": {
+    "id": "0d3fef21-6eac-4ac9-877c-fe6dfd4164e5",
+    "status": "completed",
+    "created": "2025-05-16T19:56:40.667882",
+    "last_updated": "2025-05-16T19:58:45.438787",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\0d3fef21-6eac-4ac9-877c-fe6dfd4164e5\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\0d3fef21-6eac-4ac9-877c-fe6dfd4164e5\\flow_documentation.md",
+      "html": "results\\0d3fef21-6eac-4ac9-877c-fe6dfd4164e5\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\0d3fef21-6eac-4ac9-877c-fe6dfd4164e5\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\0d3fef21-6eac-4ac9-877c-fe6dfd4164e5\\iflow_match\\integration_match_report.html",
+      "summary": "results\\0d3fef21-6eac-4ac9-877c-fe6dfd4164e5\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "404f9136-56da-4aed-8f76-5791e0fd9274": {
+    "id": "404f9136-56da-4aed-8f76-5791e0fd9274",
+    "status": "completed",
+    "created": "2025-05-16T20:02:36.434941",
+    "last_updated": "2025-05-16T20:03:44.758731",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\404f9136-56da-4aed-8f76-5791e0fd9274\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\404f9136-56da-4aed-8f76-5791e0fd9274\\flow_documentation.md",
+      "html": "results\\404f9136-56da-4aed-8f76-5791e0fd9274\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\404f9136-56da-4aed-8f76-5791e0fd9274\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\404f9136-56da-4aed-8f76-5791e0fd9274\\iflow_match\\integration_match_report.html",
+      "summary": "results\\404f9136-56da-4aed-8f76-5791e0fd9274\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    }
+  },
+  "38a30f0c-5908-4b12-876c-ed96064a2577": {
+    "id": "38a30f0c-5908-4b12-876c-ed96064a2577",
+    "status": "completed",
+    "created": "2025-05-16T20:32:30.303483",
+    "last_updated": "2025-05-16T20:33:16.873025",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\38a30f0c-5908-4b12-876c-ed96064a2577\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\38a30f0c-5908-4b12-876c-ed96064a2577\\flow_documentation.md",
+      "html": "results\\38a30f0c-5908-4b12-876c-ed96064a2577\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\38a30f0c-5908-4b12-876c-ed96064a2577\\flow_visualization.html"
+    }
+  },
+  "07af665a-ee9e-4e1e-beaf-ea2529c53095": {
+    "id": "07af665a-ee9e-4e1e-beaf-ea2529c53095",
+    "status": "completed",
+    "created": "2025-05-16T20:36:55.615956",
+    "last_updated": "2025-05-16T20:38:00.860788",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\07af665a-ee9e-4e1e-beaf-ea2529c53095\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\07af665a-ee9e-4e1e-beaf-ea2529c53095\\flow_documentation.md",
+      "html": "results\\07af665a-ee9e-4e1e-beaf-ea2529c53095\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\07af665a-ee9e-4e1e-beaf-ea2529c53095\\flow_visualization.html"
+    }
+  },
+  "6d06076a-6b97-4977-9400-fb470b0c7f95": {
+    "id": "6d06076a-6b97-4977-9400-fb470b0c7f95",
+    "status": "completed",
+    "created": "2025-05-16T21:28:23.504988",
+    "last_updated": "2025-05-16T21:29:32.960815",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\6d06076a-6b97-4977-9400-fb470b0c7f95\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\6d06076a-6b97-4977-9400-fb470b0c7f95\\flow_documentation.md",
+      "html": "results\\6d06076a-6b97-4977-9400-fb470b0c7f95\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\6d06076a-6b97-4977-9400-fb470b0c7f95\\flow_visualization.html"
+    }
+  },
+  "e2bdbb17-e503-4a64-be83-7f7b4c2e5643": {
+    "id": "e2bdbb17-e503-4a64-be83-7f7b4c2e5643",
+    "status": "completed",
+    "created": "2025-05-19T09:40:32.930825",
+    "last_updated": "2025-05-19T09:41:42.986794",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\e2bdbb17-e503-4a64-be83-7f7b4c2e5643\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\e2bdbb17-e503-4a64-be83-7f7b4c2e5643\\flow_documentation.md",
+      "html": "results\\e2bdbb17-e503-4a64-be83-7f7b4c2e5643\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\e2bdbb17-e503-4a64-be83-7f7b4c2e5643\\flow_visualization.html"
+    }
+  },
+  "21d2868a-25b6-419d-b9a0-e89915214486": {
+    "id": "21d2868a-25b6-419d-b9a0-e89915214486",
+    "status": "completed",
+    "created": "2025-05-19T09:49:51.274815",
+    "last_updated": "2025-05-19T10:02:23.507283",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\21d2868a-25b6-419d-b9a0-e89915214486\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\21d2868a-25b6-419d-b9a0-e89915214486\\flow_documentation.md",
+      "html": "results\\21d2868a-25b6-419d-b9a0-e89915214486\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\21d2868a-25b6-419d-b9a0-e89915214486\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\21d2868a-25b6-419d-b9a0-e89915214486\\iflow_match\\integration_match_report.html",
+      "summary": "results\\21d2868a-25b6-419d-b9a0-e89915214486\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 31 potential matches"
+    }
   }
 }

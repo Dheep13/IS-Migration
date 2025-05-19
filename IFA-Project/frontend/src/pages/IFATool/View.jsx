@@ -5,12 +5,19 @@ import ProgressTracker from "@pages/common/ProgressTracker"
 import JobResult from "@pages/common/JobResult"
 import { generateDocs, getJobStatus } from "@services/api"
 
+// Get environment variables for polling configuration
+const DISABLE_AUTO_POLLING = import.meta.env.VITE_DISABLE_AUTO_POLLING === 'true'
+const MAX_POLL_COUNT = parseInt(import.meta.env.VITE_MAX_POLL_COUNT || '30')
+const POLL_INTERVAL_MS = parseInt(import.meta.env.VITE_POLL_INTERVAL_MS || '5000')
+const INITIAL_POLL_INTERVAL_MS = 2000 // Start with a faster polling interval
+
 const View = () => {
   const [jobInfo, setJobInfo] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [startTime, setStartTime] = useState(null)
   const [pollInterval, setPollInterval] = useState(null)
   const [pollCount, setPollCount] = useState(0)
+  const [consecutiveErrors, setConsecutiveErrors] = useState(0)
 
   const abortControllerRef = useRef(null)
 
@@ -76,24 +83,68 @@ const View = () => {
       clearInterval(pollInterval)
     }
 
+    // Reset poll count and error count
     setPollCount(0)
+    setConsecutiveErrors(0)
 
-    // Start polling at 2-second intervals
-    const interval = setInterval(() => {
-      setPollCount(prev => prev + 1)
+    // Check if auto-polling is disabled in production
+    if (DISABLE_AUTO_POLLING) {
+      console.log("Auto-polling is disabled by environment configuration")
+      // Make a single request to get initial status
       checkJobStatus(jobId)
 
-      // Gradually increase the polling interval if LLM enhancement is happening
-      if (isEnhancement && pollCount > 15) {
-        clearInterval(interval)
-        const newInterval = setInterval(() => {
-          checkJobStatus(jobId)
-        }, 5000)
-        setPollInterval(newInterval)
-      }
-    }, 2000)
+      // Schedule a single follow-up check after a short delay
+      // This helps ensure we catch quick job completions
+      setTimeout(() => {
+        console.log("Performing one follow-up status check...")
+        checkJobStatus(jobId)
+      }, 5000)
 
+      return
+    }
+
+    // Log if this is an enhanced job
+    if (isEnhancement) {
+      console.log("Enhanced documentation job detected - may take longer to complete")
+    }
+
+    // Function to perform a single poll
+    const performPoll = async () => {
+      // Increment poll count
+      setPollCount(prev => {
+        const newCount = prev + 1
+        console.log(`Poll #${newCount} for job ${jobId}`)
+        return newCount
+      })
+
+      // Check job status first
+      await checkJobStatus(jobId)
+
+      // After checking status, see if we've reached the maximum number of polls
+      // This needs to be checked after setPollCount has been processed
+      const currentPollCount = pollCount + 1 // Add 1 because setPollCount is asynchronous
+      if (currentPollCount >= MAX_POLL_COUNT) {
+        console.log(`Reached maximum poll count (${MAX_POLL_COUNT}). Stopping polling.`)
+        if (pollInterval) {
+          clearInterval(pollInterval)
+          setPollInterval(null)
+        }
+      }
+    }
+
+    // Start with initial polling interval
+    const interval = setInterval(performPoll, INITIAL_POLL_INTERVAL_MS)
     setPollInterval(interval)
+
+    // After 15 polls, switch to the configured polling interval for slower polling
+    setTimeout(() => {
+      if (pollInterval === interval) { // Only if this interval is still active
+        clearInterval(interval)
+        const newInterval = setInterval(performPoll, POLL_INTERVAL_MS)
+        setPollInterval(newInterval)
+        console.log(`Switched to slower polling interval: ${POLL_INTERVAL_MS}ms`)
+      }
+    }, INITIAL_POLL_INTERVAL_MS * 15)
   }
 
   // Keep track of job completion notification state
@@ -101,14 +152,28 @@ const View = () => {
 
   const checkJobStatus = async jobId => {
     try {
+      console.log(`Checking status for job ${jobId}...`)
       const data = await getJobStatus(jobId)
 
       if (data) {
+        // Reset consecutive errors counter on successful API call
+        setConsecutiveErrors(0)
+
+        // Check if the job ID has changed
+        if (data.id && data.id !== jobId) {
+          console.warn(`Job ID changed from ${jobId} to ${data.id}. This could cause polling issues.`)
+        }
+
+        // Log the job status for debugging
+        console.log(`Job status: ${data.status}, Processing step: ${data.processing_step}, Message: ${data.processing_message}`)
+
         // Update job info state
         setJobInfo(data)
 
         // If job is complete or failed, stop polling
         if (data.status === "completed" || data.status === "failed") {
+          console.log(`Job ${jobId} ${data.status}. Stopping polling.`)
+
           if (pollInterval) {
             clearInterval(pollInterval)
             setPollInterval(null)
@@ -155,25 +220,57 @@ const View = () => {
             // Show iFlow completion notification
             toast.success("SAP Integration Suite equivalent search completed!")
           }
+        } else {
+          console.log(`Job ${jobId} status: ${data.status}`)
         }
       }
     } catch (error) {
       console.error("Error checking job status:", error)
-      // Don't stop polling on error to allow for temporary network issues
+
+      // Increment error count for consecutive failures
+      setConsecutiveErrors(prev => prev + 1)
+
+      // If we've had too many consecutive errors, stop polling
+      if (consecutiveErrors > 3 && pollInterval) {
+        console.error("Too many consecutive errors. Stopping polling.")
+        clearInterval(pollInterval)
+        setPollInterval(null)
+        toast.error("Lost connection to the server. Please refresh the page.")
+      }
     }
   }
 
+  // Effect to handle job status changes
+  useEffect(() => {
+    if (jobInfo && (jobInfo.status === "completed" || jobInfo.status === "failed")) {
+      console.log(`Job status changed to ${jobInfo.status}. Ensuring polling is stopped.`)
+      if (pollInterval) {
+        console.log("Cleaning up polling interval due to job completion")
+        clearInterval(pollInterval)
+        setPollInterval(null)
+      }
+    }
+  }, [jobInfo, pollInterval])
+
   // Cleanup polling on unmount
   useEffect(() => {
+    // Log the current polling configuration
+    console.log(`Polling configuration: ${DISABLE_AUTO_POLLING ? 'Disabled' : 'Enabled'}, Max polls: ${MAX_POLL_COUNT}, Interval: ${POLL_INTERVAL_MS}ms`)
+
     return () => {
+      // Clean up any active polling
       if (pollInterval) {
+        console.log("Cleaning up polling interval on component unmount")
         clearInterval(pollInterval)
       }
+
+      // Abort any in-flight requests
       if (abortControllerRef.current) {
+        console.log("Aborting any in-flight requests on component unmount")
         abortControllerRef.current.abort()
       }
     }
-  }, [pollInterval])
+  }, [])
 
   return (
     <div className="space-y-8">

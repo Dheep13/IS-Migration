@@ -1,5 +1,6 @@
 # cors_helper.py - Helper for enabling CORS in Flask app
 
+import os
 from flask import request
 
 def enable_cors(app):
@@ -32,11 +33,54 @@ def enable_cors(app):
 
     # Helper function to add CORS headers
     def _add_cors_headers(response):
-        # Set a specific origin for local development
-        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+        # Get the origin from the request
+        origin = request.headers.get('Origin')
+
+        # Get allowed origins from environment variables or use defaults
+        dev_frontend_url = os.environ.get('DEV_FRONTEND_URL', 'http://localhost:5173')
+        prod_frontend_url = os.environ.get('PROD_FRONTEND_URL', 'https://ifa-frontend.cfapps.us10-001.hana.ondemand.com')
+
+        # Check if CORS_ORIGIN is explicitly set
+        if os.environ.get('CORS_ORIGIN'):
+            # Use the explicitly set CORS origin
+            response.headers['Access-Control-Allow-Origin'] = os.environ.get('CORS_ORIGIN')
+            # Make sure we still set the credentials header
+            response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept, Origin'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS'
+            response.headers['Access-Control-Allow-Credentials'] = os.environ.get('CORS_ALLOW_CREDENTIALS', 'true')
+            response.headers['Access-Control-Max-Age'] = '3600'  # Cache preflight response for 1 hour
+            response.headers['Access-Control-Expose-Headers'] = 'Content-Disposition, Content-Length, Content-Type'
+            return response
+
+        # List of allowed origins
+        allowed_origins = [
+            dev_frontend_url,  # Local development
+            prod_frontend_url  # Production frontend
+        ]
+
+        # Add any additional origins from environment variable
+        additional_origins = os.environ.get('ADDITIONAL_CORS_ORIGINS', '')
+        if additional_origins:
+            for additional_origin in additional_origins.split(','):
+                if additional_origin.strip():
+                    allowed_origins.append(additional_origin.strip())
+
+        # Set the appropriate CORS header based on the request origin
+        if origin in allowed_origins:
+            response.headers['Access-Control-Allow-Origin'] = origin
+        else:
+            # Check environment to determine default
+            env = os.environ.get('FLASK_ENV', 'development')
+            if env == 'production':
+                # Default to the production frontend if origin is not in the allowed list
+                response.headers['Access-Control-Allow-Origin'] = prod_frontend_url
+            else:
+                # Default to the development frontend
+                response.headers['Access-Control-Allow-Origin'] = dev_frontend_url
+
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept, Origin'
         response.headers['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Credentials'] = os.environ.get('CORS_ALLOW_CREDENTIALS', 'true')
         response.headers['Access-Control-Max-Age'] = '3600'  # Cache preflight response for 1 hour
 
         # Add Content-Disposition to the exposed headers for file downloads

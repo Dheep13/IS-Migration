@@ -4,17 +4,52 @@ This repository contains the MuleSoft Documentation Generator application, desig
 
 ## Directory Structure
 
-- `app/` - Main Python application directory
+- `app/` - Main API (Flask application)
   - Core application files (app.py, run_app.py)
   - Documentation generators
   - Templates and static files
   - Core modules for documentation generation
   - Upload and results directories
-  
-- `project/` - Frontend React application
+
+- `MuleToIS-API/` - iFlow API (Flask application)
+  - iFlow generation functionality
+  - SAP BTP Integration Suite deployment
+
+- `IFA-Project/frontend/` - Frontend React application
   - Source code for the web interface
   - Build configuration
   - Deployment scripts
+
+## Environment Configuration
+
+The application uses environment-specific configuration files to manage URLs and API endpoints:
+
+- **Development**: `.env.development` files in each component
+- **Production**: `.env.production` files in each component
+
+To switch between environments, use the provided scripts:
+
+```bash
+# Set development environment
+set-env.bat development
+
+# Set production environment
+set-env.bat production
+```
+
+Or use the convenience scripts to start each component:
+
+```bash
+# Development
+start-main-api-development.bat
+start-iflow-api-development.bat
+start-frontend-development.bat
+
+# Production
+start-main-api-production.bat
+start-iflow-api-production.bat
+start-frontend-production.bat
+```
 
 ## Quick Deployment Guide
 
@@ -55,3 +90,20 @@ This repository contains the MuleSoft Documentation Generator application, desig
 - Find SAP Integration Suite equivalents for MuleSoft components
 - Generate SAP API/iFlow definitions
 - Optional LLM-enhanced documentation using Anthropic Claude or OpenAI
+
+## Accessing the Application
+
+- **Development**: http://localhost:5173/projects/1/flow
+- **Production**: https://ifa-frontend.cfapps.us10-001.hana.ondemand.com/projects/1/flow
+
+## API Endpoints
+
+### Main API
+
+- **Development**: http://localhost:5000/api
+- **Production**: https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com/api
+
+### iFlow API
+
+- **Development**: http://localhost:5001/api
+- **Production**: https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com/api
