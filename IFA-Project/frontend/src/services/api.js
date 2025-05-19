@@ -449,3 +449,33 @@ export const deployIflowToSap = async (jobId, packageId, description) => {
         throw error
     }
 }
+
+// Deploy iFlow directly to SAP Integration Suite using the direct deployment approach
+export const directDeployIflowToSap = async (jobId, packageId, iflowId, iflowName) => {
+    try {
+        console.log(`Directly deploying iFlow for job: ${jobId} to SAP Integration Suite`);
+        console.log(`Parameters: packageId=${packageId}, iflowId=${iflowId}, iflowName=${iflowName}`);
+
+        // Use the dedicated iflowApi instance
+        const response = await iflowApi.post(`/jobs/${jobId}/direct-deploy`, {
+            package_id: packageId,
+            iflow_id: iflowId,
+            iflow_name: iflowName
+        });
+
+        console.log("Direct iFlow deployment response:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error directly deploying iFlow to SAP:", error)
+        // Add more detailed error logging
+        if (error.response) {
+            console.error("Response error data:", error.response.data)
+            console.error("Response error status:", error.response.status)
+        } else if (error.request) {
+            console.error("No response received:", error.request)
+        } else {
+            console.error("Error message:", error.message)
+        }
+        throw error
+    }
+}

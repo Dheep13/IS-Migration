@@ -22,7 +22,8 @@ import {
   generateIflow,
   getIflowGenerationStatus,
   downloadGeneratedIflow,
-  deployIflowToSap
+  deployIflowToSap,
+  directDeployIflowToSap
 } from "@services/api"
 
 import { toast } from "react-hot-toast"
@@ -356,19 +357,27 @@ const JobResult = ({ jobInfo, onNewJob }) => {
     try {
       setIsDeploying(true)
 
-      if (!jobInfo.id) {
+      // Use the iFlow job ID if available, otherwise use the documentation job ID
+      const deployJobId = iflowJobId || jobInfo.id
+
+      if (!deployJobId) {
         toast.error("iFlow job ID not found. Please try generating the iFlow again.")
         setIsDeploying(false)
         return
       }
 
-      console.log(`Deploying iFlow for job ${jobInfo.id} to SAP Integration Suite...`)
+      console.log(`Deploying iFlow for job ${deployJobId} to SAP Integration Suite...`)
 
-      // Call the API to deploy the iFlow
-      // You can add a modal or form to collect package_id and description if needed
-      const result = await deployIflowToSap(jobInfo.id)
+      // Get the iFlow name from the job ID or use a default name
+      const iflowName = `GeneratedIFlow_${deployJobId.substring(0, 8)}`
+      const iflowId = iflowName.replace(/[^a-zA-Z0-9_]/g, '_')
+      const packageId = "WithRequestReply"
 
-      console.log("Deployment response:", result)
+      // Use the direct deployment approach
+      console.log(`Using direct deployment with iflowId=${iflowId}, iflowName=${iflowName}, packageId=${packageId}`)
+      const result = await directDeployIflowToSap(deployJobId, packageId, iflowId, iflowName)
+
+      console.log("Direct deployment response:", result)
 
       if (result.status === 'success') {
         setIsDeployed(true)

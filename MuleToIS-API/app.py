@@ -71,6 +71,9 @@ from iflow_generator_api import generate_iflow_from_markdown, IFlowGeneratorAPI
 # Import the SAP BTP integration module
 from sap_btp_integration import SapBtpIntegration
 
+# Import the direct iFlow deployment module
+from direct_iflow_deployment import DirectIflowDeployment, deploy_iflow
+
 # SAP BTP Integration configuration
 SAP_BTP_TENANT_URL = os.getenv('SAP_BTP_TENANT_URL')
 SAP_BTP_CLIENT_ID = os.getenv('SAP_BTP_CLIENT_ID')
@@ -692,6 +695,182 @@ def fix_iflow():
         return jsonify({
             'status': 'error',
             'message': f'Error fixing iFlow file: {str(e)}'
+        }), 500
+
+@app.route('/api/jobs/<job_id>/direct-deploy', methods=['POST', 'OPTIONS'])
+@app.route('/api/iflow-generation/<job_id>/direct-deploy', methods=['POST', 'OPTIONS'])
+def direct_deploy_to_sap(job_id):
+    """
+    Deploy the generated iFlow directly to SAP Integration Suite using the direct deployment approach
+
+    Request body:
+    {
+        "package_id": "MyPackage", // Optional, will use default if not provided
+        "iflow_id": "MyIFlowId",   // Optional, will use filename without extension if not provided
+        "iflow_name": "My iFlow"   // Optional, will use filename without extension if not provided
+    }
+
+    Returns:
+    {
+        "status": "success" | "error",
+        "message": "Description of the result",
+        "iflow_id": "MyIFlowId",
+        "package_id": "MyPackage",
+        "iflow_name": "My iFlow"
+    }
+    """
+    # Handle OPTIONS request for CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.set('Access-Control-Allow-Credentials', 'true')
+        return response, 200
+
+    try:
+        # Get request data
+        data = request.json or {}
+
+        # Get parameters from request or use defaults
+        package_id = data.get('package_id', 'WithRequestReply')
+        iflow_id = data.get('iflow_id')
+        iflow_name = data.get('iflow_name')
+
+        # Check if job exists
+        if job_id not in jobs:
+            logger.warning(f"Job not found directly: {job_id}")
+
+            # Try to find the job by searching for the iFlow file in the results directory
+            results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results')
+            found_job_id = None
+            found_zip_path = None
+
+            # Look for the iFlow file in all job directories
+            for job_dir in os.listdir(results_dir):
+                job_path = os.path.join(results_dir, job_dir)
+                if os.path.isdir(job_path):
+                    # Look for zip files that match the pattern
+                    for file in os.listdir(job_path):
+                        if file.endswith('.zip') and ('IFlow_' + job_id[:8]) in file:
+                            found_job_id = job_dir
+                            found_zip_path = os.path.join(job_path, file)
+                            logger.info(f"Found matching iFlow file: {found_zip_path} for job ID prefix: {job_id[:8]}")
+                            break
+
+                    if found_job_id:
+                        break
+
+            if found_job_id:
+                logger.info(f"Using alternative job ID: {found_job_id} instead of {job_id}")
+                job_id = found_job_id
+            else:
+                logger.error(f"Job not found and no matching iFlow file found: {job_id}")
+                return jsonify({
+                    'status': 'error',
+                    'message': f'Job not found: {job_id}'
+                }), 404
+
+        # Get job data
+        job = jobs[job_id]
+
+        # Check if job is completed
+        if job['status'] != 'completed':
+            logger.error(f"Job not completed: {job_id}")
+            return jsonify({
+                'status': 'error',
+                'message': f'iFlow generation not completed. Current status: {job["status"]}'
+            }), 400
+
+        # Check if ZIP file exists
+        zip_path = None
+
+        # First check if the ZIP file is in the job data
+        if 'files' in job and 'zip' in job['files']:
+            zip_path = job['files']['zip']
+            if os.path.exists(zip_path):
+                logger.info(f"Found ZIP file in job data: {zip_path}")
+            else:
+                logger.warning(f"ZIP file in job data does not exist: {zip_path}")
+                zip_path = None
+
+        # If ZIP file not found in job data, search for it in the results directory
+        if not zip_path:
+            logger.info(f"Searching for ZIP file in results directory for job: {job_id}")
+            job_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results', job_id)
+
+            if os.path.exists(job_dir):
+                for file in os.listdir(job_dir):
+                    if file.endswith('.zip'):
+                        zip_path = os.path.join(job_dir, file)
+                        logger.info(f"Found ZIP file: {zip_path}")
+                        break
+
+        # If still not found, try looking for a file with the iFlow ID in the name
+        if not zip_path and iflow_id:
+            logger.info(f"Searching for ZIP file with iFlow ID: {iflow_id}")
+            job_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results', job_id)
+
+            if os.path.exists(job_dir):
+                for file in os.listdir(job_dir):
+                    if file.endswith('.zip') and iflow_id in file:
+                        zip_path = os.path.join(job_dir, file)
+                        logger.info(f"Found ZIP file with iFlow ID: {zip_path}")
+                        break
+
+        # If still not found, return error
+        if not zip_path:
+            logger.error(f"ZIP file not found for job: {job_id}")
+            return jsonify({
+                'status': 'error',
+                'message': 'iFlow ZIP file not available'
+            }), 404
+
+        # Update job status
+        jobs[job_id].update({
+            'deployment_status': 'deploying',
+            'deployment_message': 'Deploying to SAP Integration Suite using direct deployment...'
+        })
+
+        # Deploy the iFlow using direct deployment
+        logger.info(f"Deploying iFlow using direct deployment: {zip_path}")
+        deployment_result = deploy_iflow(
+            iflow_path=zip_path,
+            iflow_id=iflow_id,
+            iflow_name=iflow_name,
+            package_id=package_id
+        )
+
+        # Update job status based on deployment result
+        if deployment_result['status'] == 'success':
+            jobs[job_id].update({
+                'deployment_status': 'completed',
+                'deployment_message': 'iFlow deployed successfully',
+                'deployment_details': deployment_result
+            })
+        else:
+            jobs[job_id].update({
+                'deployment_status': 'failed',
+                'deployment_message': f'Deployment failed: {deployment_result["message"]}',
+                'deployment_details': deployment_result
+            })
+
+        # Return the deployment result
+        return jsonify(deployment_result), 200 if deployment_result['status'] == 'success' else 500
+
+    except Exception as e:
+        logger.error(f"Error deploying iFlow: {str(e)}")
+
+        # Update job status
+        if job_id in jobs:
+            jobs[job_id].update({
+                'deployment_status': 'failed',
+                'deployment_message': f'Deployment failed: {str(e)}'
+            })
+
+        return jsonify({
+            'status': 'error',
+            'message': f'Error deploying iFlow: {str(e)}'
         }), 500
 
 if __name__ == '__main__':

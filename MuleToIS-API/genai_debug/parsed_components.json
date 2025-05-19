@@ -1,34 +1,34 @@
 {
-  "api_name": "SAP Product Information API",
+  "api_name": "SAP HANA Product Information API",
   "base_url": "/products",
   "endpoints": [
     {
       "method": "GET",
       "path": "/products",
-      "purpose": "Fetch product details based on a product identifier",
+      "purpose": "Retrieves detailed product information based on a product identifier",
       "components": [
         {
           "type": "enricher",
           "name": "Validate_Product_ID",
           "id": "enricher_validate_product",
           "config": {
-            "content": "def productIdentifiers = property.get(\"odata.productIdentifiers\").split(\",\");\ndef productId = message.getHeaders().get(\"productIdentifier\");\ndef isExistProduct = productIdentifiers.find { it == productId } != null;\nmessage.setProperty(\"isExistProduct\", isExistProduct);\nreturn message;"
+            "content": "def productIdentifiers = property.get('odata.productIdentifiers').split(',');\ndef requestedProductId = message.getHeaders().get('productIdentifier');\n\ndef isValid = productIdentifiers.find { it == requestedProductId } != null;\n\nmessage.setProperty('isExistProduct', isValid);\nreturn message;"
           }
         },
         {
           "type": "enricher",
-          "name": "Check_Product_Exists",
-          "id": "enricher_check_product",
+          "name": "Log_Request_Status",
+          "id": "enricher_log_request",
           "config": {
-            "content": "if (message.getProperty(\"isExistProduct\")) {\n    message.setProperty(\"routeId\", \"valid_product\");\n} else {\n    message.setProperty(\"routeId\", \"invalid_product\");\n}\nreturn message;"
+            "content": "if (message.getProperty('isExistProduct')) {\n    println('Processing request for product: ' + message.getHeaders().get('productIdentifier'));\n} else {\n    println('Product identifier not found or incorrectly passed: ' + message.getHeaders().get('productIdentifier'));\n}\nreturn message;"
           }
         },
         {
-          "type": "enricher",
+          "type": "groovy_script",
           "name": "Build_OData_Query",
-          "id": "enricher_build_query",
+          "id": "script_build_odata_query",
           "config": {
-            "content": "def productId = message.getHeaders().get(\"productIdentifier\");\nmessage.setProperty(\"SAP_OData_Filter\", \"ProductId eq '\" + productId + \"'\");\nmessage.setProperty(\"SAP_OData_Select\", \"ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit\");\nreturn message;"
+            "script": "BuildODataQuery.groovy"
           }
         },
         {
@@ -36,43 +36,33 @@
           "name": "Get_Product_Details",
           "id": "odata_get_product",
           "config": {
-            "address": "${property.HANA_BASE_URL}",
+            "address": "${property.Hana_HTTP_Request_Configuration}",
             "resource_path": "Products",
             "operation": "Query(GET)",
-            "query_options": "$filter=${property.SAP_OData_Filter}&$select=${property.SAP_OData_Select}"
+            "query_options": "$filter=ProductId eq '${header.productIdentifier}'&$select=ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit"
           }
         },
         {
           "type": "enricher",
-          "name": "Build_Error_Response",
-          "id": "enricher_error_response",
+          "name": "Transform_Response",
+          "id": "enricher_transform_response",
           "config": {
-            "content": "def productId = message.getHeaders().get(\"productIdentifier\");\ndef errorResponse = '{\"status\": \"error\", \"message\": \"The product identifier ' + productId + ' was not found.\", \"errorCode\": \"PRODUCT_NOT_FOUND\"}';\nmessage.setBody(errorResponse);\nmessage.setHeader(\"Content-Type\", \"application/json\");\nreturn message;"
+            "content": "if (message.getProperty('isExistProduct')) {\n    // Keep the response as is, it's already in the right format\n    return message;\n} else {\n    // Build error response\n    def errorResponse = [\n        status: \"error\",\n        message: \"The product identifier \" + message.getHeaders().get('productIdentifier') + \" was not found.\",\n        errorCode: \"PRODUCT_NOT_FOUND\"\n    ];\n    \n    message.setBody(groovy.json.JsonOutput.toJson(errorResponse));\n    return message;\n}\n"
           }
         }
       ],
       "sequence": [
         "enricher_validate_product",
-        "enricher_check_product",
-        "enricher_build_query",
+        "enricher_log_request",
+        "script_build_odata_query",
         "odata_get_product",
-        "enricher_error_response"
+        "enricher_transform_response"
       ],
       "transformations": [
         {
-          "name": "ValidateProductId.groovy",
-          "type": "groovy",
-          "script": "def productIdentifiers = property.get(\"odata.productIdentifiers\").split(\",\");\ndef productId = message.getHeaders().get(\"productIdentifier\");\ndef isExistProduct = productIdentifiers.find { it == productId } != null;\nmessage.setProperty(\"isExistProduct\", isExistProduct);\nreturn message;"
-        },
-        {
-          "name": "BuildErrorResponse.groovy",
-          "type": "groovy",
-          "script": "def productId = message.getHeaders().get(\"productIdentifier\");\ndef errorResponse = '{\"status\": \"error\", \"message\": \"The product identifier ' + productId + ' was not found.\", \"errorCode\": \"PRODUCT_NOT_FOUND\"}';\nmessage.setBody(errorResponse);\nmessage.setHeader(\"Content-Type\", \"application/json\");\nreturn message;"
-        },
-        {
           "name": "BuildODataQuery.groovy",
           "type": "groovy",
-          "script": "def productId = message.getHeaders().get(\"productIdentifier\");\nmessage.setProperty(\"SAP_OData_Filter\", \"ProductId eq '\" + productId + \"'\");\nmessage.setProperty(\"SAP_OData_Select\", \"ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit\");\nreturn message;"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message;\n\ndef Message processData(Message message) {\n    def productId = message.getHeaders().get('productIdentifier');\n    \n    // Only build the query if the product is valid\n    if (message.getProperty('isExistProduct')) {\n        def filterParam = \"ProductId eq '\" + productId + \"'\";\n        def selectParam = \"ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit\";\n        \n        message.setHeader('filterParam', filterParam);\n        message.setHeader('selectParam', selectParam);\n    }\n    \n    return message;\n}"
         }
       ]
     }

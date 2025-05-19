@@ -1838,5 +1838,110 @@
       "html": "results\\52f83d8c-a230-4cee-b279-bf732bfc4385\\flow_documentation_with_mermaid.html",
       "visualization": "results\\52f83d8c-a230-4cee-b279-bf732bfc4385\\flow_visualization.html"
     }
+  },
+  "7b3e66cf-2d0b-4fa0-b71a-76fe260ab09f": {
+    "id": "7b3e66cf-2d0b-4fa0-b71a-76fe260ab09f",
+    "status": "completed",
+    "created": "2025-05-19T18:45:08.544162",
+    "last_updated": "2025-05-19T18:46:04.710417",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\7b3e66cf-2d0b-4fa0-b71a-76fe260ab09f\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\7b3e66cf-2d0b-4fa0-b71a-76fe260ab09f\\flow_documentation.md",
+      "html": "results\\7b3e66cf-2d0b-4fa0-b71a-76fe260ab09f\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\7b3e66cf-2d0b-4fa0-b71a-76fe260ab09f\\flow_visualization.html"
+    }
+  },
+  "ab80535f-83dd-4c22-b565-77890e3b73ee": {
+    "id": "ab80535f-83dd-4c22-b565-77890e3b73ee",
+    "status": "completed",
+    "created": "2025-05-19T18:51:45.579610",
+    "last_updated": "2025-05-19T18:52:38.195576",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\ab80535f-83dd-4c22-b565-77890e3b73ee\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\ab80535f-83dd-4c22-b565-77890e3b73ee\\flow_documentation.md",
+      "html": "results\\ab80535f-83dd-4c22-b565-77890e3b73ee\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\ab80535f-83dd-4c22-b565-77890e3b73ee\\flow_visualization.html"
+    }
+  },
+  "7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c": {
+    "id": "7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c",
+    "status": "completed",
+    "created": "2025-05-19T19:00:51.291805",
+    "last_updated": "2025-05-19T19:02:10.985193",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c\\flow_documentation.md",
+      "html": "results\\7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c\\iflow_match\\integration_match_report.html",
+      "summary": "results\\7d7cb19f-b8b5-4c95-9c18-3b6f85d1462c\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 30 potential matches"
+    }
   }
 }

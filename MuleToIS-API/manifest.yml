@@ -21,6 +21,11 @@ applications:
     CORS_ALLOW_CREDENTIALS: true
     NLTK_DATA: /home/vcap/app/nltk_data
     PYTHONUNBUFFERED: true
+    SAP_BTP_TENANT_URL: https://4728b940trial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com
+    SAP_BTP_CLIENT_ID: ${SAP_BTP_CLIENT_ID}
+    SAP_BTP_CLIENT_SECRET: ${SAP_BTP_CLIENT_SECRET}
+    SAP_BTP_OAUTH_URL: https://4728b940trial.authentication.us10.hana.ondemand.com/oauth/token
+    SAP_BTP_DEFAULT_PACKAGE: WithRequestReply
   health-check-type: http
   health-check-http-endpoint: /api/health
   timeout: 180
