@@ -1,0 +1,25 @@
+{
+  "42d896d7-7c6b-4b99-9df0-accbba5b7cd5": {
+    "id": "42d896d7-7c6b-4b99-9df0-accbba5b7cd5",
+    "status": "completed",
+    "created": "295f750d-34c7-11f0-81d5-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\42d896d7-7c6b-4b99-9df0-accbba5b7cd5\\IFlow_86564cda.zip",
+      "debug": {
+        "final_iflow_IFlow_86564cda.xml": "genai_debug\\final_iflow_IFlow_86564cda.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_86564cda",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_42d896d7",
+      "package_id": "WithRequestReply",
+      "iflow_name": "GeneratedIFlow_42d896d7"
+    }
+  }
+}

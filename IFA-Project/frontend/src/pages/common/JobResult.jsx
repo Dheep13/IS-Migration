@@ -357,14 +357,14 @@ const JobResult = ({ jobInfo, onNewJob }) => {
     try {
       setIsDeploying(true)
 
-      // Use the iFlow job ID if available, otherwise use the documentation job ID
-      const deployJobId = iflowJobId || jobInfo.id
-
-      if (!deployJobId) {
-        toast.error("iFlow job ID not found. Please try generating the iFlow again.")
+      // ONLY use the iFlow job ID - don't fall back to the documentation job ID
+      if (!iflowJobId) {
+        toast.error("iFlow job ID not found. Please generate the iFlow first.")
         setIsDeploying(false)
         return
       }
+
+      const deployJobId = iflowJobId
 
       console.log(`Deploying iFlow for job ${deployJobId} to SAP Integration Suite...`)
 

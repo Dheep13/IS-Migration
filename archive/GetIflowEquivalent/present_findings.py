@@ -351,7 +351,6 @@ class ResultsPresenter:
                 .content-similarity { background-color: #ffc107; }
                 .search-priority { background-color: #6c757d; }
                 .combined-score { background-color: #dc3545; }
-                .search-terms { margin-bottom: 20px; }
                 .toggle-btn { background-color: #4CAF50; color: white; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; }
                 .tag { display: inline-block; background-color: #e9ecef; padding: 3px 8px; border-radius: 3px; margin-right: 5px; margin-bottom: 5px; font-size: 0.9em; }
             </style>
@@ -367,14 +366,6 @@ class ResultsPresenter:
                     <p><strong>High-Quality Matches:</strong> """ + str(summary.get("high_quality_matches", 0)) + """</p>
                     <p><strong>Medium-Quality Matches:</strong> """ + str(summary.get("medium_quality_matches", 0)) + """</p>
                     <p><strong>Recommendation:</strong> """ + summary.get("recommendation", "") + """</p>
-                </div>
-
-                <div class="search-terms">
-                    <h2>Search Terms Used</h2>
-                    <h3>Primary Terms</h3>
-                    <div>""" + ", ".join(self.search_terms.get("primary", [])) + """</div>
-                    <h3>Secondary Terms</h3>
-                    <div>""" + ", ".join(self.search_terms.get("secondary", [])) + """</div>
                 </div>
 
                 <div class="recommendations">

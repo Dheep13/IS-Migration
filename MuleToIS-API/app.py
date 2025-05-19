@@ -126,14 +126,33 @@ ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY')
 if not ANTHROPIC_API_KEY:
     logger.warning("No Anthropic API key found in .env file. API will not work without it.")
 
-# In-memory job storage (in a production environment, use a database)
-jobs = {}
-
 # Configure Flask app
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 app.config['RESULTS_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'results')
+app.config['JOBS_FILE'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'jobs.json')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['RESULTS_FOLDER'], exist_ok=True)
+
+# Function to load jobs from JSON file
+def load_jobs():
+    if os.path.exists(app.config['JOBS_FILE']):
+        try:
+            with open(app.config['JOBS_FILE'], 'r') as f:
+                return json.load(f)
+        except json.JSONDecodeError:
+            logging.error("Error loading jobs file. Starting with empty jobs dictionary.")
+    return {}
+
+# Function to save jobs to JSON file
+def save_jobs(jobs_dict):
+    try:
+        with open(app.config['JOBS_FILE'], 'w') as f:
+            json.dump(jobs_dict, f, indent=2)
+    except Exception as e:
+        logging.error(f"Error saving jobs file: {str(e)}")
+
+# In-memory job storage (initialized from file and periodically saved to file)
+jobs = load_jobs()
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -224,6 +243,7 @@ def generate_iflow(job_id=None):
                     'created': str(uuid.uuid1()),
                     'message': 'Job queued. Starting iFlow generation...'
                 }
+                save_jobs(jobs)  # Save job data to file
 
                 # Start processing in background
                 thread = threading.Thread(
@@ -272,6 +292,7 @@ def generate_iflow(job_id=None):
             'created': str(uuid.uuid1()),
             'message': 'Job queued. Starting iFlow generation...'
         }
+        save_jobs(jobs)  # Save job data to file
 
         # Start processing in background
         thread = threading.Thread(
@@ -318,12 +339,14 @@ def process_iflow_generation(job_id, markdown_content, iflow_name=None):
             'status': 'processing',
             'message': 'Initializing iFlow generator...'
         })
+        save_jobs(jobs)  # Save job data to file
 
         # Update job status
         jobs[job_id].update({
             'status': 'processing',
             'message': 'Analyzing markdown and generating iFlow...'
         })
+        save_jobs(jobs)  # Save job data to file
 
         # Generate the iFlow
         if iflow_name is None:
@@ -356,11 +379,13 @@ def process_iflow_generation(job_id, markdown_content, iflow_name=None):
                 },
                 'iflow_name': iflow_name
             })
+            save_jobs(jobs)  # Save job data to file
         else:
             jobs[job_id].update({
                 'status': 'failed',
                 'message': result["message"]
             })
+            save_jobs(jobs)  # Save job data to file
 
     except Exception as e:
         logger.error(f"Error generating iFlow: {str(e)}")
@@ -368,6 +393,7 @@ def process_iflow_generation(job_id, markdown_content, iflow_name=None):
             'status': 'failed',
             'message': f'Error generating iFlow: {str(e)}'
         })
+        save_jobs(jobs)  # Save job data to file
 
 @app.route('/api/jobs/<job_id>', methods=['GET', 'OPTIONS'])
 @app.route('/api/iflow-generation/<job_id>', methods=['GET', 'OPTIONS'])
@@ -412,6 +438,7 @@ def get_job_status(job_id):
                 }
                 # Store the job info for future requests
                 jobs[job_id] = job_info
+                save_jobs(jobs)  # Save job data to file
 
                 # Return the job info
                 response = jsonify(job_info)
@@ -550,6 +577,20 @@ def deploy_to_sap(job_id):
                 'message': 'SAP BTP integration not configured. Please set SAP_BTP_* environment variables.'
             }), 500
 
+        # First, check if this is a documentation job ID that was used to generate an iFlow
+        iflow_job_id = None
+        for jid, job_data in jobs.items():
+            if job_data.get('original_job_id') == job_id:
+                # Found an iFlow job that was generated from this documentation job
+                iflow_job_id = jid
+                logger.info(f"Found iFlow job {iflow_job_id} that was generated from documentation job {job_id}")
+                break
+
+        # If we found an iFlow job ID, use that instead
+        if iflow_job_id:
+            logger.info(f"Using iFlow job ID {iflow_job_id} instead of documentation job ID {job_id}")
+            job_id = iflow_job_id
+
         # Check if job exists
         if job_id not in jobs:
             return jsonify({'error': 'Job not found'}), 404
@@ -594,6 +635,7 @@ def deploy_to_sap(job_id):
             'deployment_status': 'deploying',
             'deployment_message': 'Deploying to SAP Integration Suite...'
         })
+        save_jobs(jobs)  # Save job data to file
 
         # Initialize SAP BTP integration client
         sap_client = SapBtpIntegration(
@@ -617,6 +659,7 @@ def deploy_to_sap(job_id):
             'deployment_message': 'Deployment completed successfully',
             'deployment_details': result
         })
+        save_jobs(jobs)  # Save job data to file
 
         return jsonify({
             'status': 'success',
@@ -633,6 +676,7 @@ def deploy_to_sap(job_id):
                 'deployment_status': 'failed',
                 'deployment_message': f'Error deploying iFlow: {str(e)}'
             })
+            save_jobs(jobs)  # Save job data to file
 
         return jsonify({
             'status': 'error',
@@ -737,6 +781,20 @@ def direct_deploy_to_sap(job_id):
         iflow_id = data.get('iflow_id')
         iflow_name = data.get('iflow_name')
 
+        # First, check if this is a documentation job ID that was used to generate an iFlow
+        iflow_job_id = None
+        for jid, job_data in jobs.items():
+            if job_data.get('original_job_id') == job_id:
+                # Found an iFlow job that was generated from this documentation job
+                iflow_job_id = jid
+                logger.info(f"Found iFlow job {iflow_job_id} that was generated from documentation job {job_id}")
+                break
+
+        # If we found an iFlow job ID, use that instead
+        if iflow_job_id:
+            logger.info(f"Using iFlow job ID {iflow_job_id} instead of documentation job ID {job_id}")
+            job_id = iflow_job_id
+
         # Check if job exists
         if job_id not in jobs:
             logger.warning(f"Job not found directly: {job_id}")
@@ -831,6 +889,7 @@ def direct_deploy_to_sap(job_id):
             'deployment_status': 'deploying',
             'deployment_message': 'Deploying to SAP Integration Suite using direct deployment...'
         })
+        save_jobs(jobs)  # Save job data to file
 
         # Deploy the iFlow using direct deployment
         logger.info(f"Deploying iFlow using direct deployment: {zip_path}")
@@ -848,12 +907,14 @@ def direct_deploy_to_sap(job_id):
                 'deployment_message': 'iFlow deployed successfully',
                 'deployment_details': deployment_result
             })
+            save_jobs(jobs)  # Save job data to file
         else:
             jobs[job_id].update({
                 'deployment_status': 'failed',
                 'deployment_message': f'Deployment failed: {deployment_result["message"]}',
                 'deployment_details': deployment_result
             })
+            save_jobs(jobs)  # Save job data to file
 
         # Return the deployment result
         return jsonify(deployment_result), 200 if deployment_result['status'] == 'success' else 500
@@ -867,6 +928,7 @@ def direct_deploy_to_sap(job_id):
                 'deployment_status': 'failed',
                 'deployment_message': f'Deployment failed: {str(e)}'
             })
+            save_jobs(jobs)  # Save job data to file
 
         return jsonify({
             'status': 'error',
