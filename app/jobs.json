@@ -1514,5 +1514,297 @@
     "iflow_match_result": {
       "message": "Found 22 potential matches"
     }
+  },
+  "62b441ed-63fb-4299-bd69-60379a614367": {
+    "id": "62b441ed-63fb-4299-bd69-60379a614367",
+    "status": "processing",
+    "created": "2025-05-19T12:13:06.569321",
+    "last_updated": "2025-05-19T12:13:08.800871",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\62b441ed-63fb-4299-bd69-60379a614367\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "visualization",
+    "processing_message": "Using enhanced documentation generator to include additional file types",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    }
+  },
+  "bb1c5c20-dea7-4fcd-a87a-e04228a0f059": {
+    "id": "bb1c5c20-dea7-4fcd-a87a-e04228a0f059",
+    "status": "completed",
+    "created": "2025-05-19T12:18:53.229080",
+    "last_updated": "2025-05-19T12:20:07.886262",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\bb1c5c20-dea7-4fcd-a87a-e04228a0f059\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\bb1c5c20-dea7-4fcd-a87a-e04228a0f059\\flow_documentation.md",
+      "html": "results\\bb1c5c20-dea7-4fcd-a87a-e04228a0f059\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\bb1c5c20-dea7-4fcd-a87a-e04228a0f059\\flow_visualization.html"
+    }
+  },
+  "a608dfe9-5eb0-413a-abbf-52a3c9028d67": {
+    "id": "a608dfe9-5eb0-413a-abbf-52a3c9028d67",
+    "status": "completed",
+    "created": "2025-05-19T12:19:13.600157",
+    "last_updated": "2025-05-19T12:20:18.932593",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\a608dfe9-5eb0-413a-abbf-52a3c9028d67\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\a608dfe9-5eb0-413a-abbf-52a3c9028d67\\flow_documentation.md",
+      "html": "results\\a608dfe9-5eb0-413a-abbf-52a3c9028d67\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\a608dfe9-5eb0-413a-abbf-52a3c9028d67\\flow_visualization.html"
+    }
+  },
+  "89fa2fd5-1231-42e3-b117-b729c6a1a200": {
+    "id": "89fa2fd5-1231-42e3-b117-b729c6a1a200",
+    "status": "completed",
+    "created": "2025-05-19T12:19:47.723202",
+    "last_updated": "2025-05-19T12:20:49.530219",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\89fa2fd5-1231-42e3-b117-b729c6a1a200\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\89fa2fd5-1231-42e3-b117-b729c6a1a200\\flow_documentation.md",
+      "html": "results\\89fa2fd5-1231-42e3-b117-b729c6a1a200\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\89fa2fd5-1231-42e3-b117-b729c6a1a200\\flow_visualization.html"
+    }
+  },
+  "8e1036d2-d7b3-44ec-a976-39eb9161d060": {
+    "id": "8e1036d2-d7b3-44ec-a976-39eb9161d060",
+    "status": "completed",
+    "created": "2025-05-19T12:23:55.656832",
+    "last_updated": "2025-05-19T12:25:09.717395",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\8e1036d2-d7b3-44ec-a976-39eb9161d060\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\8e1036d2-d7b3-44ec-a976-39eb9161d060\\flow_documentation.md",
+      "html": "results\\8e1036d2-d7b3-44ec-a976-39eb9161d060\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\8e1036d2-d7b3-44ec-a976-39eb9161d060\\flow_visualization.html"
+    }
+  },
+  "3f98db71-5550-4a18-b570-c04b309e5a0a": {
+    "id": "3f98db71-5550-4a18-b570-c04b309e5a0a",
+    "status": "completed",
+    "created": "2025-05-19T12:24:14.939289",
+    "last_updated": "2025-05-19T12:25:10.181948",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\3f98db71-5550-4a18-b570-c04b309e5a0a\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\3f98db71-5550-4a18-b570-c04b309e5a0a\\flow_documentation.md",
+      "html": "results\\3f98db71-5550-4a18-b570-c04b309e5a0a\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\3f98db71-5550-4a18-b570-c04b309e5a0a\\flow_visualization.html"
+    }
+  },
+  "a1a5bede-b56a-43ba-8ea6-7c63ab3f3b32": {
+    "id": "a1a5bede-b56a-43ba-8ea6-7c63ab3f3b32",
+    "status": "completed",
+    "created": "2025-05-19T12:31:03.944592",
+    "last_updated": "2025-05-19T12:32:09.481303",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\a1a5bede-b56a-43ba-8ea6-7c63ab3f3b32\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\a1a5bede-b56a-43ba-8ea6-7c63ab3f3b32\\flow_documentation.md",
+      "html": "results\\a1a5bede-b56a-43ba-8ea6-7c63ab3f3b32\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\a1a5bede-b56a-43ba-8ea6-7c63ab3f3b32\\flow_visualization.html"
+    }
+  },
+  "1e211f6b-5b16-461a-b0ef-daaa4e97ae9a": {
+    "id": "1e211f6b-5b16-461a-b0ef-daaa4e97ae9a",
+    "status": "completed",
+    "created": "2025-05-19T12:42:03.052564",
+    "last_updated": "2025-05-19T12:43:03.073174",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\1e211f6b-5b16-461a-b0ef-daaa4e97ae9a\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\1e211f6b-5b16-461a-b0ef-daaa4e97ae9a\\flow_documentation.md",
+      "html": "results\\1e211f6b-5b16-461a-b0ef-daaa4e97ae9a\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\1e211f6b-5b16-461a-b0ef-daaa4e97ae9a\\flow_visualization.html"
+    }
+  },
+  "f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71": {
+    "id": "f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71",
+    "status": "completed",
+    "created": "2025-05-19T14:03:06.217369",
+    "last_updated": "2025-05-19T14:09:48.059814",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71\\flow_documentation.md",
+      "html": "results\\f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71\\iflow_match\\integration_match_report.html",
+      "summary": "results\\f55b25f2-ff5f-4c35-ba3f-dd4c65b79d71\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 33 potential matches"
+    }
   }
 }

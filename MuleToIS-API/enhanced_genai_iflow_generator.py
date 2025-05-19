@@ -6669,13 +6669,48 @@ def Message processMessage(Message message) {{
         # Generate the main .iflw file using GenAI
         print(f"Generating iFlow XML for {iflow_name} using GenAI...")
         iflw_content = self._generate_iflw_content(components, iflow_name)
-        iflow_files[f"src/main/resources/scenarioflows/integrationflow/{iflow_name}.iflw"] = iflw_content
 
-        # Save a copy of the generated iFlow XML for debugging
+        # Create debug directory
         os.makedirs("genai_debug", exist_ok=True)
-        with open(f"genai_debug/final_iflow_{iflow_name}.xml", "w", encoding="utf-8") as f:
+
+        # Save the raw generated iFlow XML for debugging
+        raw_iflow_path = f"genai_debug/raw_iflow_{iflow_name}.xml"
+        with open(raw_iflow_path, "w", encoding="utf-8") as f:
             f.write(iflw_content)
-        print(f"Saved final iFlow XML to genai_debug/final_iflow_{iflow_name}.xml")
+        print(f"Saved raw iFlow XML to {raw_iflow_path}")
+
+        # Fix the iFlow XML using the iflow_fixer
+        try:
+            from iflow_fixer import preprocess_xml, fix_iflow_xml
+            print("Fixing iFlow XML to ensure compatibility with SAP Integration Suite...")
+
+            # Pre-process the XML to fix common issues
+            iflw_content = preprocess_xml(iflw_content)
+
+            # Fix the XML structure
+            fixed_xml, success, changes = fix_iflow_xml(iflw_content)
+
+            if success:
+                print("iFlow XML fixed successfully!")
+                print("Changes made:")
+                print(changes)
+                iflw_content = fixed_xml
+            else:
+                print("Warning: Could not fix iFlow XML automatically. Using original XML.")
+                print(f"Error: {changes}")
+        except Exception as e:
+            print(f"Warning: Error while fixing iFlow XML: {str(e)}")
+            print("Using original XML content.")
+
+        # Use the fixed (or original) iFlow XML
+        iflow_path = f"src/main/resources/scenarioflows/integrationflow/{iflow_name}.iflw"
+        iflow_files[iflow_path] = iflw_content
+
+        # Save a copy of the final iFlow XML for debugging
+        final_iflow_path = f"genai_debug/final_iflow_{iflow_name}.xml"
+        with open(final_iflow_path, "w", encoding="utf-8") as f:
+            f.write(iflw_content)
+        print(f"Saved final iFlow XML to {final_iflow_path}")
 
         # Save the generation approach information
         with open(f"genai_debug/generation_approach_{iflow_name}.json", "w", encoding="utf-8") as f:

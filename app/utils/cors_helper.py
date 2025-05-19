@@ -42,8 +42,19 @@ def enable_cors(app):
 
         # Check if CORS_ORIGIN is explicitly set
         if os.environ.get('CORS_ORIGIN'):
-            # Use the explicitly set CORS origin
-            response.headers['Access-Control-Allow-Origin'] = os.environ.get('CORS_ORIGIN')
+            # Parse the CORS_ORIGIN value - it might contain multiple origins separated by commas
+            cors_origins = [origin.strip() for origin in os.environ.get('CORS_ORIGIN').split(',')]
+
+            # If the request origin is in the allowed list, use it
+            if origin and origin in cors_origins:
+                response.headers['Access-Control-Allow-Origin'] = origin
+            # If the request has no origin or it's not in the allowed list, use the first one
+            elif cors_origins:
+                response.headers['Access-Control-Allow-Origin'] = cors_origins[0]
+            # Fallback to * if no origins are specified
+            else:
+                response.headers['Access-Control-Allow-Origin'] = '*'
+
             # Make sure we still set the credentials header
             response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept, Origin'
             response.headers['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS'

@@ -17,7 +17,23 @@ def get_cors_origin():
     """
     # First check if CORS_ORIGIN is explicitly set in environment variables
     if os.environ.get('CORS_ORIGIN'):
-        return os.environ.get('CORS_ORIGIN')
+        # Get the origin from the request if available
+        try:
+            from flask import request
+            origin = request.headers.get('Origin')
+
+            # Parse the CORS_ORIGIN value - it might contain multiple origins separated by commas
+            cors_origins = [o.strip() for o in os.environ.get('CORS_ORIGIN').split(',')]
+
+            # If the request origin is in the allowed list, use it
+            if origin and origin in cors_origins:
+                return origin
+
+            # Otherwise return the full list for the CORS middleware to handle
+            return os.environ.get('CORS_ORIGIN')
+        except:
+            # If we can't access the request (e.g., during initialization), return the full list
+            return os.environ.get('CORS_ORIGIN')
 
     # Check if we're running in Cloud Foundry
     if os.environ.get('VCAP_APPLICATION'):

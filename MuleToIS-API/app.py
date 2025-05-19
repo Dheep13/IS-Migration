@@ -66,7 +66,7 @@ except Exception as e:
     logger.error(f"Error loading environment variables: {str(e)}")
 
 # Import the iFlow generator API
-from iflow_generator_api import generate_iflow_from_markdown
+from iflow_generator_api import generate_iflow_from_markdown, IFlowGeneratorAPI
 
 # Import the SAP BTP integration module
 from sap_btp_integration import SapBtpIntegration
@@ -91,7 +91,27 @@ CORS(app, resources={r"/*": {"origins": cors_origin, "supports_credentials": Tru
 # Add a global CORS handler
 @app.after_request
 def after_request(response):
-    response.headers.set('Access-Control-Allow-Origin', cors_origin)
+    # Get the origin from the request
+    origin = request.headers.get('Origin')
+
+    # If cors_origin contains multiple origins (comma-separated)
+    if ',' in cors_origin:
+        # Parse the origins
+        allowed_origins = [o.strip() for o in cors_origin.split(',')]
+
+        # If the request origin is in the allowed list, use it
+        if origin and origin in allowed_origins:
+            response.headers.set('Access-Control-Allow-Origin', origin)
+        # Otherwise use the first one
+        elif allowed_origins:
+            response.headers.set('Access-Control-Allow-Origin', allowed_origins[0])
+        # Fallback
+        else:
+            response.headers.set('Access-Control-Allow-Origin', cors_origin)
+    else:
+        # Use the single origin
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
+
     response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     # Set Access-Control-Allow-Credentials to true for credential requests
@@ -614,6 +634,64 @@ def deploy_to_sap(job_id):
         return jsonify({
             'status': 'error',
             'message': f'Error deploying iFlow: {str(e)}'
+        }), 500
+
+@app.route('/api/fix-iflow', methods=['POST', 'OPTIONS'])
+def fix_iflow():
+    """
+    Fix an existing iFlow file to ensure compatibility with SAP Integration Suite
+
+    Request body:
+    {
+        "file_path": "/path/to/iflow.iflw",  # Path to the iFlow file to fix
+        "create_backup": true                # Whether to create a backup of the original file (optional, default: true)
+    }
+
+    Returns:
+    {
+        "status": "success" | "warning" | "error",
+        "message": "Description of the result",
+        "file_path": "/path/to/fixed/iflow.iflw"  # Path to the fixed iFlow file
+    }
+    """
+    # Handle OPTIONS request for CORS preflight
+    if request.method == 'OPTIONS':
+        response = jsonify({'status': 'ok'})
+        response.headers.set('Access-Control-Allow-Origin', cors_origin)
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.set('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.set('Access-Control-Allow-Credentials', 'true')
+        return response, 200
+
+    try:
+        # Get request data
+        data = request.json
+        logger.info(f"Received fix-iflow request: {data}")
+
+        if not data or 'file_path' not in data:
+            logger.error("Missing required parameter: file_path")
+            return jsonify({
+                'status': 'error',
+                'message': 'Missing required parameter: file_path'
+            }), 400
+
+        file_path = data['file_path']
+        create_backup = data.get('create_backup', True)
+
+        # Initialize the iFlow generator API
+        generator_api = IFlowGeneratorAPI(api_key=ANTHROPIC_API_KEY)
+
+        # Fix the iFlow file
+        result = generator_api.fix_iflow_file(file_path, create_backup)
+
+        # Return the result
+        return jsonify(result), 200 if result['status'] != 'error' else 500
+
+    except Exception as e:
+        logger.error(f"Error fixing iFlow file: {str(e)}")
+        return jsonify({
+            'status': 'error',
+            'message': f'Error fixing iFlow file: {str(e)}'
         }), 500
 
 if __name__ == '__main__':

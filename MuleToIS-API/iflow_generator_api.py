@@ -142,6 +142,62 @@ class IFlowGeneratorAPI:
                 return False
         return False
 
+    def fix_iflow_file(self, iflow_path, create_backup=True):
+        """
+        Fix an existing iFlow file to ensure compatibility with SAP Integration Suite
+
+        Args:
+            iflow_path (str): Path to the iFlow file to fix
+            create_backup (bool): Whether to create a backup of the original file
+
+        Returns:
+            dict: Dictionary with status and message
+        """
+        try:
+            # Import the iflow_fixer module
+            try:
+                from iflow_fixer import fix_iflow_file
+            except ImportError:
+                logger.error("Could not import iflow_fixer module")
+                return {
+                    "status": "error",
+                    "message": "Could not import iflow_fixer module"
+                }
+
+            # Check if the file exists
+            if not os.path.exists(iflow_path):
+                logger.error(f"iFlow file not found: {iflow_path}")
+                return {
+                    "status": "error",
+                    "message": f"iFlow file not found: {iflow_path}"
+                }
+
+            # Fix the iFlow file
+            logger.info(f"Fixing iFlow file: {iflow_path}")
+            success, message = fix_iflow_file(iflow_path, create_backup)
+
+            if success:
+                logger.info(f"Successfully fixed iFlow file: {iflow_path}")
+                return {
+                    "status": "success",
+                    "message": message,
+                    "file_path": iflow_path
+                }
+            else:
+                logger.warning(f"Could not fix iFlow file: {message}")
+                return {
+                    "status": "warning",
+                    "message": message,
+                    "file_path": iflow_path
+                }
+
+        except Exception as e:
+            logger.error(f"Error fixing iFlow file: {str(e)}")
+            return {
+                "status": "error",
+                "message": f"Error fixing iFlow file: {str(e)}"
+            }
+
 # Function to generate iFlow from markdown content
 def generate_iflow_from_markdown(markdown_content, api_key, output_dir=None, iflow_name=None, model="claude-3-7-sonnet-20250219", provider="claude"):
     """
