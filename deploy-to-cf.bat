@@ -31,10 +31,17 @@ copy .env.production .env
 echo Setting environment variables...
 call cf set-env it-resonance-api-wacky-panther-za CORS_ALLOW_CREDENTIALS true
 call cf set-env it-resonance-api-wacky-panther-za ANTHROPIC_API_KEY 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
+call cf set-env it-resonance-api-wacky-panther-za GITHUB_TOKEN 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
 echo Deploying to Cloud Foundry...
 call cf push
 if %ERRORLEVEL% neq 0 (
     echo Main API deployment failed!
+    exit /b 1
+)
+echo Restaging Main API to ensure environment variables are applied...
+call cf restage it-resonance-api-wacky-panther-za
+if %ERRORLEVEL% neq 0 (
+    echo Main API restage failed!
     exit /b 1
 )
 echo Main API deployed successfully.
@@ -47,10 +54,17 @@ copy .env.production .env
 echo Setting environment variables...
 call cf set-env mulesoft-iflow-api CORS_ALLOW_CREDENTIALS true
 call cf set-env mulesoft-iflow-api ANTHROPIC_API_KEY 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
+call cf set-env mulesoft-iflow-api GITHUB_TOKEN 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
 echo Deploying to Cloud Foundry...
 call cf push
 if %ERRORLEVEL% neq 0 (
     echo iFlow API deployment failed!
+    exit /b 1
+)
+echo Restaging iFlow API to ensure environment variables are applied...
+call cf restage mulesoft-iflow-api
+if %ERRORLEVEL% neq 0 (
+    echo iFlow API restage failed!
     exit /b 1
 )
 echo iFlow API deployed successfully.

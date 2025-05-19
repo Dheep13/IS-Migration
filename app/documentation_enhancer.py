@@ -166,10 +166,13 @@ class DocumentationEnhancer:
     3. For each diagram, provide a brief introduction explaining what the diagram represents
     4. Use your judgment to determine if multiple diagrams are needed - prefer fewer, more comprehensive diagrams when possible
     5. If you create multiple diagrams, ensure they are logically grouped and clearly labeled
+    6. FOLLOW THE EXAMPLE DIAGRAM STRUCTURE PROVIDED BELOW - it shows the correct syntax and formatting
 
     Create a Mermaid diagram that accurately represents the flows, components, and connections found in the original MuleSoft application. The diagram should follow this format:
     **IMPORTANT**: Your model output must be *only* the Mermaid code block (```mermaid …```) with no shell prompts or extra text.
     Use real line breaks in labels (or `<br/>`), not `\n` literals.
+
+    STUDY THE EXAMPLE DIAGRAM BELOW CAREFULLY - it shows the proper way to structure your diagram with correct syntax for nodes, connections, subgraphs, and styling.
 
     ```mermaid
     flowchart TD
@@ -181,10 +184,43 @@ class DocumentationEnhancer:
     classDef exception fill:#FFA07A,stroke:#333,stroke-width:2px
     classDef processCall fill:#F0E68C,stroke:#333,stroke-width:2px
 
+    %% Example diagram structure (use this as a reference)
+    %% Start([Start]) --> HttpListener[HTTP Listener /products]
+    %% HttpListener --> GetProductsFlow[Get Products Flow]
+    %% GetProductsFlow --> ResponseHeaders[Set Response Headers]
+    %% ResponseHeaders --> End([End])
+
+    %% %% Error Handling
+    %% HttpListener -->|Error| ErrorHandler[(Global Error Handler)]
+    %% ErrorHandler --> SetErrorResponse[Set Error Response]
+    %% SetErrorResponse --> SetErrorHeaders[Set Error Headers]
+    %% SetErrorHeaders --> ErrorEnd([Error End])
+
+    %% %% Get Products Flow
+    %% subgraph GetProductDetailsFlow["Get Product Details Flow"]
+    %%     SubflowStart([Subflow Start]) --> ValidateProduct[Validate Product ID\nGroovy Script]
+    %%     ValidateProduct --> ProductRouter{"Is Valid Product?"}
+    %%     ProductRouter -->|Yes| LogValidRequest[Log Valid Request]
+    %%     LogValidRequest --> BuildODataQuery[Build OData Query\n$filter and $select]
+    %%     BuildODataQuery --> ODataRequest[OData Request to SAP HANA]
+    %%     ODataRequest --> TransformResponse[Transform Response\nto JSON]
+    %%
+    %%     ProductRouter -->|No| LogInvalidRequest[Log Invalid Request]
+    %%     LogInvalidRequest --> BuildErrorResponse[Build Error Response\nPRODUCT_NOT_FOUND]
+    %% end
+
     %% YOUR ACTUAL DIAGRAM NODES AND CONNECTIONS GO HERE
     %% DO NOT INDENT THE FENCES — they must start at column 0
 
     ```
+
+    %% Add styling
+    class HttpListener,ODataRequest httpAdapter
+    class ResponseHeaders,LogValidRequest,LogInvalidRequest,SetErrorResponse,SetErrorHeaders contentModifier
+    class ProductRouter router
+    class ValidateProduct,BuildODataQuery,TransformResponse,BuildErrorResponse mapping
+    class ErrorHandler exception
+    class GetProductsFlow processCall
 
     IMPORTANT MERMAID DIAGRAM RULES:
     1. Use TD (top-down) direction

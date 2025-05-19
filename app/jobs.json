@@ -1806,5 +1806,37 @@
     "iflow_match_result": {
       "message": "Found 33 potential matches"
     }
+  },
+  "52f83d8c-a230-4cee-b279-bf732bfc4385": {
+    "id": "52f83d8c-a230-4cee-b279-bf732bfc4385",
+    "status": "completed",
+    "created": "2025-05-19T15:15:49.082703",
+    "last_updated": "2025-05-19T15:16:57.976564",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\52f83d8c-a230-4cee-b279-bf732bfc4385\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\52f83d8c-a230-4cee-b279-bf732bfc4385\\flow_documentation.md",
+      "html": "results\\52f83d8c-a230-4cee-b279-bf732bfc4385\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\52f83d8c-a230-4cee-b279-bf732bfc4385\\flow_visualization.html"
+    }
   }
 }
