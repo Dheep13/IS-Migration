@@ -681,7 +681,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                   <ul className="mt-1 text-xs text-yellow-700 space-y-1">
                     <li>
                       <a
-                        href={`https://it-resonance-api.cfapps.us10-001.hana.ondemand.com/api/docs/${jobInfo.id}/html`}
+                        href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/html`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline"
@@ -691,7 +691,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                     </li>
                     <li>
                       <a
-                        href={`https://it-resonance-api.cfapps.us10-001.hana.ondemand.com/api/docs/${jobInfo.id}/markdown`}
+                        href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/markdown`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:underline"
@@ -855,7 +855,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                           <a
                             href={`${
                               import.meta.env.VITE_API_URL
-                            }/api/iflow-match/${jobInfo.id}/report`}
+                            }/iflow-match/${jobInfo.id}/report`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
@@ -894,7 +894,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                           <a
                             href={`${
                               import.meta.env.VITE_API_URL
-                            }/api/iflow-match/${jobInfo.id}/summary`}
+                            }/iflow-match/${jobInfo.id}/summary`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"

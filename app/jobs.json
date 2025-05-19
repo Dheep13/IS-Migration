@@ -1473,5 +1473,46 @@
     "iflow_match_result": {
       "message": "Found 31 potential matches"
     }
+  },
+  "767241d9-5762-43a2-8824-a0e79deb8694": {
+    "id": "767241d9-5762-43a2-8824-a0e79deb8694",
+    "status": "completed",
+    "created": "2025-05-19T11:50:11.610622",
+    "last_updated": "2025-05-19T11:51:48.401327",
+    "enhance": true,
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\mule_cf_deployment\\app\\uploads\\767241d9-5762-43a2-8824-a0e79deb8694\\extracted\\combined_mule_resources",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 16,
+      "xml_files": 6,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 3,
+      "raml_files": 1,
+      "dwl_files": 0,
+      "other_files": 6
+    },
+    "processing_step": "completed",
+    "processing_message": "Documentation generation completed successfully!",
+    "parsed_details": {
+      "flows": 3,
+      "subflows": 1,
+      "configs": 3,
+      "error_handlers": 1
+    },
+    "files": {
+      "markdown": "results\\767241d9-5762-43a2-8824-a0e79deb8694\\flow_documentation.md",
+      "html": "results\\767241d9-5762-43a2-8824-a0e79deb8694\\flow_documentation_with_mermaid.html",
+      "visualization": "results\\767241d9-5762-43a2-8824-a0e79deb8694\\flow_visualization.html"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\767241d9-5762-43a2-8824-a0e79deb8694\\iflow_match\\integration_match_report.html",
+      "summary": "results\\767241d9-5762-43a2-8824-a0e79deb8694\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 22 potential matches"
+    }
   }
 }
