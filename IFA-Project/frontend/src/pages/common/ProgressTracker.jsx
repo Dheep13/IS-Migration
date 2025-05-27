@@ -14,7 +14,7 @@ const ProgressTracker = ({
   useEffect(() => {
     let interval = null
 
-    if (startTime) {
+    if (startTime && status === "processing") {
       interval = setInterval(() => {
         const now = new Date()
         const elapsed = Math.floor((now.getTime() - startTime.getTime()) / 1000)
@@ -22,6 +22,11 @@ const ProgressTracker = ({
         const seconds = elapsed % 60
         setElapsedTime(`${minutes}m ${seconds}s`)
       }, 1000)
+    } else if (status === "completed" || status === "failed") {
+      // Stop the timer when job is completed or failed
+      if (interval) {
+        clearInterval(interval)
+      }
     }
 
     return () => {
@@ -29,7 +34,7 @@ const ProgressTracker = ({
         clearInterval(interval)
       }
     }
-  }, [startTime])
+  }, [startTime, status])
 
   // Calculate progress percentage based on status and processing step
   const getProgressPercentage = () => {

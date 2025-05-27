@@ -3,7 +3,7 @@ applications:
 - name: it-resonance-api-wacky-panther-za
   memory: 512M
   disk_quota: 1G
-  stack: cflinuxfs3
+  stack: cflinuxfs4
   buildpacks:
   - python_buildpack
   path: .

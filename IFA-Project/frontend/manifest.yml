@@ -3,6 +3,7 @@ applications:
 - name: ifa-frontend
   memory: 128M
   disk_quota: 256M
+  stack: cflinuxfs4
   buildpacks:
   - staticfile_buildpack
   path: ./dist

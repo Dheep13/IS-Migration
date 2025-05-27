@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react"
 import {
   ExternalLink,
-  RefreshCw,
   CheckCircle,
   XCircle,
   Clock,
@@ -9,7 +8,6 @@ import {
   Code,
   Play,
   Download,
-  AlertTriangle,
   Search,
   FileCode
 } from "lucide-react"
@@ -50,6 +48,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
     iflowSummary: false,
     generatedIflow: false
   })
+  const [showFileAnalysis, setShowFileAnalysis] = useState(false)
 
   // Check if iFlow match has been processed
   useEffect(() => {
@@ -550,22 +549,6 @@ const JobResult = ({ jobInfo, onNewJob }) => {
             Job Status: <span className="capitalize">{jobInfo.status}</span>
           </h3>
         </div>
-
-        <button
-          onClick={() => {
-            // Clean up any intervals before calling onNewJob
-            if (statusCheckInterval) {
-              console.log("Cleaning up status check interval on New Job");
-              clearInterval(statusCheckInterval);
-              setStatusCheckInterval(null);
-            }
-            onNewJob();
-          }}
-          className="text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1"
-        >
-          <RefreshCw className="h-4 w-4" />
-          <span>New Job</span>
-        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -641,77 +624,9 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2 p-3 bg-gray-50 rounded-md">
-                <Code className="h-5 w-5 text-blue-500" />
-                <span className="font-medium text-gray-800">
-                  Markdown Documentation
-                </span>
-
-                <div className="flex gap-2 ml-auto">
-                  <a
-                    href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/markdown`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
-                    title="View in browser"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-
-                  <button
-                    onClick={() =>
-                      downloadFile(
-                        "markdown",
-                        `mulesoft_documentation_${jobInfo.id}.md`
-                      )
-                    }
-                    disabled={downloading.markdown}
-                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Download file"
-                  >
-                    {downloading.markdown ? (
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <Download className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
+              {/* Markdown Documentation section removed */}
               {/* Flow Visualization section removed */}
-
-              <div className="p-3 bg-yellow-50 rounded-md flex items-start space-x-2">
-                <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm text-yellow-700">
-                    If you're having trouble with the links, you can try these
-                    direct links:
-                  </p>
-                  <ul className="mt-1 text-xs text-yellow-700 space-y-1">
-                    <li>
-                      <a
-                        href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/html`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Direct HTML Documentation Link
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/markdown`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
-                      >
-                        Direct Markdown Documentation Link
-                      </a>
-                    </li>
-                    {/* Direct Flow Visualization Link removed */}
-                  </ul>
-                </div>
-              </div>
+              {/* Direct links section removed */}
             </div>
           </div>
 
@@ -722,7 +637,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
             <p className="text-sm text-gray-600 mb-2">
               These actions can be performed independently. You can generate an iFlow directly from the documentation or find SAP equivalents first.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap items-center">
               <button
                 onClick={handleGenerateIflowMatch}
                 disabled={
@@ -750,11 +665,19 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                   </>
                 ) : (
                   <>
+                    <span className="inline-flex items-center justify-center w-6 h-6 bg-white text-green-600 rounded-full mr-1 font-bold">1</span>
                     <Search className="h-4 w-4" />
                     <span>Find SAP Integration Suite Equivalents</span>
                   </>
                 )}
               </button>
+
+              <div className="mx-2 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </div>
 
               <button
                 onClick={handleGenerateIflow}
@@ -765,9 +688,10 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                 className={`
                   px-4 py-2 rounded-md font-medium flex items-center space-x-2
                   ${
-                    isGeneratingIflow ||
-                    isIflowGenerated
-                      ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                    isGeneratingIflow
+                      ? "bg-blue-100 text-blue-800 cursor-not-allowed"
+                      : isIflowGenerated
+                      ? "bg-green-100 text-green-800 cursor-not-allowed"
                       : "bg-blue-600 text-white hover:bg-blue-700"
                   }
                   transition-colors duration-200
@@ -785,11 +709,19 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                   </>
                 ) : (
                   <>
+                    <span className="inline-flex items-center justify-center w-6 h-6 bg-white text-blue-600 rounded-full mr-1 font-bold">2</span>
                     <Code className="h-4 w-4" />
                     <span>Generate SAP API/iFlow</span>
                   </>
                 )}
               </button>
+
+              <div className="mx-2 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="m12 5 7 7-7 7"></path>
+                </svg>
+              </div>
 
               <button
                 onClick={handleDeployToSap}
@@ -797,8 +729,12 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                 className={`
                   px-4 py-2 rounded-md font-medium flex items-center space-x-2
                   ${
-                    !isIflowGenerated || isDeploying || isDeployed
+                    !isIflowGenerated
                       ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                      : isDeploying
+                      ? "bg-green-100 text-green-800 cursor-not-allowed"
+                      : isDeployed
+                      ? "bg-green-100 text-green-800 cursor-not-allowed"
                       : "bg-green-600 text-white hover:bg-green-700"
                   }
                   transition-colors duration-200
@@ -816,6 +752,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                   </>
                 ) : (
                   <>
+                    <span className="inline-flex items-center justify-center w-6 h-6 bg-white text-green-600 rounded-full mr-1 font-bold">3</span>
                     <Play className="h-4 w-4" />
                     <span>Deploy to SAP Integration Suite</span>
                   </>
@@ -892,45 +829,6 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                           </button>
                         </div>
                       </div>
-
-                      <div className="flex flex-wrap items-center gap-2 p-3 bg-white rounded-md">
-                        <Code className="h-5 w-5 text-blue-500" />
-                        <span className="font-medium text-gray-800">
-                          Integration Match Summary
-                        </span>
-
-                        <div className="flex gap-2 ml-auto">
-                          <a
-                            href={`${
-                              import.meta.env.VITE_API_URL
-                            }/iflow-match/${jobInfo.id}/summary`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
-                            title="View in browser"
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                          </a>
-
-                          <button
-                            onClick={() =>
-                              downloadIflowMatchFile(
-                                "summary",
-                                `sap_integration_match_summary_${jobInfo.id}.json`
-                              )
-                            }
-                            disabled={downloading.iflowSummary}
-                            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                            title="Download file"
-                          >
-                            {downloading.iflowSummary ? (
-                              <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                            ) : (
-                              <Download className="h-4 w-4" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
                     </div>
                   )}
                 </div>
@@ -940,8 +838,8 @@ const JobResult = ({ jobInfo, onNewJob }) => {
             {/* Show generated iFlow when available */}
             {isIflowGenerated && (
               <div className="mt-4">
-                <div className="p-4 rounded-md bg-blue-50">
-                  <p className="text-sm font-medium text-blue-800">
+                <div className="p-4 rounded-md bg-green-50">
+                  <p className="text-sm font-medium text-green-800">
                     SAP API/iFlow has been generated successfully!
                   </p>
 
@@ -980,94 +878,105 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       )}
 
       {jobInfo.file_info && (
-        <div>
-          <h4 className="font-semibold text-gray-800 mb-3">File Analysis:</h4>
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    File Type
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Count
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    XML Files
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                    {jobInfo.file_info.xml_files}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    Properties Files
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                    {jobInfo.file_info.properties_files}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    JSON Files
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                    {jobInfo.file_info.json_files}
-                  </td>
-                </tr>
-                {jobInfo.file_info.yaml_files !== undefined && (
+        <div className="mt-6">
+          <button
+            onClick={() => setShowFileAnalysis(!showFileAnalysis)}
+            className="flex items-center justify-between w-full font-semibold text-gray-800 mb-3 bg-gray-100 p-3 rounded-md hover:bg-gray-200 transition-colors"
+          >
+            <span>File Analysis</span>
+            <span className="text-gray-500">
+              {showFileAnalysis ? '▼' : '►'}
+            </span>
+          </button>
+
+          {showFileAnalysis && (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      File Type
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Count
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      YAML Files
+                      XML Files
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                      {jobInfo.file_info.yaml_files}
+                      {jobInfo.file_info.xml_files}
                     </td>
                   </tr>
-                )}
-                {jobInfo.file_info.raml_files !== undefined && (
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      RAML Files
+                      Properties Files
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                      {jobInfo.file_info.raml_files}
+                      {jobInfo.file_info.properties_files}
                     </td>
                   </tr>
-                )}
-                {jobInfo.file_info.dwl_files !== undefined && (
                   <tr>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      DWL Files
+                      JSON Files
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                      {jobInfo.file_info.dwl_files}
+                      {jobInfo.file_info.json_files}
                     </td>
                   </tr>
-                )}
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                    Other Files
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-                    {jobInfo.file_info.other_files}
-                  </td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">
-                    Total Files
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">
-                    {jobInfo.file_info.total_files}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                  {jobInfo.file_info.yaml_files !== undefined && (
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        YAML Files
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                        {jobInfo.file_info.yaml_files}
+                      </td>
+                    </tr>
+                  )}
+                  {jobInfo.file_info.raml_files !== undefined && (
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        RAML Files
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                        {jobInfo.file_info.raml_files}
+                      </td>
+                    </tr>
+                  )}
+                  {jobInfo.file_info.dwl_files !== undefined && (
+                    <tr>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                        DWL Files
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                        {jobInfo.file_info.dwl_files}
+                      </td>
+                    </tr>
+                  )}
+                  <tr>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      Other Files
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
+                      {jobInfo.file_info.other_files}
+                    </td>
+                  </tr>
+                  <tr className="bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">
+                      Total Files
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">
+                      {jobInfo.file_info.total_files}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
