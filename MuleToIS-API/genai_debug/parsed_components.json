@@ -5,22 +5,22 @@
     {
       "method": "GET",
       "path": "/products",
-      "purpose": "Fetch detailed information about a specific product from SAP HANA",
+      "purpose": "Retrieve detailed product information from SAP HANA based on product identifier",
       "components": [
         {
           "type": "enricher",
-          "name": "Validate_Product_ID",
+          "name": "Validate_Product_Identifier",
           "id": "enricher_validate_product",
           "config": {
-            "content": "${property.get(\"odata.productIdentifiers\").split(\",\").contains(message.getHeaders().get(\"productIdentifier\"))}"
+            "content": "${property.productIdentifiers.contains(request.queryParams.productIdentifier)}"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Check_Product_Validity",
-          "id": "script_check_product",
+          "name": "Product_Validation_Script",
+          "id": "script_validate_product",
           "config": {
-            "script": "ValidateProductID.groovy"
+            "script": "ValidateProductIdentifier.groovy"
           }
         },
         {
@@ -28,10 +28,10 @@
           "name": "Get_Product_Details",
           "id": "odata_get_product",
           "config": {
-            "address": "${property.HANA_HTTP_REQUEST_BASE_URL}",
+            "address": "https://saphana.example.com/odata/service",
             "resource_path": "Products",
             "operation": "Query(GET)",
-            "query_options": "$filter=ProductId eq '${header.productIdentifier}'&$select=ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit"
+            "query_options": "$filter=ProductId eq '${request.queryParams.productIdentifier}'&$select=ProductId,Category,CategoryName,CurrencyCode,DimensionDepth,DimensionHeight,DimensionUnit,DimensionWidth,LongDescription,Name,PictureUrl,Price,QuantityUnit,ShortDescription,SupplierId,Weight,WeightUnit"
           }
         },
         {
@@ -39,20 +39,21 @@
           "name": "Format_Error_Response",
           "id": "enricher_error_response",
           "config": {
-            "content": "{ \"status\": \"error\", \"message\": \"The product identifier ${header.productIdentifier} was not found.\", \"errorCode\": \"PRODUCT_NOT_FOUND\" }"
+            "content": "{ \"status\": \"error\", \"message\": \"The product identifier ${request.queryParams.productIdentifier} was not found.\", \"errorCode\": \"PRODUCT_NOT_FOUND\" }"
           }
         }
       ],
       "sequence": [
         "enricher_validate_product",
-        "script_check_product",
-        "odata_get_product"
+        "script_validate_product",
+        "odata_get_product",
+        "enricher_error_response"
       ],
       "transformations": [
         {
-          "name": "ValidateProductID.groovy",
+          "name": "ValidateProductIdentifier.groovy",
           "type": "groovy",
-          "script": "def productIdentifiers = property.get(\"odata.productIdentifiers\").split(\",\")\ndef productId = message.getHeaders().get(\"productIdentifier\")\ndef isExistProduct = productIdentifiers.find { it == productId } != null\nmessage.setProperty(\"isExistProduct\", isExistProduct)\nreturn message"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message;\n\ndef Message processData(Message message) {\n    def map = message.getProperties();\n    def query = message.getHeaders().get(\"CamelHttpQuery\");\n    \n    // Extract productIdentifier from query parameters\n    def productIdentifier = \"\";\n    if (query != null && query.contains(\"productIdentifier=\")) {\n        productIdentifier = query.substring(query.indexOf(\"productIdentifier=\") + 18);\n        if (productIdentifier.contains(\"&\")) {\n            productIdentifier = productIdentifier.substring(0, productIdentifier.indexOf(\"&\"));\n        }\n    }\n    \n    // Get configured valid product identifiers\n    def validProductIds = map.get(\"productIdentifiers\").split(\",\");\n    \n    // Check if the provided product identifier is valid\n    boolean isValid = false;\n    for (String validId : validProductIds) {\n        if (validId.trim().equals(productIdentifier)) {\n            isValid = true;\n            break;\n        }\n    }\n    \n    // Set the validation result as a property\n    map.put(\"isExistProduct\", isValid);\n    \n    return message;\n}"
         }
       ]
     }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDE0MTU" branchName="main" componentId="45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37" copiedFromComponentId="be2d602d-1f5b-4236-82a4-6ffddd27b618" copiedFromComponentVersion="15" createdBy="deepan@itresonance.com" createdDate="2025-06-05T11:22:11Z" currentVersion="true" deleted="false" folderFullPath="IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" folderId="Rjo3NzA2ODk1" folderName="Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" modifiedBy="deepan@itresonance.com" modifiedDate="2025-06-05T11:22:11Z" name="Create Salesforce Opportunities from Stripe Subscriptions" type="process" version="1">
+  <bns:encryptedValues/>
+  <bns:description>For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions</bns:description>
+  <bns:object>
+    <process allowSimultaneous="true" enableUserLog="false" processLogOnErrorOnly="false" purgeDataImmediately="false" updateRunDates="false" workload="general">
+      <shapes>
+        <shape image="start" name="shape1" shapetype="start" userlabel="" x="48.0" y="46.0">
+          <configuration>
+            <connectoraction actionType="Listen" allowDynamicCredentials="NONE" connectorType="wss" hideSettings="true" operationId="0856f0fa-065f-4cbe-80fd-62c8bc7d60f8">
+              <parameters/>
+              <dynamicProperties/>
+            </connectoraction>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape1.dragpoint1" toShape="shape6" x="224.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+        <shape image="connectoraction_icon" name="shape3" shapetype="connectoraction" userlabel="" x="624.0" y="48.0">
+          <configuration>
+            <connectoraction actionType="Send" allowDynamicCredentials="NONE" connectionId="36fc72b2-5fa9-4c74-99df-5434918a140e" connectorType="salesforce" hideSettings="false" operationId="22d84e3e-6a7f-4c9d-9757-67177bc97a19" parameter-profile="efd69737-e49c-4a38-bb32-abb39383ed5f">
+              <parameters/>
+              <dynamicProperties/>
+            </connectoraction>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape3.dragpoint1" toShape="shape5" x="800.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+        <shape image="map_icon" name="shape4" shapetype="map" userlabel="" x="432.0" y="48.0">
+          <configuration>
+            <map mapId="cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"/>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape4.dragpoint1" toShape="shape3" x="608.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+        <shape image="stop_icon" name="shape5" shapetype="stop" userlabel="" x="816.0" y="48.0">
+          <configuration>
+            <stop continue="true"/>
+          </configuration>
+          <dragpoints/>
+        </shape>
+        <shape image="documentproperties_icon" name="shape6" shapetype="documentproperties" userlabel="Set Dynamic Properties" x="240.0" y="48.0">
+          <configuration>
+            <documentproperties>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_CustomerName" persist="false" propertyId="dynamicdocument.DDP_CustomerName" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="1" valueType="connector">
+                    <connectorparameter actionType="Get" connectionId="3673210f-315c-4515-9fa8-6564c0a6681c" connectorType="http" enforceSingleResult="true" operationId="ab5bcc17-8846-4dd7-b4a6-0edc85094e15" outputParamId="24" outputParamName="name (Root/Object/name)">
+                      <inputs>
+                        <parametervalue elementToSetId="2000001" elementToSetName="customerID" key="0" valueType="profile">
+                          <profileelement elementId="37" elementName="customer (Root/Object/data/Object/object/Object/customer)" profileId="6e791dfd-6dad-469a-9bd7-5339e240cca2" profileType="profile.json"/>
+                        </parametervalue>
+                      </inputs>
+                    </connectorparameter>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_Subscription" persist="false" propertyId="dynamicdocument.DDP_Subscription" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="2" valueType="connector">
+                    <connectorparameter actionType="Get" connectionId="3673210f-315c-4515-9fa8-6564c0a6681c" connectorType="http" enforceSingleResult="true" operationId="2298c784-9c64-4987-b165-601b1387bd35" outputParamId="18" outputParamName="name (Root/Object/name)">
+                      <inputs>
+                        <parametervalue elementToSetId="2000001" elementToSetName="ProductID" key="0" valueType="profile">
+                          <profileelement elementId="246" elementName="product (Root/Object/data/Object/object/Object/plan/Object/product)" profileId="6e791dfd-6dad-469a-9bd7-5339e240cca2" profileType="profile.json"/>
+                        </parametervalue>
+                      </inputs>
+                    </connectorparameter>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_SalesforceDescription" persist="false" propertyId="dynamicdocument.DDP_SalesforceDescription" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="3" valueType="track">
+                    <trackparameter defaultValue="" propertyId="dynamicdocument.DDP_CustomerName" propertyName="Dynamic Document Property - DDP_CustomerName"/>
+                  </parametervalue>
+                  <parametervalue key="4" valueType="static">
+                    <staticparameter staticproperty="has subscribed to: "/>
+                  </parametervalue>
+                  <parametervalue key="5" valueType="track">
+                    <trackparameter defaultValue="" propertyId="dynamicdocument.DDP_Subscription" propertyName="Dynamic Document Property - DDP_Subscription"/>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_CloseDate" persist="false" propertyId="dynamicdocument.DDP_CloseDate" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="6" valueType="date">
+                    <dateparameter dateparametertype="relative" datetimemask="yyyyMMdd HHmmss.SSS">
+                      <datedelta sign="minus" unit="months" value="3"/>
+                    </dateparameter>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+            </documentproperties>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape6.dragpoint1" toShape="shape4" x="416.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+      </shapes>
+    </process>
+  </bns:object>
+  <bns:processOverrides/>
+</Component>

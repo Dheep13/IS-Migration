@@ -15,7 +15,7 @@ export default ({ mode }) => {
 
   const IFLOW_SERVER_PATH = env.VITE_IFLOW_API_PROTOCOL && env.VITE_IFLOW_API_HOST
     ? `${env.VITE_IFLOW_API_PROTOCOL}://${env.VITE_IFLOW_API_HOST}/`
-    : 'http://localhost:5001/'
+    : 'http://localhost:5003/'
 
   console.log('Using Main API Server:', SERVER_PATH)
   console.log('Using iFlow API Server:', IFLOW_SERVER_PATH)

@@ -3,7 +3,10 @@ import { toast } from "react-hot-toast"
 import FileUploadForm from "@pages/common/FileUploadForm"
 import ProgressTracker from "@pages/common/ProgressTracker"
 import JobResult from "@pages/common/JobResult"
+import LLMProviderSelector from "@components/LLMProviderSelector"
 import { generateDocs, getJobStatus } from "@services/api"
+import { useLLMProvider } from "@/contexts/LLMProviderContext"
+import { LLM_PROVIDER_LABELS } from "@utils/constants"
 
 // Get environment variables for polling configuration
 const DISABLE_AUTO_POLLING = import.meta.env.VITE_DISABLE_AUTO_POLLING === 'true'
@@ -12,18 +15,20 @@ const POLL_INTERVAL_MS = parseInt(import.meta.env.VITE_POLL_INTERVAL_MS || '5000
 const INITIAL_POLL_INTERVAL_MS = 2000 // Start with a faster polling interval
 
 const View = () => {
+  const { selectedLLMProvider, setSelectedLLMProvider } = useLLMProvider();
   const [jobInfo, setJobInfo] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [startTime, setStartTime] = useState(null)
   const [pollInterval, setPollInterval] = useState(null)
   const [pollCount, setPollCount] = useState(0)
   const [consecutiveErrors, setConsecutiveErrors] = useState(0)
+  const [showLLMSelector, setShowLLMSelector] = useState(false)
 
   const abortControllerRef = useRef(null)
 
   // No longer checking backend connectivity on mount for production
 
-  const startJob = async (files, enhance) => {
+  const startJob = async (files, enhance, platform = 'mulesoft') => {
     setIsLoading(true)
 
     try {
@@ -35,6 +40,7 @@ const View = () => {
       const formData = new FormData()
       files.forEach(file => formData.append("files[]", file))
       formData.append("enhance", enhance.toString())
+      formData.append("platform", platform)
 
       const result = await generateDocs(
         formData,
@@ -274,10 +280,40 @@ const View = () => {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">IFA Tool</h1>
-        <p className="text-gray-600">Integration with the MuleSoft Tool</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Integration Flow Analyzer</h1>
+          <p className="text-gray-600">
+            Convert integration flows to SAP Integration Suite using {LLM_PROVIDER_LABELS[selectedLLMProvider]}
+          </p>
+        </div>
+        <button
+          onClick={() => setShowLLMSelector(!showLLMSelector)}
+          className="px-4 py-2 text-sm bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+        >
+          AI Model: {LLM_PROVIDER_LABELS[selectedLLMProvider]}
+        </button>
       </div>
+
+      {showLLMSelector && (
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <LLMProviderSelector
+            selectedProvider={selectedLLMProvider}
+            onProviderChange={(provider) => {
+              setSelectedLLMProvider(provider);
+              setShowLLMSelector(false);
+              // Reset job info when provider changes
+              setJobInfo(null);
+              setHasNotifiedCompletion({});
+              if (pollInterval) {
+                clearInterval(pollInterval);
+                setPollInterval(null);
+              }
+            }}
+          />
+        </div>
+      )}
+
       {/* Connection status is hidden in production */}
 
       {!jobInfo || (jobInfo.status === "failed" && !isLoading) ? (

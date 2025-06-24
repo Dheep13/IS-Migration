@@ -30,6 +30,12 @@ call cf set-env mulesoft-iflow-api SAP_BTP_CLIENT_SECRET 3a96f9f7-f596-48a8-903c
 call cf set-env mulesoft-iflow-api SAP_BTP_OAUTH_URL https://4728b940trial.authentication.us10.hana.ondemand.com/oauth/token
 call cf set-env mulesoft-iflow-api SAP_BTP_DEFAULT_PACKAGE WithRequestReply
 
+echo Setting Gemma3 iFlow API environment variables...
+call cf set-env mulesoft-iflow-api-gemma3 CORS_ALLOW_CREDENTIALS true
+call cf set-env mulesoft-iflow-api-gemma3 RUNPOD_API_KEY %RUNPOD_API_KEY%
+call cf set-env mulesoft-iflow-api-gemma3 RUNPOD_ENDPOINT_ID s5unaaduyy7otl
+call cf set-env mulesoft-iflow-api-gemma3 GITHUB_TOKEN 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
+
 echo.
 echo Step 2: Building frontend for production...
 cd IFA-Project/frontend
@@ -75,7 +81,22 @@ if %ERRORLEVEL% neq 0 (
 echo iFlow API deployed successfully.
 
 echo.
-echo Step 5: Deploying frontend...
+echo Step 5: Deploying Gemma3 iFlow API...
+cd ..\MuleToIS-API-Gemma3
+echo Setting environment variables for manifest.yml...
+set "RUNPOD_API_KEY=%RUNPOD_API_KEY%"
+set RUNPOD_ENDPOINT_ID=s5unaaduyy7otl
+set GITHUB_TOKEN=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
+echo Deploying to Cloud Foundry...
+call cf push
+if %ERRORLEVEL% neq 0 (
+    echo Gemma3 iFlow API deployment failed!
+    exit /b 1
+)
+echo Gemma3 iFlow API deployed successfully.
+
+echo.
+echo Step 6: Deploying frontend...
 cd ..\IFA-Project\frontend
 echo Deploying to Cloud Foundry...
 call cf push
@@ -89,7 +110,8 @@ echo.
 echo All components deployed successfully!
 echo.
 echo Main API: https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com
-echo iFlow API: https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com
+echo iFlow API (Anthropic): https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com
+echo iFlow API (Gemma3): https://mulesoft-iflow-api-gemma3.cfapps.us10-001.hana.ondemand.com
 echo Frontend: https://ifa-frontend.cfapps.us10-001.hana.ondemand.com
 echo.
 echo Opening application in browser...

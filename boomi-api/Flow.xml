@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDE0MTU" branchName="main" componentId="45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37" copiedFromComponentId="be2d602d-1f5b-4236-82a4-6ffddd27b618" copiedFromComponentVersion="15" createdBy="deepan@itresonance.com" createdDate="2025-06-05T11:22:11Z" currentVersion="true" deleted="false" folderFullPath="IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" folderId="Rjo3NzA2ODk1" folderName="Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" modifiedBy="deepan@itresonance.com" modifiedDate="2025-06-05T11:22:11Z" name="Create Salesforce Opportunities from Stripe Subscriptions" type="process" version="1">
+  <bns:encryptedValues/>
+  <bns:description>For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions</bns:description>
+  <bns:object>
+    <process allowSimultaneous="true" enableUserLog="false" processLogOnErrorOnly="false" purgeDataImmediately="false" updateRunDates="false" workload="general">
+      <shapes>
+        <shape image="start" name="shape1" shapetype="start" userlabel="" x="48.0" y="46.0">
+          <configuration>
+            <connectoraction actionType="Listen" allowDynamicCredentials="NONE" connectorType="wss" hideSettings="true" operationId="0856f0fa-065f-4cbe-80fd-62c8bc7d60f8">
+              <parameters/>
+              <dynamicProperties/>
+            </connectoraction>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape1.dragpoint1" toShape="shape6" x="224.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+        <shape image="connectoraction_icon" name="shape3" shapetype="connectoraction" userlabel="" x="624.0" y="48.0">
+          <configuration>
+            <connectoraction actionType="Send" allowDynamicCredentials="NONE" connectionId="36fc72b2-5fa9-4c74-99df-5434918a140e" connectorType="salesforce" hideSettings="false" operationId="22d84e3e-6a7f-4c9d-9757-67177bc97a19" parameter-profile="efd69737-e49c-4a38-bb32-abb39383ed5f">
+              <parameters/>
+              <dynamicProperties/>
+            </connectoraction>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape3.dragpoint1" toShape="shape5" x="800.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+        <shape image="map_icon" name="shape4" shapetype="map" userlabel="" x="432.0" y="48.0">
+          <configuration>
+            <map mapId="cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"/>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape4.dragpoint1" toShape="shape3" x="608.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+        <shape image="stop_icon" name="shape5" shapetype="stop" userlabel="" x="816.0" y="48.0">
+          <configuration>
+            <stop continue="true"/>
+          </configuration>
+          <dragpoints/>
+        </shape>
+        <shape image="documentproperties_icon" name="shape6" shapetype="documentproperties" userlabel="Set Dynamic Properties" x="240.0" y="48.0">
+          <configuration>
+            <documentproperties>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_CustomerName" persist="false" propertyId="dynamicdocument.DDP_CustomerName" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="1" valueType="connector">
+                    <connectorparameter actionType="Get" connectionId="3673210f-315c-4515-9fa8-6564c0a6681c" connectorType="http" enforceSingleResult="true" operationId="ab5bcc17-8846-4dd7-b4a6-0edc85094e15" outputParamId="24" outputParamName="name (Root/Object/name)">
+                      <inputs>
+                        <parametervalue elementToSetId="2000001" elementToSetName="customerID" key="0" valueType="profile">
+                          <profileelement elementId="37" elementName="customer (Root/Object/data/Object/object/Object/customer)" profileId="6e791dfd-6dad-469a-9bd7-5339e240cca2" profileType="profile.json"/>
+                        </parametervalue>
+                      </inputs>
+                    </connectorparameter>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_Subscription" persist="false" propertyId="dynamicdocument.DDP_Subscription" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="2" valueType="connector">
+                    <connectorparameter actionType="Get" connectionId="3673210f-315c-4515-9fa8-6564c0a6681c" connectorType="http" enforceSingleResult="true" operationId="2298c784-9c64-4987-b165-601b1387bd35" outputParamId="18" outputParamName="name (Root/Object/name)">
+                      <inputs>
+                        <parametervalue elementToSetId="2000001" elementToSetName="ProductID" key="0" valueType="profile">
+                          <profileelement elementId="246" elementName="product (Root/Object/data/Object/object/Object/plan/Object/product)" profileId="6e791dfd-6dad-469a-9bd7-5339e240cca2" profileType="profile.json"/>
+                        </parametervalue>
+                      </inputs>
+                    </connectorparameter>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_SalesforceDescription" persist="false" propertyId="dynamicdocument.DDP_SalesforceDescription" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="3" valueType="track">
+                    <trackparameter defaultValue="" propertyId="dynamicdocument.DDP_CustomerName" propertyName="Dynamic Document Property - DDP_CustomerName"/>
+                  </parametervalue>
+                  <parametervalue key="4" valueType="static">
+                    <staticparameter staticproperty="has subscribed to: "/>
+                  </parametervalue>
+                  <parametervalue key="5" valueType="track">
+                    <trackparameter defaultValue="" propertyId="dynamicdocument.DDP_Subscription" propertyName="Dynamic Document Property - DDP_Subscription"/>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+              <documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Document Property - DDP_CloseDate" persist="false" propertyId="dynamicdocument.DDP_CloseDate" shouldEncrypt="false">
+                <sourcevalues>
+                  <parametervalue key="6" valueType="date">
+                    <dateparameter dateparametertype="relative" datetimemask="yyyyMMdd HHmmss.SSS">
+                      <datedelta sign="minus" unit="months" value="3"/>
+                    </dateparameter>
+                  </parametervalue>
+                </sourcevalues>
+              </documentproperty>
+            </documentproperties>
+          </configuration>
+          <dragpoints>
+            <dragpoint name="shape6.dragpoint1" toShape="shape4" x="416.0" y="56.0"/>
+          </dragpoints>
+        </shape>
+      </shapes>
+    </process>
+  </bns:object>
+  <bns:processOverrides/>
+</Component>
+
+
+
+
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDE0MTU" branchName="main" componentId="cbb5a23f-5904-4fb9-a7dc-9e7062d2b268" copiedFromComponentId="ea5bc16f-15e4-405b-95a4-9c147d310910" copiedFromComponentVersion="8" createdBy="deepan@itresonance.com" createdDate="2025-06-05T11:22:10Z" currentVersion="true" deleted="false" folderFullPath="IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" folderId="Rjo3NzA2ODk1" folderName="Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" modifiedBy="deepan@itresonance.com" modifiedDate="2025-06-05T11:22:10Z" name="Subscription Completed JSON to SF Opportunity CREATE Request XML" type="transform.map" version="1">
+  <bns:encryptedValues/>
+  <bns:description>For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions</bns:description>
+  <bns:object>
+    <Map fromProfile="6e791dfd-6dad-469a-9bd7-5339e240cca2" toProfile="efd69737-e49c-4a38-bb32-abb39383ed5f">
+      <Mappings>
+        <Mapping fromFunction="2" fromKey="3" fromType="function" toKey="5" toKeyPath="*[@key='1']/*[@key='5']" toNamePath="Opportunity/Description" toType="profile"/>
+        <Mapping fromFunction="3" fromKey="3" fromType="function" toKey="4" toKeyPath="*[@key='1']/*[@key='4']" toNamePath="Opportunity/Name" toType="profile"/>
+        <Mapping fromFunction="4" fromKey="3" fromType="function" toKey="10" toKeyPath="*[@key='1']/*[@key='10']" toNamePath="Opportunity/CloseDate" toType="profile"/>
+      </Mappings>
+      <Functions optimizeExecutionOrder="true">
+        <FunctionStep cacheEnabled="true" category="ProcessProperty" key="2" name="Get Document Property" position="2" sumEnabled="false" type="DocumentPropertyGet" x="10.0" y="10.0">
+          <Inputs/>
+          <Outputs>
+            <Output key="3" name="Dynamic Document Property - DDP_SalesforceDescription"/>
+          </Outputs>
+          <Configuration>
+            <DocumentProperty defaultValue="" persist="false" propertyId="dynamicdocument.DDP_SalesforceDescription" propertyName="Dynamic Document Property - DDP_SalesforceDescription"/>
+          </Configuration>
+        </FunctionStep>
+        <FunctionStep cacheEnabled="true" category="ProcessProperty" key="3" name="Get Document Property" position="3" sumEnabled="false" type="DocumentPropertyGet" x="10.0" y="82.0">
+          <Inputs/>
+          <Outputs>
+            <Output key="3" name="Dynamic Document Property - DDP_CustomerName"/>
+          </Outputs>
+          <Configuration>
+            <DocumentProperty defaultValue="" persist="false" propertyId="dynamicdocument.DDP_CustomerName" propertyName="Dynamic Document Property - DDP_CustomerName"/>
+          </Configuration>
+        </FunctionStep>
+        <FunctionStep cacheEnabled="true" category="ProcessProperty" key="4" name="Get Document Property" position="4" sumEnabled="false" type="DocumentPropertyGet" x="10.0" y="154.0">
+          <Inputs/>
+          <Outputs>
+            <Output key="3" name="Dynamic Document Property - DDP_CloseDate"/>
+          </Outputs>
+          <Configuration>
+            <DocumentProperty defaultValue="" persist="false" propertyId="dynamicdocument.DDP_CloseDate" propertyName="Dynamic Document Property - DDP_CloseDate"/>
+          </Configuration>
+        </FunctionStep>
+      </Functions>
+      <Defaults>
+        <Default toKey="6" value="Pipeline"/>
+      </Defaults>
+      <DocumentCacheJoins/>
+    </Map>
+  </bns:object>
+</Component>
+
+
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDE0MTU" branchName="main" componentId="22d84e3e-6a7f-4c9d-9757-67177bc97a19" copiedFromComponentId="4672357a-1565-4100-85a0-3496ea1cb3da" copiedFromComponentVersion="6" createdBy="deepan@itresonance.com" createdDate="2025-06-05T11:22:11Z" currentVersion="true" deleted="false" folderFullPath="IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" folderId="Rjo3NzA2ODk1" folderName="Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" modifiedBy="deepan@itresonance.com" modifiedDate="2025-06-05T11:22:11Z" name="SF Opportunity CREATE Operation" subType="salesforce" type="connector-action" version="1">
+  <bns:encryptedValues/>
+  <bns:description>For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions</bns:description>
+  <bns:object>
+    <Operation>
+      <Archiving directory="" enabled="false"/>
+      <Configuration>
+        <SalesforceSendAction batchCount="200" batchSize="10" bulkAPIVersion="None" objectAction="create" objectName="Opportunity" requestProfile="efd69737-e49c-4a38-bb32-abb39383ed5f" returnApplicationErrors="false" useBulkAPI="false">
+          <Options>
+            <Fields>
+              <SalesforceObject checkable="false" externalIdField="Choose..." import="true" level="0" name="Opportunity" objectAction="create" objectType="Opportunity">
+                <FieldList name="FieldList">
+                  <SalesforceField custom="false" dataType="reference" fEnabled="true" name="AccountId" nillable="true">
+                    <references relationshipName="Account" useExternalId="false">
+                      <referenceTo objectType="Account">
+                        <referenceField custom="false" dataType="character" name="Id"/>
+                      </referenceTo>
+                    </references>
+                  </SalesforceField>
+                  <SalesforceField custom="false" dataType="boolean" fEnabled="true" name="IsPrivate" nillable="false"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="Name" nillable="false"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="Description" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="StageName" nillable="false"/>
+                  <SalesforceField custom="false" dataType="number" fEnabled="true" name="Amount" nillable="true"/>
+                  <SalesforceField custom="false" dataType="number" fEnabled="true" name="Probability" nillable="true"/>
+                  <SalesforceField custom="false" dataType="number" fEnabled="true" name="TotalOpportunityQuantity" nillable="true"/>
+                  <SalesforceField custom="false" dataType="date" fEnabled="true" name="CloseDate" nillable="false"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="Type" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="NextStep" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="LeadSource" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="ForecastCategoryName" nillable="true"/>
+                  <SalesforceField custom="false" dataType="reference" fEnabled="true" name="CampaignId" nillable="true">
+                    <references relationshipName="Campaign" useExternalId="false">
+                      <referenceTo objectType="Campaign">
+                        <referenceField custom="false" dataType="character" name="Id"/>
+                        <referenceField custom="false" dataType="character" name="Name"/>
+                      </referenceTo>
+                    </references>
+                  </SalesforceField>
+                  <SalesforceField custom="false" dataType="reference" fEnabled="true" name="Pricebook2Id" nillable="true">
+                    <references relationshipName="Pricebook2" useExternalId="false">
+                      <referenceTo objectType="Pricebook2">
+                        <referenceField custom="false" dataType="character" name="Id"/>
+                        <referenceField custom="false" dataType="character" name="Name"/>
+                      </referenceTo>
+                    </references>
+                  </SalesforceField>
+                  <SalesforceField custom="false" dataType="reference" fEnabled="true" name="OwnerId" nillable="false">
+                    <references relationshipName="Owner" useExternalId="false">
+                      <referenceTo objectType="User">
+                        <referenceField custom="false" dataType="character" name="Id"/>
+                        <referenceField custom="false" dataType="character" name="Username"/>
+                        <referenceField custom="false" dataType="character" name="Email"/>
+                        <referenceField custom="false" dataType="character" name="EmployeeNumber"/>
+                        <referenceField custom="false" dataType="character" name="FederationIdentifier"/>
+                      </referenceTo>
+                    </references>
+                  </SalesforceField>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="DeliveryInstallationStatus__c" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="TrackingNumber__c" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="OrderNumber__c" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="CurrentGenerators__c" nillable="true"/>
+                  <SalesforceField custom="false" dataType="character" fEnabled="true" name="MainCompetitors__c" nillable="true"/>
+                </FieldList>
+                <Filter>
+                  <SalesforceFilterLogical isRoot="true" logicalOperator="and"/>
+                </Filter>
+                <Sorts/>
+              </SalesforceObject>
+            </Fields>
+          </Options>
+        </SalesforceSendAction>
+      </Configuration>
+      <Tracking>
+        <TrackedFields/>
+      </Tracking>
+      <Caching/>
+    </Operation>
+  </bns:object>
+</Component>
+
+

@@ -370,7 +370,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       // Get the iFlow name from the job ID or use a default name
       const iflowName = `GeneratedIFlow_${deployJobId.substring(0, 8)}`
       const iflowId = iflowName.replace(/[^a-zA-Z0-9_]/g, '_')
-      const packageId = "WithRequestReply"
+      const packageId = "ConversionPackages"
 
       // Use the direct deployment approach
       console.log(`Using direct deployment with iflowId=${iflowId}, iflowName=${iflowName}, packageId=${packageId}`)

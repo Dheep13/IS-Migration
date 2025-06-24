@@ -34,10 +34,15 @@ export const testBackendConnection = async () => {
     }
 }
 
-// Modify generateDocs to use axios
+// Modify generateDocs to use axios with platform support
 export const generateDocs = async (formData, signal) => {
     try {
         console.log("Sending request to generate documentation")
+
+        // Log the platform if it exists in formData
+        if (formData.has('platform')) {
+            console.log("Platform selected:", formData.get('platform'))
+        }
 
         const config = {
             headers: {
@@ -169,6 +174,11 @@ const ENV = import.meta.env.VITE_ENVIRONMENT || 'development';
 const IFLOW_API_URL = import.meta.env.VITE_IFLOW_API_URL || 'http://localhost:5001/api';
 const IFLOW_API_HOST = import.meta.env.VITE_IFLOW_API_HOST || 'localhost:5001';
 const IFLOW_API_PROTOCOL = import.meta.env.VITE_IFLOW_API_PROTOCOL || 'http';
+
+// Gemma3 API Configuration
+const GEMMA3_API_URL = import.meta.env.VITE_GEMMA3_API_URL || 'http://localhost:5002/api';
+const GEMMA3_API_HOST = import.meta.env.VITE_GEMMA3_API_HOST || 'localhost:5002';
+const GEMMA3_API_PROTOCOL = import.meta.env.VITE_GEMMA3_API_PROTOCOL || 'http';
 const MAX_POLL_COUNT = parseInt(import.meta.env.VITE_MAX_POLL_COUNT || '60');
 const POLL_INTERVAL_MS = parseInt(import.meta.env.VITE_POLL_INTERVAL_MS || '2000');
 const MAX_FAILED_ATTEMPTS = parseInt(import.meta.env.VITE_MAX_FAILED_ATTEMPTS || '3');
@@ -177,11 +187,27 @@ console.log(`Environment: ${ENV}`);
 console.log('Using iFlow API URL:', IFLOW_API_URL);
 console.log('Using iFlow API Host:', IFLOW_API_HOST);
 console.log('Using iFlow API Protocol:', IFLOW_API_PROTOCOL);
+console.log('Using Gemma3 API URL:', GEMMA3_API_URL);
 console.log('Max Poll Count:', MAX_POLL_COUNT);
 console.log('Poll Interval (ms):', POLL_INTERVAL_MS);
 console.log('Max Failed Attempts:', MAX_FAILED_ATTEMPTS);
 
-// Create a separate instance for the iFlow API
+// Function to get selected LLM provider from localStorage
+const getSelectedLLMProvider = () => {
+  return localStorage.getItem('selectedLLMProvider') || 'anthropic';
+};
+
+// Function to get the appropriate API instance based on LLM provider
+const getIflowApiInstance = () => {
+  const provider = getSelectedLLMProvider();
+
+  if (provider === 'gemma3') {
+    return gemma3Api;
+  }
+  return iflowApi; // Default to Anthropic
+};
+
+// Create a separate instance for the iFlow API (Anthropic)
 const iflowApi = axios.create({
   baseURL: IFLOW_API_URL,
   headers: {
@@ -189,6 +215,15 @@ const iflowApi = axios.create({
   },
   // Set withCredentials based on environment
   // In production, we need to set this to true for Cloud Foundry
+  withCredentials: ENV === 'production',
+})
+
+// Create a separate instance for the Gemma3 API
+const gemma3Api = axios.create({
+  baseURL: GEMMA3_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
   withCredentials: ENV === 'production',
 })
 
@@ -222,6 +257,35 @@ iflowApi.interceptors.response.use(
   }
 )
 
+// Add interceptors for Gemma3 API
+gemma3Api.interceptors.request.use(
+  (config) => {
+    console.log(`Gemma3 API Request to: ${config.baseURL}${config.url}`);
+    return config;
+  },
+  (error) => {
+    console.error('Gemma3 API Request Error:', error);
+    return Promise.reject(error);
+  }
+)
+
+gemma3Api.interceptors.response.use(
+  (response) => {
+    console.log(`Gemma3 API Response from: ${response.config.url}`, response.status);
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      console.error('Gemma3 API Error Response:', error.response.status, error.response.data);
+    } else if (error.request) {
+      console.error('Gemma3 API No Response Error:', error.request);
+    } else {
+      console.error('Gemma3 API Request Setup Error:', error.message);
+    }
+    return Promise.reject(error);
+  }
+)
+
 // Helper function to try the markdown approach for iFlow generation
 async function tryMarkdownApproach(jobId) {
     console.log(`Fetching markdown content for job: ${jobId}`);
@@ -241,29 +305,58 @@ async function tryMarkdownApproach(jobId) {
     return response.data;
 }
 
+// Provider-aware markdown approach
+async function tryMarkdownApproachWithProvider(jobId, provider) {
+    console.log(`Fetching markdown content for job: ${jobId} using ${provider}`);
+    const markdownBlob = await getDocumentation(jobId, 'markdown');
+    const markdownContent = await markdownBlob.text();
+    console.log(`Markdown content fetched, length: ${markdownContent.length} characters`);
+
+    const apiInstance = getIflowApiInstance();
+
+    // Configure timeout based on provider
+    const timeout = provider === 'gemma3' ? 300000 : 30000; // 5 minutes for Gemma3, 30 seconds for Anthropic
+
+    // Send the markdown content to the appropriate API
+    const response = await apiInstance.post(`/generate-iflow`, {
+        markdown: markdownContent,
+        iflow_name: `IFlow_${jobId.substring(0, 8)}`,
+        provider: provider
+    }, {
+        timeout: timeout
+    });
+
+    console.log(`${provider} iFlow generation response:`, response.data);
+    return response.data;
+}
+
 // Generate iFlow from markdown
 export const generateIflow = async (jobId) => {
     try {
-        console.log(`Generating iFlow for job: ${jobId}`);
+        const selectedProvider = getSelectedLLMProvider();
+        console.log(`Generating iFlow for job: ${jobId} using ${selectedProvider}`);
         console.log(`Environment: ${ENV}`);
+
+        // Get the appropriate API instance
+        const apiInstance = getIflowApiInstance();
 
         // Use a consistent approach for both development and production
         // First try the markdown approach, then fall back to direct approach if needed
         try {
-            console.log("Trying markdown approach first...");
+            console.log(`Trying markdown approach first with ${selectedProvider}...`);
 
             // Add a health check first to verify the API is accessible
             try {
-                console.log("Checking iFlow API health first...");
-                const healthResponse = await iflowApi.get('/health');
-                console.log("iFlow API health check response:", healthResponse.data);
+                console.log(`Checking ${selectedProvider} API health first...`);
+                const healthResponse = await apiInstance.get('/health');
+                console.log(`${selectedProvider} API health check response:`, healthResponse.data);
             } catch (healthError) {
-                console.error("iFlow API health check failed:", healthError);
+                console.error(`${selectedProvider} API health check failed:`, healthError);
                 console.log("Continuing with iFlow generation despite health check failure");
             }
 
-            // Try the markdown approach
-            return await tryMarkdownApproach(jobId);
+            // Try the markdown approach with selected provider
+            return await tryMarkdownApproachWithProvider(jobId, selectedProvider);
         } catch (markdownError) {
             console.error("Markdown approach failed:", markdownError);
 
@@ -327,14 +420,17 @@ export const generateIflow = async (jobId) => {
 // Get iFlow generation status
 export const getIflowGenerationStatus = async (jobId) => {
     try {
-        console.log(`Getting iFlow generation status for job: ${jobId}`);
+        const selectedProvider = getSelectedLLMProvider();
+        console.log(`Getting iFlow generation status for job: ${jobId} using ${selectedProvider}`);
+
+        const apiInstance = getIflowApiInstance();
 
         // Add a timeout to the request to prevent hanging
-        const response = await iflowApi.get(`/jobs/${jobId}`, {
+        const response = await apiInstance.get(`/jobs/${jobId}`, {
             timeout: 10000 // 10 second timeout
         });
 
-        console.log("iFlow generation status response:", response.data);
+        console.log(`${selectedProvider} iFlow generation status response:`, response.data);
         return response.data;
     } catch (error) {
         console.error("Error getting iFlow generation status:", error)
@@ -371,14 +467,17 @@ export const getIflowGenerationStatus = async (jobId) => {
 // Download generated iFlow
 export const downloadGeneratedIflow = async (jobId) => {
     try {
-        console.log(`Downloading generated iFlow for job: ${jobId}`);
+        const selectedProvider = getSelectedLLMProvider();
+        console.log(`Downloading generated iFlow for job: ${jobId} using ${selectedProvider}`);
 
-        // Use the dedicated iflowApi instance with blob response type
-        const response = await iflowApi.get(`/jobs/${jobId}/download`, {
+        const apiInstance = getIflowApiInstance();
+
+        // Use the appropriate API instance with blob response type
+        const response = await apiInstance.get(`/jobs/${jobId}/download`, {
             responseType: 'blob'
         });
 
-        console.log(`Downloaded iFlow blob, size: ${response.data.size} bytes`);
+        console.log(`Downloaded iFlow blob from ${selectedProvider}, size: ${response.data.size} bytes`);
         return response.data;
     } catch (error) {
         console.error("Error downloading generated iFlow:", error)

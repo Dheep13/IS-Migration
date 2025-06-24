@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<boomi-integration-guide>
+    <title>Connect SAP SuccessFactors to SFTP</title>
+
+    <description>
+        Connect SAP SuccessFactors to SFTP with Error Handling is a robust integration solution within the Boomi platform, focusing on integrating data from SuccessFactors to an SFTP server while incorporating comprehensive error handling. Enhance your business operations by ensuring the accurate and timely transfer of employee data with efficient error notifications.
+    </description>
+
+    <overview>
+        This process systematically handles SuccessFactors data retrieval, transformation, and loading to an SFTP server, all while ensuring any errors encountered are promptly reported via email, ensuring no data transfer failures go unnoticed.
+    </overview>
+
+    <benefits>
+        <benefit>
+            <name>Reliability</name>
+            <description>Ensures data transfer processes are robust and dependable.</description>
+        </benefit>
+        <benefit>
+            <name>Transparency</name>
+            <description>Comprehensive error notifications keep stakeholders informed of any issues.</description>
+        </benefit>
+        <benefit>
+            <name>Efficiency</name>
+            <description>Automates data transformation and transfer, minimizing manual effort.</description>
+        </benefit>
+    </benefits>
+
+    <prerequisites>
+        <title>Before You Begin</title>
+        <description>Ensure you have all necessary credentials and permissions to access SuccessFactors and SFTP. Familiarity with Boomi's process building and document property handling will be beneficial.</description>
+    </prerequisites>
+
+    <connections>
+        <connection type="SuccessFactors">
+            <title>SuccessFactors Connection</title>
+            <description>To configure a SuccessFactors connector within Boomi, navigate to the Connections Tab of a SuccessFactors Connection component and follow these steps:</description>
+            <parameters>
+                <parameter>
+                    <name>URL</name>
+                    <description>The endpoint URL of the SuccessFactors API.</description>
+                </parameter>
+                <parameter>
+                    <name>User</name>
+                    <description>The user name to log in to SuccessFactors. The user must have sufficient permissions to use the API and perform the necessary actions.</description>
+                </parameter>
+                <parameter>
+                    <name>Password</name>
+                    <description>The password to log in to SuccessFactors. Ensure you keep this secure and do not expose it in configurations.</description>
+                </parameter>
+            </parameters>
+        </connection>
+    </connections>
+
+    <processes>
+        <included-processes>
+            <process type="Main">Connect SAP SuccessFactors to SFTP with Error Handling</process>
+            <process type="Sub">Get All Employees</process>
+        </included-processes>
+
+        <main-process>
+            <name>Connect SAP SuccessFactors to SFTP with Error Handling</name>
+            <description>This main process retrieves employee data from SuccessFactors, performs necessary transformations, and then uploads the data to an SFTP server with error handling to ensure data integrity and process reliability.</description>
+
+            <steps>
+                <step type="Start">
+                    <name>Start Step</name>
+                    <type>No Data</type>
+                </step>
+
+                <step type="SetProperties">
+                    <name>Set Process MD</name>
+                    <description>This step sets dynamic process properties required for logging and error notifications.</description>
+                    <properties>
+                        <property>Dynamic Process Property - ProcessId</property>
+                        <property>Dynamic Process Property - ProcessName</property>
+                        <property>Dynamic Process Property - ExecutionId</property>
+                    </properties>
+
+                    <error-path>
+                        <step type="Message">
+                            <name>Error Notification</name>
+                            <description>Configures the error message to be sent if an error occurs during processing.</description>
+                            <content>HTML error message with process details.</content>
+                        </step>
+
+                        <step type="DocumentProperties">
+                            <name>Email Properties</name>
+                            <description>Sets document properties for email notification.</description>
+                        </step>
+
+                        <step type="ConnectorAction">
+                            <name>Send Email</name>
+                            <description>Sends the error email notification.</description>
+                            <action-type>Send</action-type>
+                        </step>
+                    </error-path>
+                </step>
+
+                <step type="Stop">
+                    <name>Stop Step</name>
+                    <type>Stop</type>
+                </step>
+
+                <try-path>
+                    <step type="ConnectorAction">
+                        <name>Query SuccessFactors</name>
+                        <description>Queries employee data from SuccessFactors.</description>
+                        <action-type>QUERY</action-type>
+                        <operation>Query EmpEmployment</operation>
+                    </step>
+
+                    <step type="Map">
+                        <name>SFSF EmpEmployment to Canonical</name>
+                        <description>Maps employee data from the SuccessFactors query to an Employee Canonical profile</description>
+                    </step>
+
+                    <step type="Branch">
+                        <name>Branch Step</name>
+                        <description>Branches the process into three paths based on business rules applied to the employee data.</description>
+                        <number-of-branches>3</number-of-branches>
+                        <note>Each branch contains a reject if the Business Rule is not met</note>
+                        <note>Branches two and three do not have rules currently set</note>
+
+                        <branch number="1">
+                            <step type="BusinessRules">
+                                <name>Employee Canonical</name>
+                                <description>Applies business rules to the employee data.</description>
+                                <profile>Employee Canonical Profile</profile>
+                                <rule>Country and Status</rule>
+                            </step>
+
+                            <step type="Map">
+                                <name>Map Step</name>
+                                <description>Maps the transformed Employee Canonical data to the desired format.</description>
+                            </step>
+
+                            <step type="DataProcess">
+                                <name>Combine Documents</name>
+                                <description>Combines document for further processing or uploading.</description>
+                                <profile-type>Flatfile</profile-type>
+                            </step>
+
+                            <step type="DocumentProperties">
+                                <name>Document Properties Step</name>
+                                <description>Sets document properties for the SFTP operation.</description>
+                                <properties>
+                                    <property name="SFTP V2 - File Name">Positionbased.csv</property>
+                                    <property name="SFTP V2 - Remote Directory">/boomi-service-sftp/boomi-service/poc/Loreal/IN</property>
+                                </properties>
+                            </step>
+
+                            <step type="ConnectorAction">
+                                <name>Upsert to SFTP</name>
+                                <description>Uploads the data to SFTP server.</description>
+                                <action-type>UPSERT</action-type>
+                            </step>
+
+                            <step type="Stop">
+                                <name>Stop Step</name>
+                                <description>This terminates the branch process.</description>
+                            </step>
+                        </branch>
+
+                        <branch number="2">
+                            <step type="BusinessRules">
+                                <name>Filter</name>
+                                <description>Applies filtering rules on the data.</description>
+                                <rules>Static Condition Inputs</rules>
+                            </step>
+
+                            <step type="KafkaProcess">
+                                <name>Canonical Employee Profile Data to Kafka</name>
+                                <description>Included are steps to prepare a payload to send to Kafka via the Kafka Connector. Avro Schema is set along with converting the profile from a JSON to a Avro Script</description>
+                            </step>
+                        </branch>
+
+                        <branch number="3">
+                            <step type="BusinessRules">
+                                <name>Filter</name>
+                                <description>Applies filtering rules on the data.</description>
+                                <rules>Static Condition Inputs</rules>
+                            </step>
+
+                            <step type="Map">
+                                <name>Map Step</name>
+                                <description>Maps filtered data to the desired structure.</description>
+                            </step>
+
+                            <step type="DataProcess">
+                                <name>Data Process Step</name>
+                                <description>Combines document for uploading.</description>
+                            </step>
+
+                            <step type="DocumentProperties">
+                                <name>Document Properties Step</name>
+                                <description>Sets document properties for SFTP upload.</description>
+                            </step>
+
+                            <step type="ConnectorAction">
+                                <name>Upsert to SFTP</name>
+                                <description>Uploads the filtered data to SFTP server.</description>
+                            </step>
+
+                            <step type="Stop">
+                                <name>Stop Step</name>
+                                <description>This terminates the branch processes</description>
+                            </step>
+                        </branch>
+                    </step>
+                </try-path>
+            </steps>
+        </main-process>
+    </processes>
+</boomi-integration-guide>

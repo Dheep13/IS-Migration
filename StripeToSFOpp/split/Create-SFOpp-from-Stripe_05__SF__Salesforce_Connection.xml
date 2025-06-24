@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDE0MTU" branchName="main" componentId="36fc72b2-5fa9-4c74-99df-5434918a140e" copiedFromComponentId="d10f942e-b338-40dc-b12f-268a14b6f555" copiedFromComponentVersion="5" createdBy="deepan@itresonance.com" createdDate="2025-06-05T11:22:10Z" currentVersion="true" deleted="false" folderFullPath="IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" folderId="Rjo3NzA2ODk1" folderName="Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" modifiedBy="deepan@itresonance.com" modifiedDate="2025-06-05T11:22:10Z" name="[SF] Salesforce Connection" subType="salesforce" type="connector-settings" version="1">
+  <bns:encryptedValues/>
+  <bns:description>For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions</bns:description>
+  <bns:object>
+    <SalesforceSettings maxActiveConnections="10" url="https://login.salesforce.com/services/Soap/u/39.0" version="vx">
+      <AuthSettings password="" user="&lt;User Name&gt;"/>
+    </SalesforceSettings>
+  </bns:object>
+</Component>

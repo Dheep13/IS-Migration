@@ -1,0 +1,746 @@
+<?xml version="1.0" ?>
+<boomi_sf_content>
+    <metadata>
+        <filename>SF content.txt</filename>
+        <converted_date>2025-06-18T16:19:10.207931</converted_date>
+        <original_format>text</original_format>
+    </metadata>
+    <content>
+        <line number="1">Boomi Platform Home</line>
+        <line number="2">Services</line>
+        <line number="3">Marketplace</line>
+        <line number="4">Resources</line>
+        <line number="5">Labs</line>
+        <line number="6">Settings</line>
+        <line number="7">ITresonance</line>
+        <line number="8">Boomi AI</line>
+        <line number="9">Help1</line>
+        <line number="10">Messages, including urgent messages</line>
+        <line number="11">Sign Out</line>
+        <line number="12">Integration</line>
+        <line number="13">Dashboard</line>
+        <line number="14">Build</line>
+        <line number="15">Deploy</line>
+        <line number="16">Manage</line>
+        <line number="17">Search component</line>
+        <line number="18">ITresonance</line>
+        <line number="20">Connect SAP SuccessFactors to SFTP with Erro...</line>
+        <line number="21">Process</line>
+        <line number="22">Create Packaged ComponentTest</line>
+        <line number="23">Save &amp; Close Save</line>
+        <line number="25">Search all steps</line>
+        <line number="26">Connect	Execute</line>
+        <line number="27">Logic</line>
+        <line number="28">Connect</line>
+        <line number="29">Execute</line>
+        <line number="30">Logic</line>
+        <line number="31">Cancel Test Execution</line>
+        <line number="32">Previous Save on 17 Jun 2025 at 06:24:54 PM UTC+5:30 RevertRevision History</line>
+        <line number="33">All(5)</line>
+        <line number="34">Boomi.comPlatform Status &amp; Announcements© Copyright 2025 Boomi, Inc.Privacy</line>
+        <line number="35">Revision History</line>
+        <line number="36">Get a summary of changes between revisions using Boomi GPT.</line>
+        <line number="37">Component ID	b9d7b229-669d-4835-9726-16c9b7c592e6</line>
+        <line number="38">Created By	Saravanan Suyambu (Saravanan@itresonance.com)</line>
+        <line number="39">Created Date	2025-06-17 06:24:54 PM</line>
+        <line number="40">Revision		Modified By	Modified Date</line>
+        <line number="41">1</line>
+        <line number="42">Saravanan Suyambu (Saravanan@itresonance.com)	2025-06-17 06:24:54 PM</line>
+        <line number="43">Component XML</line>
+        <line number="44">&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDM0OTU" branchName="main" componentId="b9d7b229-669d-4835-9726-16c9b7c592e6" copiedFromComponentId="a8940990-b85d-40ca-a887-2a8001b121f6" copiedFromComponentVersion="6" createdBy="Saravanan@itresonance.com" createdDate="2025-06-17T12:54:54Z" currentVersion="true" deleted="false" folderFullPath="ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08" folderId="Rjo3NzM2MDUz" folderName="Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08" modifiedBy="Saravanan@itresonance.com" modifiedDate="2025-06-17T12:54:54Z" name="Connect SAP SuccessFactors to SFTP with Error Handling" type="process" version="1"&gt;</line>
+        <line number="45">&lt;bns:encryptedValues/&gt;</line>
+        <line number="46">&lt;bns:description/&gt;</line>
+        <line number="47">&lt;bns:object&gt;</line>
+        <line number="48">&lt;process allowSimultaneous="false" enableUserLog="false" processLogOnErrorOnly="false" purgeDataImmediately="false" updateRunDates="true" workload="general"&gt;</line>
+        <line number="49">&lt;shapes&gt;</line>
+        <line number="50">&lt;shape image="start" name="shape1" shapetype="start" userlabel="" x="16.0" y="46.0"&gt;</line>
+        <line number="51">&lt;configuration&gt;</line>
+        <line number="52">&lt;noaction/&gt;</line>
+        <line number="53">&lt;/configuration&gt;</line>
+        <line number="54">&lt;dragpoints&gt;</line>
+        <line number="55">&lt;dragpoint name="shape1.dragpoint1" toShape="shape46" x="112.0" y="56.0"/&gt;</line>
+        <line number="56">&lt;/dragpoints&gt;</line>
+        <line number="57">&lt;/shape&gt;</line>
+        <line number="58">&lt;shape image="stop_icon" name="shape3" shapetype="stop" x="1440.0" y="240.0"&gt;</line>
+        <line number="59">&lt;configuration&gt;</line>
+        <line number="60">&lt;stop continue="true"/&gt;</line>
+        <line number="61">&lt;/configuration&gt;</line>
+        <line number="62">&lt;dragpoints/&gt;</line>
+        <line number="63">&lt;/shape&gt;</line>
+        <line number="64">&lt;shape image="branch_icon" name="shape6" shapetype="branch" userlabel="" x="944.0" y="48.0"&gt;</line>
+        <line number="65">&lt;configuration&gt;</line>
+        <line number="66">&lt;branch numBranches="3"/&gt;</line>
+        <line number="67">&lt;/configuration&gt;</line>
+        <line number="68">&lt;dragpoints&gt;</line>
+        <line number="69">&lt;dragpoint identifier="1" name="shape6.dragpoint1" text="1" toShape="shape15" x="1184.0" y="152.0"/&gt;</line>
+        <line number="70">&lt;dragpoint identifier="2" name="shape6.dragpoint2" text="2" toShape="shape38" x="1184.0" y="360.0"/&gt;</line>
+        <line number="71">&lt;dragpoint identifier="3" name="shape6.dragpoint3" text="3" toShape="shape39" x="1184.0" y="696.0"/&gt;</line>
+        <line number="72">&lt;/dragpoints&gt;</line>
+        <line number="73">&lt;/shape&gt;</line>
+        <line number="74">&lt;shape image="map_icon" name="shape7" shapetype="map" userlabel="" x="1440.0" y="48.0"&gt;</line>
+        <line number="75">&lt;configuration&gt;</line>
+        <line number="76">&lt;map mapId="afe21b48-3433-4fd9-8981-ba1c74befc09"/&gt;</line>
+        <line number="77">&lt;/configuration&gt;</line>
+        <line number="78">&lt;dragpoints&gt;</line>
+        <line number="79">&lt;dragpoint name="shape7.dragpoint1" toShape="shape42" x="1584.0" y="56.0"/&gt;</line>
+        <line number="80">&lt;/dragpoints&gt;</line>
+        <line number="81">&lt;/shape&gt;</line>
+        <line number="82">&lt;shape image="map_icon" name="shape9" shapetype="map" userlabel="" x="1520.0" y="688.0"&gt;</line>
+        <line number="83">&lt;configuration&gt;</line>
+        <line number="84">&lt;map mapId="05b2e5c9-4d34-4d4e-a797-bafd4627320e"/&gt;</line>
+        <line number="85">&lt;/configuration&gt;</line>
+        <line number="86">&lt;dragpoints&gt;</line>
+        <line number="87">&lt;dragpoint name="shape9.dragpoint1" toShape="shape41" x="1680.0" y="696.0"/&gt;</line>
+        <line number="88">&lt;/dragpoints&gt;</line>
+        <line number="89">&lt;/shape&gt;</line>
+        <line number="90">&lt;shape image="catcherrors_icon" name="shape10" shapetype="catcherrors" x="240.0" y="48.0"&gt;</line>
+        <line number="91">&lt;configuration&gt;</line>
+        <line number="92">&lt;catcherrors catchAll="false" retryCount="0"/&gt;</line>
+        <line number="93">&lt;/configuration&gt;</line>
+        <line number="94">&lt;dragpoints&gt;</line>
+        <line number="95">&lt;dragpoint identifier="default" name="shape10.dragpoint1" text="Try" toShape="shape37" x="512.0" y="56.0"/&gt;</line>
+        <line number="96">&lt;dragpoint identifier="error" name="shape10.dragpoint2" text="Catch" toShape="shape33" x="448.0" y="472.0"/&gt;</line>
+        <line number="97">&lt;/dragpoints&gt;</line>
+        <line number="98">&lt;/shape&gt;</line>
+        <line number="99">&lt;shape image="businessrules_icon" name="shape15" shapetype="businessrules" userlabel="Employee Canonical" x="1200.0" y="144.0"&gt;</line>
+        <line number="100">&lt;configuration&gt;</line>
+        <line number="101">&lt;businessrules profileId="a0733742-31f8-4c23-a8a4-08382ffb75ce" profileName="Employee Canonical" profileType="profile.xml"&gt;</line>
+        <line number="102">&lt;rule key="5" name="Country and Status"&gt;</line>
+        <line number="103">&lt;input alias="Status" elementKey="42" id="2" name="Status (output/GBOEmployeeList/GBOEmployee/Employee/Status)" taglist="0" xsi:type="BusinessRuleField"/&gt;</line>
+        <line number="104">&lt;input alias="Address Country Code" elementKey="24" id="3" name="countryCode (output/GBOEmployeeList/GBOEmployee/Employee/address/countryCode)" taglist="0" xsi:type="BusinessRuleField"/&gt;</line>
+        <line number="105">&lt;condition operator="and" xsi:type="GroupingCondition"&gt;</line>
+        <line number="106">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="107">&lt;leftInput deleted="false" id="3" name="Address Country Code" xsi:type="FieldConditionInput"/&gt;</line>
+        <line number="108">&lt;rightInput deleted="false" id="0" name="&amp;quot;USA&amp;quot;" value="USA" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="109">&lt;/nestedExpression&gt;</line>
+        <line number="110">&lt;nestedExpression operator="or" xsi:type="GroupingCondition"&gt;</line>
+        <line number="111">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="112">&lt;leftInput deleted="false" id="2" name="Status" xsi:type="FieldConditionInput"/&gt;</line>
+        <line number="113">&lt;rightInput deleted="false" id="0" name="&amp;quot;A&amp;quot;" value="A" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="114">&lt;/nestedExpression&gt;</line>
+        <line number="115">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="116">&lt;leftInput deleted="false" id="2" name="Status" xsi:type="FieldConditionInput"/&gt;</line>
+        <line number="117">&lt;rightInput deleted="false" id="0" name="&amp;quot;S&amp;quot;" value="S" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="118">&lt;/nestedExpression&gt;</line>
+        <line number="119">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="120">&lt;leftInput deleted="false" id="2" name="Status" xsi:type="FieldConditionInput"/&gt;</line>
+        <line number="121">&lt;rightInput deleted="false" id="0" name="&amp;quot;U&amp;quot;" value="U" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="122">&lt;/nestedExpression&gt;</line>
+        <line number="123">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="124">&lt;leftInput deleted="false" id="2" name="Status" xsi:type="FieldConditionInput"/&gt;</line>
+        <line number="125">&lt;rightInput deleted="false" id="0" name="&amp;quot;P&amp;quot;" value="P" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="126">&lt;/nestedExpression&gt;</line>
+        <line number="127">&lt;/nestedExpression&gt;</line>
+        <line number="128">&lt;/condition&gt;</line>
+        <line number="129">&lt;errorMessage/&gt;</line>
+        <line number="130">&lt;/rule&gt;</line>
+        <line number="131">&lt;/businessrules&gt;</line>
+        <line number="132">&lt;/configuration&gt;</line>
+        <line number="133">&lt;dragpoints&gt;</line>
+        <line number="134">&lt;dragpoint identifier="Accepted" name="shape15.dragpoint1" text="Accepted" toShape="shape7" x="1424.0" y="56.0"/&gt;</line>
+        <line number="135">&lt;dragpoint identifier="Rejected" name="shape15.dragpoint2" text="Rejected" toShape="shape3" x="1424.0" y="248.0"/&gt;</line>
+        <line number="136">&lt;/dragpoints&gt;</line>
+        <line number="137">&lt;/shape&gt;</line>
+        <line number="138">&lt;shape image="stop_icon" name="shape18" shapetype="stop" x="1552.0" y="512.0"&gt;</line>
+        <line number="139">&lt;configuration&gt;</line>
+        <line number="140">&lt;stop continue="true"/&gt;</line>
+        <line number="141">&lt;/configuration&gt;</line>
+        <line number="142">&lt;dragpoints/&gt;</line>
+        <line number="143">&lt;/shape&gt;</line>
+        <line number="144">&lt;shape image="stop_icon" name="shape19" shapetype="stop" x="1536.0" y="800.0"&gt;</line>
+        <line number="145">&lt;configuration&gt;</line>
+        <line number="146">&lt;stop continue="true"/&gt;</line>
+        <line number="147">&lt;/configuration&gt;</line>
+        <line number="148">&lt;dragpoints/&gt;</line>
+        <line number="149">&lt;/shape&gt;</line>
+        <line number="150">&lt;shape image="stop_icon" name="shape21" shapetype="stop" x="1984.0" y="48.0"&gt;</line>
+        <line number="151">&lt;configuration&gt;</line>
+        <line number="152">&lt;stop continue="true"/&gt;</line>
+        <line number="153">&lt;/configuration&gt;</line>
+        <line number="154">&lt;dragpoints/&gt;</line>
+        <line number="155">&lt;/shape&gt;</line>
+        <line number="156">&lt;shape image="documentproperties_icon" name="shape22" shapetype="documentproperties" userlabel="" x="1760.0" y="48.0"&gt;</line>
+        <line number="157">&lt;configuration&gt;</line>
+        <line number="158">&lt;documentproperties&gt;</line>
+        <line number="159">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="SFTP V2 - File Name" persist="false" propertyId="connector.officialboomi-X3979C-sftpv2-prod.fileName" shouldEncrypt="false"&gt;</line>
+        <line number="160">&lt;sourcevalues&gt;</line>
+        <line number="161">&lt;parametervalue key="4" valueType="static"&gt;</line>
+        <line number="162">&lt;staticparameter staticproperty="Positionbased.csv"/&gt;</line>
+        <line number="163">&lt;/parametervalue&gt;</line>
+        <line number="164">&lt;/sourcevalues&gt;</line>
+        <line number="165">&lt;/documentproperty&gt;</line>
+        <line number="166">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="SFTP V2 - Remote Directory" persist="false" propertyId="connector.officialboomi-X3979C-sftpv2-prod.remoteDirectory" shouldEncrypt="false"&gt;</line>
+        <line number="167">&lt;sourcevalues&gt;</line>
+        <line number="168">&lt;parametervalue key="5" valueType="static"&gt;</line>
+        <line number="169">&lt;staticparameter staticproperty="/boomi-service-sftp/boomi-service/poc/Loreal/IN"/&gt;</line>
+        <line number="170">&lt;/parametervalue&gt;</line>
+        <line number="171">&lt;/sourcevalues&gt;</line>
+        <line number="172">&lt;/documentproperty&gt;</line>
+        <line number="173">&lt;/documentproperties&gt;</line>
+        <line number="174">&lt;/configuration&gt;</line>
+        <line number="175">&lt;dragpoints&gt;</line>
+        <line number="176">&lt;dragpoint name="shape22.dragpoint1" toShape="shape44" x="1856.0" y="56.0"/&gt;</line>
+        <line number="177">&lt;/dragpoints&gt;</line>
+        <line number="178">&lt;/shape&gt;</line>
+        <line number="179">&lt;shape image="stop_icon" name="shape24" shapetype="stop" x="2096.0" y="448.0"&gt;</line>
+        <line number="180">&lt;configuration&gt;</line>
+        <line number="181">&lt;stop continue="true"/&gt;</line>
+        <line number="182">&lt;/configuration&gt;</line>
+        <line number="183">&lt;dragpoints/&gt;</line>
+        <line number="184">&lt;/shape&gt;</line>
+        <line number="185">&lt;shape image="documentproperties_icon" name="shape25" shapetype="documentproperties" userlabel="" x="1840.0" y="688.0"&gt;</line>
+        <line number="186">&lt;configuration&gt;</line>
+        <line number="187">&lt;documentproperties&gt;</line>
+        <line number="188">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="SFTP V2 - File Name" persist="false" propertyId="connector.officialboomi-X3979C-sftpv2-prod.fileName" shouldEncrypt="false"&gt;</line>
+        <line number="189">&lt;sourcevalues&gt;</line>
+        <line number="190">&lt;parametervalue key="3" valueType="static"&gt;</line>
+        <line number="191">&lt;staticparameter staticproperty="PipeDelimited.csv"/&gt;</line>
+        <line number="192">&lt;/parametervalue&gt;</line>
+        <line number="193">&lt;/sourcevalues&gt;</line>
+        <line number="194">&lt;/documentproperty&gt;</line>
+        <line number="195">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="SFTP V2 - Remote Directory" persist="false" propertyId="connector.officialboomi-X3979C-sftpv2-prod.remoteDirectory" shouldEncrypt="false"&gt;</line>
+        <line number="196">&lt;sourcevalues&gt;</line>
+        <line number="197">&lt;parametervalue key="4" valueType="static"&gt;</line>
+        <line number="198">&lt;staticparameter staticproperty="/boomi-service-sftp/boomi-service/poc/Loreal/IN"/&gt;</line>
+        <line number="199">&lt;/parametervalue&gt;</line>
+        <line number="200">&lt;/sourcevalues&gt;</line>
+        <line number="201">&lt;/documentproperty&gt;</line>
+        <line number="202">&lt;/documentproperties&gt;</line>
+        <line number="203">&lt;/configuration&gt;</line>
+        <line number="204">&lt;dragpoints&gt;</line>
+        <line number="205">&lt;dragpoint name="shape25.dragpoint1" toShape="shape45" x="1968.0" y="696.0"/&gt;</line>
+        <line number="206">&lt;/dragpoints&gt;</line>
+        <line number="207">&lt;/shape&gt;</line>
+        <line number="208">&lt;shape image="stop_icon" name="shape27" shapetype="stop" x="2112.0" y="688.0"&gt;</line>
+        <line number="209">&lt;configuration&gt;</line>
+        <line number="210">&lt;stop continue="true"/&gt;</line>
+        <line number="211">&lt;/configuration&gt;</line>
+        <line number="212">&lt;dragpoints/&gt;</line>
+        <line number="213">&lt;/shape&gt;</line>
+        <line number="214">&lt;shape image="documentproperties_icon" name="shape32" shapetype="documentproperties" userlabel="" x="640.0" y="464.0"&gt;</line>
+        <line number="215">&lt;configuration&gt;</line>
+        <line number="216">&lt;documentproperties&gt;</line>
+        <line number="217">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Mail - Subject" persist="false" propertyId="connector.mail.subject" shouldEncrypt="false"&gt;</line>
+        <line number="218">&lt;sourcevalues&gt;</line>
+        <line number="219">&lt;parametervalue key="1" valueType="static"&gt;</line>
+        <line number="220">&lt;staticparameter staticproperty="Error Notification"/&gt;</line>
+        <line number="221">&lt;/parametervalue&gt;</line>
+        <line number="222">&lt;/sourcevalues&gt;</line>
+        <line number="223">&lt;/documentproperty&gt;</line>
+        <line number="224">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Mail - From Address" persist="false" propertyId="connector.mail.fromAddress" shouldEncrypt="false"&gt;</line>
+        <line number="225">&lt;sourcevalues&gt;</line>
+        <line number="226">&lt;parametervalue key="2" valueType="static"&gt;</line>
+        <line number="227">&lt;staticparameter staticproperty="Boomi.demo@boomi.com"/&gt;</line>
+        <line number="228">&lt;/parametervalue&gt;</line>
+        <line number="229">&lt;/sourcevalues&gt;</line>
+        <line number="230">&lt;/documentproperty&gt;</line>
+        <line number="231">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Mail - To Address" persist="false" propertyId="connector.mail.toAddress" shouldEncrypt="false"&gt;</line>
+        <line number="232">&lt;sourcevalues&gt;</line>
+        <line number="233">&lt;parametervalue key="3" valueType="static"&gt;</line>
+        <line number="234">&lt;staticparameter staticproperty="harvey.melfi@boomi.com"/&gt;</line>
+        <line number="235">&lt;/parametervalue&gt;</line>
+        <line number="236">&lt;/sourcevalues&gt;</line>
+        <line number="237">&lt;/documentproperty&gt;</line>
+        <line number="238">&lt;/documentproperties&gt;</line>
+        <line number="239">&lt;/configuration&gt;</line>
+        <line number="240">&lt;dragpoints&gt;</line>
+        <line number="241">&lt;dragpoint name="shape32.dragpoint1" toShape="shape31" x="752.0" y="472.0"/&gt;</line>
+        <line number="242">&lt;/dragpoints&gt;</line>
+        <line number="243">&lt;/shape&gt;</line>
+        <line number="244">&lt;shape image="connectoraction_icon" name="shape31" shapetype="connectoraction" userlabel="" x="768.0" y="464.0"&gt;</line>
+        <line number="245">&lt;configuration&gt;</line>
+        <line number="246">&lt;connectoraction actionType="Send" allowDynamicCredentials="NONE" connectionId="ec0a5f95-9fb0-4256-b7f1-ebf217e59d18" connectorType="mail" hideSettings="false" operationId="c6e276f9-d2f1-480d-8301-8a6675c991eb"&gt;</line>
+        <line number="247">&lt;parameters/&gt;</line>
+        <line number="248">&lt;dynamicProperties/&gt;</line>
+        <line number="249">&lt;/connectoraction&gt;</line>
+        <line number="250">&lt;/configuration&gt;</line>
+        <line number="251">&lt;dragpoints&gt;</line>
+        <line number="252">&lt;dragpoint name="shape31.dragpoint1" toShape="shape34" x="912.0" y="472.0"/&gt;</line>
+        <line number="253">&lt;/dragpoints&gt;</line>
+        <line number="254">&lt;/shape&gt;</line>
+        <line number="255">&lt;shape image="message_icon" name="shape33" shapetype="message" userlabel="" x="464.0" y="464.0"&gt;</line>
+        <line number="256">&lt;configuration&gt;</line>
+        <line number="257">&lt;message combined="false"&gt;</line>
+        <line number="258">&lt;msgTxt&gt;&amp;lt;p&amp;gt;Hi Team,&amp;lt;/p&amp;gt;</line>
+        <line number="259">&amp;lt;p&amp;gt;There was an error in the Boomi Process. Please find the details below.&amp;lt;/p&amp;gt;</line>
+        <line number="260">&amp;lt;table style="border-collapse: collapse; width: 100%;" border="1"&amp;gt;</line>
+        <line number="261">&amp;lt;tbody&amp;gt;</line>
+        <line number="262">&amp;lt;tr&amp;gt;</line>
+        <line number="263">&amp;lt;td style="width: 25%; background-color: #e14334; text-align: center;"&amp;gt;&amp;lt;strong&amp;gt;Process Name&amp;lt;/strong&amp;gt;&amp;lt;/td&amp;gt;</line>
+        <line number="264">&amp;lt;td style="width: 25%; background-color: #e14334; text-align: center;"&amp;gt;&amp;lt;strong&amp;gt;Execution Id&amp;lt;/strong&amp;gt;&amp;lt;/td&amp;gt;</line>
+        <line number="265">&amp;lt;td style="width: 25%; background-color: #e14334; text-align: center;"&amp;gt;&amp;lt;strong&amp;gt;Process Id&amp;lt;/strong&amp;gt;&amp;lt;/td&amp;gt;</line>
+        <line number="266">&amp;lt;td style="width: 25%; background-color: #e14334; text-align: center;"&amp;gt;&amp;lt;strong&amp;gt;Error&amp;lt;/strong&amp;gt;&amp;lt;/td&amp;gt;</line>
+        <line number="267">&amp;lt;/tr&amp;gt;</line>
+        <line number="268">&amp;lt;tr&amp;gt;</line>
+        <line number="269">&amp;lt;td style="width: 25%; text-align: center;"&amp;gt;{2}&amp;lt;/td&amp;gt;</line>
+        <line number="270">&amp;lt;td style="width: 25%; text-align: center;"&amp;gt;{3}&amp;lt;/td&amp;gt;</line>
+        <line number="271">&amp;lt;td style="width: 25%; text-align: center;"&amp;gt;{4}&amp;lt;/td&amp;gt;</line>
+        <line number="272">&amp;lt;td style="width: 25%; text-align: center;"&amp;gt;{1}&amp;lt;/td&amp;gt;</line>
+        <line number="273">&amp;lt;/tr&amp;gt;</line>
+        <line number="274">&amp;lt;/tbody&amp;gt;</line>
+        <line number="275">&amp;lt;/table&amp;gt;</line>
+        <line number="276">&amp;lt;p&amp;gt;Thanks,&amp;lt;/p&amp;gt;</line>
+        <line number="277">&amp;lt;p&amp;gt;&amp;lt;img src="https://pxl-fbdie.terminalfour.net/filters:format(webp)/prod01/channel_26/media/fbd2018/img/FBD_Logo_Mobile.png" alt="Car, Home, Business &amp;amp;amp; Farm Insurance | Online Quotes | FBD Insurance Ireland" width="106" height="45" /&amp;gt;&amp;lt;/p&amp;gt;</line>
+        <line number="278">&amp;lt;p&amp;gt;This is an auto-generated email . . .&amp;lt;/p&amp;gt;&lt;/msgTxt&gt;</line>
+        <line number="279">&lt;msgParameters&gt;</line>
+        <line number="280">&lt;parametervalue key="0" valueType="track"&gt;</line>
+        <line number="281">&lt;trackparameter defaultValue="" propertyId="meta.base.catcherrorsmessage" propertyName="Base - Try/Catch Message"/&gt;</line>
+        <line number="282">&lt;/parametervalue&gt;</line>
+        <line number="283">&lt;parametervalue key="1" valueType="process"&gt;</line>
+        <line number="284">&lt;processparameter processproperty="ProcessName" processpropertydefaultvalue=""/&gt;</line>
+        <line number="285">&lt;/parametervalue&gt;</line>
+        <line number="286">&lt;parametervalue key="2" valueType="process"&gt;</line>
+        <line number="287">&lt;processparameter processproperty="ExecutionId" processpropertydefaultvalue=""/&gt;</line>
+        <line number="288">&lt;/parametervalue&gt;</line>
+        <line number="289">&lt;parametervalue key="3" valueType="process"&gt;</line>
+        <line number="290">&lt;processparameter processproperty="ProcessId" processpropertydefaultvalue=""/&gt;</line>
+        <line number="291">&lt;/parametervalue&gt;</line>
+        <line number="292">&lt;/msgParameters&gt;</line>
+        <line number="293">&lt;/message&gt;</line>
+        <line number="294">&lt;/configuration&gt;</line>
+        <line number="295">&lt;dragpoints&gt;</line>
+        <line number="296">&lt;dragpoint name="shape33.dragpoint1" toShape="shape32" x="624.0" y="472.0"/&gt;</line>
+        <line number="297">&lt;/dragpoints&gt;</line>
+        <line number="298">&lt;/shape&gt;</line>
+        <line number="299">&lt;shape image="stop_icon" name="shape34" shapetype="stop" x="928.0" y="464.0"&gt;</line>
+        <line number="300">&lt;configuration&gt;</line>
+        <line number="301">&lt;stop continue="true"/&gt;</line>
+        <line number="302">&lt;/configuration&gt;</line>
+        <line number="303">&lt;dragpoints/&gt;</line>
+        <line number="304">&lt;/shape&gt;</line>
+        <line number="305">&lt;shape image="connectoraction_icon" name="shape37" shapetype="connectoraction" userlabel="" x="528.0" y="48.0"&gt;</line>
+        <line number="306">&lt;configuration&gt;</line>
+        <line number="307">&lt;connectoraction actionType="QUERY" allowDynamicCredentials="NONE" connectionId="06230328-b879-4666-afc1-57aca076a8f2" connectorType="successfactorsmaster-Q2Q93V-SFSF-priv_prod" hideSettings="false" operationId="f2469843-165b-4a8a-8493-ca89a7df4323" parameter-profile="EMBEDDED|genericparameterchooser|f2469843-165b-4a8a-8493-ca89a7df4323"&gt;</line>
+        <line number="308">&lt;parameters&gt;</line>
+        <line number="309">&lt;parametervalue elementToSetId="2" elementToSetName="country=" key="0" valueType="static"&gt;</line>
+        <line number="310">&lt;staticparameter staticproperty="USA"/&gt;</line>
+        <line number="311">&lt;/parametervalue&gt;</line>
+        <line number="312">&lt;parametervalue elementToSetId="3" elementToSetName="hiringNotCompleted=" key="1" valueType="static"&gt;</line>
+        <line number="313">&lt;staticparameter staticproperty="false"/&gt;</line>
+        <line number="314">&lt;/parametervalue&gt;</line>
+        <line number="315">&lt;/parameters&gt;</line>
+        <line number="316">&lt;dynamicProperties/&gt;</line>
+        <line number="317">&lt;/connectoraction&gt;</line>
+        <line number="318">&lt;/configuration&gt;</line>
+        <line number="319">&lt;dragpoints&gt;</line>
+        <line number="320">&lt;dragpoint name="shape37.dragpoint1" toShape="shape48" x="768.0" y="56.0"/&gt;</line>
+        <line number="321">&lt;/dragpoints&gt;</line>
+        <line number="322">&lt;/shape&gt;</line>
+        <line number="323">&lt;shape image="businessrules_icon" name="shape38" shapetype="businessrules" userlabel="" x="1200.0" y="352.0"&gt;</line>
+        <line number="324">&lt;configuration&gt;</line>
+        <line number="325">&lt;businessrules profileId="9c75d152-2e53-4ad2-bd27-5ef803b41d13" profileName="SuccessFactors — Partner Connector CompoundEmployee QUERY Response" profileType="profile.xml"&gt;</line>
+        <line number="326">&lt;rule key="2" name="Filter"&gt;</line>
+        <line number="327">&lt;condition operator="and" xsi:type="GroupingCondition"&gt;</line>
+        <line number="328">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="329">&lt;leftInput deleted="false" id="0" name="&amp;quot;1&amp;quot;" value="1" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="330">&lt;rightInput deleted="false" id="0" name="&amp;quot;1&amp;quot;" value="1" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="331">&lt;/nestedExpression&gt;</line>
+        <line number="332">&lt;/condition&gt;</line>
+        <line number="333">&lt;errorMessage/&gt;</line>
+        <line number="334">&lt;/rule&gt;</line>
+        <line number="335">&lt;/businessrules&gt;</line>
+        <line number="336">&lt;/configuration&gt;</line>
+        <line number="337">&lt;dragpoints&gt;</line>
+        <line number="338">&lt;dragpoint identifier="Accepted" name="shape38.dragpoint1" text="Accepted" toShape="shape53" x="1456.0" y="360.0"/&gt;</line>
+        <line number="339">&lt;dragpoint identifier="Rejected" name="shape38.dragpoint2" text="Rejected" toShape="shape18" x="1536.0" y="520.0"/&gt;</line>
+        <line number="340">&lt;/dragpoints&gt;</line>
+        <line number="341">&lt;/shape&gt;</line>
+        <line number="342">&lt;shape image="businessrules_icon" name="shape39" shapetype="businessrules" userlabel="" x="1200.0" y="688.0"&gt;</line>
+        <line number="343">&lt;configuration&gt;</line>
+        <line number="344">&lt;businessrules profileId="9c75d152-2e53-4ad2-bd27-5ef803b41d13" profileName="SuccessFactors — Partner Connector CompoundEmployee QUERY Response" profileType="profile.xml"&gt;</line>
+        <line number="345">&lt;rule key="2" name="Filter"&gt;</line>
+        <line number="346">&lt;condition operator="and" xsi:type="GroupingCondition"&gt;</line>
+        <line number="347">&lt;nestedExpression operator="=" xsi:type="SimpleCondition"&gt;</line>
+        <line number="348">&lt;leftInput deleted="false" id="0" name="&amp;quot;1&amp;quot;" value="1" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="349">&lt;rightInput deleted="false" id="0" name="&amp;quot;1&amp;quot;" value="1" xsi:type="StaticConditionInput"/&gt;</line>
+        <line number="350">&lt;/nestedExpression&gt;</line>
+        <line number="351">&lt;/condition&gt;</line>
+        <line number="352">&lt;errorMessage/&gt;</line>
+        <line number="353">&lt;/rule&gt;</line>
+        <line number="354">&lt;/businessrules&gt;</line>
+        <line number="355">&lt;/configuration&gt;</line>
+        <line number="356">&lt;dragpoints&gt;</line>
+        <line number="357">&lt;dragpoint identifier="Accepted" name="shape39.dragpoint1" text="Accepted" toShape="shape9" x="1504.0" y="696.0"/&gt;</line>
+        <line number="358">&lt;dragpoint identifier="Rejected" name="shape39.dragpoint2" text="Rejected" toShape="shape19" x="1520.0" y="808.0"/&gt;</line>
+        <line number="359">&lt;/dragpoints&gt;</line>
+        <line number="360">&lt;/shape&gt;</line>
+        <line number="361">&lt;shape image="dataprocess_icon" name="shape41" shapetype="dataprocess" userlabel="" x="1696.0" y="688.0"&gt;</line>
+        <line number="362">&lt;configuration&gt;</line>
+        <line number="363">&lt;dataprocess&gt;</line>
+        <line number="364">&lt;step index="1" key="1" name="Combine Documents" processtype="9"&gt;</line>
+        <line number="365">&lt;dataprocesscombine profileType="flatfile"&gt;</line>
+        <line number="366">&lt;FFOptions freeFormFooter="" freeFormHeader="" headersOption="retain"/&gt;</line>
+        <line number="367">&lt;/dataprocesscombine&gt;</line>
+        <line number="368">&lt;/step&gt;</line>
+        <line number="369">&lt;/dataprocess&gt;</line>
+        <line number="370">&lt;/configuration&gt;</line>
+        <line number="371">&lt;dragpoints&gt;</line>
+        <line number="372">&lt;dragpoint name="shape41.dragpoint1" toShape="shape25" x="1824.0" y="696.0"/&gt;</line>
+        <line number="373">&lt;/dragpoints&gt;</line>
+        <line number="374">&lt;/shape&gt;</line>
+        <line number="375">&lt;shape image="dataprocess_icon" name="shape42" shapetype="dataprocess" userlabel="Combine Documents" x="1600.0" y="48.0"&gt;</line>
+        <line number="376">&lt;configuration&gt;</line>
+        <line number="377">&lt;dataprocess&gt;</line>
+        <line number="378">&lt;step index="1" key="1" name="Combine Documents" processtype="9"&gt;</line>
+        <line number="379">&lt;dataprocesscombine profileType="flatfile"&gt;</line>
+        <line number="380">&lt;FFOptions freeFormFooter="" freeFormHeader="" headersOption="none"/&gt;</line>
+        <line number="381">&lt;/dataprocesscombine&gt;</line>
+        <line number="382">&lt;/step&gt;</line>
+        <line number="383">&lt;/dataprocess&gt;</line>
+        <line number="384">&lt;/configuration&gt;</line>
+        <line number="385">&lt;dragpoints&gt;</line>
+        <line number="386">&lt;dragpoint name="shape42.dragpoint1" toShape="shape22" x="1744.0" y="56.0"/&gt;</line>
+        <line number="387">&lt;/dragpoints&gt;</line>
+        <line number="388">&lt;/shape&gt;</line>
+        <line number="389">&lt;shape image="connectoraction_icon" name="shape44" shapetype="connectoraction" userlabel="" x="1872.0" y="48.0"&gt;</line>
+        <line number="390">&lt;configuration&gt;</line>
+        <line number="391">&lt;connectoraction actionType="UPSERT" allowDynamicCredentials="NONE" connectionId="2f35e27d-7960-4739-8204-69c75c97333c" connectorType="officialboomi-X3979C-sftpv2-prod" hideSettings="false" operationId="61a85171-5df0-4e6c-81e6-7fd13ae0af37"&gt;</line>
+        <line number="392">&lt;parameters/&gt;</line>
+        <line number="393">&lt;dynamicProperties/&gt;</line>
+        <line number="394">&lt;/connectoraction&gt;</line>
+        <line number="395">&lt;/configuration&gt;</line>
+        <line number="396">&lt;dragpoints&gt;</line>
+        <line number="397">&lt;dragpoint name="shape44.dragpoint1" toShape="shape21" x="1968.0" y="56.0"/&gt;</line>
+        <line number="398">&lt;/dragpoints&gt;</line>
+        <line number="399">&lt;/shape&gt;</line>
+        <line number="400">&lt;shape image="connectoraction_icon" name="shape45" shapetype="connectoraction" userlabel="" x="1984.0" y="688.0"&gt;</line>
+        <line number="401">&lt;configuration&gt;</line>
+        <line number="402">&lt;connectoraction actionType="UPSERT" allowDynamicCredentials="NONE" connectionId="2f35e27d-7960-4739-8204-69c75c97333c" connectorType="officialboomi-X3979C-sftpv2-prod" hideSettings="false" operationId="357963b9-0964-4c99-b3c3-b7962e1b3cab"&gt;</line>
+        <line number="403">&lt;parameters/&gt;</line>
+        <line number="404">&lt;dynamicProperties/&gt;</line>
+        <line number="405">&lt;/connectoraction&gt;</line>
+        <line number="406">&lt;/configuration&gt;</line>
+        <line number="407">&lt;dragpoints&gt;</line>
+        <line number="408">&lt;dragpoint name="shape45.dragpoint1" toShape="shape27" x="2096.0" y="696.0"/&gt;</line>
+        <line number="409">&lt;/dragpoints&gt;</line>
+        <line number="410">&lt;/shape&gt;</line>
+        <line number="411">&lt;shape image="documentproperties_icon" name="shape46" shapetype="documentproperties" userlabel="Set Process MD" x="128.0" y="48.0"&gt;</line>
+        <line number="412">&lt;configuration&gt;</line>
+        <line number="413">&lt;documentproperties&gt;</line>
+        <line number="414">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Process Property - ProcessId" persist="false" propertyId="process.ProcessId" shouldEncrypt="false"&gt;</line>
+        <line number="415">&lt;sourcevalues&gt;</line>
+        <line number="416">&lt;parametervalue key="1" valueType="execution"&gt;</line>
+        <line number="417">&lt;executionparameter executionproperty="Process Id"/&gt;</line>
+        <line number="418">&lt;/parametervalue&gt;</line>
+        <line number="419">&lt;/sourcevalues&gt;</line>
+        <line number="420">&lt;/documentproperty&gt;</line>
+        <line number="421">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Process Property - ProcessName" persist="false" propertyId="process.ProcessName" shouldEncrypt="false"&gt;</line>
+        <line number="422">&lt;sourcevalues&gt;</line>
+        <line number="423">&lt;parametervalue key="2" valueType="execution"&gt;</line>
+        <line number="424">&lt;executionparameter executionproperty="Process Name"/&gt;</line>
+        <line number="425">&lt;/parametervalue&gt;</line>
+        <line number="426">&lt;/sourcevalues&gt;</line>
+        <line number="427">&lt;/documentproperty&gt;</line>
+        <line number="428">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Process Property - ExecutionId" persist="false" propertyId="process.ExecutionId" shouldEncrypt="false"&gt;</line>
+        <line number="429">&lt;sourcevalues&gt;</line>
+        <line number="430">&lt;parametervalue key="3" valueType="execution"&gt;</line>
+        <line number="431">&lt;executionparameter executionproperty="Execution Id"/&gt;</line>
+        <line number="432">&lt;/parametervalue&gt;</line>
+        <line number="433">&lt;/sourcevalues&gt;</line>
+        <line number="434">&lt;/documentproperty&gt;</line>
+        <line number="435">&lt;/documentproperties&gt;</line>
+        <line number="436">&lt;/configuration&gt;</line>
+        <line number="437">&lt;dragpoints&gt;</line>
+        <line number="438">&lt;dragpoint name="shape46.dragpoint1" toShape="shape10" x="224.0" y="56.0"/&gt;</line>
+        <line number="439">&lt;/dragpoints&gt;</line>
+        <line number="440">&lt;/shape&gt;</line>
+        <line number="441">&lt;shape image="map_icon" name="shape48" shapetype="map" userlabel="" x="784.0" y="48.0"&gt;</line>
+        <line number="442">&lt;configuration&gt;</line>
+        <line number="443">&lt;map mapId="37d05338-4d4f-4b50-8575-b65934caeea8"/&gt;</line>
+        <line number="444">&lt;/configuration&gt;</line>
+        <line number="445">&lt;dragpoints&gt;</line>
+        <line number="446">&lt;dragpoint name="shape48.dragpoint1" toShape="shape6" x="928.0" y="56.0"/&gt;</line>
+        <line number="447">&lt;/dragpoints&gt;</line>
+        <line number="448">&lt;/shape&gt;</line>
+        <line number="449">&lt;shape image="dataprocess_icon" name="shape50" shapetype="dataprocess" userlabel="JSON to Avro Script" x="1824.0" y="448.0"&gt;</line>
+        <line number="450">&lt;configuration&gt;</line>
+        <line number="451">&lt;dataprocess&gt;</line>
+        <line number="452">&lt;step index="1" key="1" name="Custom Scripting" processtype="12"&gt;</line>
+        <line number="453">&lt;dataprocessscript language="groovy2" useCache="true"&gt;</line>
+        <line number="454">&lt;script&gt;import com.boomi.execution.ExecutionUtil</line>
+        <line number="455">import java.io.InputStream</line>
+        <line number="456">import java.nio.ByteBuffer</line>
+        <line number="457">import java.util.Properties</line>
+        <line number="458">import org.apache.avro.Schema</line>
+        <line number="459">import org.apache.avro.generic.GenericDatumReader</line>
+        <line number="460">import org.apache.avro.generic.GenericDatumWriter</line>
+        <line number="461">import org.apache.avro.generic.GenericRecord</line>
+        <line number="462">import org.apache.avro.io.BinaryEncoder</line>
+        <line number="463">import org.apache.avro.io.DecoderFactory</line>
+        <line number="464">import org.apache.avro.io.DatumReader</line>
+        <line number="465">import org.apache.avro.io.JsonDecoder</line>
+        <line number="466">import org.apache.avro.io.EncoderFactory</line>
+        <line number="469">// The Confluent Schema Id must be set if using Confluent Kakfa</line>
+        <line number="470">String schemaString = ExecutionUtil.getDynamicProcessProperty("DPP_SCHEMA")</line>
+        <line number="471">String confluentSchemaId = ExecutionUtil.getDynamicProcessProperty("DPP_CONFLUENT_SCHEMA_ID")</line>
+        <line number="472">Schema schema = new Schema.Parser().parse(schemaString)</line>
+        <line number="474">for (int i = 0; i &amp;lt; dataContext.getDataCount(); i++) {</line>
+        <line number="475">InputStream is = dataContext.getStream(i)</line>
+        <line number="476">Properties props = dataContext.getProperties(i)</line>
+        <line number="478">ByteArrayOutputStream baos = new ByteArrayOutputStream()</line>
+        <line number="480">if (!isNumeric(confluentSchemaId)) {</line>
+        <line number="481">throw new IllegalArgumentException("Invalid value for Confluent Schema Id. Provided value: " + confluentSchemaId)</line>
+        <line number="482">}</line>
+        <line number="483">baos.write(0x0)</line>
+        <line number="484">ByteBuffer ib = ByteBuffer.allocate(4)</line>
+        <line number="485">ib.putInt(confluentSchemaId.toInteger())</line>
+        <line number="486">baos.write(ib.array())</line>
+        <line number="488">DatumReader&amp;lt;GenericRecord&amp;gt; reader = new GenericDatumReader&amp;lt;GenericRecord&amp;gt;(schema)</line>
+        <line number="489">GenericDatumWriter&amp;lt;GenericRecord&amp;gt; writer = new GenericDatumWriter&amp;lt;GenericRecord&amp;gt;(schema)</line>
+        <line number="490">JsonDecoder decoder = DecoderFactory.get().jsonDecoder(schema, is)</line>
+        <line number="491">BinaryEncoder encoder = EncoderFactory.get().binaryEncoder(baos, null)</line>
+        <line number="493">while (true) {</line>
+        <line number="494">try {</line>
+        <line number="495">GenericRecord datum = reader.read(null, decoder)</line>
+        <line number="496">writer.write(datum, encoder)</line>
+        <line number="497">} catch (EOFException eof) {</line>
+        <line number="498">break</line>
+        <line number="499">}</line>
+        <line number="500">}</line>
+        <line number="502">encoder.flush()</line>
+        <line number="503">dataContext.storeStream(new ByteArrayInputStream(baos.toByteArray()), props)</line>
+        <line number="504">}</line>
+        <line number="507">static boolean isNumeric(String strNum) {</line>
+        <line number="508">if (strNum == null) {</line>
+        <line number="509">return false</line>
+        <line number="510">}</line>
+        <line number="511">try {</line>
+        <line number="512">double d = Integer.parseInt(strNum)</line>
+        <line number="513">} catch (NumberFormatException nfe) {</line>
+        <line number="514">return false</line>
+        <line number="515">}</line>
+        <line number="516">return true</line>
+        <line number="517">}</line>
+        <line number="518">&lt;/script&gt;</line>
+        <line number="519">&lt;/dataprocessscript&gt;</line>
+        <line number="520">&lt;/step&gt;</line>
+        <line number="521">&lt;/dataprocess&gt;</line>
+        <line number="522">&lt;/configuration&gt;</line>
+        <line number="523">&lt;dragpoints&gt;</line>
+        <line number="524">&lt;dragpoint name="shape50.dragpoint1" toShape="shape52" x="1952.0" y="456.0"/&gt;</line>
+        <line number="525">&lt;/dragpoints&gt;</line>
+        <line number="526">&lt;/shape&gt;</line>
+        <line number="527">&lt;shape image="map_icon" name="shape49" shapetype="map" userlabel="" x="1664.0" y="448.0"&gt;</line>
+        <line number="528">&lt;configuration&gt;</line>
+        <line number="529">&lt;map mapId="3a314f53-92c3-4a55-8dcf-6c3ad766acb4"/&gt;</line>
+        <line number="530">&lt;/configuration&gt;</line>
+        <line number="531">&lt;dragpoints&gt;</line>
+        <line number="532">&lt;dragpoint name="shape49.dragpoint1" toShape="shape50" x="1808.0" y="456.0"/&gt;</line>
+        <line number="533">&lt;/dragpoints&gt;</line>
+        <line number="534">&lt;/shape&gt;</line>
+        <line number="535">&lt;shape image="documentproperties_icon" name="shape51" shapetype="documentproperties" userlabel="Set DPPs" x="1776.0" y="272.0"&gt;</line>
+        <line number="536">&lt;configuration&gt;</line>
+        <line number="537">&lt;documentproperties&gt;</line>
+        <line number="538">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Process Property - DPP_SCHEMA" persist="false" propertyId="process.DPP_SCHEMA" shouldEncrypt="false"&gt;</line>
+        <line number="539">&lt;sourcevalues&gt;</line>
+        <line number="540">&lt;parametervalue key="1" valueType="current"/&gt;</line>
+        <line number="541">&lt;/sourcevalues&gt;</line>
+        <line number="542">&lt;/documentproperty&gt;</line>
+        <line number="543">&lt;documentproperty defaultValue="" isDynamicCredential="false" isTradingPartner="false" name="Dynamic Process Property - DPP_CONFLUENT_SCHEMA_ID" persist="false" propertyId="process.DPP_CONFLUENT_SCHEMA_ID" shouldEncrypt="false"&gt;</line>
+        <line number="544">&lt;sourcevalues&gt;</line>
+        <line number="545">&lt;parametervalue key="2" valueType="static"&gt;</line>
+        <line number="546">&lt;staticparameter staticproperty="100001"/&gt;</line>
+        <line number="547">&lt;/parametervalue&gt;</line>
+        <line number="548">&lt;/sourcevalues&gt;</line>
+        <line number="549">&lt;/documentproperty&gt;</line>
+        <line number="550">&lt;/documentproperties&gt;</line>
+        <line number="551">&lt;/configuration&gt;</line>
+        <line number="552">&lt;dragpoints&gt;</line>
+        <line number="553">&lt;dragpoint name="shape51.dragpoint1" toShape="shape56" x="1872.0" y="280.0"/&gt;</line>
+        <line number="554">&lt;/dragpoints&gt;</line>
+        <line number="555">&lt;/shape&gt;</line>
+        <line number="556">&lt;shape image="connectoraction_icon" name="shape52" shapetype="connectoraction" userlabel="" x="1968.0" y="448.0"&gt;</line>
+        <line number="557">&lt;configuration&gt;</line>
+        <line number="558">&lt;connectoraction actionType="PRODUCE" allowDynamicCredentials="NONE" connectionId="289a7ac1-81d8-40b6-99a9-9fe0e7e3fa8a" connectorType="loral-OYBPON-kafkav-dev" hideSettings="false" operationId="b303a916-8e63-484b-8523-e949929c6e07"&gt;</line>
+        <line number="559">&lt;parameters/&gt;</line>
+        <line number="560">&lt;dynamicProperties/&gt;</line>
+        <line number="561">&lt;/connectoraction&gt;</line>
+        <line number="562">&lt;/configuration&gt;</line>
+        <line number="563">&lt;dragpoints&gt;</line>
+        <line number="564">&lt;dragpoint name="shape52.dragpoint1" toShape="shape24" x="2080.0" y="456.0"/&gt;</line>
+        <line number="565">&lt;/dragpoints&gt;</line>
+        <line number="566">&lt;/shape&gt;</line>
+        <line number="567">&lt;shape image="branch_icon" name="shape53" shapetype="branch" userlabel="Contact Schema" x="1472.0" y="352.0"&gt;</line>
+        <line number="568">&lt;configuration&gt;</line>
+        <line number="569">&lt;branch numBranches="2"/&gt;</line>
+        <line number="570">&lt;/configuration&gt;</line>
+        <line number="571">&lt;dragpoints&gt;</line>
+        <line number="572">&lt;dragpoint identifier="1" name="shape53.dragpoint1" text="1" toShape="shape54" x="1616.0" y="280.0"/&gt;</line>
+        <line number="573">&lt;dragpoint identifier="2" name="shape53.dragpoint2" text="2" toShape="shape49" x="1648.0" y="456.0"/&gt;</line>
+        <line number="574">&lt;/dragpoints&gt;</line>
+        <line number="575">&lt;/shape&gt;</line>
+        <line number="576">&lt;shape image="message_icon" name="shape54" shapetype="message" userlabel="Avro Contact Schema" x="1632.0" y="272.0"&gt;</line>
+        <line number="577">&lt;configuration&gt;</line>
+        <line number="578">&lt;message combined="false"&gt;</line>
+        <line number="579">&lt;msgTxt&gt;'{</line>
+        <line number="580">"name": "contacts",</line>
+        <line number="581">"version": "1.0.2",</line>
+        <line number="582">"namespace": "www.sendwordnow.com",</line>
+        <line number="583">"type": "record",</line>
+        <line number="584">"fields": [</line>
+        <line number="585">{</line>
+        <line number="586">"name": "batchProcessingDirectives",</line>
+        <line number="587">"type": {</line>
+        <line number="588">"type": "record",</line>
+        <line number="589">"name": "batchProcessingDirectives",</line>
+        <line number="590">"fields": [</line>
+        <line number="591">{</line>
+        <line number="592">"name": "accountID",</line>
+        <line number="593">"type": {</line>
+        <line number="594">"type": "record",</line>
+        <line number="595">"name": "accountID",</line>
+        <line number="596">"fields": [</line>
+        <line number="597">{</line>
+        <line number="598">"name": "username",</line>
+        <line number="599">"type": "string"</line>
+        <line number="600">}</line>
+        <line number="601">]</line>
+        <line number="602">}</line>
+        <line number="603">},</line>
+        <line number="604">{</line>
+        <line number="605">"name": "batchProcessingOption",</line>
+        <line number="606">"type": {</line>
+        <line number="607">"type": "array",</line>
+        <line number="608">"items": {</line>
+        <line number="609">"type": "record",</line>
+        <line number="610">"name": "batchProcessingOption",</line>
+        <line number="611">"fields": [</line>
+        <line number="612">{</line>
+        <line number="613">"name": "value",</line>
+        <line number="614">"type": "boolean"</line>
+        <line number="615">},</line>
+        <line number="616">{</line>
+        <line number="617">"name": "name",</line>
+        <line number="618">"type": "string"</line>
+        <line number="619">}</line>
+        <line number="620">]</line>
+        <line number="621">}</line>
+        <line number="622">}</line>
+        <line number="623">}</line>
+        <line number="624">]</line>
+        <line number="625">}</line>
+        <line number="626">},</line>
+        <line number="627">{</line>
+        <line number="628">"name": "batchContactList",</line>
+        <line number="629">"type": {</line>
+        <line number="630">"type": "array",</line>
+        <line number="631">"items": {</line>
+        <line number="632">"type": "record",</line>
+        <line number="633">"name": "batchContactList",</line>
+        <line number="634">"fields": [</line>
+        <line number="635">{</line>
+        <line number="636">"name": "contact",</line>
+        <line number="637">"type": {</line>
+        <line number="638">"type": "array",</line>
+        <line number="639">"items": {</line>
+        <line number="640">"type": "record",</line>
+        <line number="641">"name": "contact",</line>
+        <line number="642">"fields": [</line>
+        <line number="643">{</line>
+        <line number="644">"name": "action",</line>
+        <line number="645">"type": "string"</line>
+        <line number="646">},</line>
+        <line number="647">{</line>
+        <line number="648">"name": "contactID",</line>
+        <line number="649">"type": "string"</line>
+        <line number="650">},</line>
+        <line number="651">{</line>
+        <line number="652">"name": "contactField",</line>
+        <line number="653">"type": {</line>
+        <line number="654">"type": "array",</line>
+        <line number="655">"items": {</line>
+        <line number="656">"type": "record",</line>
+        <line number="657">"name": "contactField",</line>
+        <line number="658">"fields": [</line>
+        <line number="659">{</line>
+        <line number="660">"name": "name",</line>
+        <line number="661">"type": "string"</line>
+        <line number="662">}</line>
+        <line number="663">]</line>
+        <line number="664">}</line>
+        <line number="665">}</line>
+        <line number="666">},</line>
+        <line number="667">{</line>
+        <line number="668">"name": "contactPointList",</line>
+        <line number="669">"type": {</line>
+        <line number="670">"type": "array",</line>
+        <line number="671">"items": {</line>
+        <line number="672">"type": "record",</line>
+        <line number="673">"name": "contactPointList",</line>
+        <line number="674">"fields": [</line>
+        <line number="675">{</line>
+        <line number="676">"name": "contactPoint",</line>
+        <line number="677">"type": {</line>
+        <line number="678">"type": "array",</line>
+        <line number="679">"items": {</line>
+        <line number="680">"type": "record",</line>
+        <line number="681">"name": "contactPoint",</line>
+        <line number="682">"fields": [</line>
+        <line number="683">{</line>
+        <line number="684">"name": "type",</line>
+        <line number="685">"type": "string"</line>
+        <line number="686">},</line>
+        <line number="687">{</line>
+        <line number="688">"name": "contactPointField",</line>
+        <line number="689">"type": {</line>
+        <line number="690">"type": "array",</line>
+        <line number="691">"items": {</line>
+        <line number="692">"type": "record",</line>
+        <line number="693">"name": "contactPointField",</line>
+        <line number="694">"fields": [</line>
+        <line number="695">{</line>
+        <line number="696">"name": "name",</line>
+        <line number="697">"type": "string"</line>
+        <line number="698">}</line>
+        <line number="699">]</line>
+        <line number="700">}</line>
+        <line number="701">}</line>
+        <line number="702">}</line>
+        <line number="703">]</line>
+        <line number="704">}</line>
+        <line number="705">}</line>
+        <line number="706">}</line>
+        <line number="707">]</line>
+        <line number="708">}</line>
+        <line number="709">}</line>
+        <line number="710">}</line>
+        <line number="711">]</line>
+        <line number="712">}</line>
+        <line number="713">}</line>
+        <line number="714">}</line>
+        <line number="715">]</line>
+        <line number="716">}</line>
+        <line number="717">}</line>
+        <line number="718">}</line>
+        <line number="719">]</line>
+        <line number="720">}'&lt;/msgTxt&gt;</line>
+        <line number="721">&lt;msgParameters/&gt;</line>
+        <line number="722">&lt;/message&gt;</line>
+        <line number="723">&lt;/configuration&gt;</line>
+        <line number="724">&lt;dragpoints&gt;</line>
+        <line number="725">&lt;dragpoint name="shape54.dragpoint1" toShape="shape51" x="1760.0" y="280.0"/&gt;</line>
+        <line number="726">&lt;/dragpoints&gt;</line>
+        <line number="727">&lt;/shape&gt;</line>
+        <line number="728">&lt;shape image="stop_icon" name="shape56" shapetype="stop" x="1888.0" y="272.0"&gt;</line>
+        <line number="729">&lt;configuration&gt;</line>
+        <line number="730">&lt;stop continue="true"/&gt;</line>
+        <line number="731">&lt;/configuration&gt;</line>
+        <line number="732">&lt;dragpoints/&gt;</line>
+        <line number="733">&lt;/shape&gt;</line>
+        <line number="734">&lt;shape image="processcall_icon" name="shape57" shapetype="processcall" userlabel="" x="544.0" y="256.0"&gt;</line>
+        <line number="735">&lt;configuration&gt;</line>
+        <line number="736">&lt;processcall abort="true" processId="cb131520-1c64-4207-8c56-4ba7fb2f2e92" wait="true"&gt;</line>
+        <line number="737">&lt;parameters/&gt;</line>
+        <line number="738">&lt;returnpaths/&gt;</line>
+        <line number="739">&lt;/processcall&gt;</line>
+        <line number="740">&lt;/configuration&gt;</line>
+        <line number="741">&lt;dragpoints/&gt;</line>
+        <line number="742">&lt;/shape&gt;</line>
+        <line number="743">&lt;/shapes&gt;</line>
+        <line number="744">&lt;/process&gt;</line>
+        <line number="745">&lt;/bns:object&gt;</line>
+        <line number="746">&lt;bns:processOverrides/&gt;</line>
+        <line number="747">&lt;/Component&gt;</line>
+        <line number="748">Close</line>
+    </content>
+</boomi_sf_content>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDE0MTU" branchName="main" componentId="cbb5a23f-5904-4fb9-a7dc-9e7062d2b268" copiedFromComponentId="ea5bc16f-15e4-405b-95a4-9c147d310910" copiedFromComponentVersion="8" createdBy="deepan@itresonance.com" createdDate="2025-06-05T11:22:10Z" currentVersion="true" deleted="false" folderFullPath="IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" folderId="Rjo3NzA2ODk1" folderName="Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02" modifiedBy="deepan@itresonance.com" modifiedDate="2025-06-05T11:22:10Z" name="Subscription Completed JSON to SF Opportunity CREATE Request XML" type="transform.map" version="1">
+  <bns:encryptedValues/>
+  <bns:description>For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions</bns:description>
+  <bns:object>
+    <Map fromProfile="6e791dfd-6dad-469a-9bd7-5339e240cca2" toProfile="efd69737-e49c-4a38-bb32-abb39383ed5f">
+      <Mappings>
+        <Mapping fromFunction="2" fromKey="3" fromType="function" toKey="5" toKeyPath="*[@key='1']/*[@key='5']" toNamePath="Opportunity/Description" toType="profile"/>
+        <Mapping fromFunction="3" fromKey="3" fromType="function" toKey="4" toKeyPath="*[@key='1']/*[@key='4']" toNamePath="Opportunity/Name" toType="profile"/>
+        <Mapping fromFunction="4" fromKey="3" fromType="function" toKey="10" toKeyPath="*[@key='1']/*[@key='10']" toNamePath="Opportunity/CloseDate" toType="profile"/>
+      </Mappings>
+      <Functions optimizeExecutionOrder="true">
+        <FunctionStep cacheEnabled="true" category="ProcessProperty" key="2" name="Get Document Property" position="2" sumEnabled="false" type="DocumentPropertyGet" x="10.0" y="10.0">
+          <Inputs/>
+          <Outputs>
+            <Output key="3" name="Dynamic Document Property - DDP_SalesforceDescription"/>
+          </Outputs>
+          <Configuration>
+            <DocumentProperty defaultValue="" persist="false" propertyId="dynamicdocument.DDP_SalesforceDescription" propertyName="Dynamic Document Property - DDP_SalesforceDescription"/>
+          </Configuration>
+        </FunctionStep>
+        <FunctionStep cacheEnabled="true" category="ProcessProperty" key="3" name="Get Document Property" position="3" sumEnabled="false" type="DocumentPropertyGet" x="10.0" y="82.0">
+          <Inputs/>
+          <Outputs>
+            <Output key="3" name="Dynamic Document Property - DDP_CustomerName"/>
+          </Outputs>
+          <Configuration>
+            <DocumentProperty defaultValue="" persist="false" propertyId="dynamicdocument.DDP_CustomerName" propertyName="Dynamic Document Property - DDP_CustomerName"/>
+          </Configuration>
+        </FunctionStep>
+        <FunctionStep cacheEnabled="true" category="ProcessProperty" key="4" name="Get Document Property" position="4" sumEnabled="false" type="DocumentPropertyGet" x="10.0" y="154.0">
+          <Inputs/>
+          <Outputs>
+            <Output key="3" name="Dynamic Document Property - DDP_CloseDate"/>
+          </Outputs>
+          <Configuration>
+            <DocumentProperty defaultValue="" persist="false" propertyId="dynamicdocument.DDP_CloseDate" propertyName="Dynamic Document Property - DDP_CloseDate"/>
+          </Configuration>
+        </FunctionStep>
+      </Functions>
+      <Defaults>
+        <Default toKey="6" value="Pipeline"/>
+      </Defaults>
+      <DocumentCacheJoins/>
+    </Map>
+  </bns:object>
+</Component>

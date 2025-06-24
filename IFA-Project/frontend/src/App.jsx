@@ -12,6 +12,7 @@ import * as Home from '@pages/Home'
 import { useAuthActions } from '@/features/auth/authUtils'
 import { Toaster } from 'sonner';
 import { DATA_USER } from '@utils/constants'
+import { LLMProviderProvider } from '@/contexts/LLMProviderContext'
 
 function App() {
     const { checkAuth } = useAuthActions();
@@ -28,8 +29,9 @@ function App() {
 
 
     return (
-        <HeroUIProvider navigate={navigate} className='h-full'>
-            <main className='h-full'>
+        <LLMProviderProvider>
+            <HeroUIProvider navigate={navigate} className='h-full'>
+                <main className='h-full'>
                 <Routes>
                     {
                         !authToken ?
@@ -63,8 +65,9 @@ function App() {
                         },
                     }}
                 />
-            </main>
-        </HeroUIProvider>
+                </main>
+            </HeroUIProvider>
+        </LLMProviderProvider>
     )
 }
 

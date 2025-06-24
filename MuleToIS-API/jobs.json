@@ -67,5 +67,20 @@
       "package_id": "WithRequestReply",
       "iflow_name": "GeneratedIFlow_a23b7ac1"
     }
+  },
+  "ab928466-fa24-4e70-bb23-e9770f9daf5f": {
+    "id": "ab928466-fa24-4e70-bb23-e9770f9daf5f",
+    "original_job_id": "cf3168dc-4d1a-4e5b-8b07-41931e18e48d",
+    "status": "completed",
+    "created": "aa6d9dce-46f3-11f0-88b0-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\ab928466-fa24-4e70-bb23-e9770f9daf5f\\IFlow_cf3168dc.zip",
+      "debug": {
+        "final_iflow_IFlow_cf3168dc.xml": "genai_debug\\final_iflow_IFlow_cf3168dc.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_cf3168dc"
   }
 }

@@ -5,6 +5,7 @@ import CustomCard from "@components/Card"
 const FileUploadForm = ({ onSubmit, isLoading }) => {
   const [files, setFiles] = useState([])
   const [enhance, setEnhance] = useState(false)
+  const [platform, setPlatform] = useState('mulesoft')
   const [dragActive, setDragActive] = useState(false)
   const fileInputRef = useRef(null)
 
@@ -42,7 +43,7 @@ const FileUploadForm = ({ onSubmit, isLoading }) => {
       return
     }
 
-    onSubmit(files, enhance)
+    onSubmit(files, enhance, platform)
   }
 
   const handleBrowseClick = () => {
@@ -82,14 +83,45 @@ const FileUploadForm = ({ onSubmit, isLoading }) => {
           </div>
         }
       >
+        {/* Platform Selection */}
+        <div className="mb-6">
+          <label htmlFor="platform-select" className="block text-sm font-medium text-gray-700 mb-3">
+            Select Integration Platform
+          </label>
+          <div className="relative">
+            <select
+              id="platform-select"
+              name="platform"
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value)}
+              className="block w-full px-3 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-company-orange-500 focus:border-company-orange-500 bg-white text-gray-900 text-sm"
+            >
+              <option value="mulesoft">
+                MuleSoft - Anypoint Platform integration flows
+              </option>
+              <option value="boomi">
+                Dell Boomi - AtomSphere integration processes
+              </option>
+            </select>
+            <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <p className="mt-2 text-xs text-gray-500">
+            Choose the source integration platform for your files
+          </p>
+        </div>
+
         <div
           className={`
-          border-2 border-dashed rounded-lg p-8 
+          border-2 border-dashed rounded-lg p-8
           transition-all duration-200 ease-in-out
           ${dragActive
               ? "border-company-orange-500 bg-company-orange-50"
               : "border-gray-300 hover:border-company-orange-400"
-            } 
+            }
           ${files.length > 0
               ? "bg-company-orange-50 border-company-orange-200"
               : ""
@@ -120,7 +152,7 @@ const FileUploadForm = ({ onSubmit, isLoading }) => {
               <p className="text-lg font-medium text-gray-700">
                 {files.length > 0
                   ? `${files.length} file${files.length > 1 ? "s" : ""} selected`
-                  : "Drag & drop MuleSoft XML files or ZIP archive here"}
+                  : `Drag & drop ${platform === 'mulesoft' ? 'MuleSoft' : 'Dell Boomi'} XML files or ZIP archive here`}
               </p>
               <p className="text-gray-500 mt-1">
                 {files.length > 0 ? files.map(f => f.name).join(", ") : "or"}
@@ -138,8 +170,7 @@ const FileUploadForm = ({ onSubmit, isLoading }) => {
             </div>
 
             <p className="text-xs text-gray-500">
-              Supported formats: .xml files or .zip archives containing MuleSoft
-              XML files
+              Supported formats: .xml files or .zip archives containing {platform === 'mulesoft' ? 'MuleSoft' : 'Dell Boomi'} XML files
             </p>
           </div>
         </div>

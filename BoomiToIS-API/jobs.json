@@ -1,0 +1,1032 @@
+{
+  "42d896d7-7c6b-4b99-9df0-accbba5b7cd5": {
+    "id": "42d896d7-7c6b-4b99-9df0-accbba5b7cd5",
+    "status": "completed",
+    "created": "295f750d-34c7-11f0-81d5-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\42d896d7-7c6b-4b99-9df0-accbba5b7cd5\\IFlow_86564cda.zip",
+      "debug": {
+        "final_iflow_IFlow_86564cda.xml": "genai_debug\\final_iflow_IFlow_86564cda.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_86564cda",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_42d896d7",
+      "package_id": "WithRequestReply",
+      "iflow_name": "GeneratedIFlow_42d896d7"
+    }
+  },
+  "87939f41-9c18-4fe3-9282-63ef954901b3": {
+    "id": "87939f41-9c18-4fe3-9282-63ef954901b3",
+    "status": "completed",
+    "created": "ea028ead-37e4-11f0-8c56-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\87939f41-9c18-4fe3-9282-63ef954901b3\\IFlow_be99636e.zip",
+      "debug": {
+        "final_iflow_IFlow_be99636e.xml": "genai_debug\\final_iflow_IFlow_be99636e.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_be99636e",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_87939f41",
+      "package_id": "WithRequestReply",
+      "iflow_name": "GeneratedIFlow_87939f41"
+    }
+  },
+  "a23b7ac1-ccda-41e5-944a-e1cf180b2b95": {
+    "id": "a23b7ac1-ccda-41e5-944a-e1cf180b2b95",
+    "status": "completed",
+    "created": "fc405960-37e8-11f0-8653-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\a23b7ac1-ccda-41e5-944a-e1cf180b2b95\\IFlow_588fedd0.zip",
+      "debug": {
+        "final_iflow_IFlow_588fedd0.xml": "genai_debug\\final_iflow_IFlow_588fedd0.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_588fedd0",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_a23b7ac1",
+      "package_id": "WithRequestReply",
+      "iflow_name": "GeneratedIFlow_a23b7ac1"
+    }
+  },
+  "ab928466-fa24-4e70-bb23-e9770f9daf5f": {
+    "id": "ab928466-fa24-4e70-bb23-e9770f9daf5f",
+    "original_job_id": "cf3168dc-4d1a-4e5b-8b07-41931e18e48d",
+    "status": "completed",
+    "created": "aa6d9dce-46f3-11f0-88b0-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\ab928466-fa24-4e70-bb23-e9770f9daf5f\\IFlow_cf3168dc.zip",
+      "debug": {
+        "final_iflow_IFlow_cf3168dc.xml": "genai_debug\\final_iflow_IFlow_cf3168dc.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_cf3168dc"
+  },
+  "a944399d-f46e-4cab-823f-9388deff5a40": {
+    "id": "a944399d-f46e-4cab-823f-9388deff5a40",
+    "status": "completed",
+    "created": "e424d194-4b41-11f0-9feb-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\a944399d-f46e-4cab-823f-9388deff5a40\\IFlow_0b35c86c.zip",
+      "debug": {
+        "final_iflow_IFlow_0b35c86c.xml": "genai_debug\\final_iflow_IFlow_0b35c86c.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_0b35c86c"
+  },
+  "4667ac11-be2c-47d8-ad82-e9857893977b": {
+    "id": "4667ac11-be2c-47d8-ad82-e9857893977b",
+    "status": "completed",
+    "created": "b68e5d9d-4b4c-11f0-b7c0-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\4667ac11-be2c-47d8-ad82-e9857893977b\\IFlow_4be854cb.zip",
+      "debug": {
+        "final_iflow_IFlow_4be854cb.xml": "genai_debug\\final_iflow_IFlow_4be854cb.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_4be854cb",
+    "deployment_status": "deploying",
+    "deployment_message": "Deploying to SAP Integration Suite using direct deployment..."
+  },
+  "4d464a0b-d794-49e8-9b9e-61068673c014": {
+    "id": "4d464a0b-d794-49e8-9b9e-61068673c014",
+    "status": "completed",
+    "created": "950aaedc-4b4d-11f0-8634-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\4d464a0b-d794-49e8-9b9e-61068673c014\\IFlow_e70f7fc5.zip",
+      "debug": {
+        "final_iflow_IFlow_e70f7fc5.xml": "genai_debug\\final_iflow_IFlow_e70f7fc5.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_e70f7fc5",
+    "deployment_status": "failed",
+    "deployment_message": "Deployment failed: Failed to deploy iFlow. Response: Unauthorized",
+    "deployment_details": {
+      "status": "error",
+      "message": "Failed to deploy iFlow. Response: Unauthorized"
+    }
+  },
+  "c8c471bf-2960-4ada-8c1e-95218cb693fb": {
+    "id": "c8c471bf-2960-4ada-8c1e-95218cb693fb",
+    "status": "completed",
+    "created": "f6588e94-4b50-11f0-81f3-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\c8c471bf-2960-4ada-8c1e-95218cb693fb\\IFlow_063df8a9.zip",
+      "debug": {
+        "final_iflow_IFlow_063df8a9.xml": "genai_debug\\final_iflow_IFlow_063df8a9.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_063df8a9",
+    "deployment_status": "failed",
+    "deployment_message": "Deployment failed: Failed to deploy iFlow. Response: Unauthorized",
+    "deployment_details": {
+      "status": "error",
+      "message": "Failed to deploy iFlow. Response: Unauthorized"
+    }
+  },
+  "bffaec08-99ae-4043-b30e-9fe91b879e32": {
+    "id": "bffaec08-99ae-4043-b30e-9fe91b879e32",
+    "status": "completed",
+    "created": "82d5deb9-4b5c-11f0-93f1-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\bffaec08-99ae-4043-b30e-9fe91b879e32\\IFlow_b3962ca7.zip",
+      "debug": {
+        "final_iflow_IFlow_b3962ca7.xml": "genai_debug\\final_iflow_IFlow_b3962ca7.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_b3962ca7",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_bffaec08",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_bffaec08",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "01af1604-b029-42fc-b7cf-a4a75191e1d5": {
+    "id": "01af1604-b029-42fc-b7cf-a4a75191e1d5",
+    "status": "processing",
+    "created": "5f73a6db-4b99-11f0-83a2-743af40c1803",
+    "message": "Analyzing markdown and generating iFlow..."
+  },
+  "64d3079f-21f3-423c-b645-424692e8da80": {
+    "id": "64d3079f-21f3-423c-b645-424692e8da80",
+    "status": "processing",
+    "created": "d56e66dd-4b99-11f0-83bc-743af40c1803",
+    "message": "Analyzing markdown and generating iFlow..."
+  },
+  "0d1bb2b6-d01a-485b-8947-f259ba7f3dd1": {
+    "id": "0d1bb2b6-d01a-485b-8947-f259ba7f3dd1",
+    "status": "completed",
+    "created": "50c5815f-4b9a-11f0-8a16-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\0d1bb2b6-d01a-485b-8947-f259ba7f3dd1\\IFlow_5a2a2efa.zip",
+      "debug": {
+        "final_iflow_IFlow_5a2a2efa.xml": "genai_debug\\final_iflow_IFlow_5a2a2efa.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_5a2a2efa",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_0d1bb2b6",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_0d1bb2b6",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "abfe64c9-591b-43f7-ad91-353bcf76bba2": {
+    "id": "abfe64c9-591b-43f7-ad91-353bcf76bba2",
+    "status": "completed",
+    "created": "d6c795cc-4c32-11f0-a08a-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\abfe64c9-591b-43f7-ad91-353bcf76bba2\\IFlow_1bf097b1.zip",
+      "debug": {
+        "final_iflow_IFlow_1bf097b1.xml": "genai_debug\\final_iflow_IFlow_1bf097b1.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_1bf097b1"
+  },
+  "1d1c7581-3daa-47f1-876c-5cf301034846": {
+    "id": "1d1c7581-3daa-47f1-876c-5cf301034846",
+    "status": "completed",
+    "created": "0eb758a7-4c43-11f0-a3ff-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\1d1c7581-3daa-47f1-876c-5cf301034846\\IFlow_b677f872.zip",
+      "debug": {
+        "final_iflow_IFlow_b677f872.xml": "genai_debug\\final_iflow_IFlow_b677f872.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_b677f872",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_1d1c7581",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_1d1c7581",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "2c5e0912-ef89-400f-8768-e70aaac0c594": {
+    "id": "2c5e0912-ef89-400f-8768-e70aaac0c594",
+    "status": "completed",
+    "created": "7ab78823-4cf2-11f0-a065-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\2c5e0912-ef89-400f-8768-e70aaac0c594\\IFlow_e6d0c653.zip",
+      "debug": {
+        "final_iflow_IFlow_e6d0c653.xml": "genai_debug\\final_iflow_IFlow_e6d0c653.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt"
+      }
+    },
+    "iflow_name": "IFlow_e6d0c653",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_2c5e0912",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_2c5e0912",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "e6ed5dd5-fb7c-460d-bd09-afd72b0917f0": {
+    "id": "e6ed5dd5-fb7c-460d-bd09-afd72b0917f0",
+    "status": "completed",
+    "created": "c069a3eb-4d12-11f0-910e-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\e6ed5dd5-fb7c-460d-bd09-afd72b0917f0\\IFlow_c5e48c6e.zip",
+      "debug": {
+        "final_iflow_IFlow_c5e48c6e.xml": "genai_debug\\final_iflow_IFlow_c5e48c6e.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_c5e48c6e",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_e6ed5dd5",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_e6ed5dd5",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "4f19ccbe-24c5-4008-8734-e19433959a8e": {
+    "id": "4f19ccbe-24c5-4008-8734-e19433959a8e",
+    "status": "failed",
+    "created": "0fe934b8-4d16-11f0-975b-743af40c1803",
+    "message": "Error generating iFlow: 'EnhancedIFlowTemplates' object has no attribute 'successfactors_receiver_participant_template'"
+  },
+  "f1e2c6df-fd8e-4d63-be4a-f8161ae89de4": {
+    "id": "f1e2c6df-fd8e-4d63-be4a-f8161ae89de4",
+    "status": "failed",
+    "created": "7bb90dc2-4d16-11f0-81e9-743af40c1803",
+    "message": "Error generating iFlow: 'EnhancedIFlowTemplates' object has no attribute 'successfactors_receiver_participant_template'"
+  },
+  "941c3752-3026-4d0b-a60e-b2afaf54eee9": {
+    "id": "941c3752-3026-4d0b-a60e-b2afaf54eee9",
+    "status": "failed",
+    "created": "a243640c-4d18-11f0-90ce-743af40c1803",
+    "message": "Error generating iFlow: 'str' object has no attribute 'get'"
+  },
+  "17e3def8-556f-4aa1-893d-1ef12d9e1677": {
+    "id": "17e3def8-556f-4aa1-893d-1ef12d9e1677",
+    "status": "completed",
+    "created": "abe8c6ea-4d1d-11f0-b086-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\17e3def8-556f-4aa1-893d-1ef12d9e1677\\IFlow_a31d4192.zip",
+      "debug": {
+        "final_iflow_IFlow_a31d4192.xml": "genai_debug\\final_iflow_IFlow_a31d4192.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_a31d4192",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_17e3def8",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_17e3def8",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "b6fe9bc6-4952-406e-92b5-326b326b7de7": {
+    "id": "b6fe9bc6-4952-406e-92b5-326b326b7de7",
+    "status": "completed",
+    "created": "0d335719-4ddb-11f0-8189-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\b6fe9bc6-4952-406e-92b5-326b326b7de7\\IFlow_3b846bdc.zip",
+      "debug": {
+        "final_iflow_IFlow_3b846bdc.xml": "genai_debug\\final_iflow_IFlow_3b846bdc.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_3b846bdc",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_b6fe9bc6",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_b6fe9bc6",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "ad37123e-f9dd-478b-bbda-5a710bdd970d": {
+    "id": "ad37123e-f9dd-478b-bbda-5a710bdd970d",
+    "status": "completed",
+    "created": "1747921f-4ddd-11f0-be0c-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\ad37123e-f9dd-478b-bbda-5a710bdd970d\\IFlow_0d122826.zip",
+      "debug": {
+        "final_iflow_IFlow_0d122826.xml": "genai_debug\\final_iflow_IFlow_0d122826.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_0d122826",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_ad37123e",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_ad37123e",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "e0ba3ee4-68eb-4809-84e6-a15330fb4994": {
+    "id": "e0ba3ee4-68eb-4809-84e6-a15330fb4994",
+    "status": "completed",
+    "created": "89c80511-4de4-11f0-b8af-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\e0ba3ee4-68eb-4809-84e6-a15330fb4994\\IFlow_981efaf7.zip",
+      "debug": {
+        "final_iflow_IFlow_981efaf7.xml": "genai_debug\\final_iflow_IFlow_981efaf7.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_981efaf7",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_e0ba3ee4",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_e0ba3ee4",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "c3980524-f5e1-42f0-a27c-21383eb4a275": {
+    "id": "c3980524-f5e1-42f0-a27c-21383eb4a275",
+    "status": "completed",
+    "created": "15de987d-4deb-11f0-b479-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\c3980524-f5e1-42f0-a27c-21383eb4a275\\IFlow_d9fd3dbf.zip",
+      "debug": {
+        "final_iflow_IFlow_d9fd3dbf.xml": "genai_debug\\final_iflow_IFlow_d9fd3dbf.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_d9fd3dbf",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_c3980524",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_c3980524",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "c37c13dd-7ad8-4080-a1e8-bdf695caf25a": {
+    "id": "c37c13dd-7ad8-4080-a1e8-bdf695caf25a",
+    "status": "completed",
+    "created": "0aa70955-5028-11f0-8b63-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\c37c13dd-7ad8-4080-a1e8-bdf695caf25a\\IFlow_639be49b.zip",
+      "debug": {
+        "final_iflow_IFlow_639be49b.xml": "genai_debug\\final_iflow_IFlow_639be49b.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_639be49b",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_c37c13dd",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_c37c13dd",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "2273f41b-df3c-4ed9-8fa9-68c1927fe70d": {
+    "id": "2273f41b-df3c-4ed9-8fa9-68c1927fe70d",
+    "status": "completed",
+    "created": "faf6f3e2-502e-11f0-bba7-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\2273f41b-df3c-4ed9-8fa9-68c1927fe70d\\IFlow_cda4bbf1.zip",
+      "debug": {
+        "final_iflow_IFlow_cda4bbf1.xml": "genai_debug\\final_iflow_IFlow_cda4bbf1.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_cda4bbf1",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_2273f41b",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_2273f41b",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "985162f9-b180-47bd-8ce1-2ad35ac187d4": {
+    "id": "985162f9-b180-47bd-8ce1-2ad35ac187d4",
+    "status": "completed",
+    "created": "bcf82933-5046-11f0-add0-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\985162f9-b180-47bd-8ce1-2ad35ac187d4\\IFlow_e6dc6ab7.zip",
+      "debug": {
+        "final_iflow_IFlow_e6dc6ab7.xml": "genai_debug\\final_iflow_IFlow_e6dc6ab7.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_e6dc6ab7",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_985162f9",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_985162f9",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "63ba31cd-b2d9-4fe1-b2f2-69d8df5d9c15": {
+    "id": "63ba31cd-b2d9-4fe1-b2f2-69d8df5d9c15",
+    "status": "completed",
+    "created": "ec39961d-5048-11f0-a5da-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\63ba31cd-b2d9-4fe1-b2f2-69d8df5d9c15\\IFlow_63cee775.zip",
+      "debug": {
+        "final_iflow_IFlow_63cee775.xml": "genai_debug\\final_iflow_IFlow_63cee775.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt"
+      }
+    },
+    "iflow_name": "IFlow_63cee775",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_63ba31cd",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_63ba31cd",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "1e116388-f18c-44c5-a2e0-cd7c5e7a061c": {
+    "id": "1e116388-f18c-44c5-a2e0-cd7c5e7a061c",
+    "status": "failed",
+    "created": "79b702d0-504d-11f0-8c7f-743af40c1803",
+    "message": "Error generating iFlow: Failed to generate valid JSON after 5 attempts. Last error: Invalid JSON format: Expecting property name enclosed in double quotes: line 2 column 62 (char 63)"
+  },
+  "6bb96ed3-14d5-456c-949e-08b86c1b03ee": {
+    "id": "6bb96ed3-14d5-456c-949e-08b86c1b03ee",
+    "status": "completed",
+    "created": "d2bb8746-504f-11f0-9ebd-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\6bb96ed3-14d5-456c-949e-08b86c1b03ee\\IFlow_d817fcb2.zip",
+      "debug": {
+        "final_iflow_IFlow_d817fcb2.xml": "genai_debug\\final_iflow_IFlow_d817fcb2.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_d817fcb2",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_6bb96ed3",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_6bb96ed3",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "4c264f2b-f4d1-40e4-b77a-96e47e8d31af": {
+    "id": "4c264f2b-f4d1-40e4-b77a-96e47e8d31af",
+    "status": "completed",
+    "created": "825d59f4-5053-11f0-baf2-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\4c264f2b-f4d1-40e4-b77a-96e47e8d31af\\IFlow_b0709168.zip",
+      "debug": {
+        "final_iflow_IFlow_b0709168.xml": "genai_debug\\final_iflow_IFlow_b0709168.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_b0709168",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_4c264f2b",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_4c264f2b",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "655f17ab-81d9-401d-81ea-be745e279ca7": {
+    "id": "655f17ab-81d9-401d-81ea-be745e279ca7",
+    "status": "completed",
+    "created": "ad7041cb-5055-11f0-a784-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\655f17ab-81d9-401d-81ea-be745e279ca7\\IFlow_5b86e3f7.zip",
+      "debug": {
+        "final_iflow_IFlow_5b86e3f7.xml": "genai_debug\\final_iflow_IFlow_5b86e3f7.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_5b86e3f7",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_655f17ab",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_655f17ab",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "5034837e-517f-49f8-bc95-c02712dcad17": {
+    "id": "5034837e-517f-49f8-bc95-c02712dcad17",
+    "status": "completed",
+    "created": "963c52b0-505a-11f0-9ed3-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\5034837e-517f-49f8-bc95-c02712dcad17\\IFlow_77e19f2e.zip",
+      "debug": {
+        "final_iflow_IFlow_77e19f2e.xml": "genai_debug\\final_iflow_IFlow_77e19f2e.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_77e19f2e",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_5034837e",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_5034837e",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "64fbe163-abd5-4a41-bc5a-ba916c6c9271": {
+    "id": "64fbe163-abd5-4a41-bc5a-ba916c6c9271",
+    "status": "completed",
+    "created": "7fdbdcc5-5062-11f0-9e6f-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\64fbe163-abd5-4a41-bc5a-ba916c6c9271\\IFlow_0320d11d.zip",
+      "debug": {
+        "final_iflow_IFlow_0320d11d.xml": "genai_debug\\final_iflow_IFlow_0320d11d.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_0320d11d",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_64fbe163",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_64fbe163",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "f4529071-49b1-472f-96f9-811feec0a58a": {
+    "id": "f4529071-49b1-472f-96f9-811feec0a58a",
+    "status": "completed",
+    "created": "6ef765b7-5065-11f0-b4f3-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\f4529071-49b1-472f-96f9-811feec0a58a\\IFlow_33437f1e.zip",
+      "debug": {
+        "final_iflow_IFlow_33437f1e.xml": "genai_debug\\final_iflow_IFlow_33437f1e.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_33437f1e",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_f4529071",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_f4529071",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "fe990be1-f4a1-4ec1-8127-edc2ca9b1679": {
+    "id": "fe990be1-f4a1-4ec1-8127-edc2ca9b1679",
+    "status": "completed",
+    "created": "b219bc7e-5097-11f0-88d5-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\fe990be1-f4a1-4ec1-8127-edc2ca9b1679\\IFlow_2d81f23e.zip",
+      "debug": {
+        "final_iflow_IFlow_2d81f23e.xml": "genai_debug\\final_iflow_IFlow_2d81f23e.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_2d81f23e",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_fe990be1",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_fe990be1",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "30710a54-fd66-4b94-8e2b-d5f1d7ce90dd": {
+    "id": "30710a54-fd66-4b94-8e2b-d5f1d7ce90dd",
+    "status": "completed",
+    "created": "b07a8865-5099-11f0-b083-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\30710a54-fd66-4b94-8e2b-d5f1d7ce90dd\\IFlow_194ea90b.zip",
+      "debug": {
+        "final_iflow_IFlow_194ea90b.xml": "genai_debug\\final_iflow_IFlow_194ea90b.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_194ea90b",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_30710a54",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_30710a54",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "73725428-a783-403a-85a6-7119ac5a2ad1": {
+    "id": "73725428-a783-403a-85a6-7119ac5a2ad1",
+    "status": "completed",
+    "created": "8d671481-509e-11f0-9059-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\73725428-a783-403a-85a6-7119ac5a2ad1\\IFlow_0d2fdc81.zip",
+      "debug": {
+        "final_iflow_IFlow_0d2fdc81.xml": "genai_debug\\final_iflow_IFlow_0d2fdc81.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_0d2fdc81",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_73725428",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_73725428",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "311ba102-4f0d-4b4d-b360-55c03e866b43": {
+    "id": "311ba102-4f0d-4b4d-b360-55c03e866b43",
+    "status": "processing",
+    "created": "4b0222a9-50a7-11f0-b6d7-743af40c1803",
+    "message": "Analyzing markdown and generating iFlow..."
+  },
+  "f44136de-26fd-46a8-ad20-6faf4b434064": {
+    "id": "f44136de-26fd-46a8-ad20-6faf4b434064",
+    "status": "completed",
+    "created": "9f6302a0-50a7-11f0-887a-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\f44136de-26fd-46a8-ad20-6faf4b434064\\IFlow_c0c2ca94.zip",
+      "debug": {
+        "final_iflow_IFlow_c0c2ca94.xml": "genai_debug\\final_iflow_IFlow_c0c2ca94.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_c0c2ca94",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_f44136de",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_f44136de",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "12cde88f-1da9-42d5-84b0-99b6b6d8b1bd": {
+    "id": "12cde88f-1da9-42d5-84b0-99b6b6d8b1bd",
+    "status": "completed",
+    "created": "6c6342b5-50aa-11f0-a2d0-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\12cde88f-1da9-42d5-84b0-99b6b6d8b1bd\\IFlow_d0a449df.zip",
+      "debug": {
+        "final_iflow_IFlow_d0a449df.xml": "genai_debug\\final_iflow_IFlow_d0a449df.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_d0a449df",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_12cde88f",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_12cde88f",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "c99f6e5a-91dd-42eb-b58d-70a20f35d361": {
+    "id": "c99f6e5a-91dd-42eb-b58d-70a20f35d361",
+    "status": "completed",
+    "created": "ac8d014f-50b0-11f0-8a78-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\c99f6e5a-91dd-42eb-b58d-70a20f35d361\\IFlow_8d24267d.zip",
+      "debug": {
+        "final_iflow_IFlow_8d24267d.xml": "genai_debug\\final_iflow_IFlow_8d24267d.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_8d24267d",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_c99f6e5a",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_c99f6e5a",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "572293cc-0cb5-40b9-acc9-fed1db7de02c": {
+    "id": "572293cc-0cb5-40b9-acc9-fed1db7de02c",
+    "status": "completed",
+    "created": "5a6e51b7-50b7-11f0-9010-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\572293cc-0cb5-40b9-acc9-fed1db7de02c\\IFlow_65172da8.zip",
+      "debug": {
+        "final_iflow_IFlow_65172da8.xml": "genai_debug\\final_iflow_IFlow_65172da8.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_65172da8",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_572293cc",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_572293cc",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "cfee1702-fea8-4cf0-8f89-950a938e48f4": {
+    "id": "cfee1702-fea8-4cf0-8f89-950a938e48f4",
+    "status": "completed",
+    "created": "1fa92c87-50be-11f0-b6a8-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\cfee1702-fea8-4cf0-8f89-950a938e48f4\\IFlow_b6d72417.zip",
+      "debug": {
+        "final_iflow_IFlow_b6d72417.xml": "genai_debug\\final_iflow_IFlow_b6d72417.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_b6d72417",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_cfee1702",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_cfee1702",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "619fd1bc-8a82-440e-97b7-002845f99a7a": {
+    "id": "619fd1bc-8a82-440e-97b7-002845f99a7a",
+    "status": "completed",
+    "created": "54f60a3b-50ce-11f0-9199-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "files": {
+      "zip": "results\\619fd1bc-8a82-440e-97b7-002845f99a7a\\IFlow_ce504589.zip",
+      "debug": {
+        "final_iflow_IFlow_ce504589.xml": "genai_debug\\final_iflow_IFlow_ce504589.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_ce504589",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "GeneratedIFlow_619fd1bc",
+      "package_id": "ConversionPackages",
+      "iflow_name": "GeneratedIFlow_619fd1bc",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  }
+}

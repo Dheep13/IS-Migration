@@ -28,8 +28,20 @@ if /i "%ENV%"=="development" (
     echo   python app.py
 
     echo.
-    echo To start the iFlow API:
+    echo To start the iFlow API (Anthropic):
     echo   cd MuleToIS-API
+    echo   set FLASK_ENV=development
+    echo   python app.py
+
+    echo.
+    echo To start the iFlow API (Gemma3):
+    echo   cd MuleToIS-API-Gemma3
+    echo   set FLASK_ENV=development
+    echo   python app.py
+
+    echo.
+    echo To start the Boomi API:
+    echo   cd BoomiToIS-API
     echo   set FLASK_ENV=development
     echo   python app.py
 
@@ -53,8 +65,20 @@ if /i "%ENV%"=="development" (
     echo   python app.py
 
     echo.
-    echo To start the iFlow API:
+    echo To start the iFlow API (Anthropic):
     echo   cd MuleToIS-API
+    echo   set FLASK_ENV=production
+    echo   python app.py
+
+    echo.
+    echo To start the iFlow API (Gemma3):
+    echo   cd MuleToIS-API-Gemma3
+    echo   set FLASK_ENV=production
+    echo   python app.py
+
+    echo.
+    echo To start the Boomi API:
+    echo   cd BoomiToIS-API
     echo   set FLASK_ENV=production
     echo   python app.py
 

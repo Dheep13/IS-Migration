@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDM0OTU" branchName="main" componentId="289a7ac1-81d8-40b6-99a9-9fe0e7e3fa8a" copiedFromComponentId="b5c25864-612d-46ff-984a-8cc76207e915" copiedFromComponentVersion="3" createdBy="Saravanan@itresonance.com" createdDate="2025-06-17T12:54:55Z" currentVersion="true" deleted="false" folderFullPath="ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08" folderId="Rjo3NzM2MDUz" folderName="Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08" modifiedBy="Saravanan@itresonance.com" modifiedDate="2025-06-17T12:54:55Z" name="Kafka Connection" subType="loral-OYBPON-kafkav-dev" type="connector-settings" version="1">
+  <bns:encryptedValues/>
+  <bns:description/>
+  <bns:object>
+    <GenericConnectionConfig>
+      <field id="username" type="string" value="{UserName}"/>
+      <field id="password" type="password" value=""/>
+      <field id="bootstrap_servers" type="string" value=""/>
+      <field id="service_principal" type="string" value=""/>
+      <field id="consumer_group" type="string" value=""/>
+      <field id="security_protocol" type="string" value="SASL_SSL"/>
+      <field id="sasl_mechanism" type="string" value="OAUTHBEARER"/>
+      <field id="saslExtensions" type="customproperties">
+        <customProperties/>
+      </field>
+      <field id="oauth" type="oauth">
+        <OAuth2Config grantType="client_credentials">
+          <credentials accessTokenKey="8C5FFB0D-33C5-4D75-8FBA-C9E6AB81C3E8" clientId="" clientSecret=""/>
+          <authorizationTokenEndpoint url="">
+            <sslOptions/>
+          </authorizationTokenEndpoint>
+          <authorizationParameters/>
+          <accessTokenEndpoint url="https://dev-442860.oktapreview.com/oauth2/default/v1/token">
+            <sslOptions/>
+          </accessTokenEndpoint>
+          <accessTokenParameters/>
+          <scope>teemu</scope>
+          <jwtParameters>
+            <expiration>0</expiration>
+          </jwtParameters>
+        </OAuth2Config>
+      </field>
+      <field id="private_certificate" type="privatecertificate"/>
+      <field id="polling_interval" type="integer" value="10000"/>
+      <field id="polling_delay" type="integer" value="10000"/>
+    </GenericConnectionConfig>
+  </bns:object>
+</Component>

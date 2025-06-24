@@ -40,6 +40,37 @@ app = Flask(__name__)
 # Apply CORS after creating the app
 app = enable_cors(app)
 
+# Initialize database
+try:
+    from database import init_database, create_tables, test_connection, DatabaseManager, migrate_existing_jobs
+
+    # Initialize database configuration
+    if init_database(app):
+        logging.info("Database initialized successfully")
+
+        # Test connection
+        if test_connection(app):
+            logging.info("Database connection verified")
+
+            # Create tables if they don't exist
+            create_tables(app)
+
+            # Set up database manager
+            db_manager = DatabaseManager()
+            use_database = True
+            logging.info("Database integration enabled")
+        else:
+            logging.warning("Database connection failed, falling back to file-based storage")
+            use_database = False
+    else:
+        logging.warning("Database initialization failed, falling back to file-based storage")
+        use_database = False
+
+except Exception as e:
+    logging.error(f"Database setup failed: {str(e)}")
+    use_database = False
+    logging.warning("Falling back to file-based storage")
+
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
@@ -177,14 +208,20 @@ class CustomLLMDocumentationEnhancer:
             logging.error(f"Error type: {type(e).__name__}")
             return base_documentation
 
-# Import the documentation generator
+# Import the documentation generators
 try:
     from mule_flow_documentation import MuleFlowParser, HTMLGenerator, FlowDocumentationGenerator
     from md_to_html_with_mermaid import convert_markdown_to_html
     # Use our custom enhancer instead of the original
     LLMDocumentationEnhancer = CustomLLMDocumentationEnhancer
-except ImportError:
-    print("Error importing documentation modules. Make sure the paths are correct.")
+
+    # Import Boomi documentation generator
+    from boomi_flow_documentation import BoomiFlowDocumentationGenerator
+    boomi_generator_available = True
+    print("Boomi documentation generator loaded successfully")
+except ImportError as e:
+    print(f"Error importing documentation modules: {e}")
+    boomi_generator_available = False
     sys.exit(1)
 
 # Configure Flask app
@@ -200,7 +237,7 @@ ALLOWED_EXTENSIONS = {'xml', 'zip'}
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 os.makedirs(app.config['RESULTS_FOLDER'], exist_ok=True)
 
-# Function to load jobs from JSON file
+# Function to load jobs from JSON file (fallback)
 def load_jobs():
     if os.path.exists(app.config['JOBS_FILE']):
         try:
@@ -210,7 +247,7 @@ def load_jobs():
             print("Error loading jobs file. Starting with empty jobs dictionary.")
     return {}
 
-# Function to save jobs to JSON file
+# Function to save jobs to JSON file (fallback)
 def save_jobs(jobs_dict):
     try:
         with open(app.config['JOBS_FILE'], 'w') as f:
@@ -218,19 +255,84 @@ def save_jobs(jobs_dict):
     except Exception as e:
         print(f"Error saving jobs file: {str(e)}")
 
-# In-memory job storage (initialized from file and periodically saved to file)
-jobs = load_jobs()
+# Initialize job storage
+if use_database:
+    # Migrate existing jobs from file to database
+    try:
+        migrate_existing_jobs(app, app.config['JOBS_FILE'])
+    except Exception as e:
+        logging.error(f"Failed to migrate existing jobs: {str(e)}")
 
-# In-memory job storage (in a production environment, use a database)
-jobs = load_jobs()
+    # Use database for job storage
+    jobs = {}  # Keep empty dict for compatibility
+else:
+    # Fall back to file-based storage
+    jobs = load_jobs()
 
 # Save the job state
 def update_job(job_id, updates):
     """Update a job's data and save to persistent storage"""
-    if job_id in jobs:
-        jobs[job_id].update(updates)
-        jobs[job_id]['last_updated'] = datetime.now().isoformat()
+    if use_database:
+        try:
+            db_manager.update_job(job_id, **updates)
+        except Exception as e:
+            logging.error(f"Failed to update job {job_id} in database: {str(e)}")
+            # Fall back to file storage
+            if job_id in jobs:
+                jobs[job_id].update(updates)
+                jobs[job_id]['last_updated'] = datetime.now().isoformat()
+                save_jobs(jobs)
+    else:
+        if job_id in jobs:
+            jobs[job_id].update(updates)
+            jobs[job_id]['last_updated'] = datetime.now().isoformat()
+            save_jobs(jobs)
+
+def get_job(job_id):
+    """Get a job from storage"""
+    if use_database:
+        try:
+            job = db_manager.get_job(job_id)
+            return job.to_dict() if job else None
+        except Exception as e:
+            logging.error(f"Failed to get job {job_id} from database: {str(e)}")
+            # Fall back to file storage
+            return jobs.get(job_id)
+    else:
+        return jobs.get(job_id)
+
+def create_job(job_id, filename, enhance_with_llm=False, platform='mulesoft'):
+    """Create a new job in storage"""
+    if use_database:
+        try:
+            job = db_manager.create_job(job_id, filename, enhance_with_llm, platform)
+            return job.to_dict()
+        except Exception as e:
+            logging.error(f"Failed to create job {job_id} in database: {str(e)}")
+            # Fall back to file storage
+            job_data = {
+                'id': job_id,
+                'filename': filename,
+                'status': 'pending',
+                'timestamp': datetime.now().isoformat(),
+                'enhance': enhance_with_llm,
+                'platform': platform
+            }
+            jobs[job_id] = job_data
+            save_jobs(jobs)
+            return job_data
+    else:
+        job_data = {
+            'id': job_id,
+            'filename': filename,
+            'status': 'pending',
+            'timestamp': datetime.now().isoformat(),
+            'enhance': enhance_with_llm,
+            'platform': platform
+        }
+        jobs[job_id] = job_data
         save_jobs(jobs)
+        return job_data
 
 def allowed_file(filename):
     """Check if the file has an allowed extension"""
@@ -344,18 +446,233 @@ def find_mule_directory(base_dir):
         logging.warning(f"No directories with XML files found. Using base directory: {base_dir}")
         return base_dir
 
-def process_documentation(job_id, input_dir, enhance=False):
+def process_documentation(job_id, input_dir, enhance=False, platform='mulesoft'):
     """Process documentation generation in a background thread"""
     try:
-        # Update job status
-        update_job(job_id, {'status': 'processing'})
+        # Log the processing start
+        logging.info(f"Job {job_id}: process_documentation called with enhance={enhance}, platform={platform}")
+        logging.info(f"Job {job_id}: Using platform: {platform}")
 
+        # Update job status
+        update_job(job_id, {'status': 'processing', 'platform': platform})
+
+        # Route to appropriate processor based on platform
+        if platform == 'boomi':
+            logging.info(f"Job {job_id}: Routing to Boomi processor with enhance={enhance}")
+            return process_boomi_documentation(job_id, input_dir, enhance)
+        else:
+            logging.info(f"Job {job_id}: Routing to MuleSoft processor with enhance={enhance}")
+            return process_mulesoft_documentation(job_id, input_dir, enhance)
+
+    except Exception as e:
+        logging.error(f"Job {job_id}: CRITICAL ERROR in process_documentation: {str(e)}")
+        logging.error(f"Job {job_id}: Exception type: {type(e).__name__}")
+        import traceback
+        logging.error(f"Job {job_id}: Traceback: {traceback.format_exc()}")
+        update_job(job_id, {
+            'status': 'failed',
+            'error': str(e),
+            'processing_step': 'error',
+            'processing_message': f'Processing failed: {str(e)}'
+        })
+
+def generate_boomi_iflow_metadata(job_id, documentation, processing_results):
+    """Generate iFlow metadata JSON files from Boomi documentation"""
+    try:
+        import requests
+        import json
+
+        # BoomiToIS-API endpoint (running on port 5003)
+        boomi_api_url = "http://localhost:5003"
+
+        # Prepare the request data
+        request_data = {
+            "markdown": documentation,
+            "iflow_name": f"BoomiFlow_{job_id[:8]}",
+            "job_id": job_id
+        }
+
+        # Call the BoomiToIS-API to generate iFlow metadata
+        response = requests.post(
+            f"{boomi_api_url}/api/generate-iflow-from-job",
+            json=request_data,
+            timeout=30
+        )
+
+        if response.status_code == 202:
+            # Successfully queued for processing
+            result = response.json()
+            logging.info(f"Job {job_id}: Boomi iFlow metadata generation queued with job ID: {result.get('job_id')}")
+            return True
+        else:
+            logging.error(f"Job {job_id}: Failed to queue Boomi iFlow metadata generation: {response.text}")
+            return False
+
+    except Exception as e:
+        logging.error(f"Job {job_id}: Error calling BoomiToIS-API: {str(e)}")
+        return False
+
+def process_boomi_documentation(job_id, input_dir, enhance=False):
+    """Process Dell Boomi documentation generation"""
+    try:
         # Create job results directory
         job_result_dir = os.path.join(app.config['RESULTS_FOLDER'], job_id)
         os.makedirs(job_result_dir, exist_ok=True)
 
         # Log file information before processing
-        logging.info(f"Job {job_id}: Analyzing files in: {input_dir}")
+        logging.info(f"Job {job_id}: Analyzing Boomi files in: {input_dir}")
+
+        # Update job status
+        update_job(job_id, {
+            'processing_step': 'file_analysis',
+            'processing_message': 'Analyzing Dell Boomi files...'
+        })
+
+        # Initialize Boomi documentation generator
+        if not boomi_generator_available:
+            raise Exception("Boomi documentation generator not available")
+
+        boomi_generator = BoomiFlowDocumentationGenerator()
+
+        # Process Boomi directory
+        processing_results = boomi_generator.process_directory(input_dir)
+
+        # Update job with file info
+        update_job(job_id, {
+            'file_info': {
+                'total_files': processing_results['total_files'],
+                'processed_files': processing_results['processed_files'],
+                'processes': len(processing_results['processes']),
+                'maps': len(processing_results['maps']),
+                'connectors': len(processing_results['connectors']),
+                'errors': len(processing_results['errors'])
+            },
+            'processing_step': 'documentation_generation',
+            'processing_message': 'Generating Dell Boomi documentation...'
+        })
+
+        # Generate base documentation
+        documentation = boomi_generator.generate_documentation(processing_results)
+
+        # Enhance documentation with LLM if requested
+        if enhance:
+            update_job(job_id, {
+                'processing_step': 'llm_enhancing',
+                'processing_message': 'Base Boomi documentation generated, starting AI enhancement (this may take 1-2 minutes)...'
+            })
+
+            try:
+                # Initialize LLM enhancer
+                llm_enhancer = LLMDocumentationEnhancer()
+
+                # Use a timeout to prevent indefinite hanging
+                import threading
+
+                # Function to be run in thread with timeout
+                def enhance_with_timeout():
+                    nonlocal documentation
+                    try:
+                        enhanced_content = llm_enhancer.enhance_documentation(documentation)
+                        if enhanced_content:
+                            documentation = enhanced_content
+                            return True
+                        else:
+                            logging.warning(f"Job {job_id}: LLM enhancement returned empty content")
+                            return False
+                    except Exception as e:
+                        logging.error(f"Job {job_id}: Error in Boomi enhancement thread: {str(e)}")
+                        return False
+
+                # Create and start the enhancement thread
+                enhancement_thread = threading.Thread(target=enhance_with_timeout)
+                enhancement_thread.daemon = True
+                enhancement_thread.start()
+
+                # Wait for the thread with timeout (10 minutes)
+                enhancement_thread.join(timeout=600)  # 10 minutes timeout
+
+                # Check if thread is still alive (timeout occurred)
+                if enhancement_thread.is_alive():
+                    logging.error("Boomi LLM enhancement timed out after 10 minutes")
+                    update_job(job_id, {
+                        'processing_step': 'llm_timeout',
+                        'processing_message': 'AI enhancement timed out. Using base Boomi documentation instead.'
+                    })
+                    # Thread will continue running but we proceed with base documentation
+                else:
+                    update_job(job_id, {
+                        'processing_step': 'llm_complete',
+                        'processing_message': 'AI enhancement complete, saving final Boomi documentation...'
+                    })
+
+            except Exception as llm_error:
+                logging.error(f"Boomi LLM enhancement failed: {str(llm_error)}")
+                update_job(job_id, {
+                    'processing_step': 'llm_failed',
+                    'processing_message': f'AI enhancement failed: {str(llm_error)}. Using base Boomi documentation instead.'
+                })
+                # Continue with base documentation
+
+        # Save documentation
+        doc_file = os.path.join(job_result_dir, 'boomi_documentation.md')
+        with open(doc_file, 'w', encoding='utf-8') as f:
+            f.write(documentation)
+
+        # Convert to HTML (pass file path, not content)
+        html_file = os.path.join(job_result_dir, 'boomi_documentation.html')
+        convert_markdown_to_html(doc_file, html_file)
+
+        # Generate iFlow intermediate JSON files if enhancement was used
+        if enhance:
+            try:
+                logging.info(f"Job {job_id}: Starting Boomi iFlow metadata generation...")
+                update_job(job_id, {
+                    'processing_step': 'iflow_metadata_generation',
+                    'processing_message': 'Generating iFlow metadata from Boomi documentation...'
+                })
+
+                # Call the Boomi iFlow generator to create intermediate JSON files
+                generate_boomi_iflow_metadata(job_id, documentation, processing_results)
+
+                logging.info(f"Job {job_id}: Boomi iFlow metadata generation completed")
+            except Exception as e:
+                logging.error(f"Job {job_id}: Error generating iFlow metadata: {str(e)}")
+                # Don't fail the entire job if iFlow metadata generation fails
+                pass
+
+        # Update job completion
+        enhancement_status = "with AI enhancement" if enhance else "without AI enhancement"
+        update_job(job_id, {
+            'status': 'completed',
+            'processing_step': 'completed',
+            'processing_message': f'Dell Boomi documentation generation completed successfully {enhancement_status}',
+            'files': {
+                'markdown': os.path.join('results', job_id, 'boomi_documentation.md'),
+                'html': os.path.join('results', job_id, 'boomi_documentation.html')
+            },
+            'parsed_details': processing_results
+        })
+
+        logging.info(f"Job {job_id}: Dell Boomi documentation generation completed successfully")
+
+    except Exception as e:
+        logging.error(f"Error in process_boomi_documentation for job {job_id}: {str(e)}")
+        update_job(job_id, {
+            'status': 'failed',
+            'error': str(e),
+            'processing_step': 'error',
+            'processing_message': f'Dell Boomi processing failed: {str(e)}'
+        })
+
+def process_mulesoft_documentation(job_id, input_dir, enhance=False):
+    """Process MuleSoft documentation generation (original functionality)"""
+    try:
+        # Create job results directory
+        job_result_dir = os.path.join(app.config['RESULTS_FOLDER'], job_id)
+        os.makedirs(job_result_dir, exist_ok=True)
+
+        # Log file information before processing
+        logging.info(f"Job {job_id}: Analyzing MuleSoft files in: {input_dir}")
         file_count = {"xml": 0, "properties": 0, "json": 0, "yaml": 0, "raml": 0, "dwl": 0, "other": 0}
         all_files = []
 
@@ -588,9 +905,14 @@ def generate_docs():
     if not files or files[0].filename == '':
         return jsonify({'error': 'No files selected'}), 400
 
+    # Get platform selection (default to mulesoft for backward compatibility)
+    platform = request.form.get('platform', 'mulesoft').lower()
+    if platform not in ['mulesoft', 'boomi']:
+        return jsonify({'error': 'Invalid platform. Must be "mulesoft" or "boomi"'}), 400
+
     # Force enhancement to be always on, regardless of the form parameter
     enhance = True
-    logging.info("LLM Enhancement is ENABLED")
+    logging.info(f"LLM Enhancement is ENABLED for platform: {platform}")
 
     try:
         # Generate a unique job ID
@@ -625,15 +947,26 @@ def generate_docs():
                     if not extraction_successful:
                         return jsonify({'error': 'Failed to extract ZIP file'}), 400
 
-                    # Find the MuleSoft directory in the extracted files
-                    mule_dir = find_mule_directory(extracted_dir)
-                    logging.info(f"Job {job_id}: MuleSoft directory found: {mule_dir}")
+                    if platform == 'mulesoft':
+                        # Find the MuleSoft directory in the extracted files
+                        mule_dir = find_mule_directory(extracted_dir)
+                        logging.info(f"Job {job_id}: MuleSoft directory found: {mule_dir}")
 
-                    # Check if the MuleSoft directory contains any XML files
-                    for root, _, files in os.walk(mule_dir):
-                        if any(f.lower().endswith('.xml') for f in files):
-                            xml_files_found = True
-                            break
+                        # Check if the MuleSoft directory contains any XML files
+                        for root, _, files in os.walk(mule_dir):
+                            if any(f.lower().endswith('.xml') for f in files):
+                                xml_files_found = True
+                                break
+                    else:
+                        # For Boomi, use extracted directory directly and check for XML files
+                        mule_dir = extracted_dir
+                        logging.info(f"Job {job_id}: Using extracted directory for Boomi: {mule_dir}")
+
+                        # Check if the directory contains any XML files
+                        for root, _, files in os.walk(mule_dir):
+                            if any(f.lower().endswith('.xml') for f in files):
+                                xml_files_found = True
+                                break
                 elif filename.lower().endswith('.xml'):
                     xml_files_found = True
                     logging.info(f"Job {job_id}: XML file found: {filename}")
@@ -642,11 +975,13 @@ def generate_docs():
         if zip_processed and not xml_files_found:
             # Clean up the job folder
             shutil.rmtree(job_folder, ignore_errors=True)
-            return jsonify({'error': 'No MuleSoft XML files found in the ZIP archive'}), 400
+            platform_name = platform.title()
+            return jsonify({'error': f'No {platform_name} XML files found in the ZIP archive'}), 400
         elif not zip_processed and not xml_files_found:
             # Clean up the job folder
             shutil.rmtree(job_folder, ignore_errors=True)
-            return jsonify({'error': 'No valid MuleSoft XML files uploaded'}), 400
+            platform_name = platform.title()
+            return jsonify({'error': f'No valid {platform_name} XML files uploaded'}), 400
 
         # Determine the directory to process
         process_dir = mule_dir if zip_processed and mule_dir else (extracted_dir if zip_processed else job_folder)
@@ -658,23 +993,29 @@ def generate_docs():
             'created': datetime.now().isoformat(),
             'last_updated': datetime.now().isoformat(),
             'enhance': enhance,
+            'platform': platform,
             'input_directory': process_dir,
             'zip_file': zip_processed
         }
 
         jobs[job_id] = job_data
         save_jobs(jobs)  # Save job data to file
-        logging.info(f"Job {job_id}: Created new job, starting documentation processing")
+        logging.info(f"Job {job_id}: Created new {platform} job, starting documentation processing")
 
-        # Start processing in background
-        thread = threading.Thread(target=process_documentation, args=(job_id, process_dir, enhance))
+        # Start processing in background with platform information
+        logging.info(f"Job {job_id}: Starting background processing with enhance={enhance}, platform={platform}")
+
+        # Use threading for both platforms to ensure proper UI flow
+        thread = threading.Thread(target=process_documentation, args=(job_id, process_dir, enhance, platform))
         thread.daemon = True
         thread.start()
+        logging.info(f"Job {job_id}: Background thread started successfully")
 
         return jsonify({
             'job_id': job_id,
             'status': 'queued',
-            'message': 'Documentation generation started'
+            'platform': platform,
+            'message': f'{platform.title()} documentation generation started'
         }), 202
     except Exception as e:
         return jsonify({'error': str(e)}), 500

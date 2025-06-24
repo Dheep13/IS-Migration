@@ -1,0 +1,31 @@
+---
+applications:
+- name: mulesoft-iflow-api
+  memory: 512M
+  disk_quota: 1G
+  stack: cflinuxfs4
+  buildpacks:
+  - python_buildpack
+  path: .
+  command: python app.py
+  routes:
+  - route: mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com
+  env:
+    FLASK_ENV: production
+    FLASK_DEBUG: false
+    ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+    MAIN_API_URL: https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com
+    MAIN_API_HOST: it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com
+    MAIN_API_PROTOCOL: https
+    CORS_ORIGIN: https://ifa-frontend.cfapps.us10-001.hana.ondemand.com
+    CORS_ALLOW_CREDENTIALS: true
+    NLTK_DATA: /home/vcap/app/nltk_data
+    PYTHONUNBUFFERED: true
+    SAP_BTP_TENANT_URL: https://4728b940trial.it-cpitrial05.cfapps.us10-001.hana.ondemand.com
+    SAP_BTP_CLIENT_ID: ${SAP_BTP_CLIENT_ID}
+    SAP_BTP_CLIENT_SECRET: ${SAP_BTP_CLIENT_SECRET}
+    SAP_BTP_OAUTH_URL: https://4728b940trial.authentication.us10.hana.ondemand.com/oauth/token
+    SAP_BTP_DEFAULT_PACKAGE: WithRequestReply
+  health-check-type: http
+  health-check-http-endpoint: /api/health
+  timeout: 180

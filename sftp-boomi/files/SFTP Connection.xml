@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><Component xmlns:bns="http://api.platform.boomi.com/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" branchId="Qjo1MDM0OTU" branchName="main" componentId="2f35e27d-7960-4739-8204-69c75c97333c" copiedFromComponentId="223bec11-ce54-43e1-87d0-0691f2e7a4bf" copiedFromComponentVersion="2" createdBy="Saravanan@itresonance.com" createdDate="2025-06-17T12:54:56Z" currentVersion="true" deleted="false" folderFullPath="ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08" folderId="Rjo3NzM2MDUz" folderName="Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08" modifiedBy="Saravanan@itresonance.com" modifiedDate="2025-06-17T12:54:56Z" name="SFTP Server" subType="officialboomi-X3979C-sftpv2-prod" type="connector-settings" version="1">
+  <bns:encryptedValues/>
+  <bns:description>This Connection is NOT using any SSH key file path. To make it usable on any Runtime, used "Private Key Content" and "Public Key Content". This avoids, uploading the SSH key file to runtime.</bns:description>
+  <bns:object>
+    <GenericConnectionConfig>
+      <field id="authType" type="string" value="Using public Key"/>
+      <field id="remoteDirectory" type="string" value=""/>
+      <field id="host" type="string" value="Hosting SFTP Server"/>
+      <field id="username" type="string" value="Username"/>
+      <field id="password" type="password"/>
+      <field id="port" type="integer" value="22"/>
+      <field id="keyPath" type="string" value=""/>
+      <field id="keyPswrd" type="password"/>
+      <field id="hostEntry" type="string" value=""/>
+      <field id="isMaxExchange" type="boolean" value="false"/>
+      <field id="prvkeyContent" type="password" value=""/>
+      <field id="pubkeyContent" type="password" value=""/>
+      <field id="keyPairName" type="string" value=""/>
+      <field id="useKeyContent" type="boolean" value="true"/>
+      <field id="enablePooling" type="boolean" value="false"/>
+      <field id="proxyEnable" type="boolean" value="false"/>
+      <field id="proxyType" type="string" value="http"/>
+      <field id="proxyHost" type="string" value=""/>
+      <field id="proxyPort" type="integer"/>
+      <field id="proxyuserName" type="string" value=""/>
+      <field id="proxyPassword" type="password"/>
+      <field id="connectionTimeout" type="integer"/>
+      <field id="readTimeout" type="integer"/>
+    </GenericConnectionConfig>
+  </bns:object>
+</Component>
