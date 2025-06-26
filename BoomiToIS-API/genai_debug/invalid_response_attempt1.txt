@@ -1,0 +1,110 @@
+{
+    "process_name": "SAP SuccessFactors to SFTP Integration",
+    "description": "Integration solution that connects SAP SuccessFactors with an SFTP server for automated transfer of employee data with error handling",
+    "endpoints": [
+        {
+            "method": "GET",
+            "path": "/employee-data",
+            "purpose": "Retrieve employee data from SuccessFactors and transfer to SFTP server",
+            "components": [
+                {
+                    "type": "request_reply",
+                    "name": "Get_SuccessFactors_Employee_Data",
+                    "id": "successfactors_request",
+                    "config": {
+                        "endpoint_path": "/odata/v2/Employee",
+                        "address": "${successFactors_api_url}"
+                    }
+                },
+                {
+                    "type": "groovy_script",
+                    "name": "Validate_Employee_Data",
+                    "id": "data_validation",
+                    "config": {
+                        "script": "ValidateEmployeeData.groovy"
+                    }
+                },
+                {
+                    "type": "groovy_script",
+                    "name": "Transform_Canonical_To_Kafka_Avro",
+                    "id": "data_transformation",
+                    "config": {
+                        "script": "CanonicalToKafkaAvro.groovy"
+                    }
+                },
+                {
+                    "type": "enricher",
+                    "name": "Prepare_SFTP_File",
+                    "id": "prepare_sftp_file",
+                    "config": {
+                        "content": "headers.put(\"CamelFileName\", \"employee_data_\" + new java.text.SimpleDateFormat(\"yyyyMMdd_HHmmss\").format(new java.util.Date()) + \".avro\");"
+                    }
+                },
+                {
+                    "type": "request_reply",
+                    "name": "Upload_To_SFTP",
+                    "id": "sftp_upload",
+                    "config": {
+                        "endpoint_path": "${sftp_directory}"
+                    }
+                }
+            ],
+            "error_handling": {
+                "exception_subprocess": [
+                    {
+                        "type": "enricher",
+                        "name": "Log_Error_Details",
+                        "id": "log_error",
+                        "trigger": "any_error",
+                        "config": {
+                            "content": "def errorMsg = message.getHeader(\"CamelExceptionCaught\") != null ? message.getHeader(\"CamelExceptionCaught\").toString() : \"Unknown error\";\nlogger.error(\"Integration error: \" + errorMsg);\nreturn errorMsg;"
+                        }
+                    },
+                    {
+                        "type": "request_reply",
+                        "name": "Send_Error_Notification",
+                        "id": "send_notification",
+                        "trigger": "any_error",
+                        "config": {
+                            "endpoint_path": "/mail"
+                        }
+                    }
+                ]
+            },
+            "branching": {
+                "type": "exclusive",
+                "branches": [
+                    {
+                        "condition": "Data validation successful",
+                        "components": ["data_transformation", "prepare_sftp_file", "sftp_upload"],
+                        "sequence": ["data_transformation", "prepare_sftp_file", "sftp_upload"]
+                    },
+                    {
+                        "condition": "Data validation failed",
+                        "components": ["log_error", "send_notification"],
+                        "sequence": ["log_error", "send_notification"]
+                    }
+                ]
+            },
+            "sequence": [
+                "successfactors_request",
+                "data_validation",
+                "data_transformation",
+                "prepare_sftp_file",
+                "sftp_upload"
+            ],
+            "transformations": [
+                {
+                    "name": "ValidateEmployeeData.groovy",
+                    "type": "groovy",
+                    "script": "import com.sap.gateway.ip.core.customdev.util.Message;\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String);\n    def properties = message.getProperties();\n    def headers = message.getHeaders();\n    \n    // Validate the employee data structure\n    def isValid = true;\n    def errorMessage = \"\";\n    \n    try {\n        def jsonData = new groovy.json.JsonSlurper().parseText(body);\n        \n        // Check if required fields exist\n        if (!jsonData.d || !jsonData.d.results) {\n            isValid = false;\n            errorMessage = \"Missing required fields in employee data\";\n        }\n        \n        // Add more validation logic as needed\n        \n    } catch (Exception e) {\n        isValid = false;\n        errorMessage = \"Error parsing employee data: \" + e.getMessage();\n    }\n    \n    // Set validation result as property\n    properties.put(\"isValid\", isValid);\n    if (!isValid) {\n        properties.put(\"errorMessage\", errorMessage);\n    }\n    \n    return message;\n}"
+                },
+                {
+                    "name": "CanonicalToKafkaAvro.groovy",
+                    "type": "groovy",
+                    "script": "import com.sap.gateway.ip.core.customdev.util.Message;\nimport groovy.json.*;\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String);\n    def properties = message.getProperties();\n    def headers = message.getHeaders();\n    \n    // Parse the input JSON\n    def jsonData = new JsonSlurper().parseText(body);\n    def results = jsonData.d.results;\n    \n    // Create the target structure\n    def targetJson = [\n        \"Object\": [\n            \"batchProcessingDirectives\": [\n                \"Object\": [\n                    \"accountID\": [\n                        \"Object\": [\n                            \"username\": \"\"\n                        ]\n                    ],\n                    \"batchProcessingOption\": [\n                        \"Array\": [\n                            \"ArrayElement1\": [\n                                \"Object\": [\n                                    \"name\": \"\"\n                                ]\n                            ]\n                        ]\n                    ]\n                ]\n            ],\n            \"batchContactList\": [\n                \"Array\": [\n                    \"ArrayElement1\": [\n                        \"Object\": [\n                            \"contact\": [\n                                \"Array\": [\n                                    \"ArrayElement1\": [\n                                        \"Object\": [\n                                            \"contactID\": \"\",\n                                            \"contactPointList\": [\n                                                \"Array\": [\n                                                    \"ArrayElement1\": [\n                                                        \"Object\": [\n                                                            \"contactPoint\": [\n                                                                \"Array\": [\n                                                                    \"ArrayElement1\": [\n                                                                        \"Object\": [\n                                                                            \"type\": \"\"\n                                                                        ]\n                                                                    ]\n                                                                ]\n                                                            ]\n                                                        ]\n                                                    ]\n                                                ]\n                                            ]\n                                        ]\n                                    ]\n                                ]\n                            ]\n                        ]\n                    ]\n                ]\n            ]\n        ]\n    ];\n    \n    // Map the data according to the specified mapping\n    if (results && results.size() > 0) {\n        def employee = results[0];\n        \n        // Username mapping (Field 9)\n        targetJson.Object.batchProcessingDirectives.Object.accountID.Object.username = employee.userId ?: \"\";\n        \n        // Batch processing option name mapping (Field 118)\n        targetJson.Object.batchProcessingDirectives.Object.batchProcessingOption.Array.ArrayElement1.Object.name = \"StandardProcessing\";\n        \n        // Contact ID mapping (Field 91)\n        targetJson.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactID = employee.personIdExternal ?: \"\";\n        \n        // Contact point type mapping (Field 111)\n        targetJson.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object.contactPoint.Array.ArrayElement1.Object.type = \"EMAIL\";\n    }\n    \n    // Convert the target structure back to JSON string\n    def targetJsonString = new JsonBuilder(targetJson).toPrettyString();\n    message.setBody(targetJsonString);\n    \n    return message;\n}"
+                }
+            ]
+        }
+    ]
+}

@@ -9,9 +9,21 @@ applications:
   path: ./dist
   command: null  # Explicitly set to null to use buildpack's default
   routes:
-  - route: ifa-frontend.cfapps.us10-001.hana.ondemand.com
+  - route: ifa-frontend.cfapps.eu10-005.hana.ondemand.com
   env:
+    NODE_ENV: production
+    VITE_MODE: production
     FORCE_HTTPS: true
-    VITE_API_URL: https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com/api
-    VITE_IFLOW_API_URL: https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com/api
+    VITE_API_URL: https://it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com/api
+    VITE_MAIN_API_HOST: it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com
+    VITE_MAIN_API_PROTOCOL: https
+    VITE_MULE_API_URL: https://mule-to-is-api.cfapps.eu10-005.hana.ondemand.com/api
+    VITE_MULE_API_HOST: mule-to-is-api.cfapps.eu10-005.hana.ondemand.com
+    VITE_MULE_API_PROTOCOL: https
+    VITE_BOOMI_API_URL: https://boomi-to-is-api.cfapps.eu10-005.hana.ondemand.com/api
+    VITE_BOOMI_API_HOST: boomi-to-is-api.cfapps.eu10-005.hana.ondemand.com
+    VITE_BOOMI_API_PROTOCOL: https
+    VITE_IFLOW_API_URL: https://mule-to-is-api.cfapps.eu10-005.hana.ondemand.com/api
+    VITE_IFLOW_API_HOST: mule-to-is-api.cfapps.eu10-005.hana.ondemand.com
+    VITE_IFLOW_API_PROTOCOL: https
     VITE_ENVIRONMENT: production

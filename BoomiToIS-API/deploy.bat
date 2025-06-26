@@ -1,5 +1,5 @@
 @echo off
-echo ===== IT Resonance iFlow Generator API Deployment =====
+echo ===== Boomi to Integration Suite API Deployment =====
 
 echo Checking required files...
 if not exist app.py (
@@ -51,4 +51,4 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo Deployment completed successfully!
-echo API is now available at: https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com
+echo API is now available at: https://boomi-to-is-api.cfapps.eu10-005.hana.ondemand.com

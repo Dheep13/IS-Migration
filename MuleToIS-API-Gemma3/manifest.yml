@@ -19,8 +19,8 @@ applications:
     PORT: 8080
     HOST: 0.0.0.0
     DEBUG: false
-    MAIN_API_URL: https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com
-    MAIN_API_HOST: it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.ondemand.com
+    MAIN_API_URL: https://it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com
+    MAIN_API_HOST: it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com
     MAIN_API_PROTOCOL: https
-    CORS_ORIGIN: https://ifa-frontend.cfapps.us10-001.hana.ondemand.com
+    CORS_ORIGIN: https://ifa-frontend.cfapps.eu10-005.hana.ondemand.com
     RESULTS_FOLDER: results

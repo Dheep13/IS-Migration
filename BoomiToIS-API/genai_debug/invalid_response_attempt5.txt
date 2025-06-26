@@ -1,0 +1,126 @@
+{
+    "process_name": "SAP SuccessFactors to SFTP Integration",
+    "description": "Integration solution that connects SAP SuccessFactors with an SFTP server for automated transfer of employee data with comprehensive error handling",
+    "endpoints": [
+        {
+            "method": "GET",
+            "path": "/employee-data",
+            "purpose": "Retrieve employee data from SuccessFactors and transfer to SFTP server",
+            "components": [
+                {
+                    "type": "request_reply",
+                    "name": "Get_SuccessFactors_Employee_Data",
+                    "id": "successfactors_request_1",
+                    "config": {
+                        "endpoint_path": "/odata/v2/Employee",
+                        "address": "${successFactors_api_url}"
+                    }
+                },
+                {
+                    "type": "groovy_script",
+                    "name": "Validate_Employee_Data",
+                    "id": "validate_data_1",
+                    "config": {
+                        "script": "ValidateEmployeeData.groovy"
+                    }
+                },
+                {
+                    "type": "groovy_script",
+                    "name": "Transform_Canonical_To_Kafka_Avro",
+                    "id": "transform_data_1",
+                    "config": {
+                        "script": "CanonicalToKafkaAvro.groovy"
+                    }
+                },
+                {
+                    "type": "enricher",
+                    "name": "Prepare_SFTP_File",
+                    "id": "prepare_sftp_1",
+                    "config": {
+                        "content": "Prepare file content and set file name for SFTP transfer"
+                    }
+                },
+                {
+                    "type": "request_reply",
+                    "name": "Upload_To_SFTP",
+                    "id": "sftp_upload_1",
+                    "config": {
+                        "endpoint_path": "${sftp_directory}",
+                        "address": "sftp://${sftp_host}:${sftp_port}"
+                    }
+                }
+            ],
+            "error_handling": {
+                "exception_subprocess": [
+                    {
+                        "type": "enricher",
+                        "name": "Log_Error_Details",
+                        "id": "log_error_1",
+                        "trigger": "any_error",
+                        "config": {
+                            "content": "Error occurred during integration: ${exception.message}"
+                        }
+                    },
+                    {
+                        "type": "groovy_script",
+                        "name": "Format_Error_Notification",
+                        "id": "format_error_1",
+                        "trigger": "any_error",
+                        "config": {
+                            "script": "FormatErrorNotification.groovy"
+                        }
+                    },
+                    {
+                        "type": "request_reply",
+                        "name": "Send_Error_Email",
+                        "id": "send_email_1",
+                        "trigger": "any_error",
+                        "config": {
+                            "endpoint_path": "/send",
+                            "address": "smtp://${smtp_host}:${smtp_port}"
+                        }
+                    }
+                ]
+            },
+            "branching": {
+                "type": "exclusive",
+                "branches": [
+                    {
+                        "condition": "Data validation successful",
+                        "components": ["transform_data_1", "prepare_sftp_1", "sftp_upload_1"],
+                        "sequence": ["transform_data_1", "prepare_sftp_1", "sftp_upload_1"]
+                    },
+                    {
+                        "condition": "Data validation failed",
+                        "components": ["log_error_1", "format_error_1", "send_email_1"],
+                        "sequence": ["log_error_1", "format_error_1", "send_email_1"]
+                    }
+                ]
+            },
+            "sequence": [
+                "successfactors_request_1",
+                "validate_data_1",
+                "transform_data_1",
+                "prepare_sftp_1",
+                "sftp_upload_1"
+            ],
+            "transformations": [
+                {
+                    "name": "ValidateEmployeeData.groovy",
+                    "type": "groovy",
+                    "script": "import com.sap.gateway.ip.core.customdev.util.Message;\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String);\n    def properties = message.getProperties();\n    \n    // Validate the employee data structure\n    def isValid = true;\n    def errorMessage = \"\";\n    \n    try {\n        def jsonData = new groovy.json.JsonSlurper().parseText(body);\n        \n        // Check if required fields exist\n        if (!jsonData.d || !jsonData.d.results) {\n            isValid = false;\n            errorMessage = \"Missing required fields in employee data\";\n        }\n        \n        // Add more validation logic as needed\n        \n    } catch (Exception e) {\n        isValid = false;\n        errorMessage = \"Error parsing employee data: \" + e.getMessage();\n    }\n    \n    // Set validation result as property\n    properties.put(\"isValid\", isValid);\n    properties.put(\"validationError\", errorMessage);\n    \n    return message;\n}"
+                },
+                {
+                    "name": "CanonicalToKafkaAvro.groovy",
+                    "type": "groovy",
+                    "script": "import com.sap.gateway.ip.core.customdev.util.Message;\nimport groovy.json.*;\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String);\n    def properties = message.getProperties();\n    \n    try {\n        def jsonData = new JsonSlurper().parseText(body);\n        def result = [:];\n        \n        // Create the target structure\n        result.Object = [:];\n        result.Object.batchProcessingDirectives = [:];\n        result.Object.batchProcessingDirectives.Object = [:];\n        result.Object.batchProcessingDirectives.Object.accountID = [:];\n        result.Object.batchProcessingDirectives.Object.accountID.Object = [:];\n        \n        // Username mapping\n        result.Object.batchProcessingDirectives.Object.accountID.Object.username = jsonData.d.results[0].username;\n        \n        // Batch processing option mapping\n        result.Object.batchProcessingDirectives.Object.batchProcessingOption = [:];\n        result.Object.batchProcessingDirectives.Object.batchProcessingOption.Array = [:];\n        result.Object.batchProcessingDirectives.Object.batchProcessingOption.Array.ArrayElement1 = [:];\n        result.Object.batchProcessingDirectives.Object.batchProcessingOption.Array.ArrayElement1.Object = [:];\n        result.Object.batchProcessingDirectives.Object.batchProcessingOption.Array.ArrayElement1.Object.name = jsonData.d.results[0].batchProcessingOptionName;\n        \n        // Contact list mapping\n        result.Object.batchContactList = [:];\n        result.Object.batchContactList.Array = [:];\n        result.Object.batchContactList.Array.ArrayElement1 = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1 = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object = [:];\n        \n        // Contact ID mapping\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactID = jsonData.d.results[0].contactID;\n        \n        // Contact point list mapping\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1 = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object.contactPoint = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object.contactPoint.Array = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object.contactPoint.Array.ArrayElement1 = [:];\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object.contactPoint.Array.ArrayElement1.Object = [:];\n        \n        // Contact point type mapping\n        result.Object.batchContactList.Array.ArrayElement1.Object.contact.Array.ArrayElement1.Object.contactPointList.Array.ArrayElement1.Object.contactPoint.Array.ArrayElement1.Object.type = jsonData.d.results[0].contactPointType;\n        \n        // Convert the result to JSON string\n        def writer = new StringWriter();\n        new JsonBuilder(result).writeTo(writer);\n        \n        message.setBody(writer.toString());\n    } catch (Exception e) {\n        properties.put(\"transformationError\", e.getMessage());\n    }\n    \n    return message;\n}"
+                },
+                {
+                    "name": "FormatErrorNotification.groovy",
+                    "type": "groovy",
+                    "script": "import com.sap.gateway.ip.core.customdev.util.Message;\n\ndef Message processData(Message message) {\n    def properties = message.getProperties();\n    def exception = properties.get(\"CamelExceptionCaught\");\n    \n    // Format email content\n    def emailSubject = \"Error in SAP SuccessFactors to SFTP Integration\";\n    def emailBody = \"An error occurred during the integration process:\\n\\n\";\n    \n    if (properties.get(\"validationError\")) {\n        emailBody += \"Validation Error: \" + properties.get(\"validationError\") + \"\\n\\n\";\n    }\n    \n    if (properties.get(\"transformationError\")) {\n        emailBody += \"Transformation Error: \" + properties.get(\"transformationError\") + \"\\n\\n\";\n    }\n    \n    if (exception) {\n        emailBody += \"Exception: \" + exception.getMessage() + \"\\n\";\n        emailBody += \"Stack Trace: \" + exception.getStackTrace().toString() + \"\\n\\n\";\n    }\n    \n    emailBody += \"Timestamp: \" + new Date().toString() + \"\\n\";\n    emailBody += \"Process: SAP SuccessFactors to SFTP Integration\";\n    \n    // Set email properties\n    properties.put(\"emailTo\", \"${error_notification_recipients}\");\n    properties.put(\"emailSubject\", emailSubject);\n    properties.put(\"emailBody\", emailBody);\n    \n    // Set the email body as the message body\n    message.setBody(emailBody);\n    \n    return message;\n}"
+                }
+            ]
+        }
+    ]
+}

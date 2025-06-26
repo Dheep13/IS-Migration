@@ -13577,5 +13577,2035 @@
       ],
       "errors": []
     }
+  },
+  "4da6baf1-7f3d-4363-9646-3699bf5d62c6": {
+    "id": "4da6baf1-7f3d-4363-9646-3699bf5d62c6",
+    "status": "completed",
+    "created": "2025-06-24T16:09:27.310231",
+    "last_updated": "2025-06-24T16:10:49.036103",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 2,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\boomi_documentation.md",
+      "html": "results\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\extracted\\split\\Create-SFOpp-from-Stripe_01_Create_Salesforce_Opportunities_from_Stripe_Subscr.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\extracted\\split\\Create-SFOpp-from-Stripe_03_Subscription_Completed_JSON_to_SF_Opportunity_CREA.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\extracted\\split\\Create-SFOpp-from-Stripe_02_Stripe_New_Customer_Subscription_Listener_Operatio.xml",
+          "component": {
+            "id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8",
+            "name": "Stripe New Customer Subscription Listener Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "generic"
+          }
+        },
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\4da6baf1-7f3d-4363-9646-3699bf5d62c6\\extracted\\split\\Create-SFOpp-from-Stripe_04_SF_Opportunity_CREATE_Operation.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    }
+  },
+  "403d9549-36c9-4b9a-92d9-36282bb567c5": {
+    "id": "403d9549-36c9-4b9a-92d9-36282bb567c5",
+    "status": "completed",
+    "created": "2025-06-24T18:25:22.702967",
+    "last_updated": "2025-06-24T18:26:06.539610",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\403d9549-36c9-4b9a-92d9-36282bb567c5\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 2,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\403d9549-36c9-4b9a-92d9-36282bb567c5\\boomi_documentation.md",
+      "html": "results\\403d9549-36c9-4b9a-92d9-36282bb567c5\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\403d9549-36c9-4b9a-92d9-36282bb567c5\\extracted\\split\\Create-SFOpp-from-Stripe_01_Create_Salesforce_Opportunities_from_Stripe_Subscr.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\403d9549-36c9-4b9a-92d9-36282bb567c5\\extracted\\split\\Create-SFOpp-from-Stripe_03_Subscription_Completed_JSON_to_SF_Opportunity_CREA.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\403d9549-36c9-4b9a-92d9-36282bb567c5\\extracted\\split\\Create-SFOpp-from-Stripe_02_Stripe_New_Customer_Subscription_Listener_Operatio.xml",
+          "component": {
+            "id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8",
+            "name": "Stripe New Customer Subscription Listener Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "generic"
+          }
+        },
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\403d9549-36c9-4b9a-92d9-36282bb567c5\\extracted\\split\\Create-SFOpp-from-Stripe_04_SF_Opportunity_CREATE_Operation.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    }
+  },
+  "cd3d00e9-7218-40de-a450-b79bfe9fe407": {
+    "id": "cd3d00e9-7218-40de-a450-b79bfe9fe407",
+    "status": "completed",
+    "created": "2025-06-24T19:04:48.027283",
+    "last_updated": "2025-06-24T19:16:27.432787",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 2,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\boomi_documentation.md",
+      "html": "results\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\extracted\\split\\Create-SFOpp-from-Stripe_01_Create_Salesforce_Opportunities_from_Stripe_Subscr.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\extracted\\split\\Create-SFOpp-from-Stripe_03_Subscription_Completed_JSON_to_SF_Opportunity_CREA.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\extracted\\split\\Create-SFOpp-from-Stripe_02_Stripe_New_Customer_Subscription_Listener_Operatio.xml",
+          "component": {
+            "id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8",
+            "name": "Stripe New Customer Subscription Listener Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "generic"
+          }
+        },
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\extracted\\split\\Create-SFOpp-from-Stripe_04_SF_Opportunity_CREATE_Operation.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\iflow_match\\integration_match_report.html",
+      "summary": "results\\cd3d00e9-7218-40de-a450-b79bfe9fe407\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 31 potential matches"
+    }
+  },
+  "58cbea25-53b0-4d5e-bd98-5233692342a0": {
+    "id": "58cbea25-53b0-4d5e-bd98-5233692342a0",
+    "status": "processing",
+    "created": "2025-06-24T19:42:37.849079",
+    "last_updated": "2025-06-24T19:43:53.897721",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\58cbea25-53b0-4d5e-bd98-5233692342a0\\extracted",
+    "zip_file": true,
+    "processing_step": "llm_complete",
+    "processing_message": "AI enhancement complete, saving final Boomi documentation...",
+    "file_info": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 0,
+      "errors": 0
+    }
+  },
+  "5e916084-eaef-4264-986d-626a765e3cbf": {
+    "id": "5e916084-eaef-4264-986d-626a765e3cbf",
+    "status": "completed",
+    "created": "2025-06-24T19:49:56.649416",
+    "last_updated": "2025-06-24T19:51:18.899735",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\5e916084-eaef-4264-986d-626a765e3cbf\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 2,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\5e916084-eaef-4264-986d-626a765e3cbf\\boomi_documentation.md",
+      "html": "results\\5e916084-eaef-4264-986d-626a765e3cbf\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\5e916084-eaef-4264-986d-626a765e3cbf\\extracted\\split\\Create-SFOpp-from-Stripe_01_Create_Salesforce_Opportunities_from_Stripe_Subscr.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\5e916084-eaef-4264-986d-626a765e3cbf\\extracted\\split\\Create-SFOpp-from-Stripe_03_Subscription_Completed_JSON_to_SF_Opportunity_CREA.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\5e916084-eaef-4264-986d-626a765e3cbf\\extracted\\split\\Create-SFOpp-from-Stripe_02_Stripe_New_Customer_Subscription_Listener_Operatio.xml",
+          "component": {
+            "id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8",
+            "name": "Stripe New Customer Subscription Listener Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "generic"
+          }
+        },
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\5e916084-eaef-4264-986d-626a765e3cbf\\extracted\\split\\Create-SFOpp-from-Stripe_04_SF_Opportunity_CREATE_Operation.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    }
+  },
+  "22038359-ca2a-4fb4-8152-6fbe9bd09838": {
+    "id": "22038359-ca2a-4fb4-8152-6fbe9bd09838",
+    "status": "completed",
+    "created": "2025-06-24T20:24:12.125829",
+    "last_updated": "2025-06-24T20:28:36.378979",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 2,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\boomi_documentation.md",
+      "html": "results\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\extracted\\split\\Create-SFOpp-from-Stripe_01_Create_Salesforce_Opportunities_from_Stripe_Subscr.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\extracted\\split\\Create-SFOpp-from-Stripe_03_Subscription_Completed_JSON_to_SF_Opportunity_CREA.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\extracted\\split\\Create-SFOpp-from-Stripe_02_Stripe_New_Customer_Subscription_Listener_Operatio.xml",
+          "component": {
+            "id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8",
+            "name": "Stripe New Customer Subscription Listener Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "generic"
+          }
+        },
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\extracted\\split\\Create-SFOpp-from-Stripe_04_SF_Opportunity_CREATE_Operation.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\iflow_match\\integration_match_report.html",
+      "summary": "results\\22038359-ca2a-4fb4-8152-6fbe9bd09838\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 22 potential matches"
+    }
+  },
+  "d17b4066-ada9-480b-a392-694c190d0700": {
+    "id": "d17b4066-ada9-480b-a392-694c190d0700",
+    "status": "completed",
+    "created": "2025-06-26T14:05:28.375888",
+    "last_updated": "2025-06-26T14:06:43.372055",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d17b4066-ada9-480b-a392-694c190d0700\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 2,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\d17b4066-ada9-480b-a392-694c190d0700\\boomi_documentation.md",
+      "html": "results\\d17b4066-ada9-480b-a392-694c190d0700\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 5,
+      "processed_files": 4,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d17b4066-ada9-480b-a392-694c190d0700\\extracted\\split\\Create-SFOpp-from-Stripe_01_Create_Salesforce_Opportunities_from_Stripe_Subscr.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d17b4066-ada9-480b-a392-694c190d0700\\extracted\\split\\Create-SFOpp-from-Stripe_03_Subscription_Completed_JSON_to_SF_Opportunity_CREA.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d17b4066-ada9-480b-a392-694c190d0700\\extracted\\split\\Create-SFOpp-from-Stripe_02_Stripe_New_Customer_Subscription_Listener_Operatio.xml",
+          "component": {
+            "id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8",
+            "name": "Stripe New Customer Subscription Listener Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "generic"
+          }
+        },
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d17b4066-ada9-480b-a392-694c190d0700\\extracted\\split\\Create-SFOpp-from-Stripe_04_SF_Opportunity_CREATE_Operation.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    }
   }
 }

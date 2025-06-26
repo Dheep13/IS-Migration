@@ -1,84 +1,46 @@
-# Archive folder - contains old/unused files
-archive/
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Logs
-*.log
-logs/
-
-# Debug and output folders
-genai_debug/
-genai_output/
-results/
-uploads/
-
-# NLTK data (can be downloaded)
-nltk_data/
-
-# Temporary files
-*.tmp
-*.temp
-.cache/
-
-# Environment variables
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Node modules (if any)
-node_modules/
-
-# SAP Integration Suite files (sensitive)
-*.iflw
-*.zip
-
-# Test files
-test_*.xml
-test_*.json
+# Auto-generated .gitignore for IFA Project 
+ 
+# Environment files 
+.env 
+*.env 
+.env.local 
+.env.development 
+.env.production 
+ 
+# Python 
+__pycache__/ 
+*.py[cod] 
+*.so 
+*.egg-info/ 
+dist/ 
+build/ 
+ 
+# Node.js 
+node_modules/ 
+npm-debug.log* 
+yarn-debug.log* 
+yarn-error.log* 
+ 
+# Frontend build 
+IFA-Project/frontend/dist/ 
+IFA-Project/frontend/.vite/ 
+ 
+# Logs 
+logs/ 
+*.log 
+ 
+# Runtime data 
+results/ 
+temp/ 
+tmp/ 
+ 
+# IDE 
+.vscode/ 
+.idea/ 
+*.swp 
+*.swo 
+ 
+# OS 
+.DS_Store 
+Thumbs.db 
+desktop.ini 

@@ -179,6 +179,11 @@ const IFLOW_API_PROTOCOL = import.meta.env.VITE_IFLOW_API_PROTOCOL || 'http';
 const GEMMA3_API_URL = import.meta.env.VITE_GEMMA3_API_URL || 'http://localhost:5002/api';
 const GEMMA3_API_HOST = import.meta.env.VITE_GEMMA3_API_HOST || 'localhost:5002';
 const GEMMA3_API_PROTOCOL = import.meta.env.VITE_GEMMA3_API_PROTOCOL || 'http';
+
+// BoomiToIS API Configuration
+const BOOMI_API_URL = import.meta.env.VITE_BOOMI_API_URL || 'http://localhost:5003/api';
+const BOOMI_API_HOST = import.meta.env.VITE_BOOMI_API_HOST || 'localhost:5003';
+const BOOMI_API_PROTOCOL = import.meta.env.VITE_BOOMI_API_PROTOCOL || 'http';
 const MAX_POLL_COUNT = parseInt(import.meta.env.VITE_MAX_POLL_COUNT || '60');
 const POLL_INTERVAL_MS = parseInt(import.meta.env.VITE_POLL_INTERVAL_MS || '2000');
 const MAX_FAILED_ATTEMPTS = parseInt(import.meta.env.VITE_MAX_FAILED_ATTEMPTS || '3');
@@ -188,6 +193,7 @@ console.log('Using iFlow API URL:', IFLOW_API_URL);
 console.log('Using iFlow API Host:', IFLOW_API_HOST);
 console.log('Using iFlow API Protocol:', IFLOW_API_PROTOCOL);
 console.log('Using Gemma3 API URL:', GEMMA3_API_URL);
+console.log('Using Boomi API URL:', BOOMI_API_URL);
 console.log('Max Poll Count:', MAX_POLL_COUNT);
 console.log('Poll Interval (ms):', POLL_INTERVAL_MS);
 console.log('Max Failed Attempts:', MAX_FAILED_ATTEMPTS);
@@ -197,14 +203,19 @@ const getSelectedLLMProvider = () => {
   return localStorage.getItem('selectedLLMProvider') || 'anthropic';
 };
 
-// Function to get the appropriate API instance based on LLM provider
-const getIflowApiInstance = () => {
-  const provider = getSelectedLLMProvider();
+// Function to get the appropriate API instance based on platform and LLM provider
+const getIflowApiInstance = (platform = 'mulesoft') => {
+  // If platform is boomi, always use the BoomiToIS-API
+  if (platform === 'boomi') {
+    return boomiApi;
+  }
 
+  // For mulesoft platform, choose based on LLM provider
+  const provider = getSelectedLLMProvider();
   if (provider === 'gemma3') {
     return gemma3Api;
   }
-  return iflowApi; // Default to Anthropic
+  return iflowApi; // Default to Anthropic for MuleSoft
 };
 
 // Create a separate instance for the iFlow API (Anthropic)
@@ -221,6 +232,15 @@ const iflowApi = axios.create({
 // Create a separate instance for the Gemma3 API
 const gemma3Api = axios.create({
   baseURL: GEMMA3_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: ENV === 'production',
+})
+
+// Create a separate instance for the BoomiToIS API
+const boomiApi = axios.create({
+  baseURL: BOOMI_API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -287,14 +307,15 @@ gemma3Api.interceptors.response.use(
 )
 
 // Helper function to try the markdown approach for iFlow generation
-async function tryMarkdownApproach(jobId) {
-    console.log(`Fetching markdown content for job: ${jobId}`);
+async function tryMarkdownApproach(jobId, platform) {
+    console.log(`Fetching markdown content for job: ${jobId} using platform: ${platform}`);
     const markdownBlob = await getDocumentation(jobId, 'markdown');
     const markdownContent = await markdownBlob.text();
     console.log(`Markdown content fetched, length: ${markdownContent.length} characters`);
 
-    // Now send the markdown content directly to the iFlow API
-    const response = await iflowApi.post(`/generate-iflow`, {
+    // Now send the markdown content directly to the appropriate iFlow API based on platform
+    const apiInstance = getIflowApiInstance(platform);
+    const response = await apiInstance.post(`/generate-iflow`, {
         markdown: markdownContent,
         iflow_name: `IFlow_${jobId.substring(0, 8)}`
     }, {
@@ -306,39 +327,45 @@ async function tryMarkdownApproach(jobId) {
 }
 
 // Provider-aware markdown approach
-async function tryMarkdownApproachWithProvider(jobId, provider) {
-    console.log(`Fetching markdown content for job: ${jobId} using ${provider}`);
+async function tryMarkdownApproachWithProvider(jobId, provider, platform = 'mulesoft') {
+    console.log(`Fetching markdown content for job: ${jobId} using ${provider} for platform: ${platform}`);
     const markdownBlob = await getDocumentation(jobId, 'markdown');
     const markdownContent = await markdownBlob.text();
     console.log(`Markdown content fetched, length: ${markdownContent.length} characters`);
 
-    const apiInstance = getIflowApiInstance();
+    const apiInstance = getIflowApiInstance(platform);
 
-    // Configure timeout based on provider
-    const timeout = provider === 'gemma3' ? 300000 : 30000; // 5 minutes for Gemma3, 30 seconds for Anthropic
+    // Configure timeout based on provider and platform
+    let timeout = 30000; // Default 30 seconds
+    if (provider === 'gemma3') {
+        timeout = 300000; // 5 minutes for Gemma3
+    } else if (platform === 'boomi') {
+        timeout = 120000; // 2 minutes for Boomi (more complex processing)
+    }
 
     // Send the markdown content to the appropriate API
     const response = await apiInstance.post(`/generate-iflow`, {
         markdown: markdownContent,
         iflow_name: `IFlow_${jobId.substring(0, 8)}`,
-        provider: provider
+        provider: provider,
+        platform: platform
     }, {
         timeout: timeout
     });
 
-    console.log(`${provider} iFlow generation response:`, response.data);
+    console.log(`${provider} iFlow generation response for ${platform}:`, response.data);
     return response.data;
 }
 
 // Generate iFlow from markdown
-export const generateIflow = async (jobId) => {
+export const generateIflow = async (jobId, platform = 'mulesoft') => {
     try {
         const selectedProvider = getSelectedLLMProvider();
-        console.log(`Generating iFlow for job: ${jobId} using ${selectedProvider}`);
+        console.log(`Generating iFlow for job: ${jobId} using ${selectedProvider} for platform: ${platform}`);
         console.log(`Environment: ${ENV}`);
 
-        // Get the appropriate API instance
-        const apiInstance = getIflowApiInstance();
+        // Get the appropriate API instance based on platform
+        const apiInstance = getIflowApiInstance(platform);
 
         // Use a consistent approach for both development and production
         // First try the markdown approach, then fall back to direct approach if needed
@@ -355,8 +382,8 @@ export const generateIflow = async (jobId) => {
                 console.log("Continuing with iFlow generation despite health check failure");
             }
 
-            // Try the markdown approach with selected provider
-            return await tryMarkdownApproachWithProvider(jobId, selectedProvider);
+            // Try the markdown approach with selected provider and platform
+            return await tryMarkdownApproachWithProvider(jobId, selectedProvider, platform);
         } catch (markdownError) {
             console.error("Markdown approach failed:", markdownError);
 
@@ -372,15 +399,16 @@ export const generateIflow = async (jobId) => {
             // If markdown approach fails, try the direct approach
             console.log("Trying direct iFlow generation with job ID...");
 
-            // Log the full URL being used
-            const fullUrl = `${iflowApi.defaults.baseURL}/generate-iflow/${jobId}`;
-            console.log(`Calling iFlow API directly with job ID: ${jobId}`);
+            // Get the appropriate API instance based on platform
+            const apiInstance = getIflowApiInstance(platform);
+            const fullUrl = `${apiInstance.defaults.baseURL}/generate-iflow/${jobId}`;
+            console.log(`Calling iFlow API directly with job ID: ${jobId} using platform: ${platform}`);
             console.log(`Full URL: ${fullUrl}`);
 
             // Log the baseURL to verify it's correct
-            console.log(`iFlow API baseURL: ${iflowApi.defaults.baseURL}`);
+            console.log(`iFlow API baseURL: ${apiInstance.defaults.baseURL}`);
 
-            const directResponse = await iflowApi.post(`/generate-iflow/${jobId}`, {}, {
+            const directResponse = await apiInstance.post(`/generate-iflow/${jobId}`, {}, {
                 timeout: 30000 // 30 second timeout
             });
 
@@ -418,12 +446,12 @@ export const generateIflow = async (jobId) => {
 }
 
 // Get iFlow generation status
-export const getIflowGenerationStatus = async (jobId) => {
+export const getIflowGenerationStatus = async (jobId, platform = 'mulesoft') => {
     try {
         const selectedProvider = getSelectedLLMProvider();
-        console.log(`Getting iFlow generation status for job: ${jobId} using ${selectedProvider}`);
+        console.log(`Getting iFlow generation status for job: ${jobId} using ${selectedProvider} for platform: ${platform}`);
 
-        const apiInstance = getIflowApiInstance();
+        const apiInstance = getIflowApiInstance(platform);
 
         // Add a timeout to the request to prevent hanging
         const response = await apiInstance.get(`/jobs/${jobId}`, {
@@ -465,12 +493,12 @@ export const getIflowGenerationStatus = async (jobId) => {
 }
 
 // Download generated iFlow
-export const downloadGeneratedIflow = async (jobId) => {
+export const downloadGeneratedIflow = async (jobId, platform = 'mulesoft') => {
     try {
         const selectedProvider = getSelectedLLMProvider();
-        console.log(`Downloading generated iFlow for job: ${jobId} using ${selectedProvider}`);
+        console.log(`Downloading generated iFlow for job: ${jobId} using ${selectedProvider} for platform: ${platform}`);
 
-        const apiInstance = getIflowApiInstance();
+        const apiInstance = getIflowApiInstance(platform);
 
         // Use the appropriate API instance with blob response type
         const response = await apiInstance.get(`/jobs/${jobId}/download`, {
@@ -495,12 +523,13 @@ export const downloadGeneratedIflow = async (jobId) => {
 }
 
 // Download iFlow debug file
-export const downloadIflowDebugFile = async (jobId, fileName) => {
+export const downloadIflowDebugFile = async (jobId, fileName, platform = 'mulesoft') => {
     try {
-        console.log(`Downloading iFlow debug file for job: ${jobId}, file: ${fileName}`);
+        console.log(`Downloading iFlow debug file for job: ${jobId}, file: ${fileName}, platform: ${platform}`);
 
-        // Use the dedicated iflowApi instance with blob response type
-        const response = await iflowApi.get(`/jobs/${jobId}/debug/${fileName}`, {
+        // Get the appropriate API instance based on platform
+        const apiInstance = getIflowApiInstance(platform);
+        const response = await apiInstance.get(`/jobs/${jobId}/debug/${fileName}`, {
             responseType: 'blob'
         });
 
@@ -522,12 +551,13 @@ export const downloadIflowDebugFile = async (jobId, fileName) => {
 }
 
 // Deploy iFlow to SAP Integration Suite
-export const deployIflowToSap = async (jobId, packageId, description) => {
+export const deployIflowToSap = async (jobId, packageId, description, platform = 'mulesoft') => {
     try {
-        console.log(`Deploying iFlow for job: ${jobId} to SAP Integration Suite`);
+        console.log(`Deploying iFlow for job: ${jobId} to SAP Integration Suite using platform: ${platform}`);
 
-        // Use the dedicated iflowApi instance
-        const response = await iflowApi.post(`/jobs/${jobId}/deploy`, {
+        // Get the appropriate API instance based on platform
+        const apiInstance = getIflowApiInstance(platform);
+        const response = await apiInstance.post(`/jobs/${jobId}/deploy`, {
             package_id: packageId,
             description: description
         });
@@ -550,13 +580,14 @@ export const deployIflowToSap = async (jobId, packageId, description) => {
 }
 
 // Deploy iFlow directly to SAP Integration Suite using the direct deployment approach
-export const directDeployIflowToSap = async (jobId, packageId, iflowId, iflowName) => {
+export const directDeployIflowToSap = async (jobId, packageId, iflowId, iflowName, platform = 'mulesoft') => {
     try {
-        console.log(`Directly deploying iFlow for job: ${jobId} to SAP Integration Suite`);
+        console.log(`Directly deploying iFlow for job: ${jobId} to SAP Integration Suite using platform: ${platform}`);
         console.log(`Parameters: packageId=${packageId}, iflowId=${iflowId}, iflowName=${iflowName}`);
 
-        // Use the dedicated iflowApi instance
-        const response = await iflowApi.post(`/jobs/${jobId}/direct-deploy`, {
+        // Get the appropriate API instance based on platform
+        const apiInstance = getIflowApiInstance(platform);
+        const response = await apiInstance.post(`/jobs/${jobId}/direct-deploy`, {
             package_id: packageId,
             iflow_id: iflowId,
             iflow_name: iflowName

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "===== IT Resonance iFlow Generator API Deployment ====="
+echo "===== Boomi to Integration Suite API Deployment ====="
 
 echo "Checking required files..."
 if [ ! -f app.py ]; then
@@ -49,4 +49,4 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Deployment completed successfully!"
-echo "API is now available at: https://mulesoft-iflow-api.cfapps.us10-001.hana.ondemand.com"
+echo "API is now available at: https://boomi-to-is-api.cfapps.eu10-005.hana.ondemand.com"

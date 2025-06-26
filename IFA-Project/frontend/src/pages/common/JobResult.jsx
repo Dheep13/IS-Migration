@@ -189,9 +189,10 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       setIflowGenerationMessage("Starting SAP API/iFlow generation...")
 
       console.log(`Generating iFlow for job ${jobInfo.id}...`)
+      console.log(`Platform detected: ${jobInfo.platform || 'mulesoft'}`)
 
-      // Call the API to generate the iFlow
-      const result = await generateIflow(jobInfo.id)
+      // Call the API to generate the iFlow with platform information
+      const result = await generateIflow(jobInfo.id, jobInfo.platform || 'mulesoft')
 
       // Check if the result has an error status
       if (result.status === 'error') {
@@ -215,7 +216,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
         // Make a single status check after a short delay
         setTimeout(async () => {
           try {
-            const statusResult = await getIflowGenerationStatus(result.job_id);
+            const statusResult = await getIflowGenerationStatus(result.job_id, jobInfo.platform || 'mulesoft');
 
             if (statusResult.status === "completed") {
               setIflowGenerationStatus("completed");
@@ -258,7 +259,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
             // Try one final direct download
             try {
-              await downloadGeneratedIflow(result.job_id);
+              await downloadGeneratedIflow(result.job_id, jobInfo.platform || 'mulesoft');
               setIflowGenerationStatus("completed");
               setIflowGenerationMessage("iFlow generation completed successfully");
               setIsGeneratingIflow(false);
@@ -273,7 +274,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
             return;
           }
 
-          const statusResult = await getIflowGenerationStatus(result.job_id)
+          const statusResult = await getIflowGenerationStatus(result.job_id, jobInfo.platform || 'mulesoft')
 
           // If the result has an error status, handle it but don't stop polling yet
           if (statusResult.status === 'error') {
@@ -334,7 +335,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
     try {
       // Try to download the file directly to see if it exists
-      await downloadGeneratedIflow(jobId);
+      await downloadGeneratedIflow(jobId, jobInfo.platform || 'mulesoft');
 
       // If download succeeds, the file exists and job is complete
       clearInterval(intervalId);
@@ -372,9 +373,9 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       const iflowId = iflowName.replace(/[^a-zA-Z0-9_]/g, '_')
       const packageId = "ConversionPackages"
 
-      // Use the direct deployment approach
-      console.log(`Using direct deployment with iflowId=${iflowId}, iflowName=${iflowName}, packageId=${packageId}`)
-      const result = await directDeployIflowToSap(deployJobId, packageId, iflowId, iflowName)
+      // Use the direct deployment approach with platform information
+      console.log(`Using direct deployment with iflowId=${iflowId}, iflowName=${iflowName}, packageId=${packageId}, platform=${jobInfo.platform || 'mulesoft'}`)
+      const result = await directDeployIflowToSap(deployJobId, packageId, iflowId, iflowName, jobInfo.platform || 'mulesoft')
 
       console.log("Direct deployment response:", result)
 
@@ -508,7 +509,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       console.log(`Downloading generated iFlow for job ${iflowJobId}...`)
 
       // Get the file using our API service
-      const blob = await downloadGeneratedIflow(iflowJobId)
+      const blob = await downloadGeneratedIflow(iflowJobId, jobInfo.platform || 'mulesoft')
 
       console.log(`iFlow download response received, size: ${blob.size} bytes`)
 

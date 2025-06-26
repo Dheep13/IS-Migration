@@ -482,8 +482,8 @@ def generate_boomi_iflow_metadata(job_id, documentation, processing_results):
         import requests
         import json
 
-        # BoomiToIS-API endpoint (running on port 5003)
-        boomi_api_url = "http://localhost:5003"
+        # BoomiToIS-API endpoint (use environment variable or fallback to localhost)
+        boomi_api_url = os.getenv('BOOMI_API_URL', 'http://localhost:5003')
 
         # Prepare the request data
         request_data = {
@@ -494,7 +494,7 @@ def generate_boomi_iflow_metadata(job_id, documentation, processing_results):
 
         # Call the BoomiToIS-API to generate iFlow metadata
         response = requests.post(
-            f"{boomi_api_url}/api/generate-iflow-from-job",
+            f"{boomi_api_url}/api/generate-iflow/{job_id}",
             json=request_data,
             timeout=30
         )
