@@ -107,6 +107,12 @@ class DeploymentManager:
         # Build frontend if needed
         if build_frontend and app_name == 'frontend':
             print("🔨 Building frontend...")
+            # Remove platform-specific lock file to avoid platform conflicts
+            lock_file = os.path.join(app_path, 'package-lock.json')
+            if os.path.exists(lock_file):
+                os.remove(lock_file)
+                print("🗑️ Removed platform-specific package-lock.json")
+
             self.run_command("npm install", cwd=app_path)
             self.run_command("npm run build", cwd=app_path)
         

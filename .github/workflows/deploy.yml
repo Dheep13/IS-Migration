@@ -48,7 +48,8 @@ jobs:
     - name: Install Frontend dependencies
       run: |
         cd IFA-Project/frontend
-        npm ci
+        rm -f package-lock.json
+        npm install
     
     - name: Run Python tests
       run: |
@@ -93,6 +94,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install requests
+
+    - name: Build Frontend
+      run: |
+        cd IFA-Project/frontend
+        rm -f package-lock.json
+        npm install
+        npm run build
     
     - name: Deploy Applications
       run: |

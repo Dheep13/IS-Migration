@@ -15,11 +15,12 @@ __pycache__/
 dist/ 
 build/ 
  
-# Node.js 
-node_modules/ 
-npm-debug.log* 
-yarn-debug.log* 
-yarn-error.log* 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
  
 # Frontend build 
 IFA-Project/frontend/dist/ 
