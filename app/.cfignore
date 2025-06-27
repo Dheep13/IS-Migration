@@ -1,0 +1,48 @@
+# Cloud Foundry ignore file
+# Exclude large directories and files from deployment
+
+# Large data directories
+results/
+uploads/
+nltk_data/
+
+# Development files
+*.log
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+.env
+.env.*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Test files
+test_*.py
+*_test.py
+
+# Deployment scripts
+deploy.bat
+deploy.sh
+deploy_backend.bat
+deploy_backend.sh
+setup_nltk.bat
+
+# Documentation
+README_DEPLOYMENT.md
+README_DEPLOYMENT.md.new
+cf_deploy.md
+
+# Temporary files
+temp/
+tmp/
+*.tmp
