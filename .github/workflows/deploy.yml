@@ -48,18 +48,20 @@ jobs:
     - name: Install Frontend dependencies
       run: |
         cd IFA-Project/frontend
-        rm -f package-lock.json
-        npm install --force --platform=linux --arch=x64
+        rm -rf node_modules package-lock.json
+        npm cache clean --force
+        npm install --omit=optional --no-optional
+        npm install @rollup/rollup-linux-x64-gnu --save-optional || echo "Optional rollup dependency failed, continuing..."
+
+    - name: Build Frontend
+      run: |
+        cd IFA-Project/frontend
+        npm run build || (echo "Build failed, trying with fallback..." && npm install rollup@latest && npm run build)
     
     - name: Run Python tests
       run: |
         echo "Running Python API tests..."
         # Add your Python tests here
-    
-    - name: Build Frontend
-      run: |
-        cd IFA-Project/frontend
-        npm run build
 
   deploy:
     needs: test

@@ -24,8 +24,11 @@ export default ({ mode }) => {
     plugins: [react()],
     build: {
       rollupOptions: {
-        // Exclude platform-specific dependencies from build
-        external: ['@rollup/rollup-win32-x64-msvc'],
+        // Handle platform-specific dependencies gracefully
+        external: (id) => {
+          // Exclude all platform-specific rollup binaries
+          return id.includes('@rollup/rollup-') && id.includes('-')
+        },
         output: {
           // Ensure consistent builds across platforms
           manualChunks: undefined
@@ -34,7 +37,11 @@ export default ({ mode }) => {
       // Optimize for production deployment
       target: 'es2015',
       minify: 'terser',
-      sourcemap: false
+      sourcemap: false,
+      // Handle missing optional dependencies gracefully
+      commonjsOptions: {
+        ignoreDynamicRequires: true
+      }
     },
     resolve: {
         alias: {
