@@ -30,18 +30,35 @@ IFA-Project/frontend/.vite/
 logs/ 
 *.log 
  
-# Runtime data 
-results/ 
-temp/ 
-tmp/ 
- 
-# IDE 
-.vscode/ 
-.idea/ 
-*.swp 
-*.swo 
- 
-# OS 
-.DS_Store 
-Thumbs.db 
-desktop.ini 
+# Runtime data
+results/
+temp/
+tmp/
+uploads/
+jobs.json
+
+# Debug and testing files
+genai_debug/
+genai_output/
+**/genai_debug/
+**/genai_output/
+test_*.py
+*_test.py
+
+# Archive and excluded folders
+archive/
+DO_NOT_PUSH_TO_CF/
+**/archive/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.augment/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

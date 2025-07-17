@@ -201,8 +201,21 @@ def generate_iflow(job_id=None):
                 'message': 'Anthropic API key not configured. Please set ANTHROPIC_API_KEY in .env file.'
             }), 500
 
-        # If job_id is provided, fetch the markdown from the main API
-        if job_id:
+        # Get markdown from request body first (prioritize direct markdown over fetching)
+        data = request.json
+
+        # Check if markdown is provided in request body
+        if data and 'markdown' in data:
+            # Use markdown from request body (for document upload jobs)
+            markdown_content = data['markdown']
+            logger.info(f"Using markdown from request body, length: {len(markdown_content)} characters")
+
+            iflow_name = data.get('iflow_name', f"IFlow_{job_id[:8] if job_id else 'Generated'}")
+            source_type = data.get('source_type', 'unknown')
+            logger.info(f"Using iFlow name: {iflow_name}, source type: {source_type}")
+
+        elif job_id:
+            # Fallback: fetch markdown from main API (for traditional XML processing jobs)
             try:
                 import requests
 
@@ -231,74 +244,41 @@ def generate_iflow(job_id=None):
 
                 # Get the markdown content from the response
                 markdown_content = response.text
-                logger.info(f"Received markdown content length: {len(markdown_content)} characters")
+                logger.info(f"Received markdown content from API, length: {len(markdown_content)} characters")
+                iflow_name = f"IFlow_{job_id[:8]}"
+                source_type = "xml_processing"
 
-                # Generate a job ID
-                iflow_job_id = str(uuid.uuid4())
-
-                # Create job record
-                jobs[iflow_job_id] = {
-                    'id': iflow_job_id,
-                    'original_job_id': job_id,
-                    'status': 'queued',
-                    'created': str(uuid.uuid1()),
-                    'message': 'Job queued. Starting iFlow generation...'
-                }
-                save_jobs(jobs)  # Save job data to file
-
-                # Start processing in background
-                thread = threading.Thread(
-                    target=process_iflow_generation,
-                    args=(iflow_job_id, markdown_content, f"IFlow_{job_id[:8]}")
-                )
-                thread.daemon = True
-                thread.start()
-
-                return jsonify({
-                    'status': 'queued',
-                    'message': 'iFlow generation started',
-                    'job_id': iflow_job_id
-                }), 202
             except Exception as e:
                 logger.error(f"Error fetching markdown for job {job_id}: {str(e)}")
                 return jsonify({
                     'status': 'error',
                     'message': f'Error fetching markdown for job {job_id}: {str(e)}'
                 }), 500
-
-        # If no job_id, get markdown from request body
-        data = request.json
-        logger.info(f"Received request data: {data}")
-
-        if not data or 'markdown' not in data:
+        else:
+            # No markdown in request body and no job_id
             logger.error("Missing required parameter: markdown")
             return jsonify({
                 'status': 'error',
                 'message': 'Missing required parameter: markdown'
             }), 400
-
-        markdown_content = data['markdown']
-        logger.info(f"Received markdown content length: {len(markdown_content)} characters")
-
-        iflow_name = data.get('iflow_name')
-        logger.info(f"Using iFlow name: {iflow_name}")
-
-        # Generate a job ID
-        job_id = str(uuid.uuid4())
+        # Generate a new job ID for iFlow generation
+        iflow_job_id = str(uuid.uuid4())
 
         # Create job record
-        jobs[job_id] = {
-            'id': job_id,
+        jobs[iflow_job_id] = {
+            'id': iflow_job_id,
+            'original_job_id': job_id,  # Keep reference to original job if provided
             'status': 'queued',
             'created': str(uuid.uuid1()),
-            'message': 'Job queued. Starting iFlow generation...'
+            'message': 'Job queued. Starting iFlow generation...',
+            'source_type': source_type
         }
         save_jobs(jobs)  # Save job data to file
 
         # Start processing in background
         thread = threading.Thread(
             target=process_iflow_generation,
-            args=(job_id, markdown_content, iflow_name)
+            args=(iflow_job_id, markdown_content, iflow_name)
         )
         thread.daemon = True
         thread.start()
@@ -306,7 +286,7 @@ def generate_iflow(job_id=None):
         response = jsonify({
             'status': 'queued',
             'message': 'iFlow generation started',
-            'job_id': job_id
+            'job_id': iflow_job_id
         })
         # Add CORS headers
         response.headers.add('Access-Control-Allow-Origin', '*')
@@ -357,7 +337,8 @@ def process_iflow_generation(job_id, markdown_content, iflow_name=None):
             markdown_content=markdown_content,
             api_key=ANTHROPIC_API_KEY,
             output_dir=job_result_dir,
-            iflow_name=iflow_name
+            iflow_name=iflow_name,
+            job_id=job_id
         )
 
         if result["status"] == "success":
@@ -658,7 +639,8 @@ def deploy_to_sap(job_id):
         jobs[job_id].update({
             'deployment_status': 'completed',
             'deployment_message': 'Deployment completed successfully',
-            'deployment_details': result
+            'deployment_details': result,
+            'iflow_name': iflow_name  # Preserve the iflow_name after deployment
         })
         save_jobs(jobs)  # Save job data to file
 
@@ -675,7 +657,8 @@ def deploy_to_sap(job_id):
         if job_id in jobs:
             jobs[job_id].update({
                 'deployment_status': 'failed',
-                'deployment_message': f'Error deploying iFlow: {str(e)}'
+                'deployment_message': f'Error deploying iFlow: {str(e)}',
+                'iflow_name': iflow_name  # Preserve the iflow_name even on failure
             })
             save_jobs(jobs)  # Save job data to file
 
@@ -906,14 +889,16 @@ def direct_deploy_to_sap(job_id):
             jobs[job_id].update({
                 'deployment_status': 'completed',
                 'deployment_message': 'iFlow deployed successfully',
-                'deployment_details': deployment_result
+                'deployment_details': deployment_result,
+                'iflow_name': iflow_name  # Preserve the iflow_name after successful deployment
             })
             save_jobs(jobs)  # Save job data to file
         else:
             jobs[job_id].update({
                 'deployment_status': 'failed',
                 'deployment_message': f'Deployment failed: {deployment_result["message"]}',
-                'deployment_details': deployment_result
+                'deployment_details': deployment_result,
+                'iflow_name': iflow_name  # Preserve the iflow_name even on failure
             })
             save_jobs(jobs)  # Save job data to file
 
@@ -927,7 +912,8 @@ def direct_deploy_to_sap(job_id):
         if job_id in jobs:
             jobs[job_id].update({
                 'deployment_status': 'failed',
-                'deployment_message': f'Deployment failed: {str(e)}'
+                'deployment_message': f'Deployment failed: {str(e)}',
+                'iflow_name': iflow_name  # Preserve the iflow_name even on exception
             })
             save_jobs(jobs)  # Save job data to file
 
@@ -938,4 +924,7 @@ def direct_deploy_to_sap(job_id):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5003))
-    app.run(host='0.0.0.0', port=port, debug=True)
+
+    # Disable auto-reload to prevent interruptions during long-running AI analysis
+    # The debug mode was causing restarts every time a ZIP file was generated
+    app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)

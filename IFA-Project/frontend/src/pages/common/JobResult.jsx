@@ -18,10 +18,13 @@ import {
   getIflowMatchStatus,
   getIflowMatchFile,
   generateIflow,
+  generateIflowFromDocs,
+  getJobStatus,
   getIflowGenerationStatus,
   downloadGeneratedIflow,
   deployIflowToSap,
-  directDeployIflowToSap
+  directDeployIflowToSap,
+  updateDeploymentStatus
 } from "@services/api"
 
 import { toast } from "react-hot-toast"
@@ -32,7 +35,7 @@ const MAX_POLL_COUNT = parseInt(import.meta.env.VITE_MAX_POLL_COUNT || '30')
 const POLL_INTERVAL_MS = parseInt(import.meta.env.VITE_POLL_INTERVAL_MS || '5000')
 const MAX_FAILED_ATTEMPTS = parseInt(import.meta.env.VITE_MAX_FAILED_ATTEMPTS || '3')
 
-const JobResult = ({ jobInfo, onNewJob }) => {
+const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
   const [isGeneratingIflowMatch, setIsGeneratingIflowMatch] = useState(false)
   const [iflowMatchStatus, setIflowMatchStatus] = useState(null)
   const [iflowMatchMessage, setIflowMatchMessage] = useState(null)
@@ -41,12 +44,19 @@ const JobResult = ({ jobInfo, onNewJob }) => {
   const [isIflowGenerated, setIsIflowGenerated] = useState(false)
   const [isDeploying, setIsDeploying] = useState(false)
   const [isDeployed, setIsDeployed] = useState(false)
+
+  // User input for deployment configuration
+  const [showDeploymentConfig, setShowDeploymentConfig] = useState(false)
+  const [customPackageName, setCustomPackageName] = useState("ConversionPackages")
+  const [customIflowName, setCustomIflowName] = useState("")
   const [downloading, setDownloading] = useState({
     html: false,
     markdown: false,
     iflowReport: false,
     iflowSummary: false,
-    generatedIflow: false
+    generatedIflow: false,
+    documentationJson: false,
+    uploadedDocumentation: false
   })
   const [showFileAnalysis, setShowFileAnalysis] = useState(false)
 
@@ -165,6 +175,17 @@ const JobResult = ({ jobInfo, onNewJob }) => {
   const [iflowGenerationFiles, setIflowGenerationFiles] = useState(null)
   const [statusCheckInterval, setStatusCheckInterval] = useState(null)
 
+  // Set default custom iFlow name when iflowJobId becomes available
+  useEffect(() => {
+    if (!customIflowName && (iflowJobId || jobInfo.id)) {
+      const baseFileName = jobInfo.filename ? jobInfo.filename.replace(/\.[^/.]+$/, "") : "Integration"
+      const cleanBaseName = baseFileName.replace(/[^a-zA-Z0-9_]/g, '_').substring(0, 30)
+      const jobIdToUse = iflowJobId || jobInfo.id
+      const defaultName = `${cleanBaseName}_${jobIdToUse.substring(0, 8)}`
+      setCustomIflowName(defaultName)
+    }
+  }, [iflowJobId, jobInfo.id, jobInfo.filename, customIflowName])
+
   // Clean up any existing intervals when component unmounts or when starting a new job
   useEffect(() => {
     return () => {
@@ -191,8 +212,20 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       console.log(`Generating iFlow for job ${jobInfo.id}...`)
       console.log(`Platform detected: ${jobInfo.platform || 'mulesoft'}`)
 
-      // Call the API to generate the iFlow with platform information
-      const result = await generateIflow(jobInfo.id, jobInfo.platform || 'mulesoft')
+      // Check if this is a documentation upload job
+      const isDocumentationUpload = jobInfo.source_type === 'uploaded_documentation' ||
+                                   jobInfo.status === 'documentation_ready';
+
+      let result;
+      if (isDocumentationUpload) {
+        console.log("Using main API endpoint for documentation upload job");
+        // Call the main API endpoint for documentation upload jobs
+        result = await generateIflowFromDocs(jobInfo.id);
+      } else {
+        console.log("Using direct BoomiToIS-API endpoint for XML processing job");
+        // Call the BoomiToIS-API directly for XML processing jobs
+        result = await generateIflow(jobInfo.id, jobInfo.platform || 'mulesoft');
+      }
 
       // Check if the result has an error status
       if (result.status === 'error') {
@@ -206,35 +239,81 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
       toast.success("SAP API/iFlow generation started")
 
-      // Store the iFlow job ID
-      setIflowJobId(result.job_id)
+      // Store the appropriate job ID based on the API used
+      if (isDocumentationUpload) {
+        // For main API, the job_id is the main job ID, boomi_job_id is the BoomiToIS-API job ID
+        setIflowJobId(result.boomi_job_id || result.job_id);
+        console.log("Main API response:", result);
+        console.log("Stored BoomiToIS-API job ID:", result.boomi_job_id);
+      } else {
+        // For direct BoomiToIS-API, the job_id is the BoomiToIS-API job ID
+        setIflowJobId(result.job_id);
+        console.log("BoomiToIS-API response:", result);
+      }
 
       // Check if auto-polling is disabled in production
       if (DISABLE_AUTO_POLLING) {
         console.log("Auto-polling is disabled by environment configuration. Making a single status check.");
 
-        // Make a single status check after a short delay
-        setTimeout(async () => {
+        // Make status checks after delays to catch completion
+        const checkStatuses = async (attempt = 1, maxAttempts = 6) => {
           try {
-            const statusResult = await getIflowGenerationStatus(result.job_id, jobInfo.platform || 'mulesoft');
+            let statusToCheck;
 
-            if (statusResult.status === "completed") {
+            if (isDocumentationUpload) {
+              // For documentation upload jobs, check the main job status
+              // The main API will poll the BoomiToIS-API and update the main job status
+              statusToCheck = await getJobStatus(jobInfo.id);
+              console.log(`Status check attempt ${attempt} (main job):`, {
+                mainJobStatus: statusToCheck.status,
+                processingMessage: statusToCheck.processing_message
+              });
+
+              // Update main job info if it has changed
+              if (statusToCheck.status !== jobInfo.status) {
+                console.log(`Main job status updated from ${jobInfo.status} to ${statusToCheck.status}`);
+                // Trigger parent component update if available
+                if (typeof onJobUpdate === 'function') {
+                  onJobUpdate(statusToCheck);
+                }
+              }
+            } else {
+              // For XML processing jobs, check the BoomiToIS-API job status directly
+              statusToCheck = await getJobStatus(result.job_id);
+              console.log(`Status check attempt ${attempt} (BoomiToIS-API job):`, {
+                iflowStatus: statusToCheck.status
+              });
+            }
+
+            if (statusToCheck.status === "completed") {
               setIflowGenerationStatus("completed");
               setIflowGenerationMessage("iFlow generation completed successfully");
               setIsGeneratingIflow(false);
               setIsIflowGenerated(true);
               toast.success("iFlow generated successfully!");
+              return;
+            }
+
+            // If not completed yet and we haven't reached max attempts, try again
+            if (attempt < maxAttempts) {
+              setTimeout(() => checkStatuses(attempt + 1, maxAttempts), 5000);
             } else {
-              // If not completed yet, show a message to check back later
               setIsGeneratingIflow(false);
               toast.info("iFlow generation is in progress. Check back later for results.");
             }
           } catch (error) {
-            console.error("Error checking iFlow status:", error);
-            setIsGeneratingIflow(false);
-            toast.info("iFlow generation is in progress. Check back later for results.");
+            console.error("Error checking status:", error);
+            if (attempt < maxAttempts) {
+              setTimeout(() => checkStatuses(attempt + 1, maxAttempts), 5000);
+            } else {
+              setIsGeneratingIflow(false);
+              toast.info("iFlow generation is in progress. Check back later for results.");
+            }
           }
-        }, 5000); // Wait 5 seconds before checking
+        };
+
+        // Start checking after 5 seconds
+        setTimeout(() => checkStatuses(), 5000);
 
         return;
       }
@@ -269,16 +348,20 @@ const JobResult = ({ jobInfo, onNewJob }) => {
               setIflowGenerationStatus("unknown");
               setIflowGenerationMessage("Status check timed out. The iFlow may still be generating.");
               setIsGeneratingIflow(false);
-              toast.warning("Status check timed out. Try downloading the iFlow manually.");
+              toast("Status check timed out. Try downloading the iFlow manually.", {
+                icon: "⚠️",
+                duration: 5000
+              });
             }
             return;
           }
 
-          const statusResult = await getIflowGenerationStatus(result.job_id, jobInfo.platform || 'mulesoft')
+          // Use main API status which includes BoomiToIS-API sync
+          const statusResult = await getJobStatus(result.job_id)
 
           // If the result has an error status, handle it but don't stop polling yet
-          if (statusResult.status === 'error') {
-            console.warn("Error from status check:", statusResult.message);
+          if (statusResult.status === 'failed') {
+            console.warn("Job failed:", statusResult.processing_message || statusResult.message);
             failedAttempts++;
 
             // Only if we've had multiple consecutive failures, try direct download
@@ -292,7 +375,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
           failedAttempts = 0;
 
           setIflowGenerationStatus(statusResult.status)
-          setIflowGenerationMessage(statusResult.message)
+          setIflowGenerationMessage(statusResult.processing_message || statusResult.message || "Processing...")
 
           if (statusResult.status === "completed") {
             setIflowGenerationFiles(statusResult.files || null)
@@ -305,7 +388,7 @@ const JobResult = ({ jobInfo, onNewJob }) => {
             clearInterval(intervalId)
             setStatusCheckInterval(null)
             setIsGeneratingIflow(false)
-            toast.error(`iFlow generation failed: ${statusResult.message}`)
+            toast.error(`iFlow generation failed: ${statusResult.processing_message || statusResult.message || "Unknown error"}`)
           }
         } catch (error) {
           console.error("Error polling iFlow generation status:", error)
@@ -368,26 +451,134 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
       console.log(`Deploying iFlow for job ${deployJobId} to SAP Integration Suite...`)
 
-      // Get the iFlow name from the job ID or use a default name
-      const iflowName = `GeneratedIFlow_${deployJobId.substring(0, 8)}`
+      // Use custom names provided by user or fall back to job data/generated names
+      let iflowName
+      if (customIflowName && customIflowName.trim()) {
+        // Use user-provided custom name
+        iflowName = customIflowName.trim()
+      } else if (jobInfo.iflow_name) {
+        // Use the preserved iflow_name from the job data
+        iflowName = jobInfo.iflow_name
+      } else {
+        // Fallback to generating from filename
+        const baseFileName = jobInfo.filename ? jobInfo.filename.replace(/\.[^/.]+$/, "") : "Integration"
+        const cleanBaseName = baseFileName.replace(/[^a-zA-Z0-9_]/g, '_').substring(0, 30)
+        iflowName = `${cleanBaseName}_${deployJobId.substring(0, 8)}`
+      }
       const iflowId = iflowName.replace(/[^a-zA-Z0-9_]/g, '_')
-      const packageId = "ConversionPackages"
+      const packageId = (customPackageName && customPackageName.trim()) ? customPackageName.trim() : "ConversionPackages"
 
       // Use the direct deployment approach with platform information
+      console.log(`🚀 DEPLOYMENT INFO:`)
+      console.log(`  - Job ID: ${deployJobId}`)
+      console.log(`  - iFlow Name: ${iflowName}`)
+      console.log(`  - iFlow ID: ${iflowId}`)
+      console.log(`  - Package: ${packageId}`)
+      console.log(`  - Platform: ${jobInfo.platform || 'mulesoft'}`)
       console.log(`Using direct deployment with iflowId=${iflowId}, iflowName=${iflowName}, packageId=${packageId}, platform=${jobInfo.platform || 'mulesoft'}`)
       const result = await directDeployIflowToSap(deployJobId, packageId, iflowId, iflowName, jobInfo.platform || 'mulesoft')
 
       console.log("Direct deployment response:", result)
+      console.log(`📦 DEPLOYMENT RESULT STATUS: ${result.status}`)
 
       if (result.status === 'success') {
         setIsDeployed(true)
-        toast.success("Deployed to SAP Integration Suite successfully!")
+        console.log(`✅ DEPLOYMENT SUCCESS:`)
+        console.log(`  - Deployed Name: ${result.iflow_name || iflowName}`)
+        console.log(`  - Package: ${result.package_id || packageId}`)
+        console.log(`  - Response:`, result)
+        toast.success(`Deployed to SAP Integration Suite as: ${result.iflow_name || iflowName}`)
+
+        // Update Main API job status with deployment information
+        try {
+          console.log(`📦 Updating Main API job ${jobInfo.id} with deployment status...`)
+          console.log(`📦 Deployment details:`, {
+            iflow_name: result.iflow_name || iflowName,
+            package_id: result.package_id || packageId,
+            iflow_id: result.iflow_id || iflowId
+          })
+
+          const updateResult = await updateDeploymentStatus(
+            jobInfo.id, // Update the MAIN API job (this is correct!)
+            'completed',
+            `iFlow deployed successfully as: ${result.iflow_name || iflowName}`,
+            {
+              iflow_name: result.iflow_name || iflowName,
+              package_id: result.package_id || packageId,
+              iflow_id: result.iflow_id || iflowId,
+              deployment_method: 'direct',
+              response_code: result.response_code || 201,
+              boomi_job_id: deployJobId // Also include the BoomiToIS job ID for reference
+            }
+          )
+          console.log(`📦 Main API job status updated successfully:`, updateResult)
+        } catch (error) {
+          console.error("❌ Error updating Main API deployment status:", error)
+        }
+
+        // Refresh job data to get updated deployment status and iflow_name
+        if (typeof onJobUpdate === 'function') {
+          try {
+            const updatedJobData = await getJobStatus(jobInfo.id) // Use main job ID
+            if (updatedJobData) {
+              console.log("Refreshed job data after deployment:", updatedJobData)
+              onJobUpdate(updatedJobData)
+            }
+          } catch (error) {
+            console.error("Error refreshing job data after deployment:", error)
+          }
+        }
       } else {
+        console.log(`📦 ENTERING FAILURE BLOCK - Status was: ${result.status}`)
+        console.log(`❌ DEPLOYMENT FAILED:`, result)
         toast.error(`Deployment failed: ${result.message}`)
+
+        // Update Main API job status with deployment failure
+        try {
+          console.log(`📦 Updating Main API job ${jobInfo.id} with deployment failure...`)
+          await updateDeploymentStatus(
+            jobInfo.id,
+            'failed',
+            `Deployment failed: ${result.message}`,
+            {
+              error: result.message,
+              deployment_method: 'direct'
+            }
+          )
+          console.log(`📦 Main API job status updated with failure`)
+        } catch (error) {
+          console.error("Error updating Main API deployment failure status:", error)
+        }
+
+        // Also refresh job data on failure to show updated deployment status
+        if (typeof onJobUpdate === 'function') {
+          try {
+            const updatedJobData = await getJobStatus(jobInfo.id) // Use main job ID
+            if (updatedJobData) {
+              console.log("Refreshed job data after deployment failure:", updatedJobData)
+              onJobUpdate(updatedJobData)
+            }
+          } catch (error) {
+            console.error("Error refreshing job data after deployment failure:", error)
+          }
+        }
       }
     } catch (error) {
       console.error("Error deploying to SAP:", error)
       toast.error("Failed to deploy to SAP Integration Suite. Please try again.")
+      
+      // Refresh job data even on exception to show any partial updates
+      if (typeof onJobUpdate === 'function') {
+        try {
+          const updatedJobData = await getJobStatus(deployJobId)
+          if (updatedJobData) {
+            console.log("Refreshed job data after deployment exception:", updatedJobData)
+            onJobUpdate(updatedJobData)
+          }
+        } catch (refreshError) {
+          console.error("Error refreshing job data after deployment exception:", refreshError)
+        }
+      }
     } finally {
       setIsDeploying(false)
     }
@@ -405,7 +596,10 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
   const downloadFile = async (fileType, filename) => {
     try {
-      setDownloading(prev => ({ ...prev, [fileType]: true }))
+      // Map file types to download state keys
+      const downloadKey = fileType === "documentation_json" ? "documentationJson" :
+                         fileType === "uploaded_documentation" ? "uploadedDocumentation" : fileType
+      setDownloading(prev => ({ ...prev, [downloadKey]: true }))
 
       console.log(
         `Attempting to download ${fileType} file for job ${jobInfo.id}...`
@@ -444,7 +638,10 @@ const JobResult = ({ jobInfo, onNewJob }) => {
       console.error(`Error downloading ${fileType} file:`, error)
       toast.error(`Failed to download ${fileType} file. Please try again.`)
     } finally {
-      setDownloading(prev => ({ ...prev, [fileType]: false }))
+      // Use the same mapping for cleanup
+      const downloadKey = fileType === "documentation_json" ? "documentationJson" :
+                         fileType === "uploaded_documentation" ? "uploadedDocumentation" : fileType
+      setDownloading(prev => ({ ...prev, [downloadKey]: false }))
     }
   }
 
@@ -543,94 +740,8 @@ const JobResult = ({ jobInfo, onNewJob }) => {
 
   return (
     <div className="bg-white shadow-sm rounded-lg p-6 space-y-6">
-      <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          {getStatusIcon()}
-          <h3 className="text-lg font-semibold text-gray-800">
-            Job Status: <span className="capitalize">{jobInfo.status}</span>
-          </h3>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-        <div>
-          <p className="text-gray-600">
-            Job ID:{" "}
-            <span className="font-medium text-gray-800">{jobInfo.id}</span>
-          </p>
-          <p className="text-gray-600">
-            Created:{" "}
-            <span className="font-medium text-gray-800">
-              {new Date(jobInfo.created).toLocaleString()}
-            </span>
-          </p>
-        </div>
-        <div>
-          <p className="text-gray-600">
-            Last Updated:{" "}
-            <span className="font-medium text-gray-800">
-              {new Date(jobInfo.last_updated).toLocaleString()}
-            </span>
-          </p>
-          <p className="text-gray-600">
-            AI Enhancement:{" "}
-            <span className="font-medium text-gray-800">
-              {jobInfo.enhance ? "Enabled" : "Disabled"}
-            </span>
-          </p>
-        </div>
-      </div>
-
-      {jobInfo.status === "completed" && (
+      {(jobInfo.status === "completed" || jobInfo.status === "documentation_ready") && (
         <>
-          <div>
-            <h4 className="font-semibold text-gray-800 mb-3">
-              Documentation Files:
-            </h4>
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2 p-3 bg-gray-50 rounded-md">
-                <FileText className="h-5 w-5 text-blue-500" />
-                <span className="font-medium text-gray-800">
-                  HTML Documentation with Mermaid
-                </span>
-
-                <div className="flex gap-2 ml-auto">
-                  <a
-                    href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/html`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
-                    title="View in browser"
-                  >
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-
-                  <button
-                    onClick={() =>
-                      downloadFile(
-                        "html",
-                        `mulesoft_documentation_${jobInfo.id}.html`
-                      )
-                    }
-                    disabled={downloading.html}
-                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Download file"
-                  >
-                    {downloading.html ? (
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <Download className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Markdown Documentation section removed */}
-              {/* Flow Visualization section removed */}
-              {/* Direct links section removed */}
-            </div>
-          </div>
-
           <div>
             <h4 className="font-semibold text-gray-800 mb-3">
               SAP Integration Suite Options (Independent Actions):
@@ -724,6 +835,83 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                 </svg>
               </div>
 
+              {/* Deployment Configuration Section */}
+              {!isDeployed && isIflowGenerated && (
+                <div className="mb-4 p-4 bg-gray-50 rounded-lg border">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-gray-900">Deployment Configuration</h4>
+                    <button
+                      onClick={() => setShowDeploymentConfig(!showDeploymentConfig)}
+                      className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                    >
+                      {showDeploymentConfig ? "Hide" : "Customize"}
+                      <svg className={`w-4 h-4 transition-transform ${showDeploymentConfig ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {showDeploymentConfig && (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          iFlow Name
+                        </label>
+                        <input
+                          type="text"
+                          value={customIflowName}
+                          onChange={(e) => setCustomIflowName(e.target.value)}
+                          placeholder="Enter custom iFlow name"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Leave empty to use auto-generated name
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Package Name
+                        </label>
+                        <input
+                          type="text"
+                          value={customPackageName}
+                          onChange={(e) => setCustomPackageName(e.target.value)}
+                          placeholder="Enter package name"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Package where the iFlow will be deployed in SAP Integration Suite
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {!showDeploymentConfig && (
+                    <div className="text-sm text-gray-600">
+                      <div className="flex justify-between">
+                        <span>iFlow Name:</span>
+                        <span className="font-mono text-blue-700">
+                          {(() => {
+                            if (customIflowName && customIflowName.trim()) {
+                              return customIflowName.trim()
+                            }
+                            const baseFileName = jobInfo.filename ? jobInfo.filename.replace(/\.[^/.]+$/, "") : "Integration"
+                            const cleanBaseName = baseFileName.replace(/[^a-zA-Z0-9_]/g, '_').substring(0, 30)
+                            const jobIdToUse = iflowJobId || jobInfo.id
+                            return `${cleanBaseName}_${jobIdToUse.substring(0, 8)}`
+                          })()}
+                        </span>
+                      </div>
+                      <div className="flex justify-between mt-1">
+                        <span>Package:</span>
+                        <span className="font-mono text-blue-700">{customPackageName}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <button
                 onClick={handleDeployToSap}
                 disabled={!isIflowGenerated || isDeploying || isDeployed}
@@ -759,7 +947,97 @@ const JobResult = ({ jobInfo, onNewJob }) => {
                   </>
                 )}
               </button>
+
+              {/* Show deployment preview when not yet deployed or currently deploying */}
+              {!isDeployed && (!jobInfo.deployment_status || jobInfo.deployment_status === "deploying") && (
+                <div className="mt-2 text-xs text-gray-600">
+                  <div className="bg-gray-50 p-2 rounded border">
+                    <span className="font-medium">
+                      {jobInfo.deployment_status === "deploying" ? "Deploying as:" : "Will deploy as:"}
+                    </span>
+                    <div className="font-mono text-blue-700 mt-1">
+                      {(() => {
+                        // Use custom name if provided, otherwise use preserved or generated name
+                        if (customIflowName && customIflowName.trim()) {
+                          return customIflowName.trim()
+                        } else if (jobInfo.iflow_name) {
+                          return jobInfo.iflow_name
+                        } else {
+                          const baseFileName = jobInfo.filename ? jobInfo.filename.replace(/\.[^/.]+$/, "") : "Integration"
+                          const cleanBaseName = baseFileName.replace(/[^a-zA-Z0-9_]/g, '_').substring(0, 30)
+                          const jobIdToUse = iflowJobId || jobInfo.id
+                          return jobIdToUse ? `${cleanBaseName}_${jobIdToUse.substring(0, 8)}` : `${cleanBaseName}_loading`
+                        }
+                      })()}
+                    </div>
+                    <div className="text-gray-500 mt-1">
+                      Package: <span className="font-mono">{customPackageName}</span>
+                    </div>
+                    {jobInfo.deployment_status === "deploying" && (
+                      <div className="mt-2 flex items-center gap-1 text-blue-600">
+                        <div className="animate-spin rounded-full h-3 w-3 border-2 border-blue-500 border-t-transparent" />
+                        <span className="text-xs">Deployment in progress...</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Show SAP Integration Suite Deployment Status */}
+            {(isDeployed || jobInfo.deployment_status) && (
+              <div className="mt-4">
+                <div className="p-4 rounded-md bg-green-50 border border-green-200">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CheckCircle className="h-5 w-5 text-green-600" />
+                    <h4 className="font-semibold text-green-800">
+                      🚀 Deployed to SAP Integration Suite
+                    </h4>
+                  </div>
+
+                  {jobInfo.deployment_details && (
+                    <div className="space-y-2 text-sm">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <span className="font-medium text-gray-700">iFlow Name:</span>
+                          <div className="bg-white px-3 py-1 rounded border text-green-800 font-mono text-sm">
+                            {(() => {
+                              const displayName = jobInfo.deployed_iflow_name || jobInfo.deployment_details?.iflow_name || jobInfo.iflow_name || jobInfo.deployment_details?.iflow_id || 'N/A'
+                              console.log("Displaying iFlow name:", displayName, "from jobInfo:", {
+                                deployed_iflow_name: jobInfo.deployed_iflow_name,
+                                deployment_details_iflow_name: jobInfo.deployment_details?.iflow_name,
+                                iflow_name: jobInfo.iflow_name,
+                                deployment_details_iflow_id: jobInfo.deployment_details?.iflow_id
+                              })
+                              return displayName
+                            })()}
+                          </div>
+                        </div>
+                        <div>
+                          <span className="font-medium text-gray-700">Package:</span>
+                          <div className="bg-white px-3 py-1 rounded border text-blue-800 font-mono text-sm">
+                            {jobInfo.deployed_package_id || jobInfo.deployment_details?.package_id || 'N/A'}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 p-2 bg-white rounded border">
+                        <span className="font-medium text-gray-700">SAP Integration Suite Location:</span>
+                        <div className="text-xs text-gray-600 mt-1">
+                          Navigate to: <strong>Design</strong> → <strong>Integrations and APIs</strong> → <strong>{jobInfo.deployed_package_id || jobInfo.deployment_details?.package_id || 'ConversionPackages'}</strong> → <strong>{jobInfo.deployed_iflow_name || jobInfo.deployment_details?.iflow_name || jobInfo.iflow_name || jobInfo.deployment_details?.iflow_id || 'Your iFlow'}</strong>
+                        </div>
+                      </div>
+
+                      {jobInfo.deployment_details.response_code && (
+                        <div className="text-xs text-green-600">
+                          ✅ Deployment successful (HTTP {jobInfo.deployment_details.response_code})
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Show iFlow match status and results */}
             {iflowMatchStatus && (
@@ -875,6 +1153,212 @@ const JobResult = ({ jobInfo, onNewJob }) => {
               </div>
             )}
           </div>
+
+          {/* Documentation Files Section - Only show for XML uploads, not documentation uploads */}
+          {jobInfo.source_type !== 'uploaded_documentation' && (
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3">
+                Documentation Files:
+              </h4>
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2 p-3 bg-gray-50 rounded-md">
+                <FileText className="h-5 w-5 text-blue-500" />
+                <span className="font-medium text-gray-800">
+                  HTML Documentation with Mermaid
+                </span>
+
+                <div className="flex gap-2 ml-auto">
+                  <a
+                    href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/html`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
+                    title="View in browser"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </a>
+
+                  <button
+                    onClick={() =>
+                      downloadFile(
+                        "html",
+                        `mulesoft_documentation_${jobInfo.id}.html`
+                      )
+                    }
+                    disabled={downloading.html}
+                    className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Download file"
+                  >
+                    {downloading.html ? (
+                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Download className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* Markdown Documentation section removed */}
+              {/* Flow Visualization section removed */}
+              {/* Direct links section removed */}
+            </div>
+          </div>
+          )}
+
+          {/* Intermediate Processing Files Section - Show for documentation uploads */}
+          {console.log('JobInfo debug:', { source_type: jobInfo.source_type, status: jobInfo.status, files: jobInfo.files })}
+          {(jobInfo.source_type === 'uploaded_documentation' || jobInfo.status === 'documentation_ready') && (
+            <div>
+              <h4 className="font-semibold text-gray-800 mb-3">
+                Processing Files:
+              </h4>
+              <div className="space-y-2">
+                {/* AI-Generated Markdown */}
+                <div className="flex flex-wrap items-center gap-2 p-3 bg-blue-50 rounded-md">
+                  <FileText className="h-5 w-5 text-blue-500" />
+                  <span className="font-medium text-gray-800">
+                    AI-Enhanced Markdown
+                  </span>
+                  <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                    Structured for iFlow Generation
+                  </span>
+
+                  <div className="flex gap-2 ml-auto">
+                    <a
+                      href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/markdown`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200"
+                      title="View in browser"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+
+                    <button
+                      onClick={() =>
+                        downloadFile(
+                          "markdown",
+                          `ai_enhanced_documentation_${jobInfo.id}.md`
+                        )
+                      }
+                      disabled={downloading.markdown}
+                      className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Download file"
+                    >
+                      {downloading.markdown ? (
+                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Download className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Documentation JSON */}
+                <div className="flex flex-wrap items-center gap-2 p-3 bg-green-50 rounded-md">
+                  <FileText className="h-5 w-5 text-green-500" />
+                  <span className="font-medium text-gray-800">
+                    Documentation JSON
+                  </span>
+                  <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                    Structured Data + Metadata
+                  </span>
+
+                  <div className="flex gap-2 ml-auto">
+                    <a
+                      href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/documentation_json`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors duration-200"
+                      title="View in browser"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+
+                    <button
+                      onClick={() =>
+                        downloadFile(
+                          "documentation_json",
+                          `documentation_${jobInfo.id}.json`
+                        )
+                      }
+                      disabled={downloading.documentationJson}
+                      className="p-1.5 text-green-600 hover:bg-green-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Download file"
+                    >
+                      {downloading.documentationJson ? (
+                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Download className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Original Uploaded Documentation */}
+                <div className="flex flex-wrap items-center gap-2 p-3 bg-gray-50 rounded-md">
+                  <FileText className="h-5 w-5 text-gray-500" />
+                  <span className="font-medium text-gray-800">
+                    Original Document Content
+                  </span>
+                  <span className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                    Raw Extracted Text
+                  </span>
+
+                  <div className="flex gap-2 ml-auto">
+                    <a
+                      href={`${import.meta.env.VITE_API_URL}/docs/${jobInfo.id}/uploaded_documentation`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                      title="View in browser"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+
+                    <button
+                      onClick={() =>
+                        downloadFile(
+                          "uploaded_documentation",
+                          `original_content_${jobInfo.id}.md`
+                        )
+                      }
+                      disabled={downloading.uploadedDocumentation}
+                      className="p-1.5 text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Download file"
+                    >
+                      {downloading.uploadedDocumentation ? (
+                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <Download className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Image Analysis Results - Show if images were found and analyzed */}
+          {jobInfo.source_type === 'uploaded_documentation' && jobInfo.image_count > 0 && (
+            <div className="mt-4">
+              <h4 className="font-semibold text-gray-800 mb-3">
+                📸 Image Analysis Results:
+              </h4>
+              <div className="bg-purple-50 rounded-md p-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-sm text-purple-700">
+                    <strong>{jobInfo.image_count}</strong> images found,
+                    <strong> {jobInfo.images_analyzed || 0}</strong> analyzed with AI
+                  </span>
+                </div>
+                <div className="text-xs text-purple-600">
+                  Images containing integration diagrams, flow charts, and architecture details
+                  have been analyzed and included in the AI-enhanced documentation above.
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
 
@@ -1073,6 +1557,47 @@ const JobResult = ({ jobInfo, onNewJob }) => {
           </div>
         </div>
       )}
+
+      {/* Job Status Information */}
+      <div className="border-t pt-6">
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center space-x-2">
+            {getStatusIcon()}
+            <h3 className="text-lg font-semibold text-gray-800">
+              Job Status: <span className="capitalize">{jobInfo.status}</span>
+            </h3>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div>
+            <p className="text-gray-600">
+              Job ID:{" "}
+              <span className="font-medium text-gray-800">{jobInfo.id}</span>
+            </p>
+            <p className="text-gray-600">
+              Created:{" "}
+              <span className="font-medium text-gray-800">
+                {new Date(jobInfo.created).toLocaleString()}
+              </span>
+            </p>
+          </div>
+          <div>
+            <p className="text-gray-600">
+              Last Updated:{" "}
+              <span className="font-medium text-gray-800">
+                {new Date(jobInfo.last_updated).toLocaleString()}
+              </span>
+            </p>
+            <p className="text-gray-600">
+              AI Enhancement:{" "}
+              <span className="font-medium text-gray-800">
+                {jobInfo.enhance ? "Enabled" : "Disabled"}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
 
       {jobInfo.status === "failed" && jobInfo.error && (
         <div className="bg-red-50 p-4 rounded-md">

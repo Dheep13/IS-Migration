@@ -89,7 +89,13 @@ jobs:
     
     - name: Login to Cloud Foundry
       run: |
-        cf login -a $CF_API -u ${{ secrets.CF_USERNAME }} -p ${{ secrets.CF_PASSWORD }} -o $CF_ORG -s $CF_SPACE
+        # Try password authentication first
+        cf login -a $CF_API -u ${{ secrets.CF_USERNAME }} -p ${{ secrets.CF_PASSWORD }} -o $CF_ORG -s $CF_SPACE || {
+          echo "Password authentication failed, trying alternative methods..."
+          echo "Note: This account may require SSO authentication"
+          echo "For CI/CD, you may need to use a service account or API key"
+          exit 1
+        }
     
     - name: Install deployment dependencies
       run: |

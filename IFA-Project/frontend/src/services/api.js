@@ -34,6 +34,101 @@ export const testBackendConnection = async () => {
     }
 }
 
+// Upload documentation directly for iFlow generation
+export const uploadDocumentation = async (file, platform = 'mulesoft', signal) => {
+    try {
+        const selectedProvider = getSelectedLLMProvider();
+        console.log("Uploading documentation for direct iFlow generation")
+        console.log("Platform selected:", platform)
+        console.log("LLM Provider selected:", selectedProvider)
+        console.log("File:", file.name, "Type:", file.type, "Size:", file.size)
+
+        const formData = new FormData()
+        formData.append("file", file)
+        formData.append("platform", platform)
+        formData.append("llm_provider", selectedProvider)
+
+        const config = {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            timeout: 120000 // 2 minutes timeout for document processing with LLM
+        }
+
+        if (signal) {
+            config.signal = signal
+        }
+
+        const response = await api.post("/upload-documentation", formData, config)
+
+        console.log("Documentation upload successful:", response.data)
+        return response.data
+    } catch (error) {
+        console.error("Documentation upload failed:", error)
+
+        if (error.name === 'AbortError') {
+            throw new Error('Upload cancelled')
+        }
+
+        if (error.response) {
+            const errorMessage = error.response.data?.error || 'Upload failed'
+            const errorDetails = error.response.data?.details || ''
+            const supportedFormats = error.response.data?.supported_formats || []
+
+            let fullMessage = errorMessage
+            if (errorDetails) {
+                fullMessage += `: ${errorDetails}`
+            }
+            if (supportedFormats.length > 0) {
+                fullMessage += `\n\nSupported formats: ${supportedFormats.join(', ')}`
+            }
+
+            throw new Error(fullMessage)
+        }
+
+        throw new Error('Network error occurred during upload')
+    }
+}
+
+// Generate iFlow from uploaded documentation
+export const generateIflowFromDocs = async (jobId, signal) => {
+    try {
+        const selectedProvider = getSelectedLLMProvider();
+        console.log("Generating iFlow from uploaded documentation for job:", jobId, "using provider:", selectedProvider)
+
+        const config = {
+            timeout: 120000 // 2 minutes timeout for iFlow generation
+        }
+
+        if (signal) {
+            config.signal = signal
+        }
+
+        // Send LLM provider information to Main API
+        const requestData = {
+            llm_provider: selectedProvider
+        };
+
+        const response = await api.post(`/generate-iflow-from-docs/${jobId}`, requestData, config)
+
+        console.log("iFlow generation started:", response.data)
+        return response.data
+    } catch (error) {
+        console.error("iFlow generation failed:", error)
+
+        if (error.name === 'AbortError') {
+            throw new Error('iFlow generation cancelled')
+        }
+
+        if (error.response) {
+            const errorMessage = error.response.data?.error || 'iFlow generation failed'
+            throw new Error(errorMessage)
+        }
+
+        throw new Error('Network error occurred during iFlow generation')
+    }
+}
+
 // Modify generateDocs to use axios with platform support
 export const generateDocs = async (formData, signal) => {
     try {
@@ -205,17 +300,23 @@ const getSelectedLLMProvider = () => {
 
 // Function to get the appropriate API instance based on platform and LLM provider
 const getIflowApiInstance = (platform = 'mulesoft') => {
-  // If platform is boomi, always use the BoomiToIS-API
+  const provider = getSelectedLLMProvider();
+
+  // If Gemma-3 is selected, always use Gemma-3 API regardless of platform
+  if (provider === 'gemma3') {
+    console.log(`Using Gemma-3 API for ${platform} platform`);
+    return gemma3Api;
+  }
+
+  // For Anthropic provider, use platform-specific APIs
   if (platform === 'boomi') {
+    console.log('Using BoomiToIS-API for Boomi platform with Anthropic');
     return boomiApi;
   }
 
-  // For mulesoft platform, choose based on LLM provider
-  const provider = getSelectedLLMProvider();
-  if (provider === 'gemma3') {
-    return gemma3Api;
-  }
-  return iflowApi; // Default to Anthropic for MuleSoft
+  // Default to MuleSoft API for Anthropic
+  console.log('Using MuleSoft API for Anthropic');
+  return iflowApi;
 };
 
 // Create a separate instance for the iFlow API (Anthropic)
@@ -455,7 +556,7 @@ export const getIflowGenerationStatus = async (jobId, platform = 'mulesoft') => 
 
         // Add a timeout to the request to prevent hanging
         const response = await apiInstance.get(`/jobs/${jobId}`, {
-            timeout: 10000 // 10 second timeout
+            timeout: 30000 // 30 second timeout for iFlow generation
         });
 
         console.log(`${selectedProvider} iFlow generation status response:`, response.data);
@@ -605,6 +706,29 @@ export const directDeployIflowToSap = async (jobId, packageId, iflowId, iflowNam
             console.error("No response received:", error.request)
         } else {
             console.error("Error message:", error.message)
+        }
+        throw error
+    }
+}
+
+// Update deployment status in Main API
+export const updateDeploymentStatus = async (jobId, deploymentStatus, deploymentMessage = '', deploymentDetails = {}) => {
+    try {
+        console.log(`Updating deployment status for job ${jobId}: ${deploymentStatus}`);
+
+        const response = await api.post(`/jobs/${jobId}/update-deployment-status`, {
+            deployment_status: deploymentStatus,
+            deployment_message: deploymentMessage,
+            deployment_details: deploymentDetails
+        });
+
+        console.log("Deployment status update response:", response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error updating deployment status:", error)
+        if (error.response) {
+            console.error("Response error data:", error.response.data)
+            console.error("Response error status:", error.response.status)
         }
         throw error
     }

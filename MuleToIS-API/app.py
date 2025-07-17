@@ -657,7 +657,8 @@ def deploy_to_sap(job_id):
         jobs[job_id].update({
             'deployment_status': 'completed',
             'deployment_message': 'Deployment completed successfully',
-            'deployment_details': result
+            'deployment_details': result,
+            'iflow_name': iflow_name  # Preserve the iflow_name after deployment
         })
         save_jobs(jobs)  # Save job data to file
 
@@ -674,7 +675,8 @@ def deploy_to_sap(job_id):
         if job_id in jobs:
             jobs[job_id].update({
                 'deployment_status': 'failed',
-                'deployment_message': f'Error deploying iFlow: {str(e)}'
+                'deployment_message': f'Error deploying iFlow: {str(e)}',
+                'iflow_name': iflow_name  # Preserve the iflow_name even on failure
             })
             save_jobs(jobs)  # Save job data to file
 
@@ -905,14 +907,16 @@ def direct_deploy_to_sap(job_id):
             jobs[job_id].update({
                 'deployment_status': 'completed',
                 'deployment_message': 'iFlow deployed successfully',
-                'deployment_details': deployment_result
+                'deployment_details': deployment_result,
+                'iflow_name': iflow_name  # Preserve the iflow_name after successful deployment
             })
             save_jobs(jobs)  # Save job data to file
         else:
             jobs[job_id].update({
                 'deployment_status': 'failed',
                 'deployment_message': f'Deployment failed: {deployment_result["message"]}',
-                'deployment_details': deployment_result
+                'deployment_details': deployment_result,
+                'iflow_name': iflow_name  # Preserve the iflow_name even on failure
             })
             save_jobs(jobs)  # Save job data to file
 
@@ -926,7 +930,8 @@ def direct_deploy_to_sap(job_id):
         if job_id in jobs:
             jobs[job_id].update({
                 'deployment_status': 'failed',
-                'deployment_message': f'Deployment failed: {str(e)}'
+                'deployment_message': f'Deployment failed: {str(e)}',
+                'iflow_name': iflow_name  # Preserve the iflow_name even on exception
             })
             save_jobs(jobs)  # Save job data to file
 
