@@ -597,6 +597,56 @@ class DocumentationEnhancer:
             logger.error(f"Error traceback: {e.__traceback__}")
             return None
 
+    def analyze_image_with_anthropic(self, prompt: str, image_data: str, mime_type: str) -> Optional[str]:
+        """Analyze image using Anthropic Claude with vision capabilities.
+
+        Args:
+            prompt: Text prompt for image analysis
+            image_data: Base64 encoded image data
+            mime_type: MIME type of the image (e.g., 'image/png')
+
+        Returns:
+            Image analysis result or None if failed
+        """
+        if not self.anthropic_client:
+            logger.error("Anthropic client not available. Cannot analyze image.")
+            return None
+
+        try:
+            logger.info(f"Starting Anthropic vision analysis with image type: {mime_type}")
+
+            response = self.anthropic_client.messages.create(
+                model="claude-3-5-sonnet-20241022",  # Vision-capable model
+                max_tokens=1000,
+                timeout=300,  # 5 minutes for image analysis
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": prompt
+                            },
+                            {
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": mime_type,
+                                    "data": image_data
+                                }
+                            }
+                        ]
+                    }
+                ]
+            )
+
+            logger.info("Anthropic vision analysis completed successfully")
+            return response.content[0].text
+
+        except Exception as e:
+            logger.error(f"Error using Anthropic for image analysis: {str(e)}")
+            return None
+
     def _generate_json_components(self, enhanced_documentation: str, output_dir: str):
         """Generate JSON components for iFlow generation from enhanced documentation."""
         try:

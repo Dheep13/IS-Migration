@@ -37,15 +37,18 @@ CORS(app, origins=[
 
 # Configuration
 RUNPOD_API_KEY = os.getenv('RUNPOD_API_KEY')
-RUNPOD_ENDPOINT_ID = os.getenv('RUNPOD_ENDPOINT_ID', 's5unaaduyy7otl')
-RUNPOD_RUN_URL = f"https://api.runpod.ai/v2/{RUNPOD_ENDPOINT_ID}/run"
-RUNPOD_STATUS_URL = f"https://api.runpod.ai/v2/{RUNPOD_ENDPOINT_ID}/status"
+RUNPOD_ENDPOINT_ID = os.getenv('RUNPOD_ENDPOINT_ID', 'yap1wc04ci8b5d')
+# Use OpenAI-compatible endpoint (same as working test script)
+RUNPOD_BASE_URL = f"https://api.runpod.ai/v2/{RUNPOD_ENDPOINT_ID}/openai/v1"
+RUNPOD_CHAT_URL = f"{RUNPOD_BASE_URL}/chat/completions"
 
-# Token limits and chunking configuration
-MAX_INPUT_TOKENS = int(os.getenv('GEMMA3_MAX_INPUT_TOKENS', '8192'))
-MAX_OUTPUT_TOKENS = int(os.getenv('GEMMA3_MAX_OUTPUT_TOKENS', '2048'))
-CHUNK_OVERLAP = int(os.getenv('GEMMA3_CHUNK_OVERLAP', '200'))
-MAX_WAIT_TIME = int(os.getenv('GEMMA3_MAX_WAIT_TIME', '600'))  # 10 minutes for cold starts
+# Token limits and chunking configuration for Gemma 3n E4B IT
+MAX_INPUT_TOKENS = int(os.getenv('GEMMA3_MAX_INPUT_TOKENS', '24576'))  # 24K for input (leaving 8K for output)
+MAX_OUTPUT_TOKENS = int(os.getenv('GEMMA3_MAX_OUTPUT_TOKENS', '16384'))  # 16K for complete iFlows
+CHUNK_OVERLAP = int(os.getenv('GEMMA3_CHUNK_OVERLAP', '500'))  # Larger overlap for better context
+MAX_WAIT_TIME = int(os.getenv('GEMMA3_MAX_WAIT_TIME', '1200'))  # 20 minutes for cold starts
+TEMPERATURE = float(os.getenv('GEMMA3_TEMPERATURE', '0.3'))  # Lower for more deterministic output
+TOP_P = float(os.getenv('GEMMA3_TOP_P', '0.9'))  # Nucleus sampling
 
 # In-memory storage for jobs (in production, use Redis or database)
 jobs = {}
@@ -56,7 +59,7 @@ class GemmaJobManager:
     def __init__(self):
         self.jobs = {}
     
-    def create_job(self, job_id, markdown_content, iflow_name):
+    def create_job(self, job_id, markdown_content, iflow_name, platform='mulesoft'):
         """Create a new job for iFlow generation"""
         self.jobs[job_id] = {
             'id': job_id,
@@ -64,6 +67,7 @@ class GemmaJobManager:
             'created': datetime.now().isoformat(),
             'markdown_content': markdown_content,
             'iflow_name': iflow_name,
+            'platform': platform,
             'chunks': [],
             'current_chunk': 0,
             'partial_responses': [],
@@ -122,8 +126,8 @@ def chunk_text(text, max_tokens, overlap=200):
     
     return chunks
 
-def call_runpod_api(prompt, max_wait_time=600):
-    """Call RunPod API with Gemma3"""
+def call_runpod_api(prompt, max_wait_time=1200):
+    """Call RunPod API with Gemma3 using OpenAI-compatible format"""
     if not RUNPOD_API_KEY:
         raise Exception("RUNPOD_API_KEY not configured")
 
@@ -132,115 +136,124 @@ def call_runpod_api(prompt, max_wait_time=600):
         'Authorization': f'Bearer {RUNPOD_API_KEY}'
     }
 
+    # Use OpenAI-compatible format (same as working test script)
     data = {
-        "input": {
-            "prompt": prompt,
-            "max_tokens": MAX_OUTPUT_TOKENS,
-            "temperature": 0.7
-        }
+        "model": "google/gemma-3-4b-it",  # Use the working model name
+        "messages": [
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "max_tokens": MAX_OUTPUT_TOKENS,
+        "temperature": TEMPERATURE,
+        "top_p": TOP_P,
+        "stream": False
     }
 
     logger.info(f"RunPod API call - Prompt length: {len(prompt)} chars, Max wait: {max_wait_time}s")
-    
+    logger.info(f"RunPod API parameters: max_tokens={MAX_OUTPUT_TOKENS}, temperature={TEMPERATURE}, top_p={TOP_P}")
+    logger.info(f"Token limits: MAX_INPUT_TOKENS={MAX_INPUT_TOKENS}, MAX_OUTPUT_TOKENS={MAX_OUTPUT_TOKENS}")
+    logger.info(f"Using OpenAI-compatible endpoint: {RUNPOD_CHAT_URL}")
+
     try:
-        # Submit job
-        logger.info("Submitting job to RunPod...")
-        response = requests.post(RUNPOD_RUN_URL, headers=headers, json=data, timeout=30)
+        # Call OpenAI-compatible endpoint (same as working test)
+        logger.info("Calling RunPod OpenAI-compatible endpoint...")
+        response = requests.post(RUNPOD_CHAT_URL, headers=headers, json=data, timeout=max_wait_time)
         response.raise_for_status()
-        
-        job_data = response.json()
-        job_id = job_data.get('id')
-        
-        if not job_id:
-            raise Exception("No job ID received from RunPod")
-        
-        logger.info(f"Job submitted successfully. Job ID: {job_id}")
-        
-        # Poll for results
-        start_time = time.time()
-        check_interval = 15  # Check every 15 seconds for long-running jobs
 
-        logger.info(f"Starting to poll RunPod job {job_id} for up to {max_wait_time} seconds")
+        # OpenAI-compatible format response (same as working test script)
+        response_data = response.json()
+        logger.info(f"RunPod OpenAI response received successfully")
+        logger.info(f"Response keys: {list(response_data.keys()) if isinstance(response_data, dict) else 'Not a dict'}")
 
-        while time.time() - start_time < max_wait_time:
-            try:
-                status_response = requests.get(
-                    f"{RUNPOD_STATUS_URL}/{job_id}",
-                    headers=headers,
-                    timeout=30
-                )
-                status_response.raise_for_status()
-                status_data = status_response.json()
-
-                job_status = status_data.get('status')
-                elapsed_time = int(time.time() - start_time)
-
-                # Log every minute to show progress
-                if elapsed_time % 60 == 0 or elapsed_time < 60:
-                    logger.info(f"RunPod Status: {job_status} (Elapsed: {elapsed_time}s / {max_wait_time}s)")
-
-                if job_status == 'COMPLETED':
-                    logger.info(f"RunPod job completed successfully: {job_id} (Total time: {elapsed_time}s)")
-                    logger.debug(f"Full response: {status_data}")
-                    return status_data
-                elif job_status == 'FAILED':
-                    logger.error(f"RunPod job failed: {status_data}")
-                    raise Exception(f"RunPod job failed: {status_data}")
-                elif job_status in ['IN_PROGRESS', 'IN_QUEUE']:
-                    time.sleep(check_interval)
+        # Extract content from OpenAI format
+        if isinstance(response_data, dict) and 'choices' in response_data:
+            choices = response_data['choices']
+            if isinstance(choices, list) and len(choices) > 0:
+                choice = choices[0]
+                if isinstance(choice, dict) and 'message' in choice:
+                    message = choice['message']
+                    if isinstance(message, dict) and 'content' in message:
+                        content = message['content']
+                        if content:
+                            logger.info(f"Response content length: {len(content)} characters")
+                            # Return in format expected by extract_output function
+                            return {
+                                'choices': [{'message': {'content': content}}],
+                                'usage': response_data.get('usage', {})
+                            }
+                        else:
+                            logger.warning("Empty content in response")
+                    else:
+                        logger.warning("No content in message")
                 else:
-                    logger.warning(f"Unknown RunPod status: {job_status}")
-                    time.sleep(check_interval)
+                    logger.warning("No message in choice")
+            else:
+                logger.warning("No choices in response")
+        else:
+            logger.warning(f"Unexpected response format: {response_data}")
 
-            except requests.exceptions.RequestException as e:
-                logger.warning(f"Error checking RunPod status (will retry): {e}")
-                time.sleep(check_interval)
-        
-        raise Exception(f"Timeout reached after {max_wait_time} seconds")
+        return response_data
         
     except requests.exceptions.RequestException as e:
         logger.error(f"Error making RunPod API call: {e}")
         raise Exception(f"RunPod API error: {e}")
 
 def extract_output(result_data):
-    """Extract the actual output from the RunPod API response"""
+    """Extract the actual output from the RunPod API response (OpenAI format)"""
     if not result_data:
         return None
-    
+
     try:
-        # Handle the nested RunPod response structure
-        if 'output' in result_data:
+        # Handle OpenAI-compatible format (same as working test script)
+        if 'choices' in result_data:
+            choices = result_data['choices']
+            if isinstance(choices, list) and len(choices) > 0:
+                choice = choices[0]
+                if isinstance(choice, dict) and 'message' in choice:
+                    message = choice['message']
+                    if isinstance(message, dict) and 'content' in message:
+                        content = message['content']
+                        logger.info(f"Successfully extracted content: {len(content)} characters")
+                        return content
+                # Fallback to text field
+                elif isinstance(choice, dict) and 'text' in choice:
+                    return choice['text']
+
+        # Handle legacy RunPod format (for backward compatibility)
+        elif 'output' in result_data:
             output = result_data['output']
-            
+
             # Check if output is a list (as in the example)
             if isinstance(output, list) and len(output) > 0:
                 first_output = output[0]
-                
+
                 # Check for choices structure
                 if isinstance(first_output, dict) and 'choices' in first_output:
                     choices = first_output['choices']
                     if isinstance(choices, list) and len(choices) > 0:
                         choice = choices[0]
-                        
+
                         # Extract tokens if available
                         if isinstance(choice, dict) and 'tokens' in choice:
                             tokens = choice['tokens']
                             if isinstance(tokens, list) and len(tokens) > 0:
                                 # Join all tokens into a single string
                                 return ''.join(tokens)
-                        
+
                         # Fallback to text field if available
                         if isinstance(choice, dict) and 'text' in choice:
                             return choice['text']
-                
+
                 # Direct text in first output
                 if isinstance(first_output, dict) and 'text' in first_output:
                     return first_output['text']
-                
+
                 # If first output is a string
                 if isinstance(first_output, str):
                     return first_output
-            
+
             # Handle direct output formats
             elif isinstance(output, dict):
                 if 'text' in output:
@@ -251,18 +264,18 @@ def extract_output(result_data):
                         choice = choices[0]
                         if isinstance(choice, dict) and 'text' in choice:
                             return choice['text']
-            
+
             elif isinstance(output, str):
                 return output
-        
+
         # Fallback to result field
         elif 'result' in result_data:
             return str(result_data['result'])
-        
+
         # Last resort - convert entire response to string
         logger.warning(f"Unexpected response format: {result_data}")
         return str(result_data)
-        
+
     except Exception as e:
         logger.error(f"Error extracting output from response: {e}")
         logger.error(f"Response data: {result_data}")
@@ -416,13 +429,16 @@ def generate_iflow(job_id=None):
 
         markdown_content = data.get('markdown')
         iflow_name = data.get('iflow_name', f'GeneratedIFlow_{int(time.time())}')
+        platform = data.get('platform', 'mulesoft')  # Default to mulesoft
+
+        # Use job ID from Main API if provided, otherwise generate new one
+        job_id = data.get('job_id', str(uuid.uuid4()))
+
+        print(f"DEBUG: Gemma-3 API received job_id: {job_id}")
 
         if not markdown_content:
             return jsonify({'error': 'No markdown content provided'}), 400
-        
-        # Create job
-        job_id = str(uuid.uuid4())
-        job_manager.create_job(job_id, markdown_content, iflow_name)
+        job_manager.create_job(job_id, markdown_content, iflow_name, platform)
         
         # Start processing in background thread
         thread = threading.Thread(
@@ -459,6 +475,7 @@ def process_iflow_generation(job_id):
 
         markdown_content = job['markdown_content']
         iflow_name = job['iflow_name']
+        platform = job.get('platform', 'mulesoft')
 
         # Estimate tokens and determine if chunking is needed
         estimated_tokens = estimate_tokens(markdown_content)
@@ -475,7 +492,7 @@ def process_iflow_generation(job_id):
             for i, chunk in enumerate(chunks):
                 logger.info(f"Processing chunk {i+1}/{len(chunks)} for job {job_id}")
 
-                prompt = create_chunked_prompt(chunk, i, len(chunks), iflow_name)
+                prompt = create_chunked_prompt(chunk, i, len(chunks), iflow_name, platform)
                 response = call_runpod_api(prompt, MAX_WAIT_TIME)
                 output = extract_output(response)
 
@@ -493,15 +510,40 @@ def process_iflow_generation(job_id):
         else:
             # Single request
             logger.info(f"Processing single request for job {job_id}")
-            prompt = create_iflow_prompt(markdown_content, iflow_name)
+            prompt = create_iflow_prompt(markdown_content, iflow_name, platform)
             logger.info(f"Prompt length: {len(prompt)} characters")
 
             response = call_runpod_api(prompt, MAX_WAIT_TIME)
             logger.info(f"RunPod response received: {type(response)}")
-            logger.debug(f"RunPod response: {response}")
+
+            # DETAILED DEBUG: Log the complete raw response structure
+            logger.info(f"RAW RunPod Response Keys: {list(response.keys()) if isinstance(response, dict) else 'Not a dict'}")
+            if isinstance(response, dict) and 'output' in response:
+                output = response['output']
+                logger.info(f"Output type: {type(output)}")
+                if isinstance(output, list) and len(output) > 0:
+                    logger.info(f"Output[0] type: {type(output[0])}")
+                    logger.info(f"Output[0] keys: {list(output[0].keys()) if isinstance(output[0], dict) else 'Not a dict'}")
+                    if isinstance(output[0], dict):
+                        # Log the actual content length before extraction
+                        for key, value in output[0].items():
+                            if isinstance(value, str):
+                                logger.info(f"Output[0]['{key}'] length: {len(value)} chars")
+                            elif isinstance(value, list):
+                                logger.info(f"Output[0]['{key}'] is list with {len(value)} items")
+
+            logger.debug(f"Full RunPod response: {response}")
 
             final_response = extract_output(response)
             logger.info(f"Extracted response length: {len(final_response) if final_response else 0} characters")
+
+            # Debug: Show first 500 chars of response to check for truncation
+            if final_response:
+                logger.info(f"Response preview (first 500 chars): {final_response[:500]}...")
+                if len(final_response) < 1000:
+                    logger.warning(f"Response seems too short for a complete iFlow! Full response: {final_response}")
+            else:
+                logger.error("No final response extracted from RunPod!")
 
         if final_response:
             job_manager.update_job_status(
@@ -518,9 +560,29 @@ def process_iflow_generation(job_id):
         logger.error(f"Error processing job {job_id}: {e}")
         job_manager.update_job_status(job_id, 'failed', error=str(e))
 
-def create_iflow_prompt(markdown_content, iflow_name):
-    """Create prompt for iFlow generation with structured output"""
-    return f"""You are an expert SAP Integration Suite developer. Generate a complete iFlow project structure based on the following MuleSoft documentation.
+def create_iflow_prompt(markdown_content, iflow_name, platform='mulesoft'):
+    """Create prompt for iFlow generation with structured output optimized for Gemma 3n"""
+    platform_text = "MuleSoft" if platform == 'mulesoft' else "Dell Boomi"
+
+    # Use Gemma 3n chat template format for better instruction following
+    return f"""<start_of_turn>user
+You are an expert SAP Integration Suite developer with deep knowledge of BPMN2 XML structure and SAP Cloud Integration patterns.
+
+Task: Generate a complete SAP Integration Suite iFlow project structure based on the following {platform_text} documentation.
+
+Requirements:
+1. Create a fully functional iFlow with proper BPMN2 XML structure
+2. Include all necessary adapters, message mappings, and sequence flows
+3. Generate complete project files including MANIFEST.MF, .project, and metainfo.prop
+4. Ensure proper error handling and logging components
+5. Use appropriate SAP Integration Suite components and patterns
+
+{platform_text} Documentation:
+{markdown_content}
+
+Generate a complete iFlow project for: {iflow_name}
+<end_of_turn>
+<start_of_turn>model
 
 IMPORTANT: Structure your response EXACTLY as shown below with clear file separators:
 
@@ -560,15 +622,17 @@ Requirements for other files:
 4. parameters.prop: Runtime parameters
 5. parameters.propdef: Parameter type definitions
 
-MuleSoft Documentation:
+{platform_text} Documentation:
 {markdown_content}
 
 Generate the complete structured response with all files:"""
 
-def create_chunked_prompt(chunk, chunk_index, total_chunks, iflow_name):
-    """Create prompt for chunked processing with structured output"""
+def create_chunked_prompt(chunk, chunk_index, total_chunks, iflow_name, platform='mulesoft'):
+    """Create prompt for chunked processing with structured output optimized for Gemma 3n"""
+    platform_text = "MuleSoft" if platform == 'mulesoft' else "Dell Boomi"
     if chunk_index == 0:
-        return f"""You are an expert SAP Integration Suite developer. I will provide you with MuleSoft documentation in {total_chunks} parts. This is part {chunk_index + 1}/{total_chunks}.
+        return f"""<start_of_turn>user
+You are an expert SAP Integration Suite developer. I will provide you with {platform_text} documentation in {total_chunks} parts. This is part {chunk_index + 1}/{total_chunks}.
 
 For this first part, start generating the SAP Integration Suite iFlow project structure. Focus on the main flow structure and initial components.
 
@@ -873,4 +937,4 @@ if __name__ == '__main__':
     logger.info(f"Starting MuleToIS-API-Gemma3 on {host}:{port}")
     logger.info(f"RunPod configured: {bool(RUNPOD_API_KEY)}")
 
-    app.run(host=host, port=port, debug=debug)
+    app.run(host=host, port=port, debug=debug, use_reloader=False)

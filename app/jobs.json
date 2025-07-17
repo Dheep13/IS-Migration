@@ -15607,5 +15607,2469 @@
       ],
       "errors": []
     }
+  },
+  "8443a2d0-3400-471f-9aa5-2af10cfb6218": {
+    "id": "8443a2d0-3400-471f-9aa5-2af10cfb6218",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation failed: HTTPConnectionPool(host='localhost', port=5002): Max retries exceeded with url: /api/api/generate-iflow/8443a2d0-3400-471f-9aa5-2af10cfb6218 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000020DD5F01A90>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+    "upload_time": "2025-06-27T18:02:31.044136",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\8443a2d0-3400-471f-9aa5-2af10cfb6218\\documentation.json",
+      "markdown": "results\\8443a2d0-3400-471f-9aa5-2af10cfb6218\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T18:12:57.146038"
+  },
+  "afa40104-1025-49e3-a332-205452e7845a": {
+    "id": "afa40104-1025-49e3-a332-205452e7845a",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation failed: HTTPConnectionPool(host='localhost', port=5002): Max retries exceeded with url: /api/api/generate-iflow/afa40104-1025-49e3-a332-205452e7845a (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000020DD5EDDF30>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+    "upload_time": "2025-06-27T18:23:01.101209",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\afa40104-1025-49e3-a332-205452e7845a\\documentation.json",
+      "markdown": "results\\afa40104-1025-49e3-a332-205452e7845a\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T18:23:26.398689"
+  },
+  "71b2bc07-d062-4806-a095-1a754fb4c7b2": {
+    "id": "71b2bc07-d062-4806-a095-1a754fb4c7b2",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation failed: HTTPConnectionPool(host='localhost', port=5002): Max retries exceeded with url: /api/api/generate-iflow/71b2bc07-d062-4806-a095-1a754fb4c7b2 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000020DD5F54170>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+    "upload_time": "2025-06-27T18:25:13.180918",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\71b2bc07-d062-4806-a095-1a754fb4c7b2\\documentation.json",
+      "markdown": "results\\71b2bc07-d062-4806-a095-1a754fb4c7b2\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T18:25:18.856604"
+  },
+  "e3a7c922-fc9c-4e17-83d2-d75f7403408b": {
+    "id": "e3a7c922-fc9c-4e17-83d2-d75f7403408b",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "BoomiToIS-API error: 500 - Unknown error",
+    "upload_time": "2025-06-27T18:59:17.269458",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\e3a7c922-fc9c-4e17-83d2-d75f7403408b\\documentation.json",
+      "markdown": "results\\e3a7c922-fc9c-4e17-83d2-d75f7403408b\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T18:59:51.241960"
+  },
+  "f2a01161-46b1-43f5-a985-a7a7e71dd1ec": {
+    "id": "f2a01161-46b1-43f5-a985-a7a7e71dd1ec",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "BoomiToIS-API error: 500 - Unknown error",
+    "upload_time": "2025-06-27T19:52:47.175567",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\f2a01161-46b1-43f5-a985-a7a7e71dd1ec\\documentation.json",
+      "markdown": "results\\f2a01161-46b1-43f5-a985-a7a7e71dd1ec\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T19:52:53.171686"
+  },
+  "c2bfb45b-94af-4c81-8a73-5ff2ffebac46": {
+    "id": "c2bfb45b-94af-4c81-8a73-5ff2ffebac46",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "BoomiToIS-API error: 500 - Unknown error",
+    "upload_time": "2025-06-27T19:54:32.721834",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\c2bfb45b-94af-4c81-8a73-5ff2ffebac46\\documentation.json",
+      "markdown": "results\\c2bfb45b-94af-4c81-8a73-5ff2ffebac46\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T19:54:38.416693"
+  },
+  "1d14a731-5140-4835-a675-6a3ed6bed08c": {
+    "id": "1d14a731-5140-4835-a675-6a3ed6bed08c",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd.docx",
+    "upload_time": "2025-06-27T20:43:42.176443",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\1d14a731-5140-4835-a675-6a3ed6bed08c\\documentation.json",
+      "markdown": "results\\1d14a731-5140-4835-a675-6a3ed6bed08c\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "dd83469b-4f3e-416a-882f-60dd897dd7e9": {
+    "id": "dd83469b-4f3e-416a-882f-60dd897dd7e9",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_started",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation started in BoomiToIS-API",
+    "upload_time": "2025-06-27T21:03:57.039266",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\dd83469b-4f3e-416a-882f-60dd897dd7e9\\documentation.json",
+      "markdown": "results\\dd83469b-4f3e-416a-882f-60dd897dd7e9\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-27T21:04:29.706136"
+  },
+  "04d9029f-05fc-4647-92bf-c692530c1eec": {
+    "id": "04d9029f-05fc-4647-92bf-c692530c1eec",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-06-30T16:38:20.278528",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\04d9029f-05fc-4647-92bf-c692530c1eec\\documentation.json",
+      "markdown": "results\\04d9029f-05fc-4647-92bf-c692530c1eec\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-30T16:40:00.569977",
+    "boomi_job_id": "0e170146-f188-4fd8-a5e6-0b4ef98d5402",
+    "boomi_job_data": {
+      "created": "9111a082-55a2-11f0-b96a-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_04d9029f.xml": "genai_debug\\final_iflow_BoomiFlow_04d9029f.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\0e170146-f188-4fd8-a5e6-0b4ef98d5402\\BoomiFlow_04d9029f.zip"
+      },
+      "id": "0e170146-f188-4fd8-a5e6-0b4ef98d5402",
+      "iflow_name": "BoomiFlow_04d9029f",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "04d9029f-05fc-4647-92bf-c692530c1eec",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "ff51e0d7-183f-47a6-848f-67fcb5a7de1f": {
+    "id": "ff51e0d7-183f-47a6-848f-67fcb5a7de1f",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-06-30T17:34:23.661018",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\ff51e0d7-183f-47a6-848f-67fcb5a7de1f\\documentation.json",
+      "markdown": "results\\ff51e0d7-183f-47a6-848f-67fcb5a7de1f\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-30T17:37:26.694538",
+    "boomi_job_id": "f7712da1-24d7-4295-964a-c72011bfb31e",
+    "boomi_job_data": {
+      "created": "5f0624af-55aa-11f0-930d-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_ff51e0d7.xml": "genai_debug\\final_iflow_BoomiFlow_ff51e0d7.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\f7712da1-24d7-4295-964a-c72011bfb31e\\BoomiFlow_ff51e0d7.zip"
+      },
+      "id": "f7712da1-24d7-4295-964a-c72011bfb31e",
+      "iflow_name": "BoomiFlow_ff51e0d7",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "ff51e0d7-183f-47a6-848f-67fcb5a7de1f",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\ff51e0d7-183f-47a6-848f-67fcb5a7de1f\\iflow_match\\integration_match_report.html",
+      "summary": "results\\ff51e0d7-183f-47a6-848f-67fcb5a7de1f\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 17 potential matches"
+    }
+  },
+  "1b07422e-c28d-4310-b831-b6977c121573": {
+    "id": "1b07422e-c28d-4310-b831-b6977c121573",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-06-30T17:40:55.937467",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\1b07422e-c28d-4310-b831-b6977c121573\\documentation.json",
+      "markdown": "results\\1b07422e-c28d-4310-b831-b6977c121573\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-30T17:42:20.848258",
+    "boomi_job_id": "3913eda8-1d38-4dd3-aa6c-8ad9561e4296",
+    "boomi_job_data": {
+      "created": "48e4c2e1-55ab-11f0-aeb9-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_1b07422e.xml": "genai_debug\\final_iflow_BoomiFlow_1b07422e.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\3913eda8-1d38-4dd3-aa6c-8ad9561e4296\\BoomiFlow_1b07422e.zip"
+      },
+      "id": "3913eda8-1d38-4dd3-aa6c-8ad9561e4296",
+      "iflow_name": "BoomiFlow_1b07422e",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "1b07422e-c28d-4310-b831-b6977c121573",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "de279afb-18d7-41c9-a2f3-7d5af54f7f25": {
+    "id": "de279afb-18d7-41c9-a2f3-7d5af54f7f25",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-06-30T17:55:49.753783",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\de279afb-18d7-41c9-a2f3-7d5af54f7f25\\documentation.json",
+      "markdown": "results\\de279afb-18d7-41c9-a2f3-7d5af54f7f25\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-30T17:56:42.272808",
+    "boomi_job_id": "f59637bd-2652-47ee-adc0-633b4247e4b4",
+    "boomi_job_data": {
+      "created": "5dc38eaa-55ad-11f0-b365-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_de279afb.xml": "genai_debug\\final_iflow_BoomiFlow_de279afb.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\f59637bd-2652-47ee-adc0-633b4247e4b4\\BoomiFlow_de279afb.zip"
+      },
+      "id": "f59637bd-2652-47ee-adc0-633b4247e4b4",
+      "iflow_name": "BoomiFlow_de279afb",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "de279afb-18d7-41c9-a2f3-7d5af54f7f25",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "4268d7a7-05ce-41bb-b9ec-e4e500b82f23": {
+    "id": "4268d7a7-05ce-41bb-b9ec-e4e500b82f23",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "mulesoft",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation failed: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/generate-iflow/4268d7a7-05ce-41bb-b9ec-e4e500b82f23 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000019509F429C0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+    "upload_time": "2025-06-30T17:58:12.724695",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\4268d7a7-05ce-41bb-b9ec-e4e500b82f23\\documentation.json",
+      "markdown": "results\\4268d7a7-05ce-41bb-b9ec-e4e500b82f23\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-30T17:58:18.620821"
+  },
+  "c06bd02a-8416-4848-ab03-b0a594b0391f": {
+    "id": "c06bd02a-8416-4848-ab03-b0a594b0391f",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T18:01:44.931315",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\c06bd02a-8416-4848-ab03-b0a594b0391f\\documentation.json",
+      "markdown": "results\\c06bd02a-8416-4848-ab03-b0a594b0391f\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "aebf6731-ed73-4ee6-af16-e93c914b3291": {
+    "id": "aebf6731-ed73-4ee6-af16-e93c914b3291",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T18:06:27.205636",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\aebf6731-ed73-4ee6-af16-e93c914b3291\\documentation.json",
+      "markdown": "results\\aebf6731-ed73-4ee6-af16-e93c914b3291\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "1c9f561c-44b4-468d-bc43-1917d18155a5": {
+    "id": "1c9f561c-44b4-468d-bc43-1917d18155a5",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T18:19:34.744909",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\1c9f561c-44b4-468d-bc43-1917d18155a5\\documentation.json",
+      "markdown": "results\\1c9f561c-44b4-468d-bc43-1917d18155a5\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "6f164dcb-79ea-4594-9129-1090a9276353": {
+    "id": "6f164dcb-79ea-4594-9129-1090a9276353",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "mulesoft",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T18:48:57.845848",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\6f164dcb-79ea-4594-9129-1090a9276353\\documentation.json",
+      "markdown": "results\\6f164dcb-79ea-4594-9129-1090a9276353\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "1c77bb4e-a3dc-4600-afc9-a75f743fbede": {
+    "id": "1c77bb4e-a3dc-4600-afc9-a75f743fbede",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T18:59:16.519590",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\1c77bb4e-a3dc-4600-afc9-a75f743fbede\\documentation.json",
+      "markdown": "results\\1c77bb4e-a3dc-4600-afc9-a75f743fbede\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "eaba805e-c05d-4948-91b2-8bceb806c054": {
+    "id": "eaba805e-c05d-4948-91b2-8bceb806c054",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T19:06:40.527236",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\eaba805e-c05d-4948-91b2-8bceb806c054\\documentation.json",
+      "markdown": "results\\eaba805e-c05d-4948-91b2-8bceb806c054\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "fd23bf80-010a-4f3f-a04c-43468b02cb1b": {
+    "id": "fd23bf80-010a-4f3f-a04c-43468b02cb1b",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-06-30T19:37:47.104539",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\fd23bf80-010a-4f3f-a04c-43468b02cb1b\\documentation.json",
+      "markdown": "results\\fd23bf80-010a-4f3f-a04c-43468b02cb1b\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "8c00a08d-f95e-4d48-9642-978f2d8145ce": {
+    "id": "8c00a08d-f95e-4d48-9642-978f2d8145ce",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-06-30T21:29:02.252193",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\8c00a08d-f95e-4d48-9642-978f2d8145ce\\documentation.json",
+      "markdown": "results\\8c00a08d-f95e-4d48-9642-978f2d8145ce\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-06-30T21:31:04.513266",
+    "boomi_job_id": "c3637d71-bed9-4cad-b65b-40733f21da13",
+    "boomi_job_data": {
+      "created": "451967db-55cb-11f0-995e-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_8c00a08d.xml": "genai_debug\\final_iflow_BoomiFlow_8c00a08d.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\c3637d71-bed9-4cad-b65b-40733f21da13\\BoomiFlow_8c00a08d.zip"
+      },
+      "id": "c3637d71-bed9-4cad-b65b-40733f21da13",
+      "iflow_name": "BoomiFlow_8c00a08d",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "8c00a08d-f95e-4d48-9642-978f2d8145ce",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "e072a5d1-bdad-4a74-9dc2-caf2a1e3b688": {
+    "id": "e072a5d1-bdad-4a74-9dc2-caf2a1e3b688",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-07T12:27:07.960859",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\e072a5d1-bdad-4a74-9dc2-caf2a1e3b688\\documentation.json",
+      "markdown": "results\\e072a5d1-bdad-4a74-9dc2-caf2a1e3b688\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-07T12:33:15.669177",
+    "boomi_job_id": "a5d94dfe-ca79-42df-8330-075885aac7dd",
+    "boomi_job_data": {
+      "created": "7414726b-5b00-11f0-8cf6-743af40c1803",
+      "files": {
+        "debug": {},
+        "zip": "results\\a5d94dfe-ca79-42df-8330-075885aac7dd\\BoomiFlow_e072a5d1.zip"
+      },
+      "id": "a5d94dfe-ca79-42df-8330-075885aac7dd",
+      "iflow_name": "GeneratedIFlow_a5d94dfe",
+      "last_updated": "7414739b-5b00-11f0-a090-743af40c1803",
+      "message": "iFlow generation completed successfully",
+      "status": "completed"
+    }
+  },
+  "c093f412-ae82-4f89-b760-81e927989112": {
+    "id": "c093f412-ae82-4f89-b760-81e927989112",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-07T12:38:26.193010",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\c093f412-ae82-4f89-b760-81e927989112\\documentation.json",
+      "markdown": "results\\c093f412-ae82-4f89-b760-81e927989112\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-07T12:39:18.218626",
+    "boomi_job_id": "0c464241-8cda-40c2-9d75-b0c15cabb5b1",
+    "boomi_job_data": {
+      "created": "4280bb3f-5b01-11f0-b4b6-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_c093f412.xml": "genai_debug\\final_iflow_BoomiFlow_c093f412.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\0c464241-8cda-40c2-9d75-b0c15cabb5b1\\BoomiFlow_c093f412.zip"
+      },
+      "id": "0c464241-8cda-40c2-9d75-b0c15cabb5b1",
+      "iflow_name": "BoomiFlow_c093f412",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "c093f412-ae82-4f89-b760-81e927989112",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "5c394c3e-063a-4b30-b2a8-4f6cc4d069ba": {
+    "id": "5c394c3e-063a-4b30-b2a8-4f6cc4d069ba",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T13:03:56.001848",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\5c394c3e-063a-4b30-b2a8-4f6cc4d069ba\\documentation.json",
+      "markdown": "results\\5c394c3e-063a-4b30-b2a8-4f6cc4d069ba\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "9154a5be-96e2-40cd-b02b-d9bcab514cf3": {
+    "id": "9154a5be-96e2-40cd-b02b-d9bcab514cf3",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-07T13:10:06.089984",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\9154a5be-96e2-40cd-b02b-d9bcab514cf3\\documentation.json",
+      "markdown": "results\\9154a5be-96e2-40cd-b02b-d9bcab514cf3\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-07T13:11:18.077430",
+    "boomi_job_id": "09233073-ce09-42af-9995-a6c2afdd53e5",
+    "boomi_job_data": {
+      "created": "a1d87360-5b05-11f0-bd5a-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_9154a5be.xml": "genai_debug\\final_iflow_BoomiFlow_9154a5be.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\09233073-ce09-42af-9995-a6c2afdd53e5\\BoomiFlow_9154a5be.zip"
+      },
+      "id": "09233073-ce09-42af-9995-a6c2afdd53e5",
+      "iflow_name": "BoomiFlow_9154a5be",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "9154a5be-96e2-40cd-b02b-d9bcab514cf3",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "20020259-b60e-49f6-8e20-6a02ee832403": {
+    "id": "20020259-b60e-49f6-8e20-6a02ee832403",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T13:15:38.944918",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\20020259-b60e-49f6-8e20-6a02ee832403\\documentation.json",
+      "markdown": "results\\20020259-b60e-49f6-8e20-6a02ee832403\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "979c1d30-8205-47d4-9096-b3d2ea02c3b8": {
+    "id": "979c1d30-8205-47d4-9096-b3d2ea02c3b8",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T14:13:35.105810",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\979c1d30-8205-47d4-9096-b3d2ea02c3b8\\documentation.json",
+      "markdown": "results\\979c1d30-8205-47d4-9096-b3d2ea02c3b8\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "7c37dd04-649d-4d21-b664-86e3fd54b6d6": {
+    "id": "7c37dd04-649d-4d21-b664-86e3fd54b6d6",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T15:48:21.681156",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\7c37dd04-649d-4d21-b664-86e3fd54b6d6\\documentation.json",
+      "markdown": "results\\7c37dd04-649d-4d21-b664-86e3fd54b6d6\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "815131c1-b829-4f1b-85e2-5c5f21787498": {
+    "id": "815131c1-b829-4f1b-85e2-5c5f21787498",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T15:52:05.882542",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\815131c1-b829-4f1b-85e2-5c5f21787498\\documentation.json",
+      "markdown": "results\\815131c1-b829-4f1b-85e2-5c5f21787498\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "b163c23c-e20f-4572-8a2d-e2a6ddf84e8e": {
+    "id": "b163c23c-e20f-4572-8a2d-e2a6ddf84e8e",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T15:52:25.263731",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\b163c23c-e20f-4572-8a2d-e2a6ddf84e8e\\documentation.json",
+      "markdown": "results\\b163c23c-e20f-4572-8a2d-e2a6ddf84e8e\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "45770f13-5b8c-4572-b77b-9fab1a727c4e": {
+    "id": "45770f13-5b8c-4572-b77b-9fab1a727c4e",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T16:09:57.265693",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\45770f13-5b8c-4572-b77b-9fab1a727c4e\\documentation.json",
+      "markdown": "results\\45770f13-5b8c-4572-b77b-9fab1a727c4e\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "f882aa2c-d388-4e75-ba10-ce14e7fd3b28": {
+    "id": "f882aa2c-d388-4e75-ba10-ce14e7fd3b28",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T16:25:51.456422",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\f882aa2c-d388-4e75-ba10-ce14e7fd3b28\\documentation.json",
+      "markdown": "results\\f882aa2c-d388-4e75-ba10-ce14e7fd3b28\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "1a266ec8-5390-490b-8efc-508885bb13e7": {
+    "id": "1a266ec8-5390-490b-8efc-508885bb13e7",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T17:34:57.367632",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\1a266ec8-5390-490b-8efc-508885bb13e7\\documentation.json",
+      "markdown": "results\\1a266ec8-5390-490b-8efc-508885bb13e7\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "206c9cf1-6b63-4ace-a305-cf67cbb09c23": {
+    "id": "206c9cf1-6b63-4ace-a305-cf67cbb09c23",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd.docx",
+    "upload_time": "2025-07-07T17:40:15.066798",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\206c9cf1-6b63-4ace-a305-cf67cbb09c23\\documentation.json",
+      "markdown": "results\\206c9cf1-6b63-4ace-a305-cf67cbb09c23\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "e781479e-225d-42a8-af37-6543bc387565": {
+    "id": "e781479e-225d-42a8-af37-6543bc387565",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-07T19:16:30.394584",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\e781479e-225d-42a8-af37-6543bc387565\\documentation.json",
+      "markdown": "results\\e781479e-225d-42a8-af37-6543bc387565\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "1423e986-4af8-4de9-93bb-c54dbe3c3e7d": {
+    "id": "1423e986-4af8-4de9-93bb-c54dbe3c3e7d",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_started",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation started in Gemma-3 API for boomi platform",
+    "upload_time": "2025-07-07T19:27:04.198220",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\1423e986-4af8-4de9-93bb-c54dbe3c3e7d\\documentation.json",
+      "markdown": "results\\1423e986-4af8-4de9-93bb-c54dbe3c3e7d\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "last_updated": "2025-07-07T19:31:20.156561",
+    "iflow_match_files": {
+      "report": "results\\1423e986-4af8-4de9-93bb-c54dbe3c3e7d\\iflow_match\\integration_match_report.html",
+      "summary": "results\\1423e986-4af8-4de9-93bb-c54dbe3c3e7d\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 17 potential matches"
+    },
+    "gemma3_job_id": "da188ec8-b3e0-4fa4-83f7-ddda327afa06",
+    "llm_provider": "gemma3"
+  },
+  "a32f8101-9d78-4889-8e38-a45b367e1031": {
+    "id": "a32f8101-9d78-4889-8e38-a45b367e1031",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-12T15:57:37.394304",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\a32f8101-9d78-4889-8e38-a45b367e1031\\documentation.json",
+      "markdown": "results\\a32f8101-9d78-4889-8e38-a45b367e1031\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "c5e62722-e94b-469f-9e22-da1d419e2dec": {
+    "id": "c5e62722-e94b-469f-9e22-da1d419e2dec",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-12T18:25:04.807298",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\c5e62722-e94b-469f-9e22-da1d419e2dec\\documentation.json",
+      "markdown": "results\\c5e62722-e94b-469f-9e22-da1d419e2dec\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "670a6b9f-5151-4d18-bd20-6fca3874d41d": {
+    "id": "670a6b9f-5151-4d18-bd20-6fca3874d41d",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-12T18:35:31.166548",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\670a6b9f-5151-4d18-bd20-6fca3874d41d\\documentation.json",
+      "markdown": "results\\670a6b9f-5151-4d18-bd20-6fca3874d41d\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "e972d972-e17b-438b-a69e-5b164d2ca7a6": {
+    "id": "e972d972-e17b-438b-a69e-5b164d2ca7a6",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_started",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation started in Gemma-3 API for boomi platform",
+    "upload_time": "2025-07-12T18:38:02.496931",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\e972d972-e17b-438b-a69e-5b164d2ca7a6\\documentation.json",
+      "markdown": "results\\e972d972-e17b-438b-a69e-5b164d2ca7a6\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-12T19:21:58.139643",
+    "gemma3_job_id": "93172262-ff73-4acd-bb42-7c2e48a6c940",
+    "llm_provider": "gemma3"
+  },
+  "3c1373e3-d2de-4394-badf-385b97c881e7": {
+    "id": "3c1373e3-d2de-4394-badf-385b97c881e7",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_started",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation started in Gemma-3 API for boomi platform",
+    "upload_time": "2025-07-13T12:25:24.212907",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\3c1373e3-d2de-4394-badf-385b97c881e7\\documentation.json",
+      "markdown": "results\\3c1373e3-d2de-4394-badf-385b97c881e7\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-13T12:25:39.950650",
+    "gemma3_job_id": "b2a30502-a35d-4f87-b3c0-6ab2af5ed8ce",
+    "llm_provider": "gemma3"
+  },
+  "3e519bcf-8eed-4eab-a933-6a2991b3c026": {
+    "id": "3e519bcf-8eed-4eab-a933-6a2991b3c026",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_started",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation started in Gemma-3 API for boomi platform",
+    "upload_time": "2025-07-13T12:42:18.446514",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\3e519bcf-8eed-4eab-a933-6a2991b3c026\\documentation.json",
+      "markdown": "results\\3e519bcf-8eed-4eab-a933-6a2991b3c026\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-13T12:42:39.039267",
+    "gemma3_job_id": "3e519bcf-8eed-4eab-a933-6a2991b3c026",
+    "llm_provider": "gemma3"
+  },
+  "b5d1f6cb-720c-4a79-83df-217df2f57f84": {
+    "id": "b5d1f6cb-720c-4a79-83df-217df2f57f84",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "iflow_generation_started",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation started in Gemma-3 API for boomi platform",
+    "upload_time": "2025-07-13T13:04:01.744033",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\b5d1f6cb-720c-4a79-83df-217df2f57f84\\documentation.json",
+      "markdown": "results\\b5d1f6cb-720c-4a79-83df-217df2f57f84\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-13T13:14:55.082923",
+    "gemma3_job_id": "b5d1f6cb-720c-4a79-83df-217df2f57f84",
+    "llm_provider": "gemma3"
+  },
+  "db2f0ad1-961f-45ea-8309-d3b9b2f8ae47": {
+    "id": "db2f0ad1-961f-45ea-8309-d3b9b2f8ae47",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-14T19:14:20.896951",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\db2f0ad1-961f-45ea-8309-d3b9b2f8ae47\\documentation.json",
+      "markdown": "results\\db2f0ad1-961f-45ea-8309-d3b9b2f8ae47\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "c6bfe055-c7b8-4835-bda5-538b99716b9f": {
+    "id": "c6bfe055-c7b8-4835-bda5-538b99716b9f",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-14T19:39:27.465494",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\c6bfe055-c7b8-4835-bda5-538b99716b9f\\documentation.json",
+      "markdown": "results\\c6bfe055-c7b8-4835-bda5-538b99716b9f\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "b930a6a7-57fd-4653-aeec-f4d7235dd385": {
+    "id": "b930a6a7-57fd-4653-aeec-f4d7235dd385",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-15T19:29:23.073416",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\b930a6a7-57fd-4653-aeec-f4d7235dd385\\documentation.json",
+      "markdown": "results\\b930a6a7-57fd-4653-aeec-f4d7235dd385\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-15T19:33:46.766550",
+    "boomi_job_id": "94b84ade-b120-44ae-a69b-dd72c1b3c85c",
+    "boomi_job_data": {
+      "created": "600ffed7-6184-11f0-a679-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_b930a6a7.xml": "genai_debug\\final_iflow_BoomiFlow_b930a6a7.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\94b84ade-b120-44ae-a69b-dd72c1b3c85c\\BoomiFlow_b930a6a7.zip"
+      },
+      "id": "94b84ade-b120-44ae-a69b-dd72c1b3c85c",
+      "iflow_name": "BoomiFlow_b930a6a7",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "b930a6a7-57fd-4653-aeec-f4d7235dd385",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "42eecc99-41d1-4e58-a3a2-c59e1c6d5058": {
+    "id": "42eecc99-41d1-4e58-a3a2-c59e1c6d5058",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-15T19:49:46.329076",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\42eecc99-41d1-4e58-a3a2-c59e1c6d5058\\documentation.json",
+      "markdown": "results\\42eecc99-41d1-4e58-a3a2-c59e1c6d5058\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "830c003c-f1d4-4283-840d-5660db7cf99d": {
+    "id": "830c003c-f1d4-4283-840d-5660db7cf99d",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-15T19:52:42.700660",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\830c003c-f1d4-4283-840d-5660db7cf99d\\documentation.json",
+      "markdown": "results\\830c003c-f1d4-4283-840d-5660db7cf99d\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "3598556a-7731-4dcb-b5d2-d7dba82e5189": {
+    "id": "3598556a-7731-4dcb-b5d2-d7dba82e5189",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-15T20:00:06.469515",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\3598556a-7731-4dcb-b5d2-d7dba82e5189\\documentation.json",
+      "markdown": "results\\3598556a-7731-4dcb-b5d2-d7dba82e5189\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\3598556a-7731-4dcb-b5d2-d7dba82e5189\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "ffb9fad0-0e29-4ba9-a840-79d5008360ac": {
+    "id": "ffb9fad0-0e29-4ba9-a840-79d5008360ac",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-15T20:14:54.357029",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1679,
+      "char_count": 9762,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\ffb9fad0-0e29-4ba9-a840-79d5008360ac\\documentation.json",
+      "markdown": "results\\ffb9fad0-0e29-4ba9-a840-79d5008360ac\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\ffb9fad0-0e29-4ba9-a840-79d5008360ac\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "36c5b7bd-3f4e-4720-a611-971c55504e48": {
+    "id": "36c5b7bd-3f4e-4720-a611-971c55504e48",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-15T20:57:59.032735",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1701,
+      "char_count": 9918,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\36c5b7bd-3f4e-4720-a611-971c55504e48\\documentation.json",
+      "markdown": "results\\36c5b7bd-3f4e-4720-a611-971c55504e48\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\36c5b7bd-3f4e-4720-a611-971c55504e48\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true
+  },
+  "9368caf3-30f7-437b-8ef9-84f088162692": {
+    "id": "9368caf3-30f7-437b-8ef9-84f088162692",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "generating_iflow",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation in progress: Analyzing markdown and generating iFlow...",
+    "upload_time": "2025-07-15T21:05:40.098422",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1857,
+      "char_count": 11192,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\9368caf3-30f7-437b-8ef9-84f088162692\\documentation.json",
+      "markdown": "results\\9368caf3-30f7-437b-8ef9-84f088162692\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\9368caf3-30f7-437b-8ef9-84f088162692\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-15T21:20:12.917381",
+    "boomi_job_id": "2b9bcff5-8d8d-452b-a7da-91994986b8bf"
+  },
+  "2a31d9c1-8727-4523-91d2-2579454a9784": {
+    "id": "2a31d9c1-8727-4523-91d2-2579454a9784",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "generating_iflow",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation in progress: Analyzing markdown and generating iFlow...",
+    "upload_time": "2025-07-16T11:30:14.674890",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1851,
+      "char_count": 11131,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31
+    },
+    "files": {
+      "documentation_json": "results\\2a31d9c1-8727-4523-91d2-2579454a9784\\documentation.json",
+      "markdown": "results\\2a31d9c1-8727-4523-91d2-2579454a9784\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\2a31d9c1-8727-4523-91d2-2579454a9784\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "last_updated": "2025-07-16T11:36:36.341795",
+    "boomi_job_id": "78d4d7f8-cf1e-43cd-ad0c-52ec4e9da206"
+  },
+  "c13e29e0-6b22-435d-a77d-4ce9d254cbd3": {
+    "id": "c13e29e0-6b22-435d-a77d-4ce9d254cbd3",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T11:43:57.710408",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1855,
+      "char_count": 11170,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\c13e29e0-6b22-435d-a77d-4ce9d254cbd3\\documentation.json",
+      "markdown": "results\\c13e29e0-6b22-435d-a77d-4ce9d254cbd3\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\c13e29e0-6b22-435d-a77d-4ce9d254cbd3\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T11:45:22.934395",
+    "boomi_job_id": "b088b011-804f-44ba-a00d-a82efa52e840",
+    "boomi_job_data": {
+      "created": "25454313-620c-11f0-99c3-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_c13e29e0.xml": "genai_debug\\final_iflow_BoomiFlow_c13e29e0.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\b088b011-804f-44ba-a00d-a82efa52e840\\BoomiFlow_c13e29e0.zip"
+      },
+      "id": "b088b011-804f-44ba-a00d-a82efa52e840",
+      "iflow_name": "BoomiFlow_c13e29e0",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "c13e29e0-6b22-435d-a77d-4ce9d254cbd3",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "decae6d2-4452-4b4a-bfed-dc6973701dd5": {
+    "id": "decae6d2-4452-4b4a-bfed-dc6973701dd5",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T11:50:12.207277",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1856,
+      "char_count": 11155,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\decae6d2-4452-4b4a-bfed-dc6973701dd5\\documentation.json",
+      "markdown": "results\\decae6d2-4452-4b4a-bfed-dc6973701dd5\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\decae6d2-4452-4b4a-bfed-dc6973701dd5\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T11:53:20.406282",
+    "boomi_job_id": "85cf4251-98b3-43ad-a963-fa9be3e80d39",
+    "boomi_job_data": {
+      "created": "45796e3d-620d-11f0-909e-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_decae6d2.xml": "genai_debug\\final_iflow_BoomiFlow_decae6d2.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\85cf4251-98b3-43ad-a963-fa9be3e80d39\\BoomiFlow_decae6d2.zip"
+      },
+      "id": "85cf4251-98b3-43ad-a963-fa9be3e80d39",
+      "iflow_name": "BoomiFlow_decae6d2",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "decae6d2-4452-4b4a-bfed-dc6973701dd5",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "7fa852c5-d0b1-48eb-b496-d1eb0951b3b8": {
+    "id": "7fa852c5-d0b1-48eb-b496-d1eb0951b3b8",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T17:26:20.262312",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1855,
+      "char_count": 11185,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\7fa852c5-d0b1-48eb-b496-d1eb0951b3b8\\documentation.json",
+      "markdown": "results\\7fa852c5-d0b1-48eb-b496-d1eb0951b3b8\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\7fa852c5-d0b1-48eb-b496-d1eb0951b3b8\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T17:27:20.150018",
+    "boomi_job_id": "1e991ca3-a78b-46b9-9e06-2b016527819c",
+    "boomi_job_data": {
+      "created": "eb31ad1c-623b-11f0-90c3-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_7fa852c5.xml": "genai_debug\\final_iflow_BoomiFlow_7fa852c5.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\1e991ca3-a78b-46b9-9e06-2b016527819c\\BoomiFlow_7fa852c5.zip"
+      },
+      "id": "1e991ca3-a78b-46b9-9e06-2b016527819c",
+      "iflow_name": "BoomiFlow_7fa852c5",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "7fa852c5-d0b1-48eb-b496-d1eb0951b3b8",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "89de91e3-e9e5-4130-ac44-a6657405035b": {
+    "id": "89de91e3-e9e5-4130-ac44-a6657405035b",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T18:15:26.663661",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1874,
+      "char_count": 11317,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\89de91e3-e9e5-4130-ac44-a6657405035b\\documentation.json",
+      "markdown": "results\\89de91e3-e9e5-4130-ac44-a6657405035b\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\89de91e3-e9e5-4130-ac44-a6657405035b\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T18:26:43.752431",
+    "boomi_job_id": "d897cdf5-b846-4205-8097-15b1a2e8335e",
+    "boomi_job_data": {
+      "created": "3bb55f8e-6244-11f0-80cd-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_89de91e3.xml": "genai_debug\\final_iflow_BoomiFlow_89de91e3.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\d897cdf5-b846-4205-8097-15b1a2e8335e\\BoomiFlow_89de91e3.zip"
+      },
+      "id": "d897cdf5-b846-4205-8097-15b1a2e8335e",
+      "iflow_name": "BoomiFlow_89de91e3",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "89de91e3-e9e5-4130-ac44-a6657405035b",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "2df5c087-a75c-41ce-b0d1-57cc65e075a2": {
+    "id": "2df5c087-a75c-41ce-b0d1-57cc65e075a2",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T18:32:24.105113",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1868,
+      "char_count": 11276,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\2df5c087-a75c-41ce-b0d1-57cc65e075a2\\documentation.json",
+      "markdown": "results\\2df5c087-a75c-41ce-b0d1-57cc65e075a2\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\2df5c087-a75c-41ce-b0d1-57cc65e075a2\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T18:34:28.896350",
+    "boomi_job_id": "de3065e5-c7f5-4e7d-a515-4d46c8add1a6",
+    "boomi_job_data": {
+      "created": "52308644-6245-11f0-af32-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_2df5c087.xml": "genai_debug\\final_iflow_BoomiFlow_2df5c087.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\de3065e5-c7f5-4e7d-a515-4d46c8add1a6\\BoomiFlow_2df5c087.zip"
+      },
+      "id": "de3065e5-c7f5-4e7d-a515-4d46c8add1a6",
+      "iflow_name": "BoomiFlow_2df5c087",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "2df5c087-a75c-41ce-b0d1-57cc65e075a2",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "2c4fd056-4805-417e-808b-3ea52f8a733c": {
+    "id": "2c4fd056-4805-417e-808b-3ea52f8a733c",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T18:54:46.888378",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1881,
+      "char_count": 11352,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\2c4fd056-4805-417e-808b-3ea52f8a733c\\documentation.json",
+      "markdown": "results\\2c4fd056-4805-417e-808b-3ea52f8a733c\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\2c4fd056-4805-417e-808b-3ea52f8a733c\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T18:56:39.238620",
+    "boomi_job_id": "d04f8c55-829f-4217-89a1-754bbc0a16c5",
+    "boomi_job_data": {
+      "created": "6721ce7a-6248-11f0-b35c-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_2c4fd056.xml": "genai_debug\\final_iflow_BoomiFlow_2c4fd056.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\d04f8c55-829f-4217-89a1-754bbc0a16c5\\BoomiFlow_2c4fd056.zip"
+      },
+      "id": "d04f8c55-829f-4217-89a1-754bbc0a16c5",
+      "iflow_name": "BoomiFlow_2c4fd056",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "2c4fd056-4805-417e-808b-3ea52f8a733c",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "b59cfb92-2de2-49d8-b29e-6b9f835bbf0c": {
+    "id": "b59cfb92-2de2-49d8-b29e-6b9f835bbf0c",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd_1.docx",
+    "upload_time": "2025-07-16T18:58:29.893526",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1870,
+      "char_count": 11248,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\b59cfb92-2de2-49d8-b29e-6b9f835bbf0c\\documentation.json",
+      "markdown": "results\\b59cfb92-2de2-49d8-b29e-6b9f835bbf0c\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\b59cfb92-2de2-49d8-b29e-6b9f835bbf0c\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1
+  },
+  "2d0ec0df-dc75-4ed3-adc5-90dced4b5f1c": {
+    "id": "2d0ec0df-dc75-4ed3-adc5-90dced4b5f1c",
+    "filename": "sample_boomi_dd.docx",
+    "platform": "boomi",
+    "status": "documentation_ready",
+    "processing_step": "documentation_uploaded",
+    "processing_message": "Documentation uploaded and processed successfully from sample_boomi_dd.docx",
+    "upload_time": "2025-07-16T19:17:01.848929",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd.docx",
+      "content_type": "docx",
+      "word_count": 1858,
+      "char_count": 11226,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\2d0ec0df-dc75-4ed3-adc5-90dced4b5f1c\\documentation.json",
+      "markdown": "results\\2d0ec0df-dc75-4ed3-adc5-90dced4b5f1c\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\2d0ec0df-dc75-4ed3-adc5-90dced4b5f1c\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1
+  },
+  "4ae85dc1-d5be-4344-a56b-eb203946d29c": {
+    "id": "4ae85dc1-d5be-4344-a56b-eb203946d29c",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T19:21:29.941896",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1876,
+      "char_count": 11318,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\4ae85dc1-d5be-4344-a56b-eb203946d29c\\documentation.json",
+      "markdown": "results\\4ae85dc1-d5be-4344-a56b-eb203946d29c\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\4ae85dc1-d5be-4344-a56b-eb203946d29c\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T19:22:45.938704",
+    "boomi_job_id": "b33c0c55-2265-4030-af5e-7d5e5c8a0f6a",
+    "boomi_job_data": {
+      "created": "0cc9433c-624c-11f0-81ee-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_4ae85dc1.xml": "genai_debug\\final_iflow_BoomiFlow_4ae85dc1.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\b33c0c55-2265-4030-af5e-7d5e5c8a0f6a\\BoomiFlow_4ae85dc1.zip"
+      },
+      "id": "b33c0c55-2265-4030-af5e-7d5e5c8a0f6a",
+      "iflow_name": "BoomiFlow_4ae85dc1",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "4ae85dc1-d5be-4344-a56b-eb203946d29c",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "89b03bf0-8071-4599-a80c-8cae2d2e37dd": {
+    "id": "89b03bf0-8071-4599-a80c-8cae2d2e37dd",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T19:38:51.953798",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1859,
+      "char_count": 11209,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\89b03bf0-8071-4599-a80c-8cae2d2e37dd\\documentation.json",
+      "markdown": "results\\89b03bf0-8071-4599-a80c-8cae2d2e37dd\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\89b03bf0-8071-4599-a80c-8cae2d2e37dd\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T19:41:04.323535",
+    "boomi_job_id": "1a969150-548e-47b2-89d6-17e71dcbc04e",
+    "boomi_job_data": {
+      "created": "7742be84-624e-11f0-870a-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_89b03bf0.xml": "genai_debug\\final_iflow_BoomiFlow_89b03bf0.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\1a969150-548e-47b2-89d6-17e71dcbc04e\\BoomiFlow_89b03bf0.zip"
+      },
+      "id": "1a969150-548e-47b2-89d6-17e71dcbc04e",
+      "iflow_name": "BoomiFlow_89b03bf0",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "89b03bf0-8071-4599-a80c-8cae2d2e37dd",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\89b03bf0-8071-4599-a80c-8cae2d2e37dd\\iflow_match\\integration_match_report.html",
+      "summary": "results\\89b03bf0-8071-4599-a80c-8cae2d2e37dd\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 16 potential matches"
+    }
+  },
+  "9ff71586-5af6-4f48-bd34-f0d96a02d19b": {
+    "id": "9ff71586-5af6-4f48-bd34-f0d96a02d19b",
+    "filename": "sample_boomi_dd_1.docx",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T19:48:53.102953",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_dd_1.docx",
+      "content_type": "docx",
+      "word_count": 1866,
+      "char_count": 11263,
+      "file_size": 1275107,
+      "paragraph_count": 90,
+      "table_count": 31,
+      "image_count": 1,
+      "images_analyzed": 1
+    },
+    "files": {
+      "documentation_json": "results\\9ff71586-5af6-4f48-bd34-f0d96a02d19b\\documentation.json",
+      "markdown": "results\\9ff71586-5af6-4f48-bd34-f0d96a02d19b\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\9ff71586-5af6-4f48-bd34-f0d96a02d19b\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 1,
+    "images_analyzed": 1,
+    "last_updated": "2025-07-16T19:49:53.865458",
+    "boomi_job_id": "29422ee9-34cc-41a8-b38c-66dbd794e765",
+    "boomi_job_data": {
+      "created": "d4980797-624f-11f0-9895-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_9ff71586.xml": "genai_debug\\final_iflow_BoomiFlow_9ff71586.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\29422ee9-34cc-41a8-b38c-66dbd794e765\\BoomiFlow_9ff71586.zip"
+      },
+      "id": "29422ee9-34cc-41a8-b38c-66dbd794e765",
+      "iflow_name": "BoomiFlow_9ff71586",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "9ff71586-5af6-4f48-bd34-f0d96a02d19b",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "26b823ab-4d03-4cba-8217-62de5652434a": {
+    "id": "26b823ab-4d03-4cba-8217-62de5652434a",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "mulesoft",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation failed: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/generate-iflow/26b823ab-4d03-4cba-8217-62de5652434a (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F78B709940>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+    "upload_time": "2025-07-16T20:07:37.622374",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\26b823ab-4d03-4cba-8217-62de5652434a\\documentation.json",
+      "markdown": "results\\26b823ab-4d03-4cba-8217-62de5652434a\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\26b823ab-4d03-4cba-8217-62de5652434a\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-16T20:07:54.766855"
+  },
+  "a43c3e43-e43a-4c84-b6e9-0507da7db664": {
+    "id": "a43c3e43-e43a-4c84-b6e9-0507da7db664",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T20:13:10.581461",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\a43c3e43-e43a-4c84-b6e9-0507da7db664\\documentation.json",
+      "markdown": "results\\a43c3e43-e43a-4c84-b6e9-0507da7db664\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\a43c3e43-e43a-4c84-b6e9-0507da7db664\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-16T20:13:54.916545",
+    "boomi_job_id": "867501ba-ab85-4e1c-b3db-ca4563a4c77f",
+    "boomi_job_data": {
+      "created": "3a97480e-6253-11f0-8677-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_a43c3e43.xml": "genai_debug\\final_iflow_BoomiFlow_a43c3e43.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\867501ba-ab85-4e1c-b3db-ca4563a4c77f\\BoomiFlow_a43c3e43.zip"
+      },
+      "id": "867501ba-ab85-4e1c-b3db-ca4563a4c77f",
+      "iflow_name": "BoomiFlow_a43c3e43",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "a43c3e43-e43a-4c84-b6e9-0507da7db664",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "70a4c876-7748-464b-a60c-d006f3a9d307": {
+    "id": "70a4c876-7748-464b-a60c-d006f3a9d307",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "mulesoft",
+    "status": "iflow_generation_failed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation failed: HTTPConnectionPool(host='localhost', port=5001): Max retries exceeded with url: /api/generate-iflow/70a4c876-7748-464b-a60c-d006f3a9d307 (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F78B66BF00>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))",
+    "upload_time": "2025-07-16T20:23:59.832271",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\70a4c876-7748-464b-a60c-d006f3a9d307\\documentation.json",
+      "markdown": "results\\70a4c876-7748-464b-a60c-d006f3a9d307\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\70a4c876-7748-464b-a60c-d006f3a9d307\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-16T20:24:09.698881"
+  },
+  "702fd87a-13bd-435f-a5a8-5567a2639065": {
+    "id": "702fd87a-13bd-435f-a5a8-5567a2639065",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T20:24:47.958074",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\702fd87a-13bd-435f-a5a8-5567a2639065\\documentation.json",
+      "markdown": "results\\702fd87a-13bd-435f-a5a8-5567a2639065\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\702fd87a-13bd-435f-a5a8-5567a2639065\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-16T20:26:18.254919",
+    "boomi_job_id": "f384c6dc-78f8-47e3-bf23-a2b6f11c823d",
+    "boomi_job_data": {
+      "created": "f364e131-6254-11f0-a2d4-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_702fd87a.xml": "genai_debug\\final_iflow_BoomiFlow_702fd87a.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\f384c6dc-78f8-47e3-bf23-a2b6f11c823d\\BoomiFlow_702fd87a.zip"
+      },
+      "id": "f384c6dc-78f8-47e3-bf23-a2b6f11c823d",
+      "iflow_name": "BoomiFlow_702fd87a",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "702fd87a-13bd-435f-a5a8-5567a2639065",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "84f7a8f7-8f93-4a0d-833a-49e20f9ba23a": {
+    "id": "84f7a8f7-8f93-4a0d-833a-49e20f9ba23a",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T20:29:04.940750",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\84f7a8f7-8f93-4a0d-833a-49e20f9ba23a\\documentation.json",
+      "markdown": "results\\84f7a8f7-8f93-4a0d-833a-49e20f9ba23a\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\84f7a8f7-8f93-4a0d-833a-49e20f9ba23a\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-16T20:29:46.770376",
+    "boomi_job_id": "ab4f13e0-d37b-4fa4-9bb4-54f48a362ff7",
+    "boomi_job_data": {
+      "created": "71e2e298-6255-11f0-89c6-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_84f7a8f7.xml": "genai_debug\\final_iflow_BoomiFlow_84f7a8f7.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\ab4f13e0-d37b-4fa4-9bb4-54f48a362ff7\\BoomiFlow_84f7a8f7.zip"
+      },
+      "id": "ab4f13e0-d37b-4fa4-9bb4-54f48a362ff7",
+      "iflow_name": "BoomiFlow_84f7a8f7",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "84f7a8f7-8f93-4a0d-833a-49e20f9ba23a",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "18c4b8ae-9ac9-43eb-a7b6-66ba2a4d8b39": {
+    "id": "18c4b8ae-9ac9-43eb-a7b6-66ba2a4d8b39",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-16T20:46:43.485678",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\18c4b8ae-9ac9-43eb-a7b6-66ba2a4d8b39\\documentation.json",
+      "markdown": "results\\18c4b8ae-9ac9-43eb-a7b6-66ba2a4d8b39\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\18c4b8ae-9ac9-43eb-a7b6-66ba2a4d8b39\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-16T20:47:28.555951",
+    "boomi_job_id": "6da5ad1b-7d13-4a2e-a8d6-681854d4a62d",
+    "boomi_job_data": {
+      "created": "eb9cc3b4-6257-11f0-98dc-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_18c4b8ae.xml": "genai_debug\\final_iflow_BoomiFlow_18c4b8ae.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\6da5ad1b-7d13-4a2e-a8d6-681854d4a62d\\BoomiFlow_18c4b8ae.zip"
+      },
+      "id": "6da5ad1b-7d13-4a2e-a8d6-681854d4a62d",
+      "iflow_name": "BoomiFlow_18c4b8ae",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "18c4b8ae-9ac9-43eb-a7b6-66ba2a4d8b39",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "9e4dde00-2e30-4ad3-b485-a79d2d50caa7": {
+    "id": "9e4dde00-2e30-4ad3-b485-a79d2d50caa7",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-17T18:27:16.991513",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\9e4dde00-2e30-4ad3-b485-a79d2d50caa7\\documentation.json",
+      "markdown": "results\\9e4dde00-2e30-4ad3-b485-a79d2d50caa7\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\9e4dde00-2e30-4ad3-b485-a79d2d50caa7\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-17T18:28:45.648638",
+    "boomi_job_id": "a9c7b777-be79-4783-97e6-64e5d7aa318e",
+    "boomi_job_data": {
+      "created": "ad96b549-630d-11f0-b03f-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_9e4dde00.xml": "genai_debug\\final_iflow_BoomiFlow_9e4dde00.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\a9c7b777-be79-4783-97e6-64e5d7aa318e\\BoomiFlow_9e4dde00.zip"
+      },
+      "id": "a9c7b777-be79-4783-97e6-64e5d7aa318e",
+      "iflow_name": "BoomiFlow_9e4dde00",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "9e4dde00-2e30-4ad3-b485-a79d2d50caa7",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    }
+  },
+  "ab56b36d-a931-47d2-b053-159afb92e1e4": {
+    "id": "ab56b36d-a931-47d2-b053-159afb92e1e4",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-17T18:38:21.240517",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\ab56b36d-a931-47d2-b053-159afb92e1e4\\documentation.json",
+      "markdown": "results\\ab56b36d-a931-47d2-b053-159afb92e1e4\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\ab56b36d-a931-47d2-b053-159afb92e1e4\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-17T18:45:08.118779",
+    "boomi_job_id": "d26eb38a-65bb-447c-8a18-fda5f9def34c",
+    "boomi_job_data": {
+      "created": "23e8a6fc-630f-11f0-a1f7-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_ab56b36d.xml": "genai_debug\\final_iflow_BoomiFlow_ab56b36d.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\d26eb38a-65bb-447c-8a18-fda5f9def34c\\BoomiFlow_ab56b36d.zip"
+      },
+      "id": "d26eb38a-65bb-447c-8a18-fda5f9def34c",
+      "iflow_name": "BoomiFlow_ab56b36d",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "ab56b36d-a931-47d2-b053-159afb92e1e4",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\ab56b36d-a931-47d2-b053-159afb92e1e4\\iflow_match\\integration_match_report.html",
+      "summary": "results\\ab56b36d-a931-47d2-b053-159afb92e1e4\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 17 potential matches"
+    }
+  },
+  "70423bb8-0880-4780-b486-bb2edc8e1897": {
+    "id": "70423bb8-0880-4780-b486-bb2edc8e1897",
+    "filename": "sample_boomi_integration.txt",
+    "platform": "boomi",
+    "status": "completed",
+    "processing_step": "iflow_generation",
+    "processing_message": "iFlow generation completed successfully",
+    "upload_time": "2025-07-17T18:45:56.546355",
+    "source_type": "uploaded_documentation",
+    "file_info": {
+      "original_filename": "sample_boomi_integration.txt",
+      "content_type": "text",
+      "word_count": 514,
+      "char_count": 3426,
+      "file_size": 3448
+    },
+    "files": {
+      "documentation_json": "results\\70423bb8-0880-4780-b486-bb2edc8e1897\\documentation.json",
+      "markdown": "results\\70423bb8-0880-4780-b486-bb2edc8e1897\\uploaded_documentation.md",
+      "uploaded_documentation": "results\\70423bb8-0880-4780-b486-bb2edc8e1897\\uploaded_documentation.md"
+    },
+    "ready_for_iflow_generation": true,
+    "image_count": 0,
+    "images_analyzed": 0,
+    "last_updated": "2025-07-17T18:46:49.298243",
+    "boomi_job_id": "eb2b6509-a345-4bb2-8f1e-b578f8d7babe",
+    "boomi_job_data": {
+      "created": "31fcf97b-6310-11f0-96f3-743af40c1803",
+      "files": {
+        "debug": {
+          "final_iflow_BoomiFlow_70423bb8.xml": "genai_debug\\final_iflow_BoomiFlow_70423bb8.xml",
+          "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+          "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+          "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+          "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+          "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+          "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+        },
+        "zip": "results\\eb2b6509-a345-4bb2-8f1e-b578f8d7babe\\BoomiFlow_70423bb8.zip"
+      },
+      "id": "eb2b6509-a345-4bb2-8f1e-b578f8d7babe",
+      "iflow_name": "BoomiFlow_70423bb8",
+      "message": "iFlow generation completed successfully!",
+      "original_job_id": "70423bb8-0880-4780-b486-bb2edc8e1897",
+      "source_type": "uploaded_documentation",
+      "status": "completed"
+    },
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully as: Integration_70423bb8",
+    "deployment_details": {
+      "iflow_name": "Integration_70423bb8",
+      "package_id": "ConversionPackages",
+      "iflow_id": "Integration_70423bb8",
+      "deployment_method": "direct",
+      "response_code": 201,
+      "boomi_job_id": "eb2b6509-a345-4bb2-8f1e-b578f8d7babe"
+    },
+    "deployed_iflow_name": "Integration_70423bb8",
+    "deployed_package_id": "ConversionPackages"
   }
 }

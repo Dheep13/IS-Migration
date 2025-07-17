@@ -50,7 +50,7 @@ def generate_iflow(api_url, markdown_file, iflow_name=None):
             print(f"Response: {e.response.text}")
         return None
 
-def check_job_status(api_url, job_id, wait=True, max_attempts=30, interval=5):
+def check_job_status(api_url, job_id, wait=True, max_attempts=240, interval=5):
     """
     Check the status of a job
     

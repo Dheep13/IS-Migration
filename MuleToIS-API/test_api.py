@@ -52,7 +52,7 @@ def test_get_job_status(job_id):
     print(f"Testing get job status endpoint for job {job_id}...")
     
     # Poll for job status
-    max_attempts = 30
+    max_attempts = 240
     attempt = 0
     completed = False
     

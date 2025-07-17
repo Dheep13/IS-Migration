@@ -49,7 +49,7 @@ jobs:
       run: |
         cd IFA-Project/frontend
         rm -f package-lock.json
-        npm install
+        npm install --force --platform=linux --arch=x64
     
     - name: Run Python tests
       run: |

@@ -1,35 +1,43 @@
 {
-  "process_name": "Stripe to Salesforce Opportunity Integration",
-  "description": "This integration creates Salesforce Opportunities automatically when new customer subscriptions are created in Stripe. The integration listens for Stripe webhook events for new subscriptions, transforms the subscription data, and creates corresponding opportunity records in Salesforce.",
+  "process_name": "Customer Data Sync",
+  "description": "Synchronizes customer data between Salesforce CRM and SAP ERP system on a daily basis",
   "endpoints": [
     {
-      "method": "POST",
-      "path": "/webhook-listener",
-      "purpose": "Receives webhook notifications from Stripe when new subscriptions are created",
+      "method": "GET",
+      "path": "/salesforce/accounts",
+      "purpose": "Extract Salesforce Account data and sync to SAP ERP Customer Master",
       "components": [
         {
-          "type": "enricher",
-          "name": "Set_Dynamic_Properties",
-          "id": "enricher_1",
+          "type": "request_reply",
+          "name": "Salesforce_Account_Query",
+          "id": "salesforce_query_1",
           "config": {
-            "content": "Sets dynamic document properties for the integration and prepares data for transformation to Salesforce format"
+            "endpoint_path": "/services/data/v52.0/query",
+            "content": "SELECT Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, Phone, Industry, AnnualRevenue, CreatedDate, LastModifiedDate FROM Account WHERE LastModifiedDate >= YESTERDAY"
+          }
+        },
+        {
+          "type": "enricher",
+          "name": "Validate_Required_Fields",
+          "id": "validate_fields_1",
+          "config": {
+            "content": "// Check for required fields\n${property.set(\"hasRequiredFields\", (message.getBody(java.lang.String) contains \"Id\" && message.getBody(java.lang.String) contains \"Name\"))}"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Transform_Subscription_To_Opportunity",
-          "id": "transform_1",
+          "name": "Transform_Customer_Data",
+          "id": "transform_data_1",
           "config": {
-            "script": "TransformSubscriptionToOpportunity.groovy"
+            "script": "TransformCustomerData.groovy"
           }
         },
         {
           "type": "request_reply",
-          "name": "Create_Salesforce_Opportunity",
-          "id": "request_reply_1",
+          "name": "SAP_ERP_Customer_Update",
+          "id": "sap_update_1",
           "config": {
-            "endpoint_path": "/services/data/v52.0/sobjects/Opportunity",
-            "address": "https://{{Salesforce_URL}}"
+            "endpoint_path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner"
           }
         }
       ],
@@ -37,11 +45,20 @@
         "exception_subprocess": [
           {
             "type": "enricher",
-            "name": "Error_Message_Formatter",
-            "id": "error_enricher_1",
-            "trigger": "any_error",
+            "name": "Prepare_Error_Message",
+            "id": "error_message_1",
+            "trigger": "validation_error",
             "config": {
-              "content": "Error occurred during Stripe to Salesforce integration: ${exception.message}"
+              "content": "${property.set(\"errorMessage\", \"Validation error occurred: \" + exception.getMessage())}"
+            }
+          },
+          {
+            "type": "groovy_script",
+            "name": "Retry_Logic",
+            "id": "retry_script_1",
+            "trigger": "connection_error",
+            "config": {
+              "script": "RetryFailedRecords.groovy"
             }
           },
           {
@@ -50,7 +67,7 @@
             "id": "error_notification_1",
             "trigger": "any_error",
             "config": {
-              "endpoint_path": "/api/notifications/email"
+              "endpoint_path": "/notification/email"
             }
           }
         ]
@@ -59,30 +76,43 @@
         "type": "exclusive",
         "branches": [
           {
-            "condition": "Default path",
+            "condition": "${property.get(\"hasRequiredFields\") == true}",
             "components": [
-              "enricher_1",
-              "transform_1",
-              "request_reply_1"
+              "transform_data_1",
+              "sap_update_1"
             ],
             "sequence": [
-              "enricher_1",
-              "transform_1",
-              "request_reply_1"
+              "transform_data_1",
+              "sap_update_1"
+            ]
+          },
+          {
+            "condition": "${property.get(\"hasRequiredFields\") == false}",
+            "components": [
+              "error_message_1"
+            ],
+            "sequence": [
+              "error_message_1"
             ]
           }
         ]
       },
       "sequence": [
-        "enricher_1",
-        "transform_1",
-        "request_reply_1"
+        "salesforce_query_1",
+        "validate_fields_1",
+        "transform_data_1",
+        "sap_update_1"
       ],
       "transformations": [
         {
-          "name": "TransformSubscriptionToOpportunity.groovy",
+          "name": "TransformCustomerData.groovy",
           "type": "groovy",
-          "script": "import groovy.json.*\n\ndef jsonSlurper = new JsonSlurper()\ndef input = jsonSlurper.parseText(message.getBody(String.class))\n\n// Extract subscription data\ndef subscription = input.data.object\ndef customer = subscription.customer\ndef plan = subscription.plan\n\n// Format opportunity data\ndef opportunityName = \"Subscription: \" + (plan.nickname ?: plan.id) + \" - \" + customer\ndef closeDate = new Date().format(\"yyyy-MM-dd\")\ndef amount = (plan.amount / 100).toString()\n\n// Create Salesforce Opportunity XML\ndef opportunityXml = \"<Opportunity>\\n\"\nopportunityXml += \"  <Name>\" + opportunityName + \"</Name>\\n\"\nopportunityXml += \"  <Description>Stripe subscription created on \" + subscription.created + \"</Description>\\n\"\nopportunityXml += \"  <CloseDate>\" + closeDate + \"</CloseDate>\\n\"\nopportunityXml += \"  <Amount>\" + amount + \"</Amount>\\n\"\nopportunityXml += \"  <StageName>Closed Won</StageName>\\n\"\nopportunityXml += \"</Opportunity>\"\n\n// Set the transformed XML as the message body\nmessage.setBody(opportunityXml)\nreturn message"
+          "script": "import groovy.json.*\n\ndef inputBody = message.getBody(String.class)\ndef jsonSlurper = new JsonSlurper()\ndef accounts = jsonSlurper.parseText(inputBody).records\ndef customers = []\n\naccounts.each { account ->\n    def customer = [:]\n    \n    // Direct mapping\n    customer.CustomerNumber = account.Id\n    \n    // Name mapping with truncation\n    customer.CustomerName = account.Name.length() > 40 ? account.Name.substring(0, 40) : account.Name\n    \n    // Address concatenation\n    def address = [account.BillingStreet, account.BillingCity, account.BillingState, account.BillingPostalCode].findAll{it}.join(', ')\n    customer.Address = address\n    \n    // Phone formatting - remove special characters\n    customer.Telephone = account.Phone ? account.Phone.replaceAll('[^0-9]', '') : ''\n    \n    // Industry code mapping\n    def industryMap = [\n        'Technology': 'TECH',\n        'Healthcare': 'HLTH',\n        'Manufacturing': 'MANU',\n        'Financial Services': 'FINC'\n    ]\n    customer.IndustryCode = industryMap[account.Industry] ?: 'OTHR'\n    \n    // Credit limit calculation\n    def annualRevenue = account.AnnualRevenue ? account.AnnualRevenue : 0\n    def creditLimit = annualRevenue * 0.1\n    \n    // Apply min/max constraints\n    if (creditLimit < 1000) creditLimit = 1000\n    if (creditLimit > 1000000) creditLimit = 1000000\n    \n    customer.CreditLimit = creditLimit\n    \n    customers.add(customer)\n}\n\n// Convert to JSON\ndef jsonBuilder = new JsonBuilder(customers)\nreturn jsonBuilder.toString()"
+        },
+        {
+          "name": "RetryFailedRecords.groovy",
+          "type": "groovy",
+          "script": "import groovy.json.*\n\ndef retryCount = property.get(\"retryCount\") ?: 0\nretryCount = retryCount.toInteger() + 1\n\nif (retryCount <= 3) {\n    // Store retry count\n    property.set(\"retryCount\", retryCount.toString())\n    \n    // Wait for 5 minutes (300000 ms) before retry\n    Thread.sleep(300000)\n    \n    // Return original message for retry\n    return message\n} else {\n    // Max retries reached, prepare error message\n    def errorMsg = [\"status\": \"error\", \"message\": \"Maximum retry attempts reached\", \"details\": exception.getMessage()]\n    def jsonBuilder = new JsonBuilder(errorMsg)\n    \n    // Set error message for notification\n    property.set(\"errorMessage\", \"Maximum retry attempts (3) reached: \" + exception.getMessage())\n    \n    return jsonBuilder.toString()\n}"
         }
       ]
     }

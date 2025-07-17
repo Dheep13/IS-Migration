@@ -1,8 +1,8 @@
 # iFlow Generation Details
 
-## IFlow_d17b4066
+## BoomiFlow_70423bb8
 - **Generation Approach**: genai-enhanced
-- **Timestamp**: 2025-06-26T14:07:06.601025
+- **Timestamp**: 2025-07-17T18:46:32.910508
 - **Model**: N/A
 - **Reason**: Using GenAI for descriptions and enhancements
 

@@ -35,10 +35,13 @@ def enable_cors(app):
     def _add_cors_headers(response):
         # Get the origin from the request
         origin = request.headers.get('Origin')
+        print(f"DEBUG: Request origin: {origin}")
+        print(f"DEBUG: Request method: {request.method}")
 
         # Get allowed origins from environment variables or use defaults
         dev_frontend_url = os.environ.get('DEV_FRONTEND_URL', 'http://localhost:5173')
-        prod_frontend_url = os.environ.get('PROD_FRONTEND_URL', 'https://ifa-frontend.cfapps.us10-001.hana.ondemand.com')
+        dev_frontend_url_alt = 'http://localhost:3000'  # Alternative port for different dev setups
+        prod_frontend_url = os.environ.get('PROD_FRONTEND_URL', 'https://ifa-project.cfapps.eu10.hana.ondemand.com')
 
         # Check if CORS_ORIGIN is explicitly set
         if os.environ.get('CORS_ORIGIN'):
@@ -58,13 +61,16 @@ def enable_cors(app):
             # Make sure we still set the credentials header
             response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept, Origin'
             response.headers['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS'
-            response.headers['Access-Control-Allow-Credentials'] = os.environ.get('CORS_ALLOW_CREDENTIALS', 'true')
+            response.headers['Access-Control-Allow-Credentials'] = 'true'
             response.headers['Access-Control-Max-Age'] = '3600'  # Cache preflight response for 1 hour
             response.headers['Access-Control-Expose-Headers'] = 'Content-Disposition, Content-Length, Content-Type'
             return response
 
         # List of allowed origins
         allowed_origins = [
+            'http://localhost:5173',  # Vite dev server
+            'http://localhost:5174',  # Alternative Vite port
+            'http://localhost:3000',  # Alternative dev server
             dev_frontend_url,  # Local development
             prod_frontend_url  # Production frontend
         ]
@@ -79,23 +85,35 @@ def enable_cors(app):
         # Set the appropriate CORS header based on the request origin
         if origin in allowed_origins:
             response.headers['Access-Control-Allow-Origin'] = origin
+            print(f"DEBUG: Set origin to: {origin}")
         else:
-            # Check environment to determine default
-            env = os.environ.get('FLASK_ENV', 'development')
-            if env == 'production':
-                # Default to the production frontend if origin is not in the allowed list
-                response.headers['Access-Control-Allow-Origin'] = prod_frontend_url
+            # For development, allow localhost on any port
+            if origin and 'localhost' in origin:
+                response.headers['Access-Control-Allow-Origin'] = origin
+                print(f"DEBUG: Allowed localhost origin: {origin}")
             else:
-                # Default to the development frontend
-                response.headers['Access-Control-Allow-Origin'] = dev_frontend_url
+                # Check environment to determine default
+                env = os.environ.get('FLASK_ENV', 'development')
+                if env == 'production':
+                    # Default to the production frontend if origin is not in the allowed list
+                    response.headers['Access-Control-Allow-Origin'] = prod_frontend_url
+                else:
+                    # Default to the development frontend
+                    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:5173'
+                print(f"DEBUG: Used default origin")
 
+        # Always set these headers
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With, Accept, Origin'
         response.headers['Access-Control-Allow-Methods'] = 'GET, PUT, POST, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Credentials'] = os.environ.get('CORS_ALLOW_CREDENTIALS', 'true')
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
         response.headers['Access-Control-Max-Age'] = '3600'  # Cache preflight response for 1 hour
 
         # Add Content-Disposition to the exposed headers for file downloads
         response.headers['Access-Control-Expose-Headers'] = 'Content-Disposition, Content-Length, Content-Type'
+
+        print(f"DEBUG: Final CORS headers:")
+        print(f"  Access-Control-Allow-Origin: {response.headers.get('Access-Control-Allow-Origin')}")
+        print(f"  Access-Control-Allow-Credentials: {response.headers.get('Access-Control-Allow-Credentials')}")
 
         return response
 

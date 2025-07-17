@@ -22,6 +22,20 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react()],
+    build: {
+      rollupOptions: {
+        // Exclude platform-specific dependencies from build
+        external: ['@rollup/rollup-win32-x64-msvc'],
+        output: {
+          // Ensure consistent builds across platforms
+          manualChunks: undefined
+        }
+      },
+      // Optimize for production deployment
+      target: 'es2015',
+      minify: 'terser',
+      sourcemap: false
+    },
     resolve: {
         alias: {
             '@pages': path.join(__dirname, 'src/pages'),

@@ -39,6 +39,9 @@ class EnhancedGenAIIFlowGenerator:
         self.generation_approach = "unknown"
         self.generation_details = {}
 
+        # Job status tracking
+        self.jobs = {}
+
         # Initialize OpenAI if needed
         if provider == "openai" and api_key:
             try:
@@ -58,7 +61,7 @@ class EnhancedGenAIIFlowGenerator:
                 print("Anthropic package not found. Please install it with 'pip install anthropic'")
                 self.provider = "local"
 
-    def generate_iflow(self, markdown_content, output_path, iflow_name):
+    def generate_iflow(self, markdown_content, output_path, iflow_name, job_id=None):
         """
         Generate an iFlow from markdown content
 
@@ -66,20 +69,51 @@ class EnhancedGenAIIFlowGenerator:
             markdown_content (str): The markdown content to analyze
             output_path (str): Path to save the generated iFlow
             iflow_name (str): Name of the iFlow
+            job_id (str, optional): Job ID for progress tracking
 
         Returns:
             str: Path to the generated iFlow ZIP file
         """
+        self._update_job_status(job_id, "processing", "Starting iFlow generation...")
+
         # Step 1: Use GenAI to analyze the markdown and determine components
-        components = self._analyze_with_genai(markdown_content)
+        components = self._analyze_with_genai(markdown_content, job_id=job_id)
 
         # Step 2: Generate the iFlow files
+        self._update_job_status(job_id, "processing", "Generating iFlow XML and configuration files...")
         iflow_files = self._generate_iflow_files(components, iflow_name, markdown_content)
 
         # Step 3: Create the ZIP file
+        self._update_job_status(job_id, "processing", "Creating final iFlow package...")
         zip_path = self._create_zip_file(iflow_files, output_path, iflow_name)
 
+        self._update_job_status(job_id, "completed", f"iFlow generation completed: {iflow_name}")
         return zip_path
+
+    def _update_job_status(self, job_id, status, message):
+        """Update job status for progress tracking"""
+        if job_id:
+            try:
+                # Try to update the global jobs file
+                import json
+                import os
+                jobs_file = "jobs.json"
+                jobs = {}
+
+                if os.path.exists(jobs_file):
+                    with open(jobs_file, 'r') as f:
+                        jobs = json.load(f)
+
+                if job_id in jobs:
+                    jobs[job_id]['status'] = status
+                    jobs[job_id]['message'] = message
+
+                    with open(jobs_file, 'w') as f:
+                        json.dump(jobs, f, indent=2)
+
+                    print(f"📊 Job {job_id[:8]}: {status} - {message}")
+            except Exception as e:
+                print(f"Warning: Could not update job status: {e}")
 
     def generate_iflow_from_boomi_zip(self, boomi_zip_path, output_path, iflow_name):
         """
@@ -110,13 +144,17 @@ class EnhancedGenAIIFlowGenerator:
         # Step 2: Use the standard iFlow generation process
         return self.generate_iflow(markdown_content, output_path, iflow_name)
 
-    def _analyze_with_genai(self, markdown_content, max_retries=5):
+    def _analyze_with_genai(self, markdown_content, max_retries=5, job_id=None):
         """
         Use GenAI to analyze the markdown content and determine components, with validation and retry logic.
         """
+        self._update_job_status(job_id, "processing", "Analyzing integration requirements with AI...")
+
         prompt = self._create_detailed_analysis_prompt(markdown_content)
         attempt = 0
         while attempt < max_retries:
+            self._update_job_status(job_id, "processing", f"AI Analysis attempt {attempt + 1}/{max_retries}...")
+
             response = self._call_llm_api(prompt)
             os.makedirs("genai_debug", exist_ok=True)
             with open(f"genai_debug/raw_analysis_response_attempt{attempt+1}.txt", "w", encoding="utf-8") as f:
@@ -124,6 +162,7 @@ class EnhancedGenAIIFlowGenerator:
             print(f"Saved raw analysis response to genai_debug/raw_analysis_response_attempt{attempt+1}.txt")
             is_valid, message = self._validate_genai_response(response)
             if is_valid:
+                self._update_job_status(job_id, "processing", "AI analysis successful, parsing components...")
                 try:
                     components = self._parse_llm_response(response)
 
@@ -156,6 +195,7 @@ class EnhancedGenAIIFlowGenerator:
 
                 except Exception as e:
                     print(f"❌ Attempt {attempt+1} failed: Error parsing valid JSON: {e}")
+                    self._update_job_status(job_id, "processing", f"Parsing failed, retrying... ({attempt + 1}/{max_retries})")
                     attempt += 1
                     if attempt < max_retries:
                         print("Retrying with more explicit prompt...")

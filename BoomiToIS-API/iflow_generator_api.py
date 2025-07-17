@@ -62,7 +62,7 @@ class IFlowGeneratorAPI:
 
         logger.info(f"Initialized IFlowGeneratorAPI with {provider} provider and {model} model")
 
-    def generate_from_markdown(self, markdown_content, output_dir=None, iflow_name=None):
+    def generate_from_markdown(self, markdown_content, output_dir=None, iflow_name=None, job_id=None):
         """
         Generate an iFlow from markdown content
 
@@ -70,6 +70,7 @@ class IFlowGeneratorAPI:
             markdown_content (str): The markdown content to analyze
             output_dir (str, optional): Directory to save the generated iFlow. If None, uses a temporary directory.
             iflow_name (str, optional): Name of the iFlow. If None, generates a name based on UUID.
+            job_id (str, optional): Job ID for progress tracking
 
         Returns:
             dict: Dictionary with paths to generated files and other information
@@ -92,7 +93,7 @@ class IFlowGeneratorAPI:
 
             # Generate the iFlow
             logger.info(f"Generating iFlow '{iflow_name}' using {self.provider} provider")
-            zip_path = self.generator.generate_iflow(markdown_content, output_dir, iflow_name)
+            zip_path = self.generator.generate_iflow(markdown_content, output_dir, iflow_name, job_id)
 
             # Get debug files if they exist
             debug_files = {}
@@ -199,7 +200,7 @@ class IFlowGeneratorAPI:
             }
 
 # Function to generate iFlow from markdown content
-def generate_iflow_from_markdown(markdown_content, api_key, output_dir=None, iflow_name=None, model="claude-3-7-sonnet-20250219", provider="claude"):
+def generate_iflow_from_markdown(markdown_content, api_key, output_dir=None, iflow_name=None, model="claude-3-7-sonnet-20250219", provider="claude", job_id=None):
     """
     Generate an iFlow from markdown content
 
@@ -210,12 +211,13 @@ def generate_iflow_from_markdown(markdown_content, api_key, output_dir=None, ifl
         iflow_name (str, optional): Name of the iFlow. If None, generates a name based on UUID.
         model (str, optional): Model to use for the LLM service
         provider (str, optional): AI provider to use ('openai', 'claude', or 'local')
+        job_id (str, optional): Job ID for progress tracking
 
     Returns:
         dict: Dictionary with paths to generated files and other information
     """
     generator_api = IFlowGeneratorAPI(api_key=api_key, model=model, provider=provider)
-    return generator_api.generate_from_markdown(markdown_content, output_dir, iflow_name)
+    return generator_api.generate_from_markdown(markdown_content, output_dir, iflow_name, job_id)
 
 # Test function
 def test_generate_iflow():

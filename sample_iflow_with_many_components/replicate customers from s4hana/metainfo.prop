@@ -1,6 +1,0 @@
-#Store metainfo properties
-#Thu Jun 19 09:20:57 UTC 2025
-description=Replicate Customers from S4HANA to SAP SuccessFactors Incentive Management
-SAP-MarkedSAP2SAP=SAP_TO_SAP_INTEGRATION
-source=SAPS4HANA,SAPS4HANACloud
-target=SAPCommissions

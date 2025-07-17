@@ -13,6 +13,15 @@ import time
 from datetime import datetime
 import logging
 
+# Import document processor for direct documentation upload
+try:
+    from document_processor import DocumentProcessor
+    document_processor = DocumentProcessor()
+    print("Document processor initialized successfully")
+except Exception as e:
+    print(f"Warning: Document processor initialization failed: {str(e)}")
+    document_processor = None
+
 # Set up NLTK data
 try:
     import nltk_setup
@@ -485,6 +494,10 @@ def generate_boomi_iflow_metadata(job_id, documentation, processing_results):
         # BoomiToIS-API endpoint (use environment variable or fallback to localhost)
         boomi_api_url = os.getenv('BOOMI_API_URL', 'http://localhost:5003')
 
+        # Remove trailing /api if present to avoid double /api/api/
+        if boomi_api_url.endswith('/api'):
+            boomi_api_url = boomi_api_url[:-4]
+
         # Prepare the request data
         request_data = {
             "markdown": documentation,
@@ -895,6 +908,368 @@ def process_mulesoft_documentation(job_id, input_dir, enhance=False):
             'processing_message': f'Unexpected error: {str(e)}'
         })
 
+@app.route('/api/upload-documentation', methods=['POST'])
+def upload_documentation():
+    """Handle direct documentation upload for iFlow generation"""
+    try:
+        if not document_processor:
+            return jsonify({'error': 'Document processor not available'}), 500
+
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
+
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'No selected file'}), 400
+
+        # Generate job ID
+        job_id = str(uuid.uuid4())
+
+        # Get platform from request (default to 'mulesoft' for backward compatibility)
+        platform = request.form.get('platform', 'mulesoft')
+
+        # Get LLM provider from request (default to 'anthropic' for backward compatibility)
+        llm_provider = request.form.get('llm_provider', 'anthropic')
+
+        # Debug logging
+        print(f"DEBUG: Document upload - Platform: {platform}, LLM Provider: {llm_provider}")
+        logging.info(f"Document upload - Platform: {platform}, LLM Provider: {llm_provider}")
+
+        # Validate platform
+        if platform not in ['mulesoft', 'boomi']:
+            return jsonify({'error': 'Invalid platform. Must be "mulesoft" or "boomi"'}), 400
+
+        # Validate LLM provider
+        if llm_provider not in ['anthropic', 'gemma3']:
+            return jsonify({'error': 'Invalid LLM provider. Must be "anthropic" or "gemma3"'}), 400
+
+        # Save uploaded file
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], job_id, filename)
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        file.save(file_path)
+
+        # Process the document
+        processed_doc = document_processor.process_document(file_path, filename)
+
+        if not processed_doc['success']:
+            return jsonify({
+                'error': 'Failed to process document',
+                'details': processed_doc.get('error', 'Unknown error'),
+                'supported_formats': processed_doc.get('supported_formats', [])
+            }), 400
+
+        # Generate documentation JSON with LLM provider
+        doc_json_result = document_processor.generate_documentation_json(processed_doc, job_id, llm_provider)
+
+        if not doc_json_result['success']:
+            return jsonify({
+                'error': 'Failed to generate documentation JSON',
+                'details': doc_json_result.get('error', 'Unknown error')
+            }), 500
+
+        # Save documentation JSON to results folder
+        job_result_dir = os.path.join(app.config['RESULTS_FOLDER'], job_id)
+        os.makedirs(job_result_dir, exist_ok=True)
+
+        # Save the documentation JSON
+        doc_json_path = os.path.join(job_result_dir, 'documentation.json')
+        with open(doc_json_path, 'w', encoding='utf-8') as f:
+            json.dump(doc_json_result['documentation_json'], f, indent=2, ensure_ascii=False)
+
+        # Save the original documentation as markdown
+        doc_md_path = os.path.join(job_result_dir, 'uploaded_documentation.md')
+        with open(doc_md_path, 'w', encoding='utf-8') as f:
+            f.write(f"# Uploaded Documentation\n\n")
+            f.write(f"**Source File:** {filename}\n")
+            f.write(f"**Content Type:** {processed_doc['content_type']}\n")
+            f.write(f"**Word Count:** {processed_doc.get('word_count', 0)}\n")
+            f.write(f"**Character Count:** {processed_doc.get('char_count', 0)}\n\n")
+            f.write("## Content\n\n")
+            f.write(processed_doc['content'])
+
+        # Create job entry
+        job_data = {
+            'id': job_id,
+            'filename': filename,
+            'platform': platform,
+            'status': 'documentation_ready',
+            'processing_step': 'documentation_uploaded',
+            'processing_message': f'Documentation uploaded and processed successfully from {filename}',
+            'upload_time': datetime.now().isoformat(),
+            'source_type': 'uploaded_documentation',
+            'file_info': {
+                'original_filename': filename,
+                'content_type': processed_doc['content_type'],
+                'word_count': processed_doc.get('word_count', 0),
+                'char_count': processed_doc.get('char_count', 0),
+                'file_size': processed_doc.get('file_size', 0)
+            },
+            'files': {
+                'documentation_json': os.path.join('results', job_id, 'documentation.json'),
+                'markdown': os.path.join('results', job_id, 'uploaded_documentation.md'),
+                'uploaded_documentation': os.path.join('results', job_id, 'uploaded_documentation.md')
+            },
+            'ready_for_iflow_generation': True,
+            'image_count': processed_doc.get('image_count', 0),
+            'images_analyzed': processed_doc.get('images_analyzed', 0)
+        }
+
+        # Add format-specific info
+        if processed_doc.get('content_type') == 'pdf':
+            job_data['file_info']['page_count'] = processed_doc.get('page_count', 0)
+        elif processed_doc.get('content_type') == 'docx':
+            job_data['file_info']['paragraph_count'] = processed_doc.get('paragraph_count', 0)
+            job_data['file_info']['table_count'] = processed_doc.get('table_count', 0)
+            job_data['file_info']['image_count'] = processed_doc.get('image_count', 0)
+            job_data['file_info']['images_analyzed'] = processed_doc.get('images_analyzed', 0)
+
+        # Store job
+        jobs[job_id] = job_data
+        save_jobs(jobs)
+
+        return jsonify({
+            'message': 'Documentation uploaded and processed successfully',
+            'job_id': job_id,
+            'platform': platform,
+            'status': 'documentation_ready',
+            'file_info': job_data['file_info'],
+            'ready_for_iflow_generation': True,
+            'next_step': 'Generate iFlow using the /api/generate-iflow endpoint'
+        })
+
+    except Exception as e:
+        logging.error(f"Error in upload_documentation: {str(e)}")
+        return jsonify({'error': f'Upload failed: {str(e)}'}), 500
+
+@app.route('/api/generate-iflow-from-docs/<job_id>', methods=['POST'])
+def generate_iflow_from_docs(job_id):
+    """Generate iFlow directly from uploaded documentation"""
+    try:
+        if job_id not in jobs:
+            return jsonify({'error': 'Job not found'}), 404
+
+        job = jobs[job_id]
+
+        # Verify this is a documentation upload job
+        if job.get('source_type') != 'uploaded_documentation':
+            return jsonify({'error': 'This endpoint is only for jobs created from uploaded documentation'}), 400
+
+        # Verify job is ready for iFlow generation
+        if not job.get('ready_for_iflow_generation', False):
+            return jsonify({'error': 'Job is not ready for iFlow generation'}), 400
+
+        platform = job.get('platform', 'mulesoft')
+
+        # Get LLM provider from request body
+        request_data = request.get_json() or {}
+        llm_provider = request_data.get('llm_provider', 'anthropic')
+
+        print(f"DEBUG: Generating iFlow for platform: {platform}, LLM provider: {llm_provider}")
+
+        # Update job status
+        update_job(job_id, {
+            'status': 'generating_iflow',
+            'processing_step': 'iflow_generation',
+            'processing_message': f'Generating iFlow from uploaded documentation for {platform} platform...'
+        })
+
+        # Load the documentation JSON
+        doc_json_path = os.path.join(app.config['RESULTS_FOLDER'], job_id, 'documentation.json')
+        if not os.path.exists(doc_json_path):
+            return jsonify({'error': 'Documentation JSON not found'}), 404
+
+        with open(doc_json_path, 'r', encoding='utf-8') as f:
+            documentation_data = json.load(f)
+
+        # Route to appropriate API based on LLM provider and platform
+        if llm_provider == 'gemma3':
+            # Use Gemma-3 API for both platforms
+            gemma3_api_url = os.getenv('GEMMA3_API_URL', 'http://localhost:5002')
+
+            # Remove trailing /api if present
+            if gemma3_api_url.endswith('/api'):
+                gemma3_api_url = gemma3_api_url[:-4]
+
+            print(f"DEBUG: Using Gemma-3 API URL: {gemma3_api_url}")
+
+            request_data = {
+                "markdown": documentation_data['documentation'],
+                "iflow_name": f"GemmaFlow_{job_id[:8]}",
+                "platform": platform,
+                "job_id": job_id  # Pass the Main API job ID to Gemma-3 API
+            }
+
+            import requests
+            response = requests.post(
+                f"{gemma3_api_url}/api/generate-iflow",
+                json=request_data,
+                timeout=1200  # 20 minutes for Gemma-3
+            )
+
+            if response.status_code == 202:
+                # Get the Gemma-3 API job ID from response
+                api_response = response.json()
+                gemma3_job_id = api_response.get('job_id')
+
+                print(f"DEBUG: Gemma-3 API response: {api_response}")
+                print(f"DEBUG: Gemma-3 job ID: {gemma3_job_id}")
+
+                update_job(job_id, {
+                    'status': 'iflow_generation_started',
+                    'processing_message': f'iFlow generation started in Gemma-3 API for {platform} platform',
+                    'gemma3_job_id': gemma3_job_id,
+                    'llm_provider': llm_provider
+                })
+
+                print(f"DEBUG: Updated Main API job {job_id} with Gemma-3 job ID {gemma3_job_id}")
+
+                return jsonify({
+                    'message': 'iFlow generation started successfully with Gemma-3',
+                    'job_id': job_id,
+                    'platform': platform,
+                    'llm_provider': llm_provider,
+                    'status': 'iflow_generation_started',
+                    'gemma3_job_id': gemma3_job_id,
+                    'api_response': api_response
+                })
+            else:
+                error_msg = f"Gemma-3 API error: {response.status_code}"
+                try:
+                    error_details = response.json()
+                    error_msg += f" - {error_details.get('error', 'Unknown error')}"
+                except:
+                    error_msg += f" - {response.text}"
+
+                update_job(job_id, {
+                    'status': 'iflow_generation_failed',
+                    'processing_message': error_msg
+                })
+
+                return jsonify({'error': error_msg}), 500
+
+        # For Anthropic provider, use platform-specific APIs
+        elif platform == 'boomi':
+            # Call BoomiToIS-API
+            boomi_api_url = os.getenv('BOOMI_API_URL', 'http://localhost:5003')
+
+            # Remove trailing /api if present to avoid double /api/api/
+            if boomi_api_url.endswith('/api'):
+                boomi_api_url = boomi_api_url[:-4]
+
+            print(f"DEBUG: Using BoomiToIS API URL: {boomi_api_url}")
+
+            request_data = {
+                "markdown": documentation_data['documentation'],
+                "iflow_name": f"BoomiFlow_{job_id[:8]}",
+                "job_id": job_id,
+                "source_type": "uploaded_documentation"
+            }
+
+            import requests
+            response = requests.post(
+                f"{boomi_api_url}/api/generate-iflow/{job_id}",
+                json=request_data,
+                timeout=60
+            )
+
+            if response.status_code == 202:
+                # Get the BoomiToIS-API job ID from response
+                api_response = response.json()
+                boomi_job_id = api_response.get('job_id')
+
+                update_job(job_id, {
+                    'status': 'iflow_generation_started',
+                    'processing_message': 'iFlow generation started in BoomiToIS-API',
+                    'boomi_job_id': boomi_job_id  # Store the BoomiToIS-API job ID
+                })
+
+                return jsonify({
+                    'message': 'iFlow generation started successfully',
+                    'job_id': job_id,
+                    'platform': platform,
+                    'status': 'iflow_generation_started',
+                    'boomi_job_id': boomi_job_id,
+                    'api_response': api_response
+                })
+            else:
+                error_msg = f"BoomiToIS-API error: {response.status_code}"
+                try:
+                    error_details = response.json()
+                    error_msg += f" - {error_details.get('error', 'Unknown error')}"
+                except:
+                    error_msg += f" - {response.text}"
+
+                update_job(job_id, {
+                    'status': 'iflow_generation_failed',
+                    'processing_message': error_msg
+                })
+
+                return jsonify({'error': error_msg}), 500
+
+        elif platform == 'mulesoft':
+            # Call MuleToIS-API
+            mule_api_url = os.getenv('MULE_API_URL', 'http://localhost:5001')
+
+            # Remove trailing /api if present to avoid double /api/api/
+            if mule_api_url.endswith('/api'):
+                mule_api_url = mule_api_url[:-4]
+
+            print(f"DEBUG: Using MuleToIS API URL: {mule_api_url}")
+
+            request_data = {
+                "markdown": documentation_data['documentation'],
+                "iflow_name": f"MuleFlow_{job_id[:8]}",
+                "job_id": job_id,
+                "source_type": "uploaded_documentation"
+            }
+
+            import requests
+            response = requests.post(
+                f"{mule_api_url}/api/generate-iflow/{job_id}",
+                json=request_data,
+                timeout=60
+            )
+
+            if response.status_code == 202:
+                update_job(job_id, {
+                    'status': 'iflow_generation_started',
+                    'processing_message': 'iFlow generation started in MuleToIS-API'
+                })
+
+                return jsonify({
+                    'message': 'iFlow generation started successfully',
+                    'job_id': job_id,
+                    'platform': platform,
+                    'status': 'iflow_generation_started',
+                    'api_response': response.json()
+                })
+            else:
+                error_msg = f"MuleToIS-API error: {response.status_code}"
+                try:
+                    error_details = response.json()
+                    error_msg += f" - {error_details.get('error', 'Unknown error')}"
+                except:
+                    error_msg += f" - {response.text}"
+
+                update_job(job_id, {
+                    'status': 'iflow_generation_failed',
+                    'processing_message': error_msg
+                })
+
+                return jsonify({'error': error_msg}), 500
+
+        else:
+            return jsonify({'error': f'Unsupported platform: {platform}'}), 400
+
+    except Exception as e:
+        logging.error(f"Error in generate_iflow_from_docs: {str(e)}")
+        update_job(job_id, {
+            'status': 'iflow_generation_failed',
+            'processing_message': f'iFlow generation failed: {str(e)}'
+        })
+        return jsonify({'error': f'iFlow generation failed: {str(e)}'}), 500
+
 @app.route('/api/generate-docs', methods=['POST'])
 def generate_docs():
     # Check if files were uploaded
@@ -1026,7 +1401,169 @@ def get_job_status(job_id):
         return jsonify({'error': 'Job not found'}), 404
 
     job = jobs[job_id]
+
+    # If job has a BoomiToIS-API job ID and is in progress, check the BoomiToIS-API status
+    if (job.get('boomi_job_id') and
+        job.get('status') in ['iflow_generation_started', 'generating_iflow', 'documentation_ready']):
+
+        try:
+            import requests
+            boomi_api_url = os.getenv('BOOMI_API_URL', 'http://localhost:5003')
+            boomi_job_id = job['boomi_job_id']
+
+            # Check BoomiToIS-API job status
+            response = requests.get(f"{boomi_api_url}/api/jobs/{boomi_job_id}", timeout=60)
+
+            if response.status_code == 200:
+                boomi_job = response.json()
+                boomi_status = boomi_job.get('status')
+
+                print(f"📦 BoomiToIS-API job {boomi_job_id} status: {boomi_status}")
+                print(f"📦 FULL BoomiToIS-API RESPONSE: {boomi_job}")
+
+                # Update Main API job status based on BoomiToIS-API status
+                if boomi_status == 'completed':
+                    # Prepare update data
+                    update_data = {
+                        'status': 'completed',
+                        'processing_message': 'iFlow generation completed successfully',
+                        'boomi_job_data': boomi_job
+                    }
+
+                    # Sync deployment information from BoomiToIS-API
+                    if 'deployment_status' in boomi_job:
+                        print(f"📦 SYNCING DEPLOYMENT STATUS: {boomi_job['deployment_status']}")
+                        update_data['deployment_status'] = boomi_job['deployment_status']
+                        update_data['deployment_message'] = boomi_job.get('deployment_message', '')
+
+                        if 'deployment_details' in boomi_job:
+                            print(f"📦 SYNCING DEPLOYMENT DETAILS: {boomi_job['deployment_details']}")
+                            update_data['deployment_details'] = boomi_job['deployment_details']
+
+                            # Extract key deployment info for easy access
+                            deployment_details = boomi_job['deployment_details']
+                            if 'iflow_name' in deployment_details:
+                                update_data['deployed_iflow_name'] = deployment_details['iflow_name']
+                                print(f"📦 DEPLOYED IFLOW NAME: {deployment_details['iflow_name']}")
+                            if 'package_id' in deployment_details:
+                                update_data['deployed_package_id'] = deployment_details['package_id']
+                    else:
+                        print(f"📦 NO DEPLOYMENT STATUS in BoomiToIS job: {list(boomi_job.keys())}")
+
+                    update_job(job_id, update_data)
+                    job = jobs[job_id]  # Get updated job
+                elif boomi_status == 'failed':
+                    update_job(job_id, {
+                        'status': 'failed',
+                        'processing_message': 'iFlow generation failed',
+                        'boomi_job_data': boomi_job
+                    })
+                    job = jobs[job_id]  # Get updated job
+                elif boomi_status in ['processing', 'queued']:
+                    update_job(job_id, {
+                        'status': 'generating_iflow',
+                        'processing_message': f'iFlow generation in progress: {boomi_job.get("message", "Processing...")}'
+                    })
+                    job = jobs[job_id]  # Get updated job
+
+        except Exception as e:
+            logging.warning(f"Failed to check BoomiToIS-API status for job {job_id}: {str(e)}")
+            # Continue with existing job status if API check fails
+
     return jsonify(job), 200
+
+@app.route('/api/jobs/<job_id>/update-deployment-status', methods=['POST'])
+def update_deployment_status(job_id):
+    """Update job with deployment status information"""
+    if job_id not in jobs:
+        return jsonify({'error': 'Job not found'}), 404
+
+    try:
+        data = request.get_json()
+        deployment_status = data.get('deployment_status')
+        deployment_message = data.get('deployment_message', '')
+        deployment_details = data.get('deployment_details', {})
+
+        print(f"📦 UPDATING MAIN API JOB {job_id} with deployment status: {deployment_status}")
+
+        # Update job with deployment information
+        update_data = {
+            'deployment_status': deployment_status,
+            'deployment_message': deployment_message,
+            'deployment_details': deployment_details
+        }
+
+        # Extract key deployment info for easy access
+        if 'iflow_name' in deployment_details:
+            update_data['deployed_iflow_name'] = deployment_details['iflow_name']
+        if 'package_id' in deployment_details:
+            update_data['deployed_package_id'] = deployment_details['package_id']
+
+        update_job(job_id, update_data)
+
+        print(f"📦 MAIN API JOB {job_id} updated with deployment info: {update_data}")
+
+        return jsonify({
+            'status': 'success',
+            'message': 'Deployment status updated successfully'
+        })
+
+    except Exception as e:
+        print(f"❌ Error updating deployment status for job {job_id}: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/jobs/<job_id>/download', methods=['GET'])
+def download_iflow(job_id):
+    """Download the generated iFlow ZIP file"""
+    if job_id not in jobs:
+        return jsonify({'error': 'Job not found'}), 404
+
+    job = jobs[job_id]
+
+    # Check if job is completed and has BoomiToIS-API job data
+    if job.get('status') != 'completed':
+        return jsonify({'error': 'Job not completed yet'}), 400
+
+    if not job.get('boomi_job_id'):
+        return jsonify({'error': 'No BoomiToIS-API job ID found'}), 400
+
+    try:
+        import requests
+        from flask import send_file
+        import tempfile
+        import os
+
+        boomi_api_url = os.getenv('BOOMI_API_URL', 'http://localhost:5003')
+        boomi_job_id = job['boomi_job_id']
+
+        # Download from BoomiToIS-API
+        response = requests.get(f"{boomi_api_url}/api/jobs/{boomi_job_id}/download", timeout=30)
+
+        if response.status_code == 200:
+            # Create a temporary file to store the downloaded content
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.zip')
+            temp_file.write(response.content)
+            temp_file.close()
+
+            # Get filename from BoomiToIS-API response headers or use default
+            filename = response.headers.get('Content-Disposition', 'attachment; filename="iflow.zip"')
+            if 'filename=' in filename:
+                filename = filename.split('filename=')[1].strip('"')
+            else:
+                filename = f"iflow_{job_id[:8]}.zip"
+
+            return send_file(
+                temp_file.name,
+                as_attachment=True,
+                download_name=filename,
+                mimetype='application/zip'
+            )
+        else:
+            return jsonify({'error': f'Failed to download from BoomiToIS-API: {response.status_code}'}), 500
+
+    except Exception as e:
+        logging.error(f"Error downloading iFlow for job {job_id}: {str(e)}")
+        return jsonify({'error': f'Download failed: {str(e)}'}), 500
 
 @app.route('/api/jobs', methods=['GET'])
 def list_jobs():
@@ -1049,9 +1586,46 @@ def get_documentation(job_id, file_type):
 
     job = jobs[job_id]
 
-    if job['status'] != 'completed':
+    if job['status'] not in ['completed', 'documentation_ready']:
         return jsonify({'error': 'Documentation not ready', 'status': job['status']}), 404
 
+    # Handle special file types for uploaded documentation
+    if file_type == 'documentation_json':
+        file_path = os.path.join(app.config['RESULTS_FOLDER'], job_id, 'documentation.json')
+        if os.path.exists(file_path):
+            return send_file(file_path, mimetype='application/json')
+        else:
+            return jsonify({'error': 'Documentation JSON not found'}), 404
+
+    elif file_type == 'uploaded_documentation':
+        file_path = os.path.join(app.config['RESULTS_FOLDER'], job_id, 'uploaded_documentation.md')
+        if os.path.exists(file_path):
+            return send_file(file_path, mimetype='text/markdown')
+        else:
+            return jsonify({'error': 'Uploaded documentation not found'}), 404
+
+    elif file_type == 'markdown':
+        # For uploaded documentation, serve the AI-enhanced markdown from documentation.json
+        if job.get('source_type') == 'uploaded_documentation':
+            doc_json_path = os.path.join(app.config['RESULTS_FOLDER'], job_id, 'documentation.json')
+            if os.path.exists(doc_json_path):
+                try:
+                    with open(doc_json_path, 'r', encoding='utf-8') as f:
+                        doc_data = json.load(f)
+
+                    # Create a temporary markdown file with the AI-enhanced content
+                    temp_md_path = os.path.join(app.config['RESULTS_FOLDER'], job_id, 'ai_enhanced_documentation.md')
+                    with open(temp_md_path, 'w', encoding='utf-8') as f:
+                        f.write(doc_data.get('documentation', '# No documentation available'))
+
+                    return send_file(temp_md_path, mimetype='text/markdown')
+                except Exception as e:
+                    logging.error(f"Error serving AI-enhanced markdown: {str(e)}")
+                    return jsonify({'error': 'Error reading documentation'}), 500
+            else:
+                return jsonify({'error': 'Documentation not found'}), 404
+
+    # Handle regular file types
     if 'files' not in job or file_type not in job['files']:
         return jsonify({'error': 'Requested file not available'}), 404
 
@@ -1152,7 +1726,7 @@ def generate_similarity_report(job_id):
 
     job = jobs[job_id]
 
-    if job['status'] != 'completed':
+    if job['status'] not in ['completed', 'documentation_ready']:
         return jsonify({'error': 'Documentation not ready, cannot generate similarity report', 'status': job['status']}), 404
 
     if 'files' not in job or 'markdown' not in job['files']:
@@ -1236,9 +1810,9 @@ def generate_iflow_match(job_id):
         if job_id not in jobs:
             return jsonify({'error': 'Job not found'}), 404
 
-        # Check if job is completed
+        # Check if job is completed or documentation is ready
         job = jobs[job_id]
-        if job['status'] != 'completed':
+        if job['status'] not in ['completed', 'documentation_ready']:
             return jsonify({'error': 'Documentation not ready', 'status': job['status']}), 400
 
         # Check if markdown file exists

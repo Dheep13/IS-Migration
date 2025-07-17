@@ -1,0 +1,132 @@
+# Boomi Integration Documentation - Customer Data Sync
+
+## Overview
+This integration synchronizes customer data between Salesforce CRM and SAP ERP system on a daily basis.
+
+## Integration Flow
+
+### Source System: Salesforce
+- **System**: Salesforce CRM
+- **Object**: Account
+- **Fields**: 
+  - Account ID
+  - Account Name
+  - Billing Address
+  - Phone
+  - Industry
+  - Annual Revenue
+  - Created Date
+  - Last Modified Date
+
+### Target System: SAP ERP
+- **System**: SAP ERP
+- **Module**: Customer Master (BP)
+- **Transaction**: BP01/BP02
+- **Fields**:
+  - Customer Number
+  - Customer Name
+  - Address
+  - Telephone
+  - Industry Code
+  - Credit Limit
+
+## Data Transformation Rules
+
+### Field Mapping
+1. **Account ID** → **Customer Number**
+   - Direct mapping
+   - Format: 18-character Salesforce ID
+
+2. **Account Name** → **Customer Name**
+   - Direct mapping
+   - Max length: 40 characters
+   - Truncate if longer
+
+3. **Billing Address** → **Address**
+   - Concatenate Street, City, State, Postal Code
+   - Format: Street, City, State ZIP
+
+4. **Phone** → **Telephone**
+   - Remove special characters
+   - Format: Numbers only
+
+5. **Industry** → **Industry Code**
+   - Lookup transformation:
+     - Technology → TECH
+     - Healthcare → HLTH
+     - Manufacturing → MANU
+     - Financial Services → FINC
+     - Other → OTHR
+
+6. **Annual Revenue** → **Credit Limit**
+   - Business rule: Credit Limit = Annual Revenue * 0.1
+   - Minimum: $1,000
+   - Maximum: $1,000,000
+
+## Process Flow
+
+### Step 1: Data Extraction
+- Connect to Salesforce using REST API
+- Query: SELECT Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, Phone, Industry, AnnualRevenue, CreatedDate, LastModifiedDate FROM Account WHERE LastModifiedDate >= YESTERDAY
+- Authentication: OAuth 2.0
+
+### Step 2: Data Validation
+- Check required fields (Account ID, Account Name)
+- Validate data formats
+- Log validation errors
+
+### Step 3: Data Transformation
+- Apply field mappings
+- Execute business rules
+- Handle data type conversions
+
+### Step 4: Data Loading
+- Connect to SAP ERP using RFC
+- Create/Update customer records
+- Handle duplicate records
+- Log processing results
+
+### Step 5: Error Handling
+- Retry failed records (max 3 attempts)
+- Send error notifications to admin
+- Archive failed records for manual review
+
+## Schedule
+- **Frequency**: Daily
+- **Time**: 2:00 AM EST
+- **Duration**: Approximately 30 minutes
+- **Volume**: ~500 records per day
+
+## Error Handling
+- Connection timeouts: Retry after 5 minutes
+- Data validation errors: Log and continue
+- System unavailable: Send alert and retry in 1 hour
+- Duplicate records: Update existing record
+
+## Monitoring
+- Success/failure notifications via email
+- Daily processing summary report
+- Exception dashboard in Boomi AtomSphere
+
+## Security
+- Salesforce: OAuth 2.0 with refresh tokens
+- SAP: RFC user with limited permissions
+- Data encryption in transit (TLS 1.2)
+- No sensitive data stored in process
+
+## Dependencies
+- Salesforce API availability
+- SAP ERP system availability
+- Network connectivity
+- Boomi Atom runtime
+
+## Contact Information
+- **Business Owner**: John Smith (john.smith@company.com)
+- **Technical Lead**: Jane Doe (jane.doe@company.com)
+- **Support Team**: integration-support@company.com
+
+## Change History
+- v1.0 - Initial implementation
+- v1.1 - Added industry code mapping
+- v1.2 - Enhanced error handling
+- v1.3 - Added credit limit calculation
