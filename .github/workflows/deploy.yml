@@ -50,13 +50,14 @@ jobs:
         cd IFA-Project/frontend
         rm -rf node_modules package-lock.json
         npm cache clean --force
-        npm install --omit=optional --no-optional
-        npm install @rollup/rollup-linux-x64-gnu --save-optional || echo "Optional rollup dependency failed, continuing..."
+        npm install
+        # Ensure terser is installed for production builds
+        npm install terser --save-dev
 
     - name: Build Frontend
       run: |
         cd IFA-Project/frontend
-        npm run build || (echo "Build failed, trying with fallback..." && npm install rollup@latest && npm run build)
+        NODE_ENV=production npm run build
     
     - name: Run Python tests
       run: |
@@ -109,7 +110,9 @@ jobs:
         cd IFA-Project/frontend
         rm -f package-lock.json
         npm install
-        npm run build
+        # Ensure terser is installed for production builds
+        npm install terser --save-dev
+        NODE_ENV=production npm run build
     
     - name: Deploy Applications
       run: |
