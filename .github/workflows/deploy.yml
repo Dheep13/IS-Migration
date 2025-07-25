@@ -118,16 +118,16 @@ jobs:
       run: |
         if [ "${{ github.event.inputs.deploy_target }}" = "" ] || [ "${{ github.event.inputs.deploy_target }}" = "all" ]; then
           echo "Deploying all applications..."
-          python deployment/deploy.py deploy-all
+          python ci-cd-deployment/deploy.py deploy-all
         else
           echo "Deploying ${{ github.event.inputs.deploy_target }}..."
-          python deployment/deploy.py deploy --app ${{ github.event.inputs.deploy_target }}
+          python ci-cd-deployment/deploy.py deploy --app ${{ github.event.inputs.deploy_target }}
         fi
-    
+
     - name: Verify Deployment
       run: |
         echo "Verifying deployment..."
-        python deployment/deploy.py status
+        python ci-cd-deployment/deploy.py status
         
         echo "Testing API health endpoints..."
         curl -f https://it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com/api/health || exit 1
