@@ -18071,5 +18071,152 @@
     },
     "deployed_iflow_name": "Integration_70423bb8",
     "deployed_package_id": "ConversionPackages"
+  },
+  "2cd712a3-0b69-4e61-9643-0d7c754fa847": {
+    "id": "2cd712a3-0b69-4e61-9643-0d7c754fa847",
+    "status": "failed",
+    "created": "2025-07-25T12:42:29.595282",
+    "last_updated": "2025-07-25T12:42:31.565134",
+    "enhance": true,
+    "platform": "mulesoft",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\2cd712a3-0b69-4e61-9643-0d7c754fa847\\extracted",
+    "zip_file": true,
+    "file_info": {
+      "total_files": 3,
+      "xml_files": 3,
+      "properties_files": 0,
+      "json_files": 0,
+      "yaml_files": 0,
+      "raml_files": 0,
+      "dwl_files": 0,
+      "other_files": 0
+    },
+    "processing_step": "mule_parsing",
+    "processing_message": "MuleSoft parsing complete, generating documentation...",
+    "parsed_details": {
+      "flows": 0,
+      "subflows": 0,
+      "configs": 0,
+      "error_handlers": 0
+    },
+    "error": "No valid MuleSoft components found in the uploaded files"
+  },
+  "3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4": {
+    "id": "3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4",
+    "status": "completed",
+    "created": "2025-07-25T12:43:13.488403",
+    "last_updated": "2025-07-25T12:44:18.731529",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 0,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\boomi_documentation.md",
+      "html": "results\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Implement Guide SAP SuccessFactors to SFTP.xml",
+          "component": {
+            "id": null,
+            "name": null,
+            "type": null,
+            "version": null,
+            "created_by": null,
+            "created_date": null,
+            "modified_by": null,
+            "modified_date": null,
+            "folder_path": null,
+            "description": "\n        Connect SAP SuccessFactors to SFTP with Error Handling is a robust integration solution within the Boomi platform, focusing on integrating data from SuccessFactors to an SFTP server while incorporating comprehensive error handling. Enhance your business operations by ensuring the accurate and timely transfer of employee data with efficient error notifications.\n    "
+          },
+          "process": {
+            "allow_simultaneous": null,
+            "enable_user_log": null,
+            "process_log_on_error_only": null,
+            "workload": null,
+            "shapes": [],
+            "connections": []
+          },
+          "integration_patterns": []
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Kafka Connection.xml",
+          "component": {
+            "id": "3a314f53-92c3-4a55-8dcf-6c3ad766acb4",
+            "name": "Canonical To Kafka Avro",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "Saravanan@itresonance.com",
+            "created_date": "2025-06-17T12:54:55Z",
+            "modified_by": "Saravanan@itresonance.com",
+            "modified_date": "2025-06-17T12:54:55Z",
+            "folder_path": "ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08",
+            "description": ""
+          },
+          "map": {
+            "from_profile": "a0733742-31f8-4c23-a8a4-08382ffb75ce",
+            "to_profile": "d93e0b39-c94d-4947-9b49-5d9939473947",
+            "mappings": [
+              {
+                "from_key": "9",
+                "from_type": "profile",
+                "to_key": "144",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/accountID/Object/username",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "91",
+                "from_type": "profile",
+                "to_key": "160",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactID",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "111",
+                "from_type": "profile",
+                "to_key": "174",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactPointList/Array/ArrayElement1/Object/contactPoint/Array/ArrayElement1/Object/type",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "118",
+                "from_type": "profile",
+                "to_key": "150",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/batchProcessingOption/Array/ArrayElement1/Object/name",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [],
+      "errors": []
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\iflow_match\\integration_match_report.html",
+      "summary": "results\\3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 28 potential matches"
+    }
   }
 }

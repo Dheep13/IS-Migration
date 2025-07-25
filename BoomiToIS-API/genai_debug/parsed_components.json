@@ -1,43 +1,44 @@
 {
-  "process_name": "Customer Data Sync",
-  "description": "Synchronizes customer data between Salesforce CRM and SAP ERP system on a daily basis",
+  "process_name": "SuccessFactors to SFTP Integration with Error Handling",
+  "description": "This integration facilitates the secure transfer of employee data from SAP SuccessFactors to an SFTP server with comprehensive error handling capabilities.",
   "endpoints": [
     {
       "method": "GET",
-      "path": "/salesforce/accounts",
-      "purpose": "Extract Salesforce Account data and sync to SAP ERP Customer Master",
+      "path": "/employee-data",
+      "purpose": "Retrieves employee data from SuccessFactors, transforms it, and uploads to SFTP",
       "components": [
         {
           "type": "request_reply",
-          "name": "Salesforce_Account_Query",
-          "id": "salesforce_query_1",
+          "name": "Get_SuccessFactors_Employee_Data",
+          "id": "successfactors_connector",
           "config": {
-            "endpoint_path": "/services/data/v52.0/query",
-            "content": "SELECT Id, Name, BillingStreet, BillingCity, BillingState, BillingPostalCode, Phone, Industry, AnnualRevenue, CreatedDate, LastModifiedDate FROM Account WHERE LastModifiedDate >= YESTERDAY"
-          }
-        },
-        {
-          "type": "enricher",
-          "name": "Validate_Required_Fields",
-          "id": "validate_fields_1",
-          "config": {
-            "content": "// Check for required fields\n${property.set(\"hasRequiredFields\", (message.getBody(java.lang.String) contains \"Id\" && message.getBody(java.lang.String) contains \"Name\"))}"
+            "endpoint_path": "/odata/v2/User",
+            "address": "https://api.successfactors.com"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Transform_Customer_Data",
-          "id": "transform_data_1",
+          "name": "Transform_Canonical_To_Kafka_Avro",
+          "id": "canonical_to_kafka_transform",
           "config": {
-            "script": "TransformCustomerData.groovy"
+            "script": "TransformCanonicalToKafkaAvro.groovy"
           }
         },
         {
           "type": "request_reply",
-          "name": "SAP_ERP_Customer_Update",
-          "id": "sap_update_1",
+          "name": "Upload_To_SFTP",
+          "id": "sftp_connector",
           "config": {
-            "endpoint_path": "/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner"
+            "endpoint_path": "/employee-data/${date:now:yyyyMMdd}_employee_data.json",
+            "address": "sftp://sftp.example.com"
+          }
+        },
+        {
+          "type": "enricher",
+          "name": "Prepare_Success_Message",
+          "id": "success_message_enricher",
+          "config": {
+            "content": "{\"status\": \"success\", \"message\": \"Employee data successfully transferred to SFTP\", \"timestamp\": \"${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}\"}"
           }
         }
       ],
@@ -46,73 +47,35 @@
           {
             "type": "enricher",
             "name": "Prepare_Error_Message",
-            "id": "error_message_1",
-            "trigger": "validation_error",
+            "id": "error_message_enricher",
+            "trigger": "any_error",
             "config": {
-              "content": "${property.set(\"errorMessage\", \"Validation error occurred: \" + exception.getMessage())}"
-            }
-          },
-          {
-            "type": "groovy_script",
-            "name": "Retry_Logic",
-            "id": "retry_script_1",
-            "trigger": "connection_error",
-            "config": {
-              "script": "RetryFailedRecords.groovy"
+              "content": "{\"status\": \"error\", \"message\": \"${exception.message}\", \"timestamp\": \"${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}\"}"
             }
           },
           {
             "type": "request_reply",
             "name": "Send_Error_Notification",
-            "id": "error_notification_1",
+            "id": "error_notification_sender",
             "trigger": "any_error",
             "config": {
-              "endpoint_path": "/notification/email"
+              "endpoint_path": "/api/notifications/email",
+              "address": "https://notification-service.example.com"
             }
           }
         ]
       },
-      "branching": {
-        "type": "exclusive",
-        "branches": [
-          {
-            "condition": "${property.get(\"hasRequiredFields\") == true}",
-            "components": [
-              "transform_data_1",
-              "sap_update_1"
-            ],
-            "sequence": [
-              "transform_data_1",
-              "sap_update_1"
-            ]
-          },
-          {
-            "condition": "${property.get(\"hasRequiredFields\") == false}",
-            "components": [
-              "error_message_1"
-            ],
-            "sequence": [
-              "error_message_1"
-            ]
-          }
-        ]
-      },
       "sequence": [
-        "salesforce_query_1",
-        "validate_fields_1",
-        "transform_data_1",
-        "sap_update_1"
+        "successfactors_connector",
+        "canonical_to_kafka_transform",
+        "sftp_connector",
+        "success_message_enricher"
       ],
       "transformations": [
         {
-          "name": "TransformCustomerData.groovy",
+          "name": "TransformCanonicalToKafkaAvro.groovy",
           "type": "groovy",
-          "script": "import groovy.json.*\n\ndef inputBody = message.getBody(String.class)\ndef jsonSlurper = new JsonSlurper()\ndef accounts = jsonSlurper.parseText(inputBody).records\ndef customers = []\n\naccounts.each { account ->\n    def customer = [:]\n    \n    // Direct mapping\n    customer.CustomerNumber = account.Id\n    \n    // Name mapping with truncation\n    customer.CustomerName = account.Name.length() > 40 ? account.Name.substring(0, 40) : account.Name\n    \n    // Address concatenation\n    def address = [account.BillingStreet, account.BillingCity, account.BillingState, account.BillingPostalCode].findAll{it}.join(', ')\n    customer.Address = address\n    \n    // Phone formatting - remove special characters\n    customer.Telephone = account.Phone ? account.Phone.replaceAll('[^0-9]', '') : ''\n    \n    // Industry code mapping\n    def industryMap = [\n        'Technology': 'TECH',\n        'Healthcare': 'HLTH',\n        'Manufacturing': 'MANU',\n        'Financial Services': 'FINC'\n    ]\n    customer.IndustryCode = industryMap[account.Industry] ?: 'OTHR'\n    \n    // Credit limit calculation\n    def annualRevenue = account.AnnualRevenue ? account.AnnualRevenue : 0\n    def creditLimit = annualRevenue * 0.1\n    \n    // Apply min/max constraints\n    if (creditLimit < 1000) creditLimit = 1000\n    if (creditLimit > 1000000) creditLimit = 1000000\n    \n    customer.CreditLimit = creditLimit\n    \n    customers.add(customer)\n}\n\n// Convert to JSON\ndef jsonBuilder = new JsonBuilder(customers)\nreturn jsonBuilder.toString()"
-        },
-        {
-          "name": "RetryFailedRecords.groovy",
-          "type": "groovy",
-          "script": "import groovy.json.*\n\ndef retryCount = property.get(\"retryCount\") ?: 0\nretryCount = retryCount.toInteger() + 1\n\nif (retryCount <= 3) {\n    // Store retry count\n    property.set(\"retryCount\", retryCount.toString())\n    \n    // Wait for 5 minutes (300000 ms) before retry\n    Thread.sleep(300000)\n    \n    // Return original message for retry\n    return message\n} else {\n    // Max retries reached, prepare error message\n    def errorMsg = [\"status\": \"error\", \"message\": \"Maximum retry attempts reached\", \"details\": exception.getMessage()]\n    def jsonBuilder = new JsonBuilder(errorMsg)\n    \n    // Set error message for notification\n    property.set(\"errorMessage\", \"Maximum retry attempts (3) reached: \" + exception.getMessage())\n    \n    return jsonBuilder.toString()\n}"
+          "script": "import groovy.json.*\n\ndef inputMessage = message.getBody(String.class)\ndef jsonSlurper = new JsonSlurper()\ndef data = jsonSlurper.parseText(inputMessage)\n\ndef result = [\n    \"Object\": [\n        \"batchProcessingDirectives\": [\n            \"Object\": [\n                \"accountID\": [\n                    \"Object\": [\n                        \"username\": data[9]\n                    ]\n                ],\n                \"batchProcessingOption\": [\n                    \"Array\": [\n                        \"ArrayElement1\": [\n                            \"Object\": [\n                                \"name\": data[118]\n                            ]\n                        ]\n                    ]\n                ]\n            ]\n        ],\n        \"batchContactList\": [\n            \"Array\": [\n                \"ArrayElement1\": [\n                    \"Object\": [\n                        \"contact\": [\n                            \"Array\": [\n                                \"ArrayElement1\": [\n                                    \"Object\": [\n                                        \"contactID\": data[91],\n                                        \"contactPointList\": [\n                                            \"Array\": [\n                                                \"ArrayElement1\": [\n                                                    \"Object\": [\n                                                        \"contactPoint\": [\n                                                            \"Array\": [\n                                                                \"ArrayElement1\": [\n                                                                    \"Object\": [\n                                                                        \"type\": data[111]\n                                                                    ]\n                                                                ]\n                                                            ]\n                                                        ]\n                                                    ]\n                                                ]\n                                            ]\n                                        ]\n                                    ]\n                                ]\n                            ]\n                        ]\n                    ]\n                ]\n            ]\n        ]\n    ]\n]\n\nmessage.setBody(JsonOutput.toJson(result))"
         }
       ]
     }

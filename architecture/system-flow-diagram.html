@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BoomiToIS System Architecture & Flow</title>
+    
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    
+    <!-- GitHub-style CSS for markdown appearance -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background-color: #ffffff;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: 10px;
+            font-size: 2em;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        
+        h2 {
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: 8px;
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        
+        h3 {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        
+        h4 {
+            font-size: 1em;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+        
+        p {
+            margin-bottom: 16px;
+        }
+        
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 2em;
+        }
+        
+        li {
+            margin-bottom: 4px;
+        }
+        
+        strong {
+            font-weight: 600;
+        }
+        
+        code {
+            background-color: rgba(175, 184, 193, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 85%;
+        }
+        
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            padding: 16px;
+            overflow: auto;
+            margin-bottom: 16px;
+        }
+        
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+        
+        th, td {
+            border: 1px solid #d1d9e0;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+        
+        .mermaid {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .emoji {
+            font-style: normal;
+        }
+        
+        /* Custom styling for better readability */
+        .highlight-box {
+            background-color: #f6f8fa;
+            border-left: 4px solid #0969da;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning-box {
+            background-color: #fff8c5;
+            border-left: 4px solid #d1242f;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .success-box {
+            background-color: #dafbe1;
+            border-left: 4px solid #1a7f37;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        hr {
+            border: none;
+            border-top: 1px solid #d1d9e0;
+            margin: 24px 0;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .mermaid {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>BoomiToIS System Architecture & Flow</h1>
+
+    <h2><span class="emoji">🎯</span> <strong>Project Objective</strong></h2>
+
+    <p>The <strong>BoomiToIS Integration Platform</strong> is an AI-powered system designed to automate the migration of integration flows from <strong>Dell Boomi</strong> and <strong>MuleSoft</strong> platforms to <strong>SAP Integration Suite</strong>. This addresses the critical business need for organizations transitioning their integration architecture to SAP's cloud-native integration platform.</p>
+
+    <h3><strong>Business Challenge</strong></h3>
+    <ul>
+        <li><strong>Manual Migration Complexity</strong>: Converting integration flows between platforms requires deep technical expertise and significant time investment</li>
+        <li><strong>Platform Differences</strong>: Each integration platform has unique components, configurations, and architectural patterns</li>
+        <li><strong>Resource Constraints</strong>: Limited availability of experts familiar with both source and target platforms</li>
+        <li><strong>Migration Risk</strong>: Manual conversion introduces potential for errors and incomplete implementations</li>
+    </ul>
+
+    <h3><strong>Solution Approach</strong></h3>
+    <p>Our platform leverages <strong>Generative AI</strong> and <strong>intelligent template systems</strong> to automate the conversion process:</p>
+
+    <ol>
+        <li><strong><span class="emoji">📄</span> Document Analysis</strong>: AI-powered extraction and enhancement of integration documentation</li>
+        <li><strong><span class="emoji">🧠</span> Component Intelligence</strong>: LLM-based analysis to identify and map integration components</li>
+        <li><strong><span class="emoji">🔧</span> Template-Based Generation</strong>: Automated creation of SAP Integration Suite iFlows using proven templates</li>
+        <li><strong><span class="emoji">✅</span> Validation & Optimization</strong>: Ensuring generated iFlows are deployment-ready and follow best practices</li>
+    </ol>
+
+    <h3><strong>Conversion Methodology</strong></h3>
+
+    <h4><strong>Phase 1: Documentation Processing</strong></h4>
+    <ul>
+        <li><strong>Input</strong>: Integration documentation (Word docs, PDFs, XML exports, flow diagrams)</li>
+        <li><strong>AI Enhancement</strong>: LLM-powered analysis to extract technical details, fill gaps, and standardize format</li>
+        <li><strong>Output</strong>: Comprehensive markdown documentation with complete integration specifications</li>
+    </ul>
+
+    <h4><strong>Phase 2: Component Analysis & Mapping</strong></h4>
+    <ul>
+        <li><strong>Pattern Recognition</strong>: AI identifies integration patterns (HTTP listeners, data transformations, connectors)</li>
+        <li><strong>Component Mapping</strong>: Intelligent translation from source platform components to SAP Integration Suite equivalents</li>
+        <li><strong>Configuration Extraction</strong>: Automated extraction of connection details, security settings, and business logic</li>
+    </ul>
+
+    <h4><strong>Phase 3: iFlow Generation</strong></h4>
+    <ul>
+        <li><strong>Template Selection</strong>: AI selects appropriate SAP Integration Suite templates based on integration patterns</li>
+        <li><strong>BPMN2 Generation</strong>: Creates complete Business Process Model and Notation (BPMN2) XML structures</li>
+        <li><strong>Project Assembly</strong>: Generates full project structure including manifests, configurations, and metadata</li>
+    </ul>
+
+    <h4><strong>Phase 4: Validation & Deployment</strong></h4>
+    <ul>
+        <li><strong>Syntax Validation</strong>: Ensures generated XML is valid and SAP Integration Suite compliant</li>
+        <li><strong>Best Practice Compliance</strong>: Applies SAP integration best practices and security standards</li>
+        <li><strong>Deployment Readiness</strong>: Produces artifacts ready for import into SAP Integration Suite</li>
+    </ul>
+
+    <h3><strong>Supported Migration Paths</strong></h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th><strong>Source Platform</strong></th>
+                <th><strong>Target Platform</strong></th>
+                <th><strong>Status</strong></th>
+                <th><strong>AI Provider Options</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Dell Boomi</strong></td>
+                <td>SAP Integration Suite</td>
+                <td><span class="emoji">✅</span> Production Ready</td>
+                <td>Claude, GPT, Azure OpenAI, <strong>Gemma-3</strong></td>
+            </tr>
+            <tr>
+                <td><strong>MuleSoft</strong></td>
+                <td>SAP Integration Suite</td>
+                <td><span class="emoji">✅</span> Production Ready</td>
+                <td>Claude, GPT, Azure OpenAI, <strong>Gemma-3</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Generic Documentation</strong></td>
+                <td>SAP Integration Suite</td>
+                <td><span class="emoji">✅</span> Available</td>
+                <td>All providers</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3><strong>Key Innovation: Multi-LLM Architecture</strong></h3>
+    <ul>
+        <li><strong>Provider Flexibility</strong>: Support for multiple AI providers (Anthropic Claude, OpenAI GPT, Azure OpenAI, RunPod Gemma-3)</li>
+        <li><strong>Cost Optimization</strong>: Choose between premium cloud APIs and cost-effective self-hosted models</li>
+        <li><strong>Reliability</strong>: Fallback mechanisms ensure continuous operation</li>
+        <li><strong>Performance</strong>: Latest models like Gemma-3 with 32K context windows for complex integrations</li>
+    </ul>
+
+    <hr>
+
+    <h2>System Overview</h2>
+
+    <p>The BoomiToIS system transforms Dell Boomi and MuleSoft integration processes into SAP Integration Suite iFlows through a multi-stage pipeline involving AI analysis, component processing, and XML generation.</p>
+
+    <h3><strong>How We Achieve This Conversion</strong></h3>
+
+    <h4><strong><span class="emoji">🔄</span> Hybrid AI-Code Architecture</strong></h4>
+    <p>Our system uses a <strong>strategic combination</strong> of AI intelligence and deterministic code processing:</p>
+
+    <ul>
+        <li><strong>AI Role (Limited & Focused)</strong>: Understanding integration requirements and generating component specifications</li>
+        <li><strong>Code Role (Extensive)</strong>: Template-based XML generation, validation, and package assembly</li>
+        <li><strong>Result</strong>: Reliable, consistent, and SAP-compliant iFlow generation</li>
+    </ul>
+
+    <h4><strong><span class="emoji">🎯</span> Two-Point LLM Strategy</strong></h4>
+    <p>We use AI at exactly <strong>two strategic points</strong> in the pipeline:</p>
+
+    <ol>
+        <li><strong>Documentation Enhancement</strong> (Optional): Improve human-readable documentation quality</li>
+        <li><strong>Component Analysis</strong> (Required): Extract technical components and configurations from documentation</li>
+    </ol>
+
+    <p><strong>Everything else is pure code</strong> - no AI involved in XML generation, validation, or packaging.</p>
+
+    <h4><strong><span class="emoji">🔧</span> Template-Driven Generation</strong></h4>
+    <ul>
+        <li><strong>Pre-built Templates</strong>: Comprehensive library of SAP Integration Suite component templates</li>
+        <li><strong>Pattern Matching</strong>: Intelligent mapping from source platform patterns to SAP equivalents</li>
+        <li><strong>Deterministic Output</strong>: Same input always produces the same output</li>
+        <li><strong>SAP Compliance</strong>: Templates ensure adherence to SAP Integration Suite standards</li>
+    </ul>
+
+    <h4><strong><span class="emoji">🚀</span> Multi-Platform Support</strong></h4>
+    <ul>
+        <li><strong>Dell Boomi</strong>: XML parsing → Component extraction → SAP iFlow generation</li>
+        <li><strong>MuleSoft</strong>: Flow analysis → Pattern recognition → SAP iFlow generation</li>
+        <li><strong>Documentation</strong>: Manual input → AI enhancement → SAP iFlow generation</li>
+    </ul>
+
+    <h4><strong><span class="emoji">⚡</span> Performance & Reliability</strong></h4>
+    <ul>
+        <li><strong>Fast Processing</strong>: Template-based generation is near-instantaneous</li>
+        <li><strong>High Accuracy</strong>: AI focuses only on understanding, not generation</li>
+        <li><strong>Consistent Quality</strong>: Templates guarantee SAP Integration Suite compliance</li>
+        <li><strong>Scalable</strong>: Can process multiple integrations simultaneously</li>
+    </ul>
+
+    <h2>Complete System Flow</h2>
+
+    <div class="mermaid">
+graph TD
+    %% Input Sources
+    A[Dell Boomi ZIP File] --> B[BoomiXMLProcessor]
+    A1[Manual Markdown Input] --> D[Basic Markdown Documentation]
+    A2[JSON Configuration] --> D
+
+    %% Initial Processing - Convert to Markdown (Pure Code)
+    B --> B1[Extract XML Files]
+    B1 --> B2[Parse Process Components]
+    B2 --> B3[Parse Connectors]
+    B3 --> B4[Parse Data Maps]
+    B4 --> D[Basic Markdown Documentation]
+
+    %% LLM USAGE POINT #1: Documentation Enhancement (Optional)
+    D --> DOC_LLM_BOUNDARY["🤖 LLM USAGE #1: DOCUMENTATION ENHANCEMENT"]
+    DOC_LLM_BOUNDARY --> DOC_ENHANCE{Enhancement Requested?}
+    DOC_ENHANCE -->|Yes| DOC_LLM[Documentation Enhancement LLM]
+    DOC_ENHANCE -->|No| ENHANCED_DOC[Final Markdown Documentation]
+
+    DOC_LLM --> DOC_PROVIDER{Provider Type?}
+    DOC_PROVIDER -->|anthropic| DOC_CLAUDE[Claude: Enhance Documentation]
+    DOC_PROVIDER -->|openai| DOC_GPT[GPT: Enhance Documentation]
+    DOC_PROVIDER -->|azure| DOC_AZURE[Azure OpenAI: Enhance Documentation]
+    DOC_PROVIDER -->|gemma3| DOC_GEMMA3[Gemma-3: Enhance Documentation<br/>RunPod OpenAI-Compatible API]
+
+    DOC_CLAUDE --> ENHANCED_DOC[Enhanced Markdown Documentation]
+    DOC_GPT --> ENHANCED_DOC
+    DOC_AZURE --> ENHANCED_DOC
+    DOC_GEMMA3 --> ENHANCED_DOC
+
+    %% LLM USAGE POINT #2: Component Analysis (Always Required)
+    ENHANCED_DOC --> COMP_LLM_BOUNDARY["🤖 LLM USAGE #2: COMPONENT ANALYSIS"]
+    COMP_LLM_BOUNDARY --> COMP_LLM[Component Analysis LLM]
+
+    COMP_LLM --> COMP_PROVIDER{Provider Type?}
+    COMP_PROVIDER -->|anthropic| COMP_CLAUDE[Claude: Analyze → Component JSON]
+    COMP_PROVIDER -->|openai| COMP_GPT[GPT: Analyze → Component JSON]
+    COMP_PROVIDER -->|azure| COMP_AZURE[Azure OpenAI: Analyze → Component JSON]
+    COMP_PROVIDER -->|gemma3| COMP_GEMMA3[Gemma-3: Analyze → Component JSON<br/>RunPod OpenAI-Compatible API<br/>16K Token Output Limit]
+    COMP_PROVIDER -->|local| COMP_LOCAL[Local Fallback: Extract JSON]
+
+    %% AI Response - Basic Component JSON Only
+    COMP_CLAUDE --> E[Basic Component JSON]
+    COMP_GPT --> E
+    COMP_AZURE --> E
+    COMP_GEMMA3 --> E
+    COMP_LOCAL --> E
+
+    E --> F[JSON Parser & Validator]
+    F --> F1{Valid JSON?}
+    F1 -->|No| F2[Retry with Enhanced Prompt]
+    F2 --> COMP_LLM
+    F1 -->|Yes| CODE_BOUNDARY["⚙️ CODE PROCESSING BOUNDARY - NO MORE LLM"]
+
+    %% EVERYTHING BELOW IS PURE CODE - NO LLM
+    CODE_BOUNDARY --> G[Basic Components JSON]
+
+    %% Enhancement Layer - Pure Code Logic
+    G --> H[Keyword-Based Enhancement Engine]
+    H --> H1[Component Type Detection]
+    H1 --> H2[Pattern Recognition Engine]
+
+    H2 --> I{Component Type?}
+    I -->|request_reply + SFTP| I1[SFTP Template Generator]
+    I -->|request_reply + SuccessFactors| I2[SuccessFactors Template Generator]
+    I -->|request_reply + HTTP| I3[HTTP Template Generator]
+    I -->|content_modifier| I4[Content Modifier Template]
+    I -->|enricher| I5[Enricher Template]
+    I -->|router| I6[Router Template]
+
+    %% Template-Based Component Generation
+    I1 --> J1[Service Task + SFTP Receiver + SFTP Message Flow]
+    I2 --> J2[Service Task + SF Receiver + OData Message Flow]
+    I3 --> J3[Service Task + HTTP Receiver + HTTP Message Flow]
+    I4 --> J4[Content Modifier XML]
+    I5 --> J5[Content Enricher XML]
+    I6 --> J6[Exclusive Gateway XML]
+
+    %% Component Assembly
+    J1 --> K[Enhanced Component Collection]
+    J2 --> K
+    J3 --> K
+    J4 --> K
+    J5 --> K
+    J6 --> K
+
+    K --> L[Component Organizer]
+    L --> L1[Process Components List]
+    L --> L2[Participants List]
+    L --> L3[Message Flows List]
+    L --> L4[Sequence Flows List]
+
+    %% XML Generation - Pure Code
+    L1 --> M[XML Assembly Engine]
+    L2 --> M
+    L3 --> M
+    L4 --> M
+
+    M --> M1[Process XML Generator]
+    M --> M2[Collaboration XML Generator]
+    M --> M3[BPMN Diagram Generator]
+
+    %% XML Assembly
+    M1 --> N[XML Combiner]
+    M2 --> N
+    M3 --> N
+
+    N --> N1[Add Start/End Events]
+    N1 --> N2[Generate Sequence Flows]
+    N2 --> N3[Create BPMN Shapes]
+    N3 --> N4[Create BPMN Edges]
+    N4 --> O[Complete iFlow XML]
+
+    %% Validation & Fixing - Pure Code
+    O --> P[XML Validator & Auto-Fixer]
+    P --> P1[Component Reference Validation]
+    P1 --> P2[Sequence Flow Connection Fixing]
+    P2 --> P3[BPMN Compliance Validation]
+    P3 --> Q[Validated iFlow XML]
+
+    %% Package Assembly - Pure Code
+    Q --> R[SAP Package Generator]
+    R --> R1[Create .iflw File]
+    R --> R2[Generate MANIFEST.MF]
+    R --> R3[Create Parameters Files]
+    R --> R4[Generate Project Structure]
+
+    R1 --> S[ZIP Package Assembler]
+    R2 --> S
+    R3 --> S
+    R4 --> S
+
+    S --> T[📦 Final SAP Integration Suite Package]
+
+    %% User Domain - Outside Our System
+    T --> USER_BOUNDARY["👤 USER DOMAIN BOUNDARY"]
+    USER_BOUNDARY --> U1[Download ZIP]
+    U1 --> U2[Import to SAP Integration Suite]
+    U2 --> U3[Configure Credentials & Parameters]
+    U3 --> U4[Deploy iFlow]
+    U4 --> U5[Test & Monitor Integration]
+
+    %% Debug Output - Code Generated
+    D --> DEBUG0[Save basic_markdown.md]
+    ENHANCED_DOC --> DEBUG1[Save enhanced_documentation.md]
+    G --> DEBUG2[Save basic_components.json]
+    K --> DEBUG3[Save enhanced_components.json]
+    O --> DEBUG4[Save raw_iflow.xml]
+    Q --> DEBUG5[Save final_iflow.xml]
+
+    %% Styling with black text for better readability
+    classDef inputNode fill:#e1f5fe,color:#000000
+    classDef llmNode fill:#fff3e0,color:#000000
+    classDef codeNode fill:#e8f5e8,color:#000000
+    classDef outputNode fill:#fce4ec,color:#000000
+    classDef userNode fill:#f3e5f5,color:#000000
+    classDef debugNode fill:#f5f5f5,color:#000000
+    classDef boundaryNode fill:#ffebee,stroke:#d32f2f,stroke-width:3px,color:#000000
+    classDef enhancementNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px,color:#000000
+
+    class A,A1,A2,D inputNode
+    class DOC_CLAUDE,DOC_GPT,DOC_AZURE,DOC_GEMMA3,COMP_CLAUDE,COMP_GPT,COMP_AZURE,COMP_GEMMA3,COMP_LOCAL,E,F llmNode
+    class H,I,J1,J2,J3,J4,J5,J6,K,L,M,N,P,R,S codeNode
+    class T outputNode
+    class U1,U2,U3,U4,U5 userNode
+    class DEBUG0,DEBUG1,DEBUG2,DEBUG3,DEBUG4,DEBUG5 debugNode
+    class DOC_LLM_BOUNDARY,COMP_LLM_BOUNDARY,CODE_BOUNDARY,USER_BOUNDARY boundaryNode
+    class ENHANCED_DOC enhancementNode
+    </div>
+
+    <h2>Key Components Breakdown</h2>
+
+    <h3>1. Input Processing Layer (Pure Code)</h3>
+    <ul>
+        <li><strong>BoomiXMLProcessor</strong>: Extracts and parses Dell Boomi ZIP files</li>
+        <li><strong>XML Parser</strong>: Processes process components, connectors, and data maps</li>
+        <li><strong>Basic Markdown Generator</strong>: Converts XML to structured markdown documentation</li>
+    </ul>
+
+    <h3>2. LLM Usage Point #1: Documentation Enhancement (Optional)</h3>
+    <ul>
+        <li><strong>Purpose</strong>: Enhance basic markdown with AI insights and comprehensive analysis</li>
+        <li><strong>Multi-Provider Support</strong>: Claude, GPT, Azure OpenAI</li>
+        <li><strong>Input</strong>: Basic markdown documentation from XML parsing</li>
+        <li><strong>Output</strong>: Enhanced markdown with detailed explanations, flow logic, and migration guidance</li>
+        <li><strong>Trigger</strong>: Only when <code>enhance=True</code> parameter is set</li>
+        <li><strong>Timeout</strong>: 10-minute timeout to prevent hanging</li>
+    </ul>
+
+    <h3>3. LLM Usage Point #2: Component Analysis (Always Required)</h3>
+    <ul>
+        <li><strong>Purpose</strong>: Analyze markdown documentation → Generate component JSON</li>
+        <li><strong>Multi-Provider Support</strong>: Claude, GPT, Azure OpenAI, <strong>Gemma-3 (RunPod)</strong>, Local Fallback</li>
+        <li><strong>Input</strong>: Markdown documentation (basic or enhanced)</li>
+        <li><strong>Output</strong>: Basic component JSON with types, names, and configurations</li>
+        <li><strong>Enhanced Prompting</strong>: Context-aware prompts for accurate component identification</li>
+        <li><strong>JSON Validation</strong>: Ensures valid JSON structure with retry logic</li>
+    </ul>
+
+    <h4><strong><span class="emoji">🚀</span> RunPod Gemma-3 Integration (Latest Addition)</strong></h4>
+    <ul>
+        <li><strong>Model</strong>: <code>google/gemma-3-4b-it</code> via RunPod vLLM Worker</li>
+        <li><strong>Endpoint</strong>: OpenAI-compatible API (<code>/openai/v1/chat/completions</code>)</li>
+        <li><strong>Token Limits</strong>: 24K input tokens, 16K output tokens (vs. previous 2K limit)</li>
+        <li><strong>Timeout</strong>: 20 minutes for complex iFlow generation (vs. previous 5 minutes)</li>
+        <li><strong>Format</strong>: Standard OpenAI chat completion format with <code>messages</code> array</li>
+        <li><strong>Benefits</strong>: Higher token limits enable complete iFlow generation without truncation</li>
+    </ul>
+
+    <h3>4. Enhancement Engine (Pure Code - No LLM)</h3>
+    <ul>
+        <li><strong>Keyword Detection</strong>: Scans component types and configurations from LLM JSON</li>
+        <li><strong>Pattern Mapping</strong>: Maps keywords to SAP component patterns (SFTP, SuccessFactors, HTTP)</li>
+        <li><strong>Template Selection</strong>: Chooses appropriate XML templates based on component types</li>
+        <li><strong>Component Generation</strong>: Creates complete SAP-compliant XML components</li>
+    </ul>
+
+    <h3>5. XML Assembly Layer (Pure Code)</h3>
+    <ul>
+        <li><strong>Template Engine</strong>: SAP Integration Suite compliant XML templates</li>
+        <li><strong>BPMN Generator</strong>: Creates visual layout, shapes, and edges</li>
+        <li><strong>Flow Builder</strong>: Connects components with proper sequence flows</li>
+        <li><strong>Validation Engine</strong>: Ensures XML compliance and auto-fixes issues</li>
+    </ul>
+
+    <h3>6. Package Assembly Layer (Pure Code)</h3>
+    <ul>
+        <li><strong>ZIP Builder</strong>: Creates complete deployable iFlow packages</li>
+        <li><strong>Metadata Generator</strong>: Required SAP Integration Suite files (.iflw, MANIFEST.MF, parameters)</li>
+        <li><strong>Debug System</strong>: Comprehensive logging and intermediate file output</li>
+    </ul>
+
+    <h3>7. User Domain (Outside Our System)</h3>
+    <ul>
+        <li><strong>Import</strong>: User imports ZIP to SAP Integration Suite</li>
+        <li><strong>Configuration</strong>: User sets credentials and parameters</li>
+        <li><strong>Deployment</strong>: User deploys and monitors the integration</li>
+    </ul>
+
+    <h2>Enhanced Request-Reply Processing (Code-Based Engine)</h2>
+
+    <p>The system's key innovation is the <strong>code-based</strong> enhanced request-reply processing that creates complete patterns:</p>
+
+    <div class="mermaid">
+graph LR
+    A[LLM: Basic JSON<br/>type: request_reply] --> B[Code: Keyword Detection]
+    B --> C{Protocol Analysis}
+    C -->|SFTP Keywords| D[SFTP Template Engine]
+    C -->|SuccessFactors Keywords| E[SuccessFactors Template Engine]
+    C -->|Generic HTTP| F[HTTP Template Engine]
+
+    D --> D1[✅ Service Task XML<br/>activityType: ExternalCall]
+    D --> D2[✅ SFTP Receiver XML<br/>ifl:type: EndpointRecevier]
+    D --> D3[✅ SFTP Message Flow XML<br/>ComponentType: SFTP]
+
+    E --> E1[✅ Service Task XML<br/>activityType: ExternalCall]
+    E --> E2[✅ SF Receiver XML<br/>ifl:type: EndpointRecevier]
+    E --> E3[✅ OData Message Flow XML<br/>ComponentType: SuccessFactors]
+
+    F --> F1[✅ Service Task XML<br/>activityType: ExternalCall]
+    F --> F2[✅ HTTP Receiver XML<br/>ifl:type: EndpointRecevier]
+    F --> F3[✅ HTTP Message Flow XML<br/>ComponentType: HTTP]
+
+    %% Styling for better readability
+    classDef llmNode fill:#fff3e0,color:#000000
+    classDef codeNode fill:#e8f5e8,color:#000000
+    classDef templateNode fill:#e3f2fd,color:#000000
+    classDef outputNode fill:#f1f8e9,color:#000000
+
+    class A llmNode
+    class B,C codeNode
+    class D,E,F templateNode
+    class D1,D2,D3,E1,E2,E3,F1,F2,F3 outputNode
+    </div>
+
+    <h2><span class="emoji">🎯</span> <strong>Key Innovation: LLM + Code Separation</strong></h2>
+
+    <ul>
+        <li><strong>LLM Role</strong>: Analyze integration requirements → Generate basic component list</li>
+        <li><strong>Code Role</strong>: Transform basic components → Complete SAP-compliant XML patterns</li>
+        <li><strong>Result</strong>: Every <code>request_reply</code> component becomes a complete request-reply pattern with proper connections</li>
+    </ul>
+
+    <p>This architecture ensures that every request-reply component generates both the request (Service Task) and reply (Receiver Participant + Message Flow) components, creating complete integration patterns that are properly connected and SAP Integration Suite compliant.</p>
+
+    <h2><span class="emoji">🤖</span> Two Distinct LLM Usage Points</h2>
+
+    <p>The system uses LLMs at exactly <strong>two specific points</strong> in the pipeline:</p>
+
+    <h3><strong>LLM Usage #1: Documentation Enhancement (Optional)</strong></h3>
+
+    <div class="mermaid">
+graph LR
+    A[Basic Markdown<br/>from XML parsing] --> B{enhance=true?}
+    B -->|Yes| C[LLM Documentation Enhancer]
+    B -->|No| D[Use Basic Markdown]
+    C --> E[Enhanced Markdown<br/>with AI insights]
+    D --> F[Final Markdown]
+    E --> F
+
+    %% Styling for better readability
+    classDef inputNode fill:#e1f5fe,color:#000000
+    classDef llmNode fill:#fff3e0,color:#000000
+    classDef codeNode fill:#e8f5e8,color:#000000
+    classDef outputNode fill:#e8f5e8,color:#000000
+
+    class A inputNode
+    class C llmNode
+    class D codeNode
+    class E,F outputNode
+    </div>
+
+    <p><strong>Purpose</strong>: Improve documentation quality with AI insights</p>
+    <ul>
+        <li><strong>Input</strong>: Basic markdown generated from XML parsing</li>
+        <li><strong>Process</strong>: LLM adds detailed explanations, flow logic, migration guidance</li>
+        <li><strong>Output</strong>: Enhanced markdown with comprehensive analysis</li>
+        <li><strong>Trigger</strong>: Only when user requests enhancement (<code>enhance=True</code>)</li>
+        <li><strong>Provider</strong>: Anthropic Claude (configurable to OpenAI/Azure)</li>
+        <li><strong>Timeout</strong>: 10 minutes to prevent hanging</li>
+        <li><strong>Fallback</strong>: Uses basic markdown if enhancement fails</li>
+    </ul>
+
+    <h3><strong>LLM Usage #2: Component Analysis (Always Required)</strong></h3>
+
+    <div class="mermaid">
+graph LR
+    A[Final Markdown<br/>Documentation] --> B[LLM Component Analyzer]
+    B --> C[Basic Component JSON<br/>with types & configs]
+    C --> D[Code Enhancement Engine]
+    D --> E[Complete SAP Components]
+
+    %% Styling for better readability
+    classDef inputNode fill:#e1f5fe,color:#000000
+    classDef llmNode fill:#fff3e0,color:#000000
+    classDef codeNode fill:#e8f5e8,color:#000000
+    classDef outputNode fill:#f1f8e9,color:#000000
+
+    class A inputNode
+    class B llmNode
+    class C,D codeNode
+    class E outputNode
+    </div>
+
+    <p><strong>Purpose</strong>: Understand integration requirements and generate component structure</p>
+    <ul>
+        <li><strong>Input</strong>: Markdown documentation (basic or enhanced)</li>
+        <li><strong>Process</strong>: LLM analyzes integration logic and identifies required components</li>
+        <li><strong>Output</strong>: Basic JSON with component types, names, and configurations</li>
+        <li><strong>Trigger</strong>: Always required for iFlow generation</li>
+        <li><strong>Provider</strong>: Multi-provider support (Claude, GPT, Azure, Local fallback)</li>
+        <li><strong>Retry Logic</strong>: Automatic retry with enhanced prompts if JSON is invalid</li>
+        <li><strong>Validation</strong>: Strict JSON validation and cleanup</li>
+    </ul>
+
+    <h2><span class="emoji">🔄</span> <strong>The Complete LLM Flow</strong></h2>
+
+    <pre><code>Boomi ZIP → [Code] Basic Markdown → [LLM #1 Optional] Enhanced Markdown → [LLM #2 Always] Component JSON → [Code] iFlow Package</code></pre>
+
+    <h3><strong>Key Insights:</strong></h3>
+    <ol>
+        <li><strong>Documentation Enhancement</strong> is optional and improves human-readable output</li>
+        <li><strong>Component Analysis</strong> is mandatory and drives the technical iFlow generation</li>
+        <li><strong>Everything after LLM #2</strong> is pure code logic using templates and keyword mapping</li>
+        <li><strong>No LLM involvement</strong> in XML generation, validation, or package assembly</li>
+    </ol>
+
+    <h2><span class="emoji">🚀</span> Recent Architecture Updates (Latest)</h2>
+
+    <h3>RunPod Gemma-3 Integration Enhancement</h3>
+
+    <p><strong>Service</strong>: <code>MuleToIS-API-Gemma3</code> (Unified Platform Handler)</p>
+
+    <h4><strong>Key Improvements:</strong></h4>
+    <ol>
+        <li>
+            <strong>OpenAI-Compatible Endpoint</strong>: Migrated from raw RunPod format to OpenAI-compatible API
+            <ul>
+                <li><strong>Old</strong>: <code>https://api.runpod.ai/v2/{endpoint}/run</code> with custom payload</li>
+                <li><strong>New</strong>: <code>https://api.runpod.ai/v2/{endpoint}/openai/v1/chat/completions</code> with standard OpenAI format</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Enhanced Token Limits</strong>: Resolved 352-character truncation issue
+            <ul>
+                <li><strong>Input Tokens</strong>: 24,576 (24K) - handles large documentation</li>
+                <li><strong>Output Tokens</strong>: 16,384 (16K) - enables complete iFlow generation</li>
+                <li><strong>Previous Limit</strong>: 2,048 tokens (caused truncation)</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Extended Timeouts</strong>: Accommodates RunPod cold starts
+            <ul>
+                <li><strong>API Timeout</strong>: 20 minutes (vs. previous 5 minutes)</li>
+                <li><strong>Frontend Polling</strong>: 20 minutes (vs. previous 10 minutes)</li>
+                <li><strong>Cold Start Handling</strong>: Proper timeout for model initialization</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Unified Platform Support</strong>: Single service handles both platforms
+            <ul>
+                <li><strong>Dell Boomi</strong>: Platform detection and specialized prompts</li>
+                <li><strong>MuleSoft</strong>: Platform detection and specialized prompts</li>
+                <li><strong>Model</strong>: <code>google/gemma-3-4b-it</code> (verified working model)</li>
+            </ul>
+        </li>
+    </ol>
+
+    <h4><strong>Request Format (OpenAI-Compatible):</strong></h4>
+    <pre><code>{
+  "model": "google/gemma-3-4b-it",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Generate SAP Integration Suite iFlow..."
+    }
+  ],
+  "max_tokens": 16384,
+  "temperature": 0.3,
+  "top_p": 0.9,
+  "stream": false
+}</code></pre>
+
+    <h4><strong>Response Handling:</strong></h4>
+    <ul>
+        <li><strong>Format</strong>: Standard OpenAI <code>choices[0].message.content</code></li>
+        <li><strong>Validation</strong>: Proper error handling for model not found, timeouts</li>
+        <li><strong>Debugging</strong>: Enhanced logging for response structure analysis</li>
+    </ul>
+
+    <div class="success-box">
+        <h4><strong>Benefits:</strong></h4>
+        <ul>
+            <li><span class="emoji">✅</span> <strong>Complete iFlow Generation</strong>: No more 352-character truncation</li>
+            <li><span class="emoji">✅</span> <strong>Reliable Processing</strong>: Proper timeout handling for complex prompts</li>
+            <li><span class="emoji">✅</span> <strong>Platform Flexibility</strong>: Single service for multiple platforms</li>
+            <li><span class="emoji">✅</span> <strong>Cost Effective</strong>: RunPod serverless pricing vs. traditional cloud APIs</li>
+            <li><span class="emoji">✅</span> <strong>Model Control</strong>: Direct access to latest Gemma-3 models</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <h2>File Structure</h2>
+
+    <pre><code>architecture/
+├── system-flow-diagram.md          # Comprehensive flow diagram (Markdown)
+├── system-flow-diagram.html        # Interactive HTML version with Mermaid charts
+├── component-templates.md           # Template documentation (future)
+├── api-integration-patterns.md      # Integration pattern examples (future)
+└── debugging-guide.md              # Debugging and troubleshooting (future)</code></pre>
+
+    <p>This architecture documentation provides a complete understanding of how the BoomiToIS system transforms Dell Boomi processes into SAP Integration Suite iFlows through intelligent analysis, enhanced processing, and template-based generation, now enhanced with robust RunPod Gemma-3 integration.</p>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            fontFamily: 'arial',
+            fontSize: 12,
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click-to-zoom functionality for Mermaid diagrams
+            const mermaidDivs = document.querySelectorAll('.mermaid');
+            mermaidDivs.forEach(div => {
+                div.style.cursor = 'pointer';
+                div.addEventListener('click', function() {
+                    if (this.style.transform === 'scale(1.2)') {
+                        this.style.transform = 'scale(1)';
+                        this.style.transition = 'transform 0.3s ease';
+                    } else {
+                        this.style.transform = 'scale(1.2)';
+                        this.style.transition = 'transform 0.3s ease';
+                    }
+                });
+            });
+
+            // Add smooth scrolling for internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

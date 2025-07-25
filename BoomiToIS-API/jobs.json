@@ -642,5 +642,58 @@
       "response_code": 201,
       "method": "Bearer + Minimal Headers"
     }
+  },
+  "49d8d490-c071-4b81-aeb4-243b50f5dfc2": {
+    "id": "49d8d490-c071-4b81-aeb4-243b50f5dfc2",
+    "original_job_id": "3ec9bfa4-7190-4a4a-ba5c-a53ca12b9ba4",
+    "status": "completed",
+    "created": "ed2112eb-6926-11f0-a2aa-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\49d8d490-c071-4b81-aeb4-243b50f5dfc2\\BoomiFlow_3ec9bfa4.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_3ec9bfa4.xml": "genai_debug\\final_iflow_BoomiFlow_3ec9bfa4.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_3ec9bfa4"
+  },
+  "30ebe57a-9687-4460-a813-fd1bbbe3255b": {
+    "id": "30ebe57a-9687-4460-a813-fd1bbbe3255b",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "4be5705d-6927-11f0-b452-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\30ebe57a-9687-4460-a813-fd1bbbe3255b\\IFlow_3ec9bfa4.zip",
+      "debug": {
+        "final_iflow_IFlow_3ec9bfa4.xml": "genai_debug\\final_iflow_IFlow_3ec9bfa4.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "sftp_integration",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "sftp_integration",
+      "package_id": "ConversionPackages",
+      "iflow_name": "sftp_integration",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
   }
 }

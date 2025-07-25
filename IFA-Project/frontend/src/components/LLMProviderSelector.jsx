@@ -55,7 +55,7 @@ const LLMProviderSelector = ({ selectedProvider, onProviderChange, className = "
           Select AI Model Provider
         </h3>
         <p className="text-gray-600 text-sm">
-          Choose the AI model for iFlow generation
+          Choose the AI model for integration flow generation
         </p>
       </div>
 
@@ -166,7 +166,7 @@ const LLMProviderSelector = ({ selectedProvider, onProviderChange, className = "
       {selectedProvider && (
         <div className="text-center">
           <Chip color="primary" variant="flat" size="lg">
-            Using {LLM_PROVIDER_LABELS[selectedProvider]} for iFlow generation
+            Using {LLM_PROVIDER_LABELS[selectedProvider]} for integration flow generation
           </Chip>
         </div>
       )}

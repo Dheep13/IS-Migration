@@ -1,10 +1,98 @@
 # BoomiToIS System Architecture & Flow
 
-This document provides a comprehensive overview of the BoomiToIS system architecture, showing how Dell Boomi processes are converted to SAP Integration Suite iFlows through enhanced AI-driven analysis and template-based generation.
+## 🎯 **Project Objective**
+
+The **BoomiToIS Integration Platform** is an AI-powered system designed to automate the migration of integration flows from **Dell Boomi** and **MuleSoft** platforms to **SAP Integration Suite**. This addresses the critical business need for organizations transitioning their integration architecture to SAP's cloud-native integration platform.
+
+### **Business Challenge**
+- **Manual Migration Complexity**: Converting integration flows between platforms requires deep technical expertise and significant time investment
+- **Platform Differences**: Each integration platform has unique components, configurations, and architectural patterns
+- **Resource Constraints**: Limited availability of experts familiar with both source and target platforms
+- **Migration Risk**: Manual conversion introduces potential for errors and incomplete implementations
+
+### **Solution Approach**
+Our platform leverages **Generative AI** and **intelligent template systems** to automate the conversion process:
+
+1. **📄 Document Analysis**: AI-powered extraction and enhancement of integration documentation
+2. **🧠 Component Intelligence**: LLM-based analysis to identify and map integration components
+3. **🔧 Template-Based Generation**: Automated creation of SAP Integration Suite iFlows using proven templates
+4. **✅ Validation & Optimization**: Ensuring generated iFlows are deployment-ready and follow best practices
+
+### **Conversion Methodology**
+
+#### **Phase 1: Documentation Processing**
+- **Input**: Integration documentation (Word docs, PDFs, XML exports, flow diagrams)
+- **AI Enhancement**: LLM-powered analysis to extract technical details, fill gaps, and standardize format
+- **Output**: Comprehensive markdown documentation with complete integration specifications
+
+#### **Phase 2: Component Analysis & Mapping**
+- **Pattern Recognition**: AI identifies integration patterns (HTTP listeners, data transformations, connectors)
+- **Component Mapping**: Intelligent translation from source platform components to SAP Integration Suite equivalents
+- **Configuration Extraction**: Automated extraction of connection details, security settings, and business logic
+
+#### **Phase 3: iFlow Generation**
+- **Template Selection**: AI selects appropriate SAP Integration Suite templates based on integration patterns
+- **BPMN2 Generation**: Creates complete Business Process Model and Notation (BPMN2) XML structures
+- **Project Assembly**: Generates full project structure including manifests, configurations, and metadata
+
+#### **Phase 4: Validation & Deployment**
+- **Syntax Validation**: Ensures generated XML is valid and SAP Integration Suite compliant
+- **Best Practice Compliance**: Applies SAP integration best practices and security standards
+- **Deployment Readiness**: Produces artifacts ready for import into SAP Integration Suite
+
+### **Supported Migration Paths**
+
+| **Source Platform** | **Target Platform** | **Status** | **AI Provider Options** |
+|-------------------|-------------------|------------|------------------------|
+| **Dell Boomi** | SAP Integration Suite | ✅ Production Ready | Claude, GPT, Azure OpenAI, **Gemma-3** |
+| **MuleSoft** | SAP Integration Suite | ✅ Production Ready | Claude, GPT, Azure OpenAI, **Gemma-3** |
+| **Generic Documentation** | SAP Integration Suite | ✅ Available | All providers |
+
+### **Key Innovation: Multi-LLM Architecture**
+- **Provider Flexibility**: Support for multiple AI providers (Anthropic Claude, OpenAI GPT, Azure OpenAI, RunPod Gemma-3)
+- **Cost Optimization**: Choose between premium cloud APIs and cost-effective self-hosted models
+- **Reliability**: Fallback mechanisms ensure continuous operation
+- **Performance**: Latest models like Gemma-3 with 32K context windows for complex integrations
+
+---
 
 ## System Overview
 
-The BoomiToIS system transforms Dell Boomi integration processes into SAP Integration Suite iFlows through a multi-stage pipeline involving AI analysis, component processing, and XML generation.
+The BoomiToIS system transforms Dell Boomi and MuleSoft integration processes into SAP Integration Suite iFlows through a multi-stage pipeline involving AI analysis, component processing, and XML generation.
+
+### **How We Achieve This Conversion**
+
+#### **🔄 Hybrid AI-Code Architecture**
+Our system uses a **strategic combination** of AI intelligence and deterministic code processing:
+
+- **AI Role (Limited & Focused)**: Understanding integration requirements and generating component specifications
+- **Code Role (Extensive)**: Template-based XML generation, validation, and package assembly
+- **Result**: Reliable, consistent, and SAP-compliant iFlow generation
+
+#### **🎯 Two-Point LLM Strategy**
+We use AI at exactly **two strategic points** in the pipeline:
+
+1. **Documentation Enhancement** (Optional): Improve human-readable documentation quality
+2. **Component Analysis** (Required): Extract technical components and configurations from documentation
+
+**Everything else is pure code** - no AI involved in XML generation, validation, or packaging.
+
+#### **🔧 Template-Driven Generation**
+- **Pre-built Templates**: Comprehensive library of SAP Integration Suite component templates
+- **Pattern Matching**: Intelligent mapping from source platform patterns to SAP equivalents
+- **Deterministic Output**: Same input always produces the same output
+- **SAP Compliance**: Templates ensure adherence to SAP Integration Suite standards
+
+#### **🚀 Multi-Platform Support**
+- **Dell Boomi**: XML parsing → Component extraction → SAP iFlow generation
+- **MuleSoft**: Flow analysis → Pattern recognition → SAP iFlow generation
+- **Documentation**: Manual input → AI enhancement → SAP iFlow generation
+
+#### **⚡ Performance & Reliability**
+- **Fast Processing**: Template-based generation is near-instantaneous
+- **High Accuracy**: AI focuses only on understanding, not generation
+- **Consistent Quality**: Templates guarantee SAP Integration Suite compliance
+- **Scalable**: Can process multiple integrations simultaneously
 
 ## Complete System Flow
 
@@ -32,10 +120,12 @@ graph TD
     DOC_PROVIDER -->|anthropic| DOC_CLAUDE[Claude: Enhance Documentation]
     DOC_PROVIDER -->|openai| DOC_GPT[GPT: Enhance Documentation]
     DOC_PROVIDER -->|azure| DOC_AZURE[Azure OpenAI: Enhance Documentation]
+    DOC_PROVIDER -->|gemma3| DOC_GEMMA3[Gemma-3: Enhance Documentation<br/>RunPod OpenAI-Compatible API]
 
     DOC_CLAUDE --> ENHANCED_DOC[Enhanced Markdown Documentation]
     DOC_GPT --> ENHANCED_DOC
     DOC_AZURE --> ENHANCED_DOC
+    DOC_GEMMA3 --> ENHANCED_DOC
 
     %% LLM USAGE POINT #2: Component Analysis (Always Required)
     ENHANCED_DOC --> COMP_LLM_BOUNDARY["🤖 LLM USAGE #2: COMPONENT ANALYSIS"]
@@ -45,12 +135,14 @@ graph TD
     COMP_PROVIDER -->|anthropic| COMP_CLAUDE[Claude: Analyze → Component JSON]
     COMP_PROVIDER -->|openai| COMP_GPT[GPT: Analyze → Component JSON]
     COMP_PROVIDER -->|azure| COMP_AZURE[Azure OpenAI: Analyze → Component JSON]
+    COMP_PROVIDER -->|gemma3| COMP_GEMMA3[Gemma-3: Analyze → Component JSON<br/>RunPod OpenAI-Compatible API<br/>16K Token Output Limit]
     COMP_PROVIDER -->|local| COMP_LOCAL[Local Fallback: Extract JSON]
 
     %% AI Response - Basic Component JSON Only
     COMP_CLAUDE --> E[Basic Component JSON]
     COMP_GPT --> E
     COMP_AZURE --> E
+    COMP_GEMMA3 --> E
     COMP_LOCAL --> E
 
     E --> F[JSON Parser & Validator]
@@ -166,7 +258,7 @@ graph TD
     classDef enhancementNode fill:#e8f5e8,stroke:#4caf50,stroke-width:2px,color:#000000
 
     class A,A1,A2,D inputNode
-    class DOC_CLAUDE,DOC_GPT,DOC_AZURE,COMP_CLAUDE,COMP_GPT,COMP_AZURE,COMP_LOCAL,E,F llmNode
+    class DOC_CLAUDE,DOC_GPT,DOC_AZURE,DOC_GEMMA3,COMP_CLAUDE,COMP_GPT,COMP_AZURE,COMP_GEMMA3,COMP_LOCAL,E,F llmNode
     class H,I,J1,J2,J3,J4,J5,J6,K,L,M,N,P,R,S codeNode
     class T outputNode
     class U1,U2,U3,U4,U5 userNode
@@ -192,11 +284,19 @@ graph TD
 
 ### 3. LLM Usage Point #2: Component Analysis (Always Required)
 - **Purpose**: Analyze markdown documentation → Generate component JSON
-- **Multi-Provider Support**: Claude, GPT, Azure OpenAI, Local Fallback
+- **Multi-Provider Support**: Claude, GPT, Azure OpenAI, **Gemma-3 (RunPod)**, Local Fallback
 - **Input**: Markdown documentation (basic or enhanced)
 - **Output**: Basic component JSON with types, names, and configurations
 - **Enhanced Prompting**: Context-aware prompts for accurate component identification
 - **JSON Validation**: Ensures valid JSON structure with retry logic
+
+#### **🚀 RunPod Gemma-3 Integration (Latest Addition)**
+- **Model**: `google/gemma-3-4b-it` via RunPod vLLM Worker
+- **Endpoint**: OpenAI-compatible API (`/openai/v1/chat/completions`)
+- **Token Limits**: 24K input tokens, 16K output tokens (vs. previous 2K limit)
+- **Timeout**: 20 minutes for complex iFlow generation (vs. previous 5 minutes)
+- **Format**: Standard OpenAI chat completion format with `messages` array
+- **Benefits**: Higher token limits enable complete iFlow generation without truncation
 
 ### 4. Enhancement Engine (Pure Code - No LLM)
 - **Keyword Detection**: Scans component types and configurations from LLM JSON
@@ -911,4 +1011,59 @@ architecture/
 └── debugging-guide.md              # Debugging and troubleshooting (future)
 ```
 
-This architecture documentation provides a complete understanding of how the BoomiToIS system transforms Dell Boomi processes into SAP Integration Suite iFlows through intelligent analysis, enhanced processing, and template-based generation.
+## 🚀 Recent Architecture Updates (Latest)
+
+### RunPod Gemma-3 Integration Enhancement
+
+**Service**: `MuleToIS-API-Gemma3` (Unified Platform Handler)
+
+#### **Key Improvements:**
+1. **OpenAI-Compatible Endpoint**: Migrated from raw RunPod format to OpenAI-compatible API
+   - **Old**: `https://api.runpod.ai/v2/{endpoint}/run` with custom payload
+   - **New**: `https://api.runpod.ai/v2/{endpoint}/openai/v1/chat/completions` with standard OpenAI format
+
+2. **Enhanced Token Limits**: Resolved 352-character truncation issue
+   - **Input Tokens**: 24,576 (24K) - handles large documentation
+   - **Output Tokens**: 16,384 (16K) - enables complete iFlow generation
+   - **Previous Limit**: 2,048 tokens (caused truncation)
+
+3. **Extended Timeouts**: Accommodates RunPod cold starts
+   - **API Timeout**: 20 minutes (vs. previous 5 minutes)
+   - **Frontend Polling**: 20 minutes (vs. previous 10 minutes)
+   - **Cold Start Handling**: Proper timeout for model initialization
+
+4. **Unified Platform Support**: Single service handles both platforms
+   - **Dell Boomi**: Platform detection and specialized prompts
+   - **MuleSoft**: Platform detection and specialized prompts
+   - **Model**: `google/gemma-3-4b-it` (verified working model)
+
+#### **Request Format (OpenAI-Compatible):**
+```json
+{
+  "model": "google/gemma-3-4b-it",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Generate SAP Integration Suite iFlow..."
+    }
+  ],
+  "max_tokens": 16384,
+  "temperature": 0.3,
+  "top_p": 0.9,
+  "stream": false
+}
+```
+
+#### **Response Handling:**
+- **Format**: Standard OpenAI `choices[0].message.content`
+- **Validation**: Proper error handling for model not found, timeouts
+- **Debugging**: Enhanced logging for response structure analysis
+
+#### **Benefits:**
+- ✅ **Complete iFlow Generation**: No more 352-character truncation
+- ✅ **Reliable Processing**: Proper timeout handling for complex prompts
+- ✅ **Platform Flexibility**: Single service for multiple platforms
+- ✅ **Cost Effective**: RunPod serverless pricing vs. traditional cloud APIs
+- ✅ **Model Control**: Direct access to latest Gemma-3 models
+
+This architecture documentation provides a complete understanding of how the BoomiToIS system transforms Dell Boomi processes into SAP Integration Suite iFlows through intelligent analysis, enhanced processing, and template-based generation, now enhanced with robust RunPod Gemma-3 integration.

@@ -36,7 +36,7 @@ export default ({ mode }) => {
       },
       // Optimize for production deployment
       target: 'es2015',
-      minify: 'terser',
+      minify: process.env.NODE_ENV === 'production' ? 'terser' : 'esbuild',
       sourcemap: false,
       // Handle missing optional dependencies gracefully
       commonjsOptions: {

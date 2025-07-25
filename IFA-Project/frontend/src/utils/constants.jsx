@@ -1,4 +1,4 @@
-export const APP_NAME = 'recruITR'
+export const APP_NAME = 'I-Migrate'
 export const CREDIT_NAME = 'IT Resonance, Inc.'
 export const DATE_FORMAT = 'DD-MM-YYYY'
 export const TIME_FORMAT = 'hh:mm a'
@@ -16,7 +16,7 @@ export const LLM_PROVIDERS = {
 };
 
 export const LLM_PROVIDER_LABELS = {
-  [LLM_PROVIDERS.ANTHROPIC]: 'Anthropic Claude',
+  [LLM_PROVIDERS.ANTHROPIC]: 'Premium AI Model',
   [LLM_PROVIDERS.GEMMA3]: 'Gemma3 (Open Source)'
 };
 

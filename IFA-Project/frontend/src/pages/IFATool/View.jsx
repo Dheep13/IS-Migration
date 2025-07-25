@@ -613,9 +613,9 @@ const View = () => {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Integration Flow Analyzer</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">I-Migrate</h1>
           <p className="text-gray-600">
-            Convert integration flows to SAP Integration Suite using {LLM_PROVIDER_LABELS[selectedLLMProvider]}
+            Convert integration flows to SAP Integration Suite using AI
           </p>
         </div>
         <div className="flex items-center gap-4">
