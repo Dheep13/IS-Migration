@@ -8,7 +8,7 @@ applications:
   stack: cflinuxfs4
   command: python app.py
   routes:
-  - route: mulesoft-iflow-api-gemma3.cfapps.us10-001.hana.ondemand.com
+  - route: mulesoft-iflow-api-gemma3.cfapps.eu10-005.hana.ondemand.com
   env:
     RUNPOD_API_KEY: ${RUNPOD_API_KEY}
     RUNPOD_ENDPOINT_ID: ${RUNPOD_ENDPOINT_ID}

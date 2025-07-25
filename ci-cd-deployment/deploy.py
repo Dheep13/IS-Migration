@@ -15,7 +15,7 @@ from typing import Dict, List, Any
 import time
 
 class DeploymentManager:
-    def __init__(self, config_path: str = "deployment/config/environments.json"):
+    def __init__(self, config_path: str = "ci-cd-deployment/config/environments.json"):
         """Initialize deployment manager with configuration"""
         self.config_path = config_path
         self.config = self.load_config()
@@ -148,7 +148,7 @@ class DeploymentManager:
         print("🌐 Starting complete Cloud Foundry deployment...")
         
         # Deploy in order: APIs first, then frontend
-        deployment_order = ['main_api', 'mule_api', 'boomi_api', 'frontend']
+        deployment_order = ['main_api', 'mule_api', 'boomi_api', 'gemma3_api', 'frontend']
         
         for app_name in deployment_order:
             print(f"\n{'='*50}")
@@ -226,9 +226,9 @@ def main():
         "local", "deploy", "deploy-all", "status", "clean", "restart"
     ], help="Deployment command")
     parser.add_argument("--app", choices=[
-        "main_api", "mule_api", "boomi_api", "frontend"
+        "main_api", "mule_api", "boomi_api", "gemma3_api", "frontend"
     ], help="Specific app to deploy")
-    parser.add_argument("--config", default="deployment/config/environments.json",
+    parser.add_argument("--config", default="ci-cd-deployment/config/environments.json",
                        help="Configuration file path")
     
     args = parser.parse_args()

@@ -37,6 +37,14 @@
       "MAIN_API_PROTOCOL": "http",
       "CORS_ORIGIN": "http://localhost:3000"
     },
+    "gemma3_api": {
+      "FLASK_ENV": "development",
+      "FLASK_DEBUG": "true",
+      "MAIN_API_URL": "http://localhost:5000",
+      "MAIN_API_HOST": "localhost",
+      "MAIN_API_PROTOCOL": "http",
+      "CORS_ORIGIN": "http://localhost:3000"
+    },
     "frontend": {
       "VITE_API_URL": "http://localhost:5000/api",
       "VITE_MAIN_API_HOST": "localhost",
@@ -76,6 +84,14 @@
       "MAIN_API_PROTOCOL": "https",
       "CORS_ORIGIN": "https://ifa-frontend.cfapps.eu10-005.hana.ondemand.com"
     },
+    "gemma3_api": {
+      "FLASK_ENV": "production",
+      "FLASK_DEBUG": "false",
+      "MAIN_API_URL": "https://it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com",
+      "MAIN_API_HOST": "it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com",
+      "MAIN_API_PROTOCOL": "https",
+      "CORS_ORIGIN": "https://ifa-frontend.cfapps.eu10-005.hana.ondemand.com"
+    },
     "frontend": {
       "VITE_API_URL": "https://it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com/api",
       "VITE_MAIN_API_HOST": "it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com",
@@ -102,6 +118,11 @@
     "boomi_api": {
       "name": "boomi-to-is-api",
       "path": "./BoomiToIS-API",
+      "manifest": "manifest.yml"
+    },
+    "gemma3_api": {
+      "name": "mulesoft-iflow-api-gemma3",
+      "path": "./MuleToIS-API-Gemma3",
       "manifest": "manifest.yml"
     },
     "frontend": {
