@@ -123,17 +123,17 @@ class DeploymentManager:
     def set_cf_env_vars(self, app_name: str) -> None:
         """Set Cloud Foundry environment variables"""
         cf_app_name = self.config['cf_apps'][app_name]['name']
-        
+
         # Combine shared credentials with production config
         env_vars = {**self.config['shared']['credentials']}
         env_vars.update(self.config['production'][app_name])
-        
+
         print(f"🔧 Setting environment variables for {cf_app_name}")
-        
+
         for key, value in env_vars.items():
             command = f'cf set-env {cf_app_name} {key} "{value}"'
             self.run_command(command)
-        
+
         print(f"✅ Environment variables set for {cf_app_name}")
     
     def deploy_to_cf(self, app_name: str, build_frontend: bool = False) -> None:
@@ -164,13 +164,17 @@ class DeploymentManager:
 
             self.run_command("npm run build", cwd=app_path)
         
-        # Set environment variables
-        self.set_cf_env_vars(app_name)
-        
-        # Deploy the app
+        # Deploy the app first
         print(f"📦 Pushing {cf_app_name} to Cloud Foundry...")
         self.run_command("cf push", cwd=app_path)
-        
+
+        # Set environment variables after app is created
+        self.set_cf_env_vars(app_name)
+
+        # Restart app to apply environment variables
+        print(f"🔄 Restarting {cf_app_name} to apply environment variables...")
+        self.run_command(f"cf restart {cf_app_name}")
+
         print(f"✅ Successfully deployed {cf_app_name}")
     
     def setup_local_development(self, apps: List[str] = None) -> None:
