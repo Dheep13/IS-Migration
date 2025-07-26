@@ -50,6 +50,10 @@ jobs:
         cd IFA-Project/frontend
         rm -rf node_modules package-lock.json
         npm cache clean --force
+        # Remove Windows-specific rollup package for Linux CI
+        npm uninstall @rollup/rollup-win32-x64-msvc || true
+        # Install Linux-specific rollup package
+        npm install @rollup/rollup-linux-x64-gnu --save-optional
         npm install
         # Ensure terser is installed for production builds
         npm install terser --save-dev
@@ -109,6 +113,10 @@ jobs:
       run: |
         cd IFA-Project/frontend
         rm -f package-lock.json
+        # Remove Windows-specific rollup package for Linux CI
+        npm uninstall @rollup/rollup-win32-x64-msvc || true
+        # Install Linux-specific rollup package
+        npm install @rollup/rollup-linux-x64-gnu --save-optional
         npm install
         # Ensure terser is installed for production builds
         npm install terser --save-dev
