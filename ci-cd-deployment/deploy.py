@@ -19,34 +19,55 @@ class DeploymentManager:
         """Initialize deployment manager with configuration"""
         # Handle being run from different directories
         script_dir = Path(__file__).parent
+        self.root_dir = Path.cwd()
+
         if config_path == "ci-cd-deployment/config/environments.json":
-            # If using default path, make it relative to script location
-            if script_dir.name == "ci-cd-deployment":
-                # Running from ci-cd-deployment directory
-                self.config_path = "config/environments.json"
-                self.root_dir = script_dir.parent
-            else:
-                # Running from root directory
-                self.config_path = config_path
-                self.root_dir = Path.cwd()
+            # Try multiple possible locations for the config file
+            possible_paths = [
+                "ci-cd-deployment/config/environments.json",  # From root
+                "config/environments.json",  # From ci-cd-deployment dir
+                script_dir / "config/environments.json",  # Relative to script
+                self.root_dir / "ci-cd-deployment/config/environments.json"  # Absolute from root
+            ]
+
+            config_found = False
+            for path in possible_paths:
+                test_path = Path(path) if isinstance(path, str) else path
+                if test_path.exists():
+                    self.config_path = str(test_path)
+                    config_found = True
+                    break
+
+            if not config_found:
+                self.config_path = config_path  # Fallback to original
         else:
             # Custom config path provided
             self.config_path = config_path
-            self.root_dir = Path.cwd()
 
         self.config = self.load_config()
-        
+
+    def resolve_app_path(self, app_name: str) -> str:
+        """Resolve app path relative to root directory"""
+        app_path = self.config['cf_apps'][app_name]['path']
+        if app_path.startswith('./'):
+            app_path = app_path[2:]  # Remove './'
+        return str(self.root_dir / app_path)
+
     def load_config(self) -> Dict[str, Any]:
         """Load deployment configuration"""
         try:
-            # Use absolute path relative to root directory
-            config_file = self.root_dir / self.config_path
+            # Use the resolved config path directly
+            config_file = Path(self.config_path)
+            if not config_file.is_absolute():
+                config_file = self.root_dir / self.config_path
+
             with open(config_file, 'r') as f:
                 return json.load(f)
         except FileNotFoundError:
             print(f"❌ Configuration file not found: {config_file}")
             print(f"   Root directory: {self.root_dir}")
             print(f"   Config path: {self.config_path}")
+            print(f"   Attempted path: {config_file}")
             sys.exit(1)
         except json.JSONDecodeError as e:
             print(f"❌ Invalid JSON in configuration file: {e}")
@@ -84,8 +105,8 @@ class DeploymentManager:
         """Create .env file for local development"""
         env_config = {**self.config['shared']['credentials']}
         env_config.update(self.config[environment][app_name])
-        
-        app_path = self.config['cf_apps'][app_name]['path']
+
+        app_path = self.resolve_app_path(app_name)
         env_file_path = os.path.join(app_path, '.env')
         
         print(f"📝 Creating .env file for {app_name} at {env_file_path}")
@@ -118,7 +139,7 @@ class DeploymentManager:
     def deploy_to_cf(self, app_name: str, build_frontend: bool = False) -> None:
         """Deploy application to Cloud Foundry"""
         app_config = self.config['cf_apps'][app_name]
-        app_path = app_config['path']
+        app_path = self.resolve_app_path(app_name)
         cf_app_name = app_config['name']
         
         print(f"🚀 Deploying {app_name} to Cloud Foundry...")
@@ -233,7 +254,7 @@ class DeploymentManager:
 
         # Remove .env files
         for app_name in self.config['cf_apps'].keys():
-            app_path = self.config['cf_apps'][app_name]['path']
+            app_path = self.resolve_app_path(app_name)
             env_file = os.path.join(app_path, '.env')
             if os.path.exists(env_file):
                 os.remove(env_file)
