@@ -155,9 +155,10 @@ class DeploymentManager:
 
             self.run_command("npm install", cwd=app_path)
 
-            # Install Windows-specific Rollup dependency to fix build issues
-            print("🔧 Installing Windows-specific Rollup dependency...")
-            self.run_command("npm i @rollup/rollup-win32-x64-msvc", cwd=app_path)
+            # Install Linux-specific Rollup dependency for CI deployment
+            print("🔧 Installing Linux-specific Rollup dependency...")
+            self.run_command("npm uninstall @rollup/rollup-win32-x64-msvc || true", cwd=app_path)
+            self.run_command("npm install @rollup/rollup-linux-x64-gnu --save-optional", cwd=app_path)
 
             # Install terser for production builds
             self.run_command("npm install terser --save-dev", cwd=app_path)
