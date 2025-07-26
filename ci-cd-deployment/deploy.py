@@ -17,17 +17,36 @@ import time
 class DeploymentManager:
     def __init__(self, config_path: str = "ci-cd-deployment/config/environments.json"):
         """Initialize deployment manager with configuration"""
-        self.config_path = config_path
+        # Handle being run from different directories
+        script_dir = Path(__file__).parent
+        if config_path == "ci-cd-deployment/config/environments.json":
+            # If using default path, make it relative to script location
+            if script_dir.name == "ci-cd-deployment":
+                # Running from ci-cd-deployment directory
+                self.config_path = "config/environments.json"
+                self.root_dir = script_dir.parent
+            else:
+                # Running from root directory
+                self.config_path = config_path
+                self.root_dir = Path.cwd()
+        else:
+            # Custom config path provided
+            self.config_path = config_path
+            self.root_dir = Path.cwd()
+
         self.config = self.load_config()
-        self.root_dir = Path.cwd()
         
     def load_config(self) -> Dict[str, Any]:
         """Load deployment configuration"""
         try:
-            with open(self.config_path, 'r') as f:
+            # Use absolute path relative to root directory
+            config_file = self.root_dir / self.config_path
+            with open(config_file, 'r') as f:
                 return json.load(f)
         except FileNotFoundError:
-            print(f"❌ Configuration file not found: {self.config_path}")
+            print(f"❌ Configuration file not found: {config_file}")
+            print(f"   Root directory: {self.root_dir}")
+            print(f"   Config path: {self.config_path}")
             sys.exit(1)
         except json.JSONDecodeError as e:
             print(f"❌ Invalid JSON in configuration file: {e}")
@@ -114,6 +133,14 @@ class DeploymentManager:
                 print("🗑️ Removed platform-specific package-lock.json")
 
             self.run_command("npm install", cwd=app_path)
+
+            # Install Windows-specific Rollup dependency to fix build issues
+            print("🔧 Installing Windows-specific Rollup dependency...")
+            self.run_command("npm i @rollup/rollup-win32-x64-msvc", cwd=app_path)
+
+            # Install terser for production builds
+            self.run_command("npm install terser --save-dev", cwd=app_path)
+
             self.run_command("npm run build", cwd=app_path)
         
         # Set environment variables

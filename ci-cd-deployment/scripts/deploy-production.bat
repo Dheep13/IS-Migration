@@ -27,7 +27,7 @@ if /i not "%confirm%"=="y" (
 
 echo.
 echo 🌐 Deploying all applications to Cloud Foundry...
-python deployment/deploy.py deploy-all
+python ci-cd-deployment/deploy.py deploy-all
 
 if %ERRORLEVEL% neq 0 (
     echo ❌ Production deployment failed!

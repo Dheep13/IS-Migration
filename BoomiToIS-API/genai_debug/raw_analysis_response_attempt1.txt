@@ -1,16 +1,16 @@
 {
-    "process_name": "SuccessFactors to SFTP Integration with Error Handling",
-    "description": "This integration facilitates the secure transfer of employee data from SAP SuccessFactors to an SFTP server with comprehensive error handling capabilities.",
+    "process_name": "Connect SAP SuccessFactors to SFTP with Error Handling",
+    "description": "This integration extracts employee data from SAP SuccessFactors, transforms it into Kafka Avro format, and transfers it to an SFTP server with comprehensive error handling capabilities.",
     "endpoints": [
         {
             "method": "GET",
-            "path": "/employee-data",
-            "purpose": "Retrieves employee data from SuccessFactors, transforms it, and uploads to SFTP",
+            "path": "/successfactors/employee-data",
+            "purpose": "Extract employee data from SuccessFactors, transform it, and upload to SFTP server",
             "components": [
                 {
                     "type": "request_reply",
                     "name": "Get_SuccessFactors_Employee_Data",
-                    "id": "successfactors_connector",
+                    "id": "successfactors_get_1",
                     "config": {
                         "endpoint_path": "/odata/v2/User",
                         "address": "https://api.successfactors.com"
@@ -19,26 +19,26 @@
                 {
                     "type": "groovy_script",
                     "name": "Transform_Canonical_To_Kafka_Avro",
-                    "id": "canonical_to_kafka_transform",
+                    "id": "transform_canonical_to_kafka_1",
                     "config": {
-                        "script": "TransformCanonicalToKafkaAvro.groovy"
+                        "script": "CanonicalToKafkaAvroTransformation.groovy"
+                    }
+                },
+                {
+                    "type": "enricher",
+                    "name": "Prepare_SFTP_Upload",
+                    "id": "prepare_sftp_1",
+                    "config": {
+                        "content": "${property.SFTPFilePath}/${date:now:yyyyMMdd}_employee_data.json"
                     }
                 },
                 {
                     "type": "request_reply",
                     "name": "Upload_To_SFTP",
-                    "id": "sftp_connector",
+                    "id": "sftp_upload_1",
                     "config": {
-                        "endpoint_path": "/employee-data/${date:now:yyyyMMdd}_employee_data.json",
-                        "address": "sftp://sftp.example.com"
-                    }
-                },
-                {
-                    "type": "enricher",
-                    "name": "Prepare_Success_Message",
-                    "id": "success_message_enricher",
-                    "config": {
-                        "content": "{\"status\": \"success\", \"message\": \"Employee data successfully transferred to SFTP\", \"timestamp\": \"${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}\"}"
+                        "endpoint_path": "${property.SFTPFilePath}",
+                        "address": "sftp://${property.SFTPHost}"
                     }
                 }
             ],
@@ -46,36 +46,46 @@
                 "exception_subprocess": [
                     {
                         "type": "enricher",
-                        "name": "Prepare_Error_Message",
-                        "id": "error_message_enricher",
+                        "name": "Prepare_Error_Notification",
+                        "id": "error_notification_1",
                         "trigger": "any_error",
                         "config": {
-                            "content": "{\"status\": \"error\", \"message\": \"${exception.message}\", \"timestamp\": \"${date:now:yyyy-MM-dd'T'HH:mm:ss.SSS}\"}"
+                            "content": "{\n  \"error\": \"Integration failure\",\n  \"process\": \"Connect SAP SuccessFactors to SFTP\",\n  \"timestamp\": \"${date:now:yyyy-MM-dd'T'HH:mm:ss}\",\n  \"details\": \"${exception.message}\"\n}"
                         }
                     },
                     {
                         "type": "request_reply",
                         "name": "Send_Error_Notification",
-                        "id": "error_notification_sender",
+                        "id": "send_notification_1",
                         "trigger": "any_error",
                         "config": {
-                            "endpoint_path": "/api/notifications/email",
+                            "endpoint_path": "/api/notifications",
                             "address": "https://notification-service.example.com"
                         }
                     }
                 ]
             },
+            "branching": {
+                "type": "exclusive",
+                "branches": [
+                    {
+                        "condition": "default",
+                        "components": ["successfactors_get_1", "transform_canonical_to_kafka_1", "prepare_sftp_1", "sftp_upload_1"],
+                        "sequence": ["successfactors_get_1", "transform_canonical_to_kafka_1", "prepare_sftp_1", "sftp_upload_1"]
+                    }
+                ]
+            },
             "sequence": [
-                "successfactors_connector",
-                "canonical_to_kafka_transform",
-                "sftp_connector",
-                "success_message_enricher"
+                "successfactors_get_1", 
+                "transform_canonical_to_kafka_1", 
+                "prepare_sftp_1", 
+                "sftp_upload_1"
             ],
             "transformations": [
                 {
-                    "name": "TransformCanonicalToKafkaAvro.groovy",
+                    "name": "CanonicalToKafkaAvroTransformation.groovy",
                     "type": "groovy",
-                    "script": "import groovy.json.*\n\ndef inputMessage = message.getBody(String.class)\ndef jsonSlurper = new JsonSlurper()\ndef data = jsonSlurper.parseText(inputMessage)\n\ndef result = [\n    \"Object\": [\n        \"batchProcessingDirectives\": [\n            \"Object\": [\n                \"accountID\": [\n                    \"Object\": [\n                        \"username\": data[9]\n                    ]\n                ],\n                \"batchProcessingOption\": [\n                    \"Array\": [\n                        \"ArrayElement1\": [\n                            \"Object\": [\n                                \"name\": data[118]\n                            ]\n                        ]\n                    ]\n                ]\n            ]\n        ],\n        \"batchContactList\": [\n            \"Array\": [\n                \"ArrayElement1\": [\n                    \"Object\": [\n                        \"contact\": [\n                            \"Array\": [\n                                \"ArrayElement1\": [\n                                    \"Object\": [\n                                        \"contactID\": data[91],\n                                        \"contactPointList\": [\n                                            \"Array\": [\n                                                \"ArrayElement1\": [\n                                                    \"Object\": [\n                                                        \"contactPoint\": [\n                                                            \"Array\": [\n                                                                \"ArrayElement1\": [\n                                                                    \"Object\": [\n                                                                        \"type\": data[111]\n                                                                    ]\n                                                                ]\n                                                            ]\n                                                        ]\n                                                    ]\n                                                ]\n                                            ]\n                                        ]\n                                    ]\n                                ]\n                            ]\n                        ]\n                    ]\n                ]\n            ]\n        ]\n    ]\n]\n\nmessage.setBody(JsonOutput.toJson(result))"
+                    "script": "import groovy.json.*\n\ndef inputBody = message.getBody(String.class)\ndef jsonSlurper = new JsonSlurper()\ndef data = jsonSlurper.parseText(inputBody)\n\ndef result = [\n  \"Object\": [\n    \"batchProcessingDirectives\": [\n      \"Object\": [\n        \"accountID\": [\n          \"Object\": [\n            \"username\": data.profileElement9 // Map profile element 9 to username\n          ]\n        ],\n        \"batchProcessingOption\": [\n          \"Array\": [\n            \"ArrayElement1\": [\n              \"Object\": [\n                \"name\": data.profileElement118 // Map profile element 118 to name\n              ]\n            ]\n          ]\n        ]\n      ]\n    ],\n    \"batchContactList\": [\n      \"Array\": [\n        \"ArrayElement1\": [\n          \"Object\": [\n            \"contact\": [\n              \"Array\": [\n                \"ArrayElement1\": [\n                  \"Object\": [\n                    \"contactID\": data.profileElement91, // Map profile element 91 to contactID\n                    \"contactPointList\": [\n                      \"Array\": [\n                        \"ArrayElement1\": [\n                          \"Object\": [\n                            \"contactPoint\": [\n                              \"Array\": [\n                                \"ArrayElement1\": [\n                                  \"Object\": [\n                                    \"type\": data.profileElement111 // Map profile element 111 to type\n                                  ]\n                                ]\n                              ]\n                            ]\n                          ]\n                        ]\n                      ]\n                    ]\n                  ]\n                ]\n              ]\n            ]\n          ]\n        ]\n      ]\n    ]\n  ]\n]\n\nmessage.setBody(JsonOutput.toJson(result))\nreturn message"
                 }
             ]
         }

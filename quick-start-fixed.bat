@@ -93,22 +93,13 @@ echo 🌐 Deploying all applications to production...
 echo ⚠️ This will deploy to Cloud Foundry!
 set /p confirm="Are you sure? (y/N): "
 if /i "%confirm%"=="y" (
-    echo Deploying Main API...
-    cd app
-    cf push
-    cd ..
-    echo.
-    echo Deploying BoomiToIS API...
-    cd BoomiToIS-API
-    cf push
-    cd ..
-    echo.
-    echo Deploying Frontend...
-    cd IFA-Project\frontend
-    npm run build
-    cf push
-    cd ..\..
-    echo ✅ All applications deployed!
+    echo Using deployment script...
+    python ci-cd-deployment/deploy.py deploy-all
+    if %ERRORLEVEL% equ 0 (
+        echo ✅ All applications deployed successfully!
+    ) else (
+        echo ❌ Deployment failed! Check logs above.
+    )
 ) else (
     echo Deployment cancelled.
 )

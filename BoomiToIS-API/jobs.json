@@ -695,5 +695,153 @@
       "response_code": 201,
       "method": "Bearer + Minimal Headers"
     }
+  },
+  "4edb2689-d861-45f5-80c0-9f2f9be6b461": {
+    "id": "4edb2689-d861-45f5-80c0-9f2f9be6b461",
+    "original_job_id": "e3d073c7-b9c3-4a60-931b-b8a77bdf1d27",
+    "status": "completed",
+    "created": "0c69c0bb-6962-11f0-af28-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\4edb2689-d861-45f5-80c0-9f2f9be6b461\\BoomiFlow_e3d073c7.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_e3d073c7.xml": "genai_debug\\final_iflow_BoomiFlow_e3d073c7.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_e3d073c7"
+  },
+  "752bec79-7832-4bec-9da4-ed84f7cd4a47": {
+    "id": "752bec79-7832-4bec-9da4-ed84f7cd4a47",
+    "original_job_id": "2cd22c93-a343-4a5f-b864-61d3fd7e400a",
+    "status": "completed",
+    "created": "35cd09a4-6964-11f0-a169-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\752bec79-7832-4bec-9da4-ed84f7cd4a47\\BoomiFlow_2cd22c93.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_2cd22c93.xml": "genai_debug\\final_iflow_BoomiFlow_2cd22c93.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_2cd22c93"
+  },
+  "627ceb2e-3a1c-4e8f-a313-d6c68a7ca82e": {
+    "id": "627ceb2e-3a1c-4e8f-a313-d6c68a7ca82e",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "39c57477-6966-11f0-9526-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\627ceb2e-3a1c-4e8f-a313-d6c68a7ca82e\\IFlow_2cd22c93.zip",
+      "debug": {
+        "final_iflow_IFlow_2cd22c93.xml": "genai_debug\\final_iflow_IFlow_2cd22c93.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "sftp_test_123",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "sftp_test_123",
+      "package_id": "ConversionPackages",
+      "iflow_name": "sftp_test_123",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "e1668c67-e2b2-4690-a348-cf2375eca9ff": {
+    "id": "e1668c67-e2b2-4690-a348-cf2375eca9ff",
+    "original_job_id": "d3a8ae16-26be-4e33-96b4-9b30e0c8cc74",
+    "status": "completed",
+    "created": "c87e583f-6971-11f0-b865-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\e1668c67-e2b2-4690-a348-cf2375eca9ff\\BoomiFlow_d3a8ae16.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_d3a8ae16.xml": "genai_debug\\final_iflow_BoomiFlow_d3a8ae16.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_d3a8ae16"
+  },
+  "9301b468-beb4-4e8b-980f-6b9e11b1d257": {
+    "id": "9301b468-beb4-4e8b-980f-6b9e11b1d257",
+    "original_job_id": "e989b91b-2dc4-41f8-976a-000aad9b1005",
+    "status": "completed",
+    "created": "0d37de41-6973-11f0-bd82-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\9301b468-beb4-4e8b-980f-6b9e11b1d257\\BoomiFlow_e989b91b.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_e989b91b.xml": "genai_debug\\final_iflow_BoomiFlow_e989b91b.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_e989b91b"
+  },
+  "ecc1bcdf-4476-4467-bbc3-f3b5e09083a9": {
+    "id": "ecc1bcdf-4476-4467-bbc3-f3b5e09083a9",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "42b597a6-6973-11f0-be10-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\ecc1bcdf-4476-4467-bbc3-f3b5e09083a9\\IFlow_e989b91b.zip",
+      "debug": {
+        "final_iflow_IFlow_e989b91b.xml": "genai_debug\\final_iflow_IFlow_e989b91b.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "sftp_integration_kafka",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "sftp_integration_kafka",
+      "package_id": "ConversionPackages",
+      "iflow_name": "sftp_integration_kafka",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
   }
 }

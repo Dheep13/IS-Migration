@@ -1,4 +1,4 @@
-export const APP_NAME = 'I-Migrate'
+export const APP_NAME = 'IS-Migration'
 export const CREDIT_NAME = 'IT Resonance, Inc.'
 export const DATE_FORMAT = 'DD-MM-YYYY'
 export const TIME_FORMAT = 'hh:mm a'

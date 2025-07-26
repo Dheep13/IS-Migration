@@ -174,7 +174,7 @@ const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hi
             </div>
 
             <p className="text-xs text-gray-500">
-              Supported formats: .xml files or .zip archives containing {(hidePlatformSelector ? selectedPlatform : platform) === 'mulesoft' ? 'MuleSoft' : 'Dell Boomi'} XML files
+              Supported formats: .xml files or .zip archives containing {(hidePlatformSelector ? selectedPlatform : platform) === 'mulesoft' ? 'MuleSoft' : 'Boomi'} XML files
             </p>
           </div>
         </div>

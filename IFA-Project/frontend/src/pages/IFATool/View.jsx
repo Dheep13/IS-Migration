@@ -71,7 +71,7 @@ const UnifiedDocumentationUpload = ({ onSubmit, isLoading, selectedPlatform, upl
               Upload Documentation
             </h2>
             <p className="text-gray-600 mb-6">
-              Upload business documentation to automatically generate {selectedPlatform === 'mulesoft' ? 'MuleSoft' : 'Dell Boomi'} iFlows
+              Upload business documentation to automatically generate {selectedPlatform === 'mulesoft' ? 'MuleSoft' : 'Boomi'} iFlows
             </p>
           </div>
 
@@ -214,6 +214,7 @@ const View = () => {
   const [pollCount, setPollCount] = useState(0)
   const [consecutiveErrors, setConsecutiveErrors] = useState(0)
   const [showLLMSelector, setShowLLMSelector] = useState(false)
+
   const [uploadType, setUploadType] = useState('source_code') // 'source_code' or 'documentation'
   const [selectedPlatform, setSelectedPlatform] = useState('mulesoft') // 'mulesoft' or 'boomi'
 
@@ -613,7 +614,7 @@ const View = () => {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">I-Migrate</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">IS-Migration</h1>
           <p className="text-gray-600">
             Convert integration flows to SAP Integration Suite using AI
           </p>
@@ -631,7 +632,7 @@ const View = () => {
       {/* Upload Configuration Section */}
       <Card className="mb-6">
         <CardBody className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6">
             {/* Upload Type Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -673,10 +674,10 @@ const View = () => {
             {/* Platform Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Target Platform
+                Platform
               </label>
               <Select
-                placeholder="Select target platform"
+                placeholder="Select platform"
                 selectedKeys={new Set([selectedPlatform])}
                 onSelectionChange={(keys) => {
                   const selectedKey = Array.from(keys)[0];
@@ -690,8 +691,8 @@ const View = () => {
                 <SelectItem key="mulesoft" textValue="MuleSoft">
                   MuleSoft
                 </SelectItem>
-                <SelectItem key="boomi" textValue="Dell Boomi">
-                  Dell Boomi
+                <SelectItem key="boomi" textValue="Boomi">
+                  Boomi
                 </SelectItem>
               </Select>
               <p className="text-xs text-gray-500 mt-1">
@@ -703,7 +704,7 @@ const View = () => {
       </Card>
 
       {showLLMSelector && (
-        <div className="bg-gray-50 p-6 rounded-lg">
+        <div className="bg-gray-50 p-6 rounded-lg mb-6">
           <LLMProviderSelector
             selectedProvider={selectedLLMProvider}
             onProviderChange={(provider) => {

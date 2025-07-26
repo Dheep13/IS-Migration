@@ -18218,5 +18218,696 @@
     "iflow_match_result": {
       "message": "Found 28 potential matches"
     }
+  },
+  "e3d073c7-b9c3-4a60-931b-b8a77bdf1d27": {
+    "id": "e3d073c7-b9c3-4a60-931b-b8a77bdf1d27",
+    "status": "completed",
+    "created": "2025-07-25T19:46:23.904008",
+    "last_updated": "2025-07-25T19:47:08.493362",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e3d073c7-b9c3-4a60-931b-b8a77bdf1d27\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 3,
+      "processed_files": 3,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 1,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\e3d073c7-b9c3-4a60-931b-b8a77bdf1d27\\boomi_documentation.md",
+      "html": "results\\e3d073c7-b9c3-4a60-931b-b8a77bdf1d27\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 3,
+      "processed_files": 3,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e3d073c7-b9c3-4a60-931b-b8a77bdf1d27\\extracted\\Flow.xml",
+          "component": {
+            "id": "45b5ab92-a1f2-4a6e-8635-7ddf9b49ac37",
+            "name": "Create Salesforce Opportunities from Stripe Subscriptions",
+            "type": "process",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "process": {
+            "allow_simultaneous": "true",
+            "enable_user_log": "false",
+            "process_log_on_error_only": "false",
+            "workload": "general",
+            "shapes": [
+              {
+                "name": "shape1",
+                "type": "start",
+                "image": "start",
+                "user_label": "",
+                "position": {
+                  "x": 48.0,
+                  "y": 46.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Listen",
+                    "connector_type": "wss",
+                    "connection_id": null,
+                    "operation_id": "0856f0fa-065f-4cbe-80fd-62c8bc7d60f8"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape1.dragpoint1",
+                    "to_shape": "shape6",
+                    "position": {
+                      "x": 224.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape3",
+                "type": "connectoraction",
+                "image": "connectoraction_icon",
+                "user_label": "",
+                "position": {
+                  "x": 624.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "connector_action": {
+                    "action_type": "Send",
+                    "connector_type": "salesforce",
+                    "connection_id": "36fc72b2-5fa9-4c74-99df-5434918a140e",
+                    "operation_id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape3.dragpoint1",
+                    "to_shape": "shape5",
+                    "position": {
+                      "x": 800.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape4",
+                "type": "map",
+                "image": "map_icon",
+                "user_label": "",
+                "position": {
+                  "x": 432.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "map": {
+                    "map_id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268"
+                  }
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape4.dragpoint1",
+                    "to_shape": "shape3",
+                    "position": {
+                      "x": 608.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "shape5",
+                "type": "stop",
+                "image": "stop_icon",
+                "user_label": "",
+                "position": {
+                  "x": 816.0,
+                  "y": 48.0
+                },
+                "configuration": {},
+                "dragpoints": []
+              },
+              {
+                "name": "shape6",
+                "type": "documentproperties",
+                "image": "documentproperties_icon",
+                "user_label": "Set Dynamic Properties",
+                "position": {
+                  "x": 240.0,
+                  "y": 48.0
+                },
+                "configuration": {
+                  "document_properties": [
+                    {
+                      "name": "Dynamic Document Property - DDP_CustomerName",
+                      "property_id": "dynamicdocument.DDP_CustomerName",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_Subscription",
+                      "property_id": "dynamicdocument.DDP_Subscription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_SalesforceDescription",
+                      "property_id": "dynamicdocument.DDP_SalesforceDescription",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    },
+                    {
+                      "name": "Dynamic Document Property - DDP_CloseDate",
+                      "property_id": "dynamicdocument.DDP_CloseDate",
+                      "default_value": "",
+                      "persist": false,
+                      "is_dynamic_credential": false
+                    }
+                  ]
+                },
+                "dragpoints": [
+                  {
+                    "name": "shape6.dragpoint1",
+                    "to_shape": "shape4",
+                    "position": {
+                      "x": 416.0,
+                      "y": 56.0
+                    }
+                  }
+                ]
+              }
+            ],
+            "connections": [
+              {
+                "from_shape": "shape1",
+                "to_shape": "shape6",
+                "from_position": {
+                  "x": 224.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape3",
+                "to_shape": "shape5",
+                "from_position": {
+                  "x": 800.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape4",
+                "to_shape": "shape3",
+                "from_position": {
+                  "x": 608.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              },
+              {
+                "from_shape": "shape6",
+                "to_shape": "shape4",
+                "from_position": {
+                  "x": 416.0,
+                  "y": 56.0
+                },
+                "connection_type": "flow"
+              }
+            ]
+          },
+          "integration_patterns": [
+            "event_listener",
+            "data_sender",
+            "dynamic_properties"
+          ]
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e3d073c7-b9c3-4a60-931b-b8a77bdf1d27\\extracted\\comp1.xml",
+          "component": {
+            "id": "cbb5a23f-5904-4fb9-a7dc-9e7062d2b268",
+            "name": "Subscription Completed JSON to SF Opportunity CREATE Request XML",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:10Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:10Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "map": {
+            "from_profile": "6e791dfd-6dad-469a-9bd7-5339e240cca2",
+            "to_profile": "efd69737-e49c-4a38-bb32-abb39383ed5f",
+            "mappings": [
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "5",
+                "to_name_path": "Opportunity/Description",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "4",
+                "to_name_path": "Opportunity/Name",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "3",
+                "from_type": "function",
+                "to_key": "10",
+                "to_name_path": "Opportunity/CloseDate",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [
+        {
+          "type": "connector",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e3d073c7-b9c3-4a60-931b-b8a77bdf1d27\\extracted\\comp2.xml",
+          "component": {
+            "id": "22d84e3e-6a7f-4c9d-9757-67177bc97a19",
+            "name": "SF Opportunity CREATE Operation",
+            "type": "connector-action",
+            "version": "1",
+            "created_by": "deepan@itresonance.com",
+            "created_date": "2025-06-05T11:22:11Z",
+            "modified_by": "deepan@itresonance.com",
+            "modified_date": "2025-06-05T11:22:11Z",
+            "folder_path": "IT Resonance/Create Salesforce Opportunities from Stripe Subscriptions_2025-06-05-11:22:02",
+            "description": "For more details, see here: https://community.boomi.com/s/article/Create-Salesforce-Opportunities-from-Stripe-Subscriptions"
+          },
+          "connector": {
+            "type": "salesforce",
+            "object_action": "create",
+            "object_name": "Opportunity",
+            "batch_size": "10",
+            "use_bulk_api": false
+          }
+        }
+      ],
+      "errors": []
+    }
+  },
+  "2cd22c93-a343-4a5f-b864-61d3fd7e400a": {
+    "id": "2cd22c93-a343-4a5f-b864-61d3fd7e400a",
+    "status": "completed",
+    "created": "2025-07-25T20:01:40.678647",
+    "last_updated": "2025-07-25T20:11:42.956509",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 0,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\boomi_documentation.md",
+      "html": "results\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Implement Guide SAP SuccessFactors to SFTP.xml",
+          "component": {
+            "id": null,
+            "name": null,
+            "type": null,
+            "version": null,
+            "created_by": null,
+            "created_date": null,
+            "modified_by": null,
+            "modified_date": null,
+            "folder_path": null,
+            "description": "\n        Connect SAP SuccessFactors to SFTP with Error Handling is a robust integration solution within the Boomi platform, focusing on integrating data from SuccessFactors to an SFTP server while incorporating comprehensive error handling. Enhance your business operations by ensuring the accurate and timely transfer of employee data with efficient error notifications.\n    "
+          },
+          "process": {
+            "allow_simultaneous": null,
+            "enable_user_log": null,
+            "process_log_on_error_only": null,
+            "workload": null,
+            "shapes": [],
+            "connections": []
+          },
+          "integration_patterns": []
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Kafka Connection.xml",
+          "component": {
+            "id": "3a314f53-92c3-4a55-8dcf-6c3ad766acb4",
+            "name": "Canonical To Kafka Avro",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "Saravanan@itresonance.com",
+            "created_date": "2025-06-17T12:54:55Z",
+            "modified_by": "Saravanan@itresonance.com",
+            "modified_date": "2025-06-17T12:54:55Z",
+            "folder_path": "ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08",
+            "description": ""
+          },
+          "map": {
+            "from_profile": "a0733742-31f8-4c23-a8a4-08382ffb75ce",
+            "to_profile": "d93e0b39-c94d-4947-9b49-5d9939473947",
+            "mappings": [
+              {
+                "from_key": "9",
+                "from_type": "profile",
+                "to_key": "144",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/accountID/Object/username",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "91",
+                "from_type": "profile",
+                "to_key": "160",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactID",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "111",
+                "from_type": "profile",
+                "to_key": "174",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactPointList/Array/ArrayElement1/Object/contactPoint/Array/ArrayElement1/Object/type",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "118",
+                "from_type": "profile",
+                "to_key": "150",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/batchProcessingOption/Array/ArrayElement1/Object/name",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [],
+      "errors": []
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\iflow_match\\integration_match_report.html",
+      "summary": "results\\2cd22c93-a343-4a5f-b864-61d3fd7e400a\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 28 potential matches"
+    }
+  },
+  "d3a8ae16-26be-4e33-96b4-9b30e0c8cc74": {
+    "id": "d3a8ae16-26be-4e33-96b4-9b30e0c8cc74",
+    "status": "completed",
+    "created": "2025-07-25T21:38:27.249122",
+    "last_updated": "2025-07-25T21:40:23.154211",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 0,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\boomi_documentation.md",
+      "html": "results\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Implement Guide SAP SuccessFactors to SFTP.xml",
+          "component": {
+            "id": null,
+            "name": null,
+            "type": null,
+            "version": null,
+            "created_by": null,
+            "created_date": null,
+            "modified_by": null,
+            "modified_date": null,
+            "folder_path": null,
+            "description": "\n        Connect SAP SuccessFactors to SFTP with Error Handling is a robust integration solution within the Boomi platform, focusing on integrating data from SuccessFactors to an SFTP server while incorporating comprehensive error handling. Enhance your business operations by ensuring the accurate and timely transfer of employee data with efficient error notifications.\n    "
+          },
+          "process": {
+            "allow_simultaneous": null,
+            "enable_user_log": null,
+            "process_log_on_error_only": null,
+            "workload": null,
+            "shapes": [],
+            "connections": []
+          },
+          "integration_patterns": []
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Kafka Connection.xml",
+          "component": {
+            "id": "3a314f53-92c3-4a55-8dcf-6c3ad766acb4",
+            "name": "Canonical To Kafka Avro",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "Saravanan@itresonance.com",
+            "created_date": "2025-06-17T12:54:55Z",
+            "modified_by": "Saravanan@itresonance.com",
+            "modified_date": "2025-06-17T12:54:55Z",
+            "folder_path": "ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08",
+            "description": ""
+          },
+          "map": {
+            "from_profile": "a0733742-31f8-4c23-a8a4-08382ffb75ce",
+            "to_profile": "d93e0b39-c94d-4947-9b49-5d9939473947",
+            "mappings": [
+              {
+                "from_key": "9",
+                "from_type": "profile",
+                "to_key": "144",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/accountID/Object/username",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "91",
+                "from_type": "profile",
+                "to_key": "160",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactID",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "111",
+                "from_type": "profile",
+                "to_key": "174",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactPointList/Array/ArrayElement1/Object/contactPoint/Array/ArrayElement1/Object/type",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "118",
+                "from_type": "profile",
+                "to_key": "150",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/batchProcessingOption/Array/ArrayElement1/Object/name",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [],
+      "errors": []
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\iflow_match\\integration_match_report.html",
+      "summary": "results\\d3a8ae16-26be-4e33-96b4-9b30e0c8cc74\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 19 potential matches"
+    }
+  },
+  "390e6811-70e6-4c9a-994e-8c993092b79d": {
+    "id": "390e6811-70e6-4c9a-994e-8c993092b79d",
+    "status": "processing",
+    "created": "2025-07-25T21:42:07.875910",
+    "last_updated": "2025-07-25T21:42:08.345691",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\390e6811-70e6-4c9a-994e-8c993092b79d\\extracted",
+    "zip_file": true,
+    "processing_step": "file_analysis",
+    "processing_message": "Analyzing Dell Boomi files..."
+  },
+  "e989b91b-2dc4-41f8-976a-000aad9b1005": {
+    "id": "e989b91b-2dc4-41f8-976a-000aad9b1005",
+    "status": "completed",
+    "created": "2025-07-25T21:48:03.764946",
+    "last_updated": "2025-07-25T21:51:30.997032",
+    "enhance": true,
+    "platform": "boomi",
+    "input_directory": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e989b91b-2dc4-41f8-976a-000aad9b1005\\extracted",
+    "zip_file": true,
+    "processing_step": "completed",
+    "processing_message": "Dell Boomi documentation generation completed successfully with AI enhancement",
+    "file_info": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": 1,
+      "maps": 1,
+      "connectors": 0,
+      "errors": 0
+    },
+    "files": {
+      "markdown": "results\\e989b91b-2dc4-41f8-976a-000aad9b1005\\boomi_documentation.md",
+      "html": "results\\e989b91b-2dc4-41f8-976a-000aad9b1005\\boomi_documentation.html"
+    },
+    "parsed_details": {
+      "total_files": 8,
+      "processed_files": 2,
+      "processes": [
+        {
+          "type": "process",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e989b91b-2dc4-41f8-976a-000aad9b1005\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Implement Guide SAP SuccessFactors to SFTP.xml",
+          "component": {
+            "id": null,
+            "name": null,
+            "type": null,
+            "version": null,
+            "created_by": null,
+            "created_date": null,
+            "modified_by": null,
+            "modified_date": null,
+            "folder_path": null,
+            "description": "\n        Connect SAP SuccessFactors to SFTP with Error Handling is a robust integration solution within the Boomi platform, focusing on integrating data from SuccessFactors to an SFTP server while incorporating comprehensive error handling. Enhance your business operations by ensuring the accurate and timely transfer of employee data with efficient error notifications.\n    "
+          },
+          "process": {
+            "allow_simultaneous": null,
+            "enable_user_log": null,
+            "process_log_on_error_only": null,
+            "workload": null,
+            "shapes": [],
+            "connections": []
+          },
+          "integration_patterns": []
+        }
+      ],
+      "maps": [
+        {
+          "type": "map",
+          "file_path": "C:\\Users\\deepan\\OneDrive - IT Resonance\\Documents\\DheepLearningITR\\mule_cf_deployment\\app\\uploads\\e989b91b-2dc4-41f8-976a-000aad9b1005\\extracted\\agent_11824139-988f-46c8-84db-01a083aa2c56\\Kafka Connection.xml",
+          "component": {
+            "id": "3a314f53-92c3-4a55-8dcf-6c3ad766acb4",
+            "name": "Canonical To Kafka Avro",
+            "type": "transform.map",
+            "version": "1",
+            "created_by": "Saravanan@itresonance.com",
+            "created_date": "2025-06-17T12:54:55Z",
+            "modified_by": "Saravanan@itresonance.com",
+            "modified_date": "2025-06-17T12:54:55Z",
+            "folder_path": "ITresonance/Connect SAP SuccessFactors to SFTP with Error Handling_2025-06-17-12:55:08",
+            "description": ""
+          },
+          "map": {
+            "from_profile": "a0733742-31f8-4c23-a8a4-08382ffb75ce",
+            "to_profile": "d93e0b39-c94d-4947-9b49-5d9939473947",
+            "mappings": [
+              {
+                "from_key": "9",
+                "from_type": "profile",
+                "to_key": "144",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/accountID/Object/username",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "91",
+                "from_type": "profile",
+                "to_key": "160",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactID",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "111",
+                "from_type": "profile",
+                "to_key": "174",
+                "to_name_path": "Root/Object/batchContactList/Array/ArrayElement1/Object/contact/Array/ArrayElement1/Object/contactPointList/Array/ArrayElement1/Object/contactPoint/Array/ArrayElement1/Object/type",
+                "to_type": "profile"
+              },
+              {
+                "from_key": "118",
+                "from_type": "profile",
+                "to_key": "150",
+                "to_name_path": "Root/Object/batchProcessingDirectives/Object/batchProcessingOption/Array/ArrayElement1/Object/name",
+                "to_type": "profile"
+              }
+            ]
+          }
+        }
+      ],
+      "connectors": [],
+      "errors": []
+    },
+    "iflow_match_status": "completed",
+    "iflow_match_message": "SAP Integration Suite equivalent search completed successfully!",
+    "iflow_match_files": {
+      "report": "results\\e989b91b-2dc4-41f8-976a-000aad9b1005\\iflow_match\\integration_match_report.html",
+      "summary": "results\\e989b91b-2dc4-41f8-976a-000aad9b1005\\iflow_match\\iflow_match_summary.json"
+    },
+    "iflow_match_result": {
+      "message": "Found 32 potential matches"
+    },
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully as: sftp_integration_kafka",
+    "deployment_details": {
+      "iflow_name": "sftp_integration_kafka",
+      "package_id": "ConversionPackages",
+      "iflow_id": "sftp_integration_kafka",
+      "deployment_method": "direct",
+      "response_code": 201,
+      "boomi_job_id": "ecc1bcdf-4476-4467-bbc3-f3b5e09083a9"
+    },
+    "deployed_iflow_name": "sftp_integration_kafka",
+    "deployed_package_id": "ConversionPackages"
   }
 }

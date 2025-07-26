@@ -124,9 +124,9 @@ const DocumentationUploadForm = ({ onUpload, isLoading, platform, onPlatformChan
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Platform Selection */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Target Platform</label>
+            <label className="text-sm font-medium">Platform</label>
             <Select
-              placeholder="Select target platform"
+              placeholder="Select platform"
               value={platform}
               onChange={(e) => onPlatformChange(e.target.value)}
               isRequired
@@ -136,7 +136,7 @@ const DocumentationUploadForm = ({ onUpload, isLoading, platform, onPlatformChan
                 MuleSoft
               </SelectItem>
               <SelectItem key="boomi" value="boomi">
-                Dell Boomi
+                Boomi
               </SelectItem>
             </Select>
           </div>

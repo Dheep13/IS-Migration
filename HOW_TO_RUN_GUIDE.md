@@ -22,11 +22,14 @@ deployment/scripts/manage-env.bat start-local
 #### Production Deployment
 ```bash
 # Deploy all applications
-deployment/scripts/manage-env.bat deploy-all
+ci-cd-deployment/scripts/deploy-production.bat
+
+# Or use the deployment script directly
+python ci-cd-deployment/deploy.py deploy-all
 
 # Deploy single application
-deployment/scripts/manage-env.bat deploy-single [app_name]
-# Available apps: main_api, mule_api, boomi_api, frontend
+python ci-cd-deployment/deploy.py deploy --app [app_name]
+# Available apps: main_api, mule_api, boomi_api, gemma3_api, frontend
 ```
 
 ## 🌐 Service URLs
