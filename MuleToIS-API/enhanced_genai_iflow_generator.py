@@ -6975,7 +6975,7 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", help="Directory to save the generated iFlow", default="genai_output")
     parser.add_argument("--iflow_name", help="Name of the iFlow", default="ProductAPIExplicit")
     parser.add_argument("--api_key", help="API key for the LLM service", default=api_key_from_env)
-    parser.add_argument("--model", help="Model to use for the LLM service", default="claude-3-7-sonnet-20250219")
+    parser.add_argument("--model", help="Model to use for the LLM service", default="claude-sonnet-4-20250514")
     parser.add_argument("--provider", help="AI provider to use ('openai', 'claude', or 'local')", default="claude")
     args = parser.parse_args()
 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import { Upload, File } from "lucide-react"
+import { Upload, File, X } from "lucide-react"
 import CustomCard from "@components/Card"
 
 const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hidePlatformSelector = false }) => {
@@ -50,6 +50,13 @@ const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hi
 
   const handleBrowseClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleClearFiles = () => {
+    setFiles([])
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
   }
 
   return (
@@ -162,7 +169,7 @@ const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hi
                 {files.length > 0 ? files.map(f => f.name).join(", ") : "or"}
               </p>
 
-              {files.length === 0 && (
+              {files.length === 0 ? (
                 <button
                   type="button"
                   onClick={handleBrowseClick}
@@ -170,6 +177,24 @@ const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hi
                 >
                   Browse Files
                 </button>
+              ) : (
+                <div className="mt-2 flex space-x-2">
+                  <button
+                    type="button"
+                    onClick={handleBrowseClick}
+                    className="px-4 py-2 bg-company-orange-500 text-white rounded-md hover:bg-company-orange-600 transition-colors duration-200"
+                  >
+                    Add More Files
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClearFiles}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors duration-200 flex items-center space-x-1"
+                  >
+                    <X className="h-4 w-4" />
+                    <span>Clear Files</span>
+                  </button>
+                </div>
               )}
             </div>
 

@@ -311,6 +311,35 @@ class DatabaseManager:
             db.session.rollback()
             logging.error(f"Failed to record metric {metric_name}: {str(e)}")
 
+    @staticmethod
+    def delete_job(job_id):
+        """
+        Delete a job and all its associated records.
+        """
+        try:
+            # Delete associated documents
+            Document.query.filter_by(job_id=job_id).delete()
+
+            # Delete associated iFlow matches
+            IFlowMatch.query.filter_by(job_id=job_id).delete()
+
+            # Delete associated iFlow generations
+            IFlowGeneration.query.filter_by(job_id=job_id).delete()
+
+            # Delete the job itself
+            job = Job.query.get(job_id)
+            if job:
+                db.session.delete(job)
+
+            db.session.commit()
+            logging.info(f"Successfully deleted job {job_id} and all associated records")
+            return True
+
+        except Exception as e:
+            db.session.rollback()
+            logging.error(f"Failed to delete job {job_id}: {str(e)}")
+            raise
+
 def migrate_existing_jobs(app: Flask, jobs_file_path: str):
     """
     Migrate existing jobs from JSON file to database.

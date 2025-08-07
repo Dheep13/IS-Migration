@@ -1310,7 +1310,7 @@ def main():
     # Set default models based on provider
     if args.provider == 'claude' and args.model == 'gpt-4':
         # Use the correct Claude model name
-        args.model = 'claude-3-7-sonnet-20250219'
+        args.model = 'claude-sonnet-4-20250514'
 
     # Get API key from .env file if not provided in command line
     api_key = args.api_key

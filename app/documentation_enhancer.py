@@ -164,32 +164,197 @@ class DocumentationEnhancer:
     5. Expected outcomes and error scenarios
 
     ### Step-by-Step Flow Description
-    For each shape in the Boomi process, provide detailed analysis:
-    1. **Start Event (shape1):**
-       - Connector type and configuration
-       - Listen operation details
-       - Input profile and data format
 
-    2. **Document Properties (if present):**
-       - ALL dynamic document properties and their calculations
-       - HTTP connector calls within properties (GET operations)
-       - Source value configurations and parameter mappings
-       - Date calculations and concatenation logic
+    **FORMATTING REQUIREMENTS FOR STEP-BY-STEP FLOW:**
+    Use enhanced visual formatting with clear hierarchy and professional structure:
 
-    3. **Transform/Map Components:**
-       - Input and output profiles
-       - Field mappings (fromKey → toKey)
-       - Function steps and their purposes
-       - Default values and constants
+    ## **Process Flow Overview**
 
-    4. **Connector Actions:**
-       - Connector type (Salesforce, HTTP, etc.)
-       - Operation type (Send, Get, etc.)
-       - Object actions and configurations
-       - Field lists and parameter mappings
+    ### **Flow Steps**
 
-    5. **End Events:**
-       - Stop configuration and continuation settings
+    For each step, use this enhanced format:
+
+    ---
+
+    #### **Step 1: Start Event (shape1)**
+
+**Component Type:** [Component Name]
+
+**Purpose:** [Brief description of what this step accomplishes]
+
+**Configuration Details:**
+
+- **Connector Type:** [Specific connector type]
+- **Operation:** [Listen/Trigger operation details]
+- **Input Profile:** [Data format and structure]
+- **Trigger Conditions:** [What initiates this process]
+
+**Data Flow:**
+
+- **Input:** [Detailed input description]
+- **Processing:** [What happens to the data]
+- **Output:** [Detailed output description]
+
+    ---
+
+    #### **Step 2: Document Properties** *(if present)*
+
+**Component Type:** Document Properties
+
+**Purpose:** [Brief description of property calculations and enhancements]
+
+**Configuration Details:**
+
+- **Dynamic Properties:** [List all dynamic document properties]
+- **HTTP Calls:** [Any HTTP connector calls within properties]
+- **Calculations:** [Date calculations, concatenations, etc.]
+- **Parameter Mappings:** [Source value configurations]
+
+**Data Flow:**
+
+- **Input:** [Previous step output]
+- **Processing:** [Property calculations and data enhancement]
+- **Output:** [Enhanced data with calculated properties]
+
+    ---
+
+    #### **Step 3: Transform/Map Components**
+
+**Component Type:** Map/Transform
+
+**Purpose:** [Brief description of the transformation being performed]
+
+**Configuration Details:**
+
+- **Input Profile:** [Source data structure name]
+- **Output Profile:** [Target data structure name]
+- **Transformation Logic:** [Key transformation rules]
+- **Function Steps:** [Any special functions used]
+
+    **Input Data Structure:**
+
+    | Field Name | Data Type | Description |
+    |------------|-----------|-------------|
+    | [Clean field names] | [Data types] | [Business description] |
+
+    **Output Data Structure:**
+
+    | Field Name | Data Type | Description |
+    |------------|-----------|-------------|
+    | [Clean field names] | [Data types] | [Business description] |
+
+    **Field Mappings:**
+
+    | Source Field | Target Field | Data Type | Business Purpose |
+    |--------------|--------------|-----------|------------------|
+    | [Extract meaningful field names] | [Clean target field names] | [Proper data types] | [Clear business context] |
+
+    **Data Flow:**
+
+    - **Input:** [Source format and structure]
+    - **Processing:** [Transformation logic applied]
+    - **Output:** [Target format and structure]
+
+    ---
+
+    #### **Step 4: Connector Actions**
+
+**Component Type:** [Connector Type] (Salesforce, HTTP, etc.)
+
+**Purpose:** [Brief description of the external system interaction]
+
+**Configuration Details:**
+
+- **Connector Type:** [Specific connector (Salesforce, HTTP, etc.)]
+- **Operation:** [Send, Get, Update, Delete, etc.]
+- **Target Object:** [Specific object or endpoint]
+- **Authentication:** [Authentication method used]
+- **Error Handling:** [How errors are managed]
+
+**Data Flow:**
+
+- **Input:** [Data being sent to external system]
+- **Processing:** [External system operation performed]
+- **Output:** [Response or result from external system]
+
+    ---
+
+    #### **Step 5: Decision Points** *(if present)*
+
+**Component Type:** Decision
+
+**Purpose:** [Brief description of the decision logic]
+
+**Configuration Details:**
+
+- **Decision Criteria:** [What conditions are evaluated]
+- **Branch Logic:** [How different paths are determined]
+- **Routing Rules:** [Where data flows based on conditions]
+
+**Data Flow:**
+
+- **Input:** [Data being evaluated]
+- **Processing:** [Decision logic applied]
+- **Output:** [Routing decision and data direction]
+
+---
+
+#### **Step 6: End Events**
+
+**Component Type:** End Event
+
+**Purpose:** [Brief description of process completion]
+
+**Configuration Details:**
+
+- **Completion Type:** [Success, failure, or conditional completion]
+- **Final Actions:** [Any cleanup or notification actions]
+- **Continuation Settings:** [Whether process continues or stops]
+
+**Data Flow:**
+
+- **Input:** [Final processed data]
+- **Processing:** [Completion actions performed]
+- **Output:** [Process completion status and final results]
+
+    ---
+
+    **VISUAL ENHANCEMENT REQUIREMENTS:**
+    - Use horizontal rules (---) to separate each step clearly
+    - Use blockquotes (>) for component type headers for visual distinction
+    - Include detailed Purpose sections explaining what each step accomplishes
+    - Break Configuration into specific sub-categories for clarity
+    - Provide comprehensive Data Flow sections with Input/Processing/Output
+    - Use consistent formatting throughout all steps
+    - Number steps clearly and maintain logical sequence
+    - Use proper spacing and indentation for readability
+    - Highlight important configuration details with bold formatting
+    - Make technical details easily scannable with clear section headers
+    - Keep formatting clean and professional
+    - Include decision points and branching logic where applicable
+    - Provide context for each transformation and connector action
+
+    **CRITICAL: FIELD MAPPING TABLE FORMATTING:**
+    - NEVER create single-line field mapping text that looks like: "Field Mappings: | Source Field | Target Field | Type | Notes | |--------------|--------------|------|-------| | 5 | IMPORT/Object..."
+    - ALWAYS create proper multi-line markdown tables with each row on a separate line
+    - ALWAYS extract meaningful field names instead of showing numbers or long XML paths
+    - ALWAYS include proper table headers and separators
+
+    **CRITICAL: INPUT/OUTPUT PROFILE FORMATTING:**
+    - NEVER show long XML paths like "IMPORT/Object/I_PI_COMPANYDATA/Object/NAME"
+    - ALWAYS extract clean field names like "CompanyName" or "Customer.Name"
+    - Use structured tables for Input/Output data structures instead of bullet lists
+    - Group related fields logically (e.g., Address fields together)
+    - Include business-friendly descriptions instead of technical XML paths
+    - Format profiles as clean, scannable tables with Field Name, Data Type, Description columns
+
+    **ADDITIONAL FORMATTING GUIDELINES:**
+    - Start each major section with a clear heading
+    - Use bullet points for configuration details
+    - Include code blocks for technical specifications
+    - Add summary boxes for complex transformations
+    - Use tables for structured data (field mappings, parameters)
+    - Include visual separators between different component types
 
     PAY SPECIAL ATTENTION to these technical details:
     - Include ALL HTTP connector endpoints and parameters
@@ -207,8 +372,45 @@ class DocumentationEnhancer:
     5. Include ALL default values and constants
     6. Show the complete mapping configuration from the XML
 
+    **FIELD MAPPINGS OUTPUT FORMAT:**
+    For all field mappings, use structured tables instead of paragraph text. Use this EXACT format:
+
+    **Field Mappings:**
+
+    | Source Field | Target Field | Data Type | Business Purpose |
+    |--------------|--------------|-----------|------------------|
+    | Account.Name | Customer.CompanyName | String | Maps Salesforce account name to SAP customer company name |
+    | Account.BillingStreet | Customer.Street | String | Maps billing address street to customer address |
+
+    **CRITICAL REQUIREMENTS for field mapping tables:**
+    - ALWAYS use the exact table format shown above with proper markdown table syntax
+    - NEVER put field mappings in a single line or paragraph format
+    - Use meaningful, readable field names (not XML paths or numbers)
+    - Include clear business purpose in the last column
+    - For complex XML paths, extract the meaningful field name (e.g., "CompanyName" instead of "IMPORT/Object/I_PI_COMPANYDATA/Object/NAME")
+    - Use proper data types (String, Integer, Date, Boolean, etc.)
+    - Each row must be on a separate line with proper pipe (|) separators
+    - Include the table header exactly as shown
+    - Add a blank line before and after the table
+
+    **INPUT/OUTPUT PROFILE FORMAT:**
+    For Input Profile and Output Profile descriptions, use structured format:
+
+    **Input Profile:** [Profile name or description]
+    - Field 1: Description and data type
+    - Field 2: Description and data type
+
+    **Output Profile:** [Profile name or description]
+    - Field 1: Description and data type
+    - Field 2: Description and data type
+
+    Avoid long paragraph descriptions for profiles. Use bullet points for clarity.
+
     ## SAP Integration Suite Implementation
     ### Component Mapping
+
+    This section provides a detailed mapping of Dell Boomi components to their SAP Integration Suite equivalents, organized by subprocess for clear implementation guidance.
+
     Map each Dell Boomi component to its SAP Integration Suite equivalent using this comprehensive mapping:
 
     **Core Boomi Components:**
@@ -285,11 +487,21 @@ class DocumentationEnhancer:
     - SuccessFactors Connector → SuccessFactors Adapter
     - Salesforce Connector → Salesforce Adapter
 
-    For each component mapping:
-    - List each source component and its direct equivalent
+    **COMPONENT MAPPING OUTPUT FORMAT:**
+    Create structured tables for component mappings, organized by subprocess. Use this exact format:
+
+    #### [Subprocess Name] Component Mapping
+    | Boomi Component | SAP Integration Suite Equivalent | Purpose |
+    |-----------------|----------------------------------|---------|
+    | Component Name (shape reference) | SAP Equivalent | Clear description of what this component does |
+
+    **Requirements for component mapping tables:**
+    - Create separate tables for each subprocess (Main Process, Where Clause Sub-Process, Extract Data Sub-Process, etc.)
+    - Include all three columns: Boomi Component, SAP Integration Suite Equivalent, Purpose
     - Preserve the same connection types and patterns
-    - Note any components that need configuration decisions
-    - Document any potential gaps or differences in functionality
+    - Provide clear, concise purpose descriptions for each component
+    - Use consistent formatting and spacing
+    - Include shape references from the original Boomi process where available
 
     ### Integration Flow Visualization
 
@@ -503,7 +715,7 @@ class DocumentationEnhancer:
         try:
             # Log the API call attempt with prompt size
             logger.info(f"Starting Anthropic Claude API call with prompt size: {len(prompt)} characters")
-            logger.info(f"Using model: claude-3-7-sonnet-20250219 with timeout: 600 seconds")
+            logger.info(f"Using model: claude-sonnet-4-20250514 with timeout: 600 seconds")
             logger.info(f"API Key (first 5 chars): {self.anthropic_api_key[:5]}...")
 
             import time
@@ -512,9 +724,11 @@ class DocumentationEnhancer:
             try:
                 # Use the Anthropic Messages API with the newer format
                 response = self.anthropic_client.messages.create(
-                    model="claude-3-7-sonnet-20250219",  # Using the latest model
+                    # model="claude-3-7-sonnet-20250219",  # Using the latest model
+                    model="claude-sonnet-4-20250514",
                     max_tokens=20000,
-                    temperature=0.2,
+                    # temperature=0.2,
+                    temperature=1,
                     timeout=600,  # Set timeout to 600 seconds (increased from 300)
                     messages=[
                         {
@@ -787,9 +1001,10 @@ RESPOND WITH ONLY JSON:"""
         """Call Anthropic API specifically for JSON generation."""
         try:
             response = self.anthropic_client.messages.create(
-                model="claude-3-7-sonnet-20250219",
+                # model="claude-3-7-sonnet-20250219",
+                model="claude-sonnet-4-20250514",
                 max_tokens=8000,
-                temperature=0.1,  # Lower temperature for more consistent JSON
+                temperature=1,  # Lower temperature for more consistent JSON
                 timeout=300,
                 messages=[
                     {

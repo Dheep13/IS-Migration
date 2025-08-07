@@ -40,7 +40,7 @@ except ImportError as e:
 class IFlowGeneratorAPI:
     """API wrapper for the MuleToIFlow GenAI approach"""
 
-    def __init__(self, api_key=None, model="claude-3-7-sonnet-20250219", provider="claude"):
+    def __init__(self, api_key=None, model="claude-sonnet-4-20250514", provider="claude"):
         """
         Initialize the iFlow generator API
 
@@ -200,7 +200,7 @@ class IFlowGeneratorAPI:
             }
 
 # Function to generate iFlow from markdown content
-def generate_iflow_from_markdown(markdown_content, api_key, output_dir=None, iflow_name=None, model="claude-3-7-sonnet-20250219", provider="claude", job_id=None):
+def generate_iflow_from_markdown(markdown_content, api_key, output_dir=None, iflow_name=None, model="claude-sonnet-4-20250514", provider="claude", job_id=None):
     """
     Generate an iFlow from markdown content
 

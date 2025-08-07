@@ -9,7 +9,10 @@ import {
   Play,
   Download,
   Search,
-  FileCode
+  FileCode,
+  Trash2,
+  Plus,
+  RotateCcw
 } from "lucide-react"
 
 import {
@@ -24,7 +27,8 @@ import {
   downloadGeneratedIflow,
   deployIflowToSap,
   directDeployIflowToSap,
-  updateDeploymentStatus
+  updateDeploymentStatus,
+  deleteJob
 } from "@services/api"
 
 import { toast } from "react-hot-toast"
@@ -59,6 +63,8 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
     uploadedDocumentation: false
   })
   const [showFileAnalysis, setShowFileAnalysis] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   // Check if iFlow match has been processed
   useEffect(() => {
@@ -594,6 +600,24 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
     }
   }
 
+  const handleDeleteJob = async () => {
+    try {
+      setIsDeleting(true)
+      await deleteJob(jobInfo.id)
+      toast.success("Job and associated files deleted successfully")
+      setShowDeleteConfirm(false)
+      // Trigger the onNewJob callback to reset the UI
+      if (onNewJob) {
+        onNewJob()
+      }
+    } catch (error) {
+      console.error("Error deleting job:", error)
+      toast.error("Failed to delete job. Please try again.")
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
   const downloadFile = async (fileType, filename) => {
     try {
       // Map file types to download state keys
@@ -740,6 +764,36 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
 
   return (
     <div className="bg-white shadow-sm rounded-lg p-6 space-y-6">
+      {/* New Upload Button - Prominent placement at top */}
+      {(jobInfo.status === "completed" || jobInfo.status === "failed" || jobInfo.status === "documentation_ready") && (
+        <div className="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-800">
+              {jobInfo.status === "completed" ? "Job Completed Successfully!" :
+               jobInfo.status === "failed" ? "Job Failed" :
+               "Documentation Ready"}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {jobInfo.status === "completed" ? "Your files have been processed and are ready for download." :
+               jobInfo.status === "failed" ? "There was an issue processing your files." :
+               "Your documentation has been processed and is ready for iFlow generation."}
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              if (onNewJob) {
+                onNewJob()
+              }
+            }}
+            className="flex items-center space-x-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium shadow-sm"
+            title="Start a new upload"
+          >
+            <RotateCcw className="h-5 w-5" />
+            <span>Start New Upload</span>
+          </button>
+        </div>
+      )}
+
       {(jobInfo.status === "completed" || jobInfo.status === "documentation_ready") && (
         <>
           <div>
@@ -1567,6 +1621,28 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
               Job Status: <span className="capitalize">{jobInfo.status}</span>
             </h3>
           </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => {
+                if (onNewJob) {
+                  onNewJob()
+                }
+              }}
+              className="flex items-center space-x-1 px-3 py-1 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors duration-200"
+              title="Start a new upload"
+            >
+              <Plus className="h-4 w-4" />
+              <span>New Upload</span>
+            </button>
+            <button
+              onClick={() => setShowDeleteConfirm(true)}
+              className="flex items-center space-x-1 px-3 py-1 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors duration-200"
+              title="Delete this job and all associated files"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>Delete Job</span>
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
@@ -1603,6 +1679,66 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
         <div className="bg-red-50 p-4 rounded-md">
           <h4 className="font-semibold text-red-800 mb-1">Error:</h4>
           <p className="text-red-700">{jobInfo.error}</p>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+            <div className="flex items-center space-x-3 mb-4">
+              <div className="flex-shrink-0">
+                <XCircle className="h-6 w-6 text-red-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-medium text-gray-900">Delete Job</h3>
+              </div>
+            </div>
+            <div className="mb-6">
+              <p className="text-sm text-gray-600">
+                Are you sure you want to delete this job and all associated files? This action cannot be undone.
+              </p>
+              <div className="mt-3 p-3 bg-gray-50 rounded-md">
+                <p className="text-xs text-gray-500">
+                  <strong>Job ID:</strong> {jobInfo.id}
+                </p>
+                <p className="text-xs text-gray-500">
+                  <strong>Status:</strong> {jobInfo.status}
+                </p>
+                {jobInfo.filename && (
+                  <p className="text-xs text-gray-500">
+                    <strong>Files:</strong> {jobInfo.filename}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                disabled={isDeleting}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors duration-200 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteJob}
+                disabled={isDeleting}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors duration-200 disabled:opacity-50 flex items-center space-x-2"
+              >
+                {isDeleting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4" />
+                    <span>Delete</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

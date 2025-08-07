@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation with Mermaid</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #1565c0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre.mermaid {
+            text-align: center;
+            background: white;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .note {
+            background: #e3f2fd;
+            padding: 10px;
+            border-left: 4px solid #1565c0;
+            margin: 10px 0;
+        }
+        .insights {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .best-practices {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .security {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="ec372-ec-to-navex-integration-employee-data-export">EC372 - EC to NAVEX Integration: Employee Data Export</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#ec372---ec-to-navex-integration-employee-data-export">EC372 - EC to NAVEX Integration: Employee Data Export</a></li>
+<li><a href="#table-of-contents">Table of Contents</a></li>
+<li><a href="#api-overview">API Overview</a></li>
+<li><a href="#endpoints">Endpoints</a><ul>
+<li><a href="#get-employee-data">GET Employee Data</a></li>
+</ul>
+</li>
+<li><a href="#current-dell-boomi-flow-logic">Current Dell Boomi Flow Logic</a><ul>
+<li><a href="#process-flow-overview">Process Flow Overview</a></li>
+<li><a href="#step-by-step-flow-description">Step-by-Step Flow Description</a></li>
+<li><a href="#main-process-ec372---ec-to-navex-ob">Main Process: EC372 - EC to NAVEX (OB)</a></li>
+<li><a href="#sub-process-initialize-error-report-properties">Sub Process: Initialize Error Report Properties</a></li>
+<li><a href="#sub-process-where-clause-dynamic-filter">Sub Process: Where Clause (Dynamic Filter)</a></li>
+<li><a href="#sub-process-query-picklist-values">Sub Process: Query Picklist Values</a></li>
+<li><a href="#sub-process-extract-data">Sub Process: Extract Data</a></li>
+<li><a href="#sub-process-sftp-to-pepsi-and-navex">Sub Process: SFTP to Pepsi and NAVEX</a></li>
+<li><a href="#process-for-control-and-error-report">Process for Control and Error Report</a></li>
+</ul>
+</li>
+<li><a href="#boomi-transformations-explained">Boomi Transformations Explained</a><ul>
+<li><a href="#error_message_map">error_message_map</a></li>
+<li><a href="#map-ec372---ec-to-navex-ob">Map EC372 - EC to NAVEX (OB)</a></li>
+<li><a href="#controlreportmap">ControlReportMap</a></li>
+</ul>
+</li>
+<li><a href="#sap-integration-suite-implementation">SAP Integration Suite Implementation</a><ul>
+<li><a href="#component-mapping">Component Mapping</a></li>
+<li><a href="#integration-flow-visualization">Integration Flow Visualization</a></li>
+<li><a href="#main-integration-flow-ec372---ec-to-navex">Main Integration Flow: EC372 - EC to NAVEX</a></li>
+<li><a href="#sub-process-where-clause-dynamic-filter-1">Sub-Process: Where Clause (Dynamic Filter)</a></li>
+<li><a href="#sub-process-extract-data-1">Sub-Process: Extract Data</a></li>
+<li><a href="#sub-process-sftp-to-pepsi-and-navex-1">Sub-Process: SFTP to Pepsi and NAVEX</a></li>
+<li><a href="#sub-process-process-for-control-and-error-report">Sub-Process: Process for Control and Error Report</a></li>
+<li><a href="#configuration-details">Configuration Details</a></li>
+</ul>
+</li>
+<li><a href="#environment-configuration">Environment Configuration</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+</ul>
+<h2 id="api-overview">API Overview</h2>
+<p>The EC372 - EC to NAVEX integration is designed to extract employee data from SuccessFactors Employee Central (EC) and transfer it to NAVEX, a third-party ethics and compliance solution. The integration performs data extraction, transformation, and secure file transfer to both NAVEX and PepsiCo SFTP servers.</p>
+<ul>
+<li><strong>Base URL/endpoint pattern</strong>: The integration uses SuccessFactors OData API endpoints to extract employee data</li>
+<li><strong>Authentication mechanisms</strong>: Authentication is handled through connector profiles configured in Dell Boomi</li>
+<li><strong>Rate limiting information</strong>: Standard SuccessFactors API rate limits apply</li>
+<li><strong>General response format</strong>: Data is extracted in XML format, transformed, and delivered as encrypted files</li>
+</ul>
+<h2 id="endpoints">Endpoints</h2>
+<h3 id="get-employee-data">GET Employee Data</h3>
+<ul>
+<li><strong>HTTP Method and full path</strong>: GET /odata/v2/EmpEmployment</li>
+<li><strong>Purpose</strong>: Retrieves employee data from SuccessFactors Employee Central</li>
+<li><strong>Request parameters</strong>:</li>
+<li><strong>Query parameters</strong>: <ul>
+<li>$filter: Dynamic filter based on last modified date, employee class, legal entity, and other criteria</li>
+<li>$expand: Related entities to include in the response</li>
+<li>$select: Specific fields to retrieve</li>
+</ul>
+</li>
+<li><strong>Headers</strong>:<ul>
+<li>Authorization: Bearer token for authentication</li>
+<li>Accept: application/json</li>
+</ul>
+</li>
+<li><strong>Response format</strong>: JSON data containing employee records</li>
+<li><strong>Error handling</strong>: HTTP status codes (400, 401, 403, 500) with error messages</li>
+</ul>
+<h2 id="current-dell-boomi-flow-logic">Current Dell Boomi Flow Logic</h2>
+<h3 id="process-flow-overview">Process Flow Overview</h3>
+<p>The EC372 - EC to NAVEX integration follows these high-level steps:</p>
+<ol>
+<li><strong>Initialization</strong>: The process starts with setting up dynamic properties and determining if it's a delta run</li>
+<li><strong>Data Extraction</strong>: Employee data is extracted from SuccessFactors using dynamic filters</li>
+<li><strong>Data Transformation</strong>: The extracted data is transformed into the required format for NAVEX</li>
+<li><strong>File Generation</strong>: Transformed data is compiled into files for transfer</li>
+<li><strong>Secure Transfer</strong>: Files are encrypted using PGP and transferred to both NAVEX and PepsiCo SFTP servers</li>
+<li><strong>Reporting</strong>: Control and error reports are generated and distributed via email</li>
+</ol>
+<p>The process handles both full and delta extracts, with delta extracts filtering data based on the last successful run date.</p>
+<h3 id="step-by-step-flow-description">Step-by-Step Flow Description</h3>
+<h4 id="main-process-ec372-ec-to-navex-ob">Main Process: EC372 - EC to NAVEX (OB)</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>Starts the process execution</li>
+<li>
+<p>No specific connector configuration</p>
+</li>
+<li>
+<p><strong>Delta Run Decision (shape15):</strong></p>
+</li>
+<li>Determines if the current run is a delta run or full extract</li>
+<li>
+<p>Based on document property "isDeltaRun"</p>
+</li>
+<li>
+<p><strong>Filter LSRD is NULL (shape3):</strong></p>
+</li>
+<li>Checks if Last Success Run Date (LSRD) is null</li>
+<li>
+<p>Used to determine the appropriate filter logic</p>
+</li>
+<li>
+<p><strong>SetLastSuccessRunDate (shape2 and shape5):</strong></p>
+</li>
+<li>Sets the Last Success Run Date property</li>
+<li>For delta runs, uses the stored date from previous runs</li>
+<li>
+<p>For full extracts, sets a default date</p>
+</li>
+<li>
+<p><strong>Process Execution (shape4):</strong></p>
+</li>
+<li>Calls multiple sub-processes to extract and process data</li>
+<li>
+<p>Includes data extraction, transformation, and file preparation</p>
+</li>
+<li>
+<p><strong>Set SFTP fileName (shape11):</strong></p>
+</li>
+<li>Dynamically generates file names for SFTP transfer</li>
+<li>
+<p>Includes timestamp and run type indicators</p>
+</li>
+<li>
+<p><strong>Send Files to SFTP (shape13):</strong></p>
+</li>
+<li>Transfers the generated files to SFTP servers</li>
+<li>
+<p>Handles both NAVEX and PepsiCo SFTP destinations</p>
+</li>
+<li>
+<p><strong>Set extensions (shape16):</strong></p>
+</li>
+<li>Sets file extensions and other properties for full extracts</li>
+<li>Used when LSRD is null (first run)</li>
+</ol>
+<h4 id="sub-process-initialize-error-report-properties">Sub Process: Initialize Error Report Properties</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>
+<p>Initiates the error report properties initialization</p>
+</li>
+<li>
+<p><strong>Initialize Error Properties (shape6):</strong></p>
+</li>
+<li>Sets up various error handling properties</li>
+<li>
+<p>Prepares the environment for error tracking</p>
+</li>
+<li>
+<p><strong>Initialize Specific Error Properties (shapes 3, 4, 5, 8, 9, 10, 11):</strong></p>
+</li>
+<li>
+<p>Sets up specialized error properties for different error types:</p>
+<ul>
+<li>Business Rule Related Errors</li>
+<li>Cleanse Related Errors</li>
+<li>Decision Related Errors</li>
+<li>Route Related Errors</li>
+<li>TryCatch Related Errors</li>
+<li>Return Related Errors</li>
+<li>General Errors</li>
+</ul>
+</li>
+<li>
+<p><strong>End Event (shape7):</strong></p>
+</li>
+<li>Completes the error properties initialization</li>
+</ol>
+<h4 id="sub-process-where-clause-dynamic-filter">Sub Process: Where Clause (Dynamic Filter)</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>
+<p>Initiates the dynamic filter creation process</p>
+</li>
+<li>
+<p><strong>Delta Run Decision (shape29):</strong></p>
+</li>
+<li>Determines if the current run is a delta run</li>
+<li>
+<p>Affects the filter criteria</p>
+</li>
+<li>
+<p><strong>Set Date Filters (shape24 and shape28):</strong></p>
+</li>
+<li>For delta runs, sets the last modified date filter</li>
+<li>
+<p>Sets effective_end_date filter to ensure current records</p>
+</li>
+<li>
+<p><strong>Company Territory Code Check (shape14):</strong></p>
+</li>
+<li>Checks if company_territory_code is not blank</li>
+<li>
+<p>Adds territory code filter if available</p>
+</li>
+<li>
+<p><strong>Set Company Territory Code IN (shape16):</strong></p>
+</li>
+<li>Formats the company territory code for SQL IN clause</li>
+<li>
+<p>Adds to the where clause</p>
+</li>
+<li>
+<p><strong>Legal Entity Check (shape22):</strong></p>
+</li>
+<li>Checks if legal entity values are available</li>
+<li>
+<p>Adds legal entity filter if available</p>
+</li>
+<li>
+<p><strong>Set Legal Entity IN (shape23):</strong></p>
+</li>
+<li>Formats legal entity values for SQL IN clause</li>
+<li>
+<p>Adds to the where clause</p>
+</li>
+<li>
+<p><strong>Employee Class Check (shape21):</strong></p>
+</li>
+<li>Checks if employee class values are available</li>
+<li>
+<p>Adds employee class filter if available</p>
+</li>
+<li>
+<p><strong>Set Employee Class IN (shape10):</strong></p>
+</li>
+<li>Formats employee class values for SQL IN clause</li>
+<li>
+<p>Adds to the where clause</p>
+</li>
+<li>
+<p><strong>GPID Check (shape3):</strong></p>
+<ul>
+<li>Checks if GPID values are available</li>
+<li>Adds GPID filter if available</li>
+</ul>
+</li>
+<li>
+<p><strong>Set GPID IN (shape17):</strong></p>
+<ul>
+<li>Formats GPID values for SQL IN clause</li>
+<li>Adds to the where clause</li>
+</ul>
+</li>
+<li>
+<p><strong>Get where Property (shape9):</strong></p>
+<ul>
+<li>Retrieves the complete where clause</li>
+<li>Combines all filter conditions</li>
+</ul>
+</li>
+<li>
+<p><strong>Fill in single quotes (shape25):</strong></p>
+<ul>
+<li>Formats the where clause with proper SQL syntax</li>
+<li>Ensures string values are properly quoted</li>
+</ul>
+</li>
+<li>
+<p><strong>Set where (shape26):</strong></p>
+<ul>
+<li>Sets the final where clause as a document property</li>
+<li>Used in the data extraction query</li>
+</ul>
+</li>
+<li>
+<p><strong>End Event (shape27):</strong></p>
+<ul>
+<li>Completes the where clause generation</li>
+</ul>
+</li>
+</ol>
+<h4 id="sub-process-query-picklist-values">Sub Process: Query Picklist Values</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>
+<p>Initiates the picklist query process</p>
+</li>
+<li>
+<p><strong>Set PICKLISTIDS (shape2):</strong></p>
+</li>
+<li>Sets the picklist IDs to query</li>
+<li>
+<p>Prepares for picklist value retrieval</p>
+</li>
+<li>
+<p><strong>End Event (shape3):</strong></p>
+</li>
+<li>Completes the picklist query setup</li>
+</ol>
+<h4 id="sub-process-extract-data">Sub Process: Extract Data</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>
+<p>Initiates the data extraction process</p>
+</li>
+<li>
+<p><strong>Data Extraction (shapes 2-5):</strong></p>
+</li>
+<li>Executes queries to extract employee data</li>
+<li>
+<p>Uses the dynamic where clause from previous steps</p>
+</li>
+<li>
+<p><strong>Split Operations (shape7 and shape16):</strong></p>
+</li>
+<li>Splits the extracted data for processing</li>
+<li>SplitON Log_Item for error handling</li>
+<li>
+<p>Split on EmpInfo for employee data processing</p>
+</li>
+<li>
+<p><strong>Data Transformation (shape8 and shape27):</strong></p>
+</li>
+<li>Transforms the extracted data to the target format</li>
+<li>
+<p>Maps source fields to target fields</p>
+</li>
+<li>
+<p><strong>Error Handling (shapes 9-15):</strong></p>
+</li>
+<li>Processes error records</li>
+<li>Generates error messages and notifications</li>
+<li>
+<p>Sends error notifications via email</p>
+</li>
+<li>
+<p><strong>Data Processing (shapes 17-41):</strong></p>
+</li>
+<li>Processes employee data records</li>
+<li>Handles demographic data</li>
+<li>Processes expat information</li>
+<li>
+<p>Performs end date checks</p>
+</li>
+<li>
+<p><strong>Record Counting (shapes 21-36):</strong></p>
+</li>
+<li>Counts success and error records</li>
+<li>Sets record count properties for reporting</li>
+<li>Prepares file names for output</li>
+</ol>
+<h4 id="sub-process-sftp-to-pepsi-and-navex">Sub Process: SFTP to Pepsi and NAVEX</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>
+<p>Initiates the SFTP transfer process</p>
+</li>
+<li>
+<p><strong>Send Files Decision (shape8):</strong></p>
+</li>
+<li>Determines if files should be sent to NAVEX</li>
+<li>
+<p>Based on configuration property</p>
+</li>
+<li>
+<p><strong>PGP Encryption (shape26 and shape2):</strong></p>
+</li>
+<li>Encrypts files before transfer</li>
+<li>
+<p>Uses PGP encryption for security</p>
+</li>
+<li>
+<p><strong>Set NAVEX Directory (shape3):</strong></p>
+</li>
+<li>Sets the target directory for NAVEX files</li>
+<li>
+<p>Prepares for SFTP transfer</p>
+</li>
+<li>
+<p><strong>NAVEX SFTP Transfer (shape6):</strong></p>
+</li>
+<li>Transfers encrypted files to NAVEX SFTP server</li>
+<li>
+<p>Handles exceptions during transfer</p>
+</li>
+<li>
+<p><strong>Send Files to Pepsico Decision (shape11):</strong></p>
+</li>
+<li>Determines if files should be sent to PepsiCo SFTP</li>
+<li>
+<p>Based on configuration property</p>
+</li>
+<li>
+<p><strong>Encrypt Archive File (shape13):</strong></p>
+</li>
+<li>Encrypts archive files for PepsiCo</li>
+<li>
+<p>Uses PGP encryption for security</p>
+</li>
+<li>
+<p><strong>Set Remote Directory for Archive (shape4):</strong></p>
+</li>
+<li>Sets the target directory for archive files</li>
+<li>
+<p>Prepares for SFTP transfer</p>
+</li>
+<li>
+<p><strong>PepsiCo SFTP Transfer (shape5):</strong></p>
+</li>
+<li>Transfers encrypted files to PepsiCo SFTP server</li>
+<li>
+<p>Handles exceptions during transfer</p>
+</li>
+<li>
+<p><strong>Notification Handling (shapes 10, 17, 18):</strong></p>
+<ul>
+<li>Sets up email notification properties</li>
+<li>Prepares success notifications for file transfers</li>
+<li>Sends email notifications</li>
+</ul>
+</li>
+<li>
+<p><strong>Exception Handling (shapes 15, 23):</strong></p>
+<ul>
+<li>Handles exceptions during SFTP transfers</li>
+<li>Generates error notifications</li>
+</ul>
+</li>
+</ol>
+<h4 id="process-for-control-and-error-report">Process for Control and Error Report</h4>
+<ol>
+<li><strong>Start Event (shape1):</strong></li>
+<li>
+<p>Initiates the control and error report process</p>
+</li>
+<li>
+<p><strong>Report Generation (shape2):</strong></p>
+</li>
+<li>Prepares control and error report data</li>
+<li>
+<p>Sets up report structure</p>
+</li>
+<li>
+<p><strong>Transform Report Data (shape3):</strong></p>
+</li>
+<li>Transforms data into report format</li>
+<li>
+<p>Prepares for attachment to emails</p>
+</li>
+<li>
+<p><strong>Control Report Detail (shape4):</strong></p>
+</li>
+<li>Generates control report with processing statistics</li>
+<li>
+<p>Includes record counts and processing times</p>
+</li>
+<li>
+<p><strong>Error Report Details (shape5):</strong></p>
+</li>
+<li>Generates error report with error details</li>
+<li>
+<p>Includes error messages and affected records</p>
+</li>
+<li>
+<p><strong>Archive Decision (shapes 7 and 10):</strong></p>
+</li>
+<li>Determines if reports should be archived to SFTP</li>
+<li>
+<p>Based on configuration properties</p>
+</li>
+<li>
+<p><strong>SFTP Archive (shapes 6 and 9):</strong></p>
+</li>
+<li>Archives reports to SFTP server</li>
+<li>
+<p>Handles exceptions during transfer</p>
+</li>
+<li>
+<p><strong>Email Notification (shapes 12 and 13):</strong></p>
+</li>
+<li>Sends email notifications with reports</li>
+<li>
+<p>Attaches control and error reports to emails</p>
+</li>
+<li>
+<p><strong>End Event (shape14):</strong></p>
+</li>
+<li>Completes the report generation and distribution process</li>
+</ol>
+<h2 id="boomi-transformations-explained">Boomi Transformations Explained</h2>
+<h3 id="error_message_map">error_message_map</h3>
+<p>This transformation maps error information to a structured error record format:</p>
+<ul>
+<li><strong>Input Profile</strong>: Error information with GPID, severity, and error text</li>
+<li><strong>Output Profile</strong>: Structured error record with elements for GPID, Severity, and Error text</li>
+</ul>
+<p>Field Mappings:
+1. <code>26623</code> → <code>Record/Elements/GPID</code> (profile)
+2. <code>26624</code> → <code>Record/Elements/Severity</code> (profile)
+3. <code>22784</code> → <code>Record/Elements/Error text</code> (profile)</p>
+<h3 id="map-ec372-ec-to-navex-ob">Map EC372 - EC to NAVEX (OB)</h3>
+<p>This is the main transformation that maps employee data from SuccessFactors to the NAVEX format:</p>
+<ul>
+<li><strong>Input Profile</strong>: Employee data from SuccessFactors with demographic and employment information</li>
+<li><strong>Output Profile</strong>: NAVEX-specific format with required employee fields</li>
+</ul>
+<p>Field Mappings:
+1. <code>20452</code> → <code>None</code> (function) - Function to process GPID
+2. <code>1</code> → <code>Record/Elements/GPID</code> (profile)
+3. <code>22184</code> → <code>Record/Elements/First Name</code> (profile)
+4. <code>22206</code> → <code>Record/Elements/Last Name</code> (profile)
+5. <code>24726</code> → <code>None</code> (function) - Function to process employment status
+6. <code>1</code> → <code>Record/Elements/emplStatus</code> (profile)
+7. <code>24720</code> → <code>None</code> (function) - Function to process employee class
+8. <code>1</code> → <code>Record/Elements/employee-class</code> (profile)
+9. <code>24808</code> → <code>Record/Elements/pay-grade</code> (profile)
+10. <code>24516</code> → <code>Record/Elements/Position Title</code> (profile)
+11. <code>24550</code> → <code>Record/Elements/Is Union Employee</code> (profile)
+12. <code>24552</code> → <code>Record/Elements/Participating in Union</code> (profile)
+13. <code>24788</code> → <code>None</code> (function) - Function for location processing
+14. <code>24524</code> → <code>None</code> (function) - Function for additional location data
+15. <code>24514</code> → <code>None</code> (function) - Function for location formatting
+16. <code>215</code> → <code>None</code> (function) - Function for location processing
+17. <code>2</code> → <code>Record/Elements/location</code> (profile)
+18. <code>123</code> → <code>None</code> (function) - Function for region processing
+19. <code>2</code> → <code>Record/Elements/Region</code> (profile)
+20. <code>123</code> → <code>None</code> (function) - Function for sector processing
+21. <code>2</code> → <code>Record/Elements/Sector</code> (profile)
+22. <code>21236</code> → <code>None</code> (function) - Function for email processing
+23. <code>1</code> → <code>Record/Elements/Email Address</code> (profile)
+24. <code>24340</code> → <code>None</code> (function) - Function for country processing
+25. <code>1</code> → <code>Record/Elements/Country</code> (profile)
+26. <code>24794</code> → <code>None</code> (function) - Function for manager ID processing
+27. <code>1</code> → <code>Record/Elements/manager-id</code> (profile)
+28. <code>25012</code> → <code>None</code> (function) - Function for user ID processing
+29. <code>1</code> → <code>Record/Elements/User ID</code> (profile)
+30. <code>25010</code> → <code>None</code> (function) - Function for relationship type processing
+31. <code>1</code> → <code>Record/Elements/Relationship Type</code> (profile)
+32. <code>21794</code> → <code>None</code> (function) - Function for termination date processing
+33. <code>2</code> → <code>Record/Elements/Termination Date</code> (profile)
+34. <code>1</code> → <code>Record/Elements/Manager name</code> (profile)
+35. <code>25012</code> → <code>None</code> (function) - Function for HRA manager name processing
+36. <code>1</code> → <code>Record/Elements/HRA Manager name</code> (profile)
+37. <code>24726</code> → <code>None</code> (function) - Function for termination reason processing
+38. <code>24734</code> → <code>None</code> (function) - Additional termination reason processing
+39. <code>1</code> → <code>Record/Elements/Termination Reason</code> (profile)
+40. <code>20452</code> → <code>None</code> (function) - Function for hire date processing
+41. <code>21816</code> → <code>None</code> (function) - Additional hire date processing
+42. <code>1</code> → <code>Record/Elements/Original Hire Date</code> (profile)
+43. <code>24798</code> → <code>None</code> (function) - Final data processing function</p>
+<h3 id="controlreportmap">ControlReportMap</h3>
+<p>This transformation maps control report data to a simple text format:</p>
+<ul>
+<li><strong>Input Profile</strong>: Control report data with processing statistics</li>
+<li><strong>Output Profile</strong>: Text format for email attachment</li>
+</ul>
+<p>Field Mappings:
+1. <code>1</code> → <code>Record/Elements/text</code> (profile)</p>
+<h2 id="sap-integration-suite-implementation">SAP Integration Suite Implementation</h2>
+<h3 id="component-mapping">Component Mapping</h3>
+<p>This section provides a detailed mapping of Dell Boomi components to their SAP Integration Suite equivalents, organized by subprocess for clear implementation guidance.</p>
+
+<h4 id="main-process-component-mapping">Main Process Component Mapping</h4>
+<table>
+<thead>
+<tr>
+<th>Boomi Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start Event (shape1)</td>
+<td>Start Message Event</td>
+<td>Initiates the integration process</td>
+</tr>
+<tr>
+<td>Delta Run Decision (shape15)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Determines if this is a delta or full run</td>
+</tr>
+<tr>
+<td>Filter LSRD is NULL (shape3)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Checks if Last Success Run Date is null</td>
+</tr>
+<tr>
+<td>SetLastSuccessRunDate (shape2, shape5)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets the last successful run timestamp</td>
+</tr>
+<tr>
+<td>Process Execution (shape4)</td>
+<td>Process Call</td>
+<td>Calls sub-processes for data extraction and transfer</td>
+</tr>
+<tr>
+<td>Set SFTP fileName (shape11)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets the filename for SFTP transfer</td>
+</tr>
+<tr>
+<td>Send Files to SFTP (shape13)</td>
+<td>SFTP Adapter (Sender)</td>
+<td>Transfers files to SFTP server</td>
+</tr>
+<tr>
+<td>Set extensions (shape16)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets file extensions for processing</td>
+</tr>
+</tbody>
+</table>
+<h4 id="where-clause-subprocess-component-mapping">Where Clause Sub-Process Component Mapping</h4>
+<table>
+<thead>
+<tr>
+<th>Boomi Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start Event (shape1)</td>
+<td>Start Message Event</td>
+<td>Initiates the where clause building process</td>
+</tr>
+<tr>
+<td>Delta Run Decision (shape29)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Determines filtering logic based on run type</td>
+</tr>
+<tr>
+<td>Set Date Filters (shape24, shape28)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets last modified and effective end date filters</td>
+</tr>
+<tr>
+<td>Company Territory Code Check (shape14)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Checks if company territory code is provided</td>
+</tr>
+<tr>
+<td>Set Company Territory Code IN (shape16)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Adds territory code to filter criteria</td>
+</tr>
+<tr>
+<td>Legal Entity Check (shape22)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Checks if legal entity filter is needed</td>
+</tr>
+<tr>
+<td>Set Legal Entity IN (shape23)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Adds legal entity to filter criteria</td>
+</tr>
+<tr>
+<td>Employee Class Check (shape21)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Checks if employee class filter is needed</td>
+</tr>
+<tr>
+<td>Set Employee Class IN (shape10)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Adds employee class to filter criteria</td>
+</tr>
+<tr>
+<td>GPID Check (shape3)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Checks if GPID filter is needed</td>
+</tr>
+<tr>
+<td>Set GPID IN (shape17)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Adds GPID to filter criteria</td>
+</tr>
+<tr>
+<td>Get where Property (shape9)</td>
+<td>Content Modifier (Get Properties)</td>
+<td>Retrieves the constructed where clause</td>
+</tr>
+<tr>
+<td>Fill in single quotes (shape25)</td>
+<td>Groovy Script</td>
+<td>Formats filter values with proper quoting</td>
+</tr>
+<tr>
+<td>Set where (shape26)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets the final where clause for OData query</td>
+</tr>
+<tr>
+<td>End Event (shape27)</td>
+<td>End Message Event</td>
+<td>Completes the where clause building process</td>
+</tr>
+</tbody>
+</table>
+<h4 id="extract-data-subprocess-component-mapping">Extract Data Sub-Process Component Mapping</h4>
+<table>
+<thead>
+<tr>
+<th>Boomi Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start Event (shape1)</td>
+<td>Start Message Event</td>
+<td>Initiates the data extraction process</td>
+</tr>
+<tr>
+<td>Data Extraction (shapes 2-5)</td>
+<td>OData Adapter (Sender)</td>
+<td>Extracts employee data from SuccessFactors</td>
+</tr>
+<tr>
+<td>Split Operations (shape7, shape16)</td>
+<td>General Splitter</td>
+<td>Splits data for parallel processing (Log_Item and EmpInfo)</td>
+</tr>
+<tr>
+<td>Data Transformation (shape8, shape27)</td>
+<td>Message Mapping</td>
+<td>Transforms data format and structure</td>
+</tr>
+<tr>
+<td>Error Handling (shapes 9-15)</td>
+<td>Exception Subprocess</td>
+<td>Processes and handles extraction errors</td>
+</tr>
+<tr>
+<td>Data Processing (shapes 17-41)</td>
+<td>Content Enricher, Groovy Script</td>
+<td>Enriches data and applies business logic</td>
+</tr>
+<tr>
+<td>Record Counting (shapes 21-36)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Counts successful and error records</td>
+</tr>
+<tr>
+<td>End Event (shape41, shape45)</td>
+<td>End Message Event</td>
+<td>Completes the data extraction process</td>
+</tr>
+</tbody>
+</table>
+<h4 id="sftp-subprocess-component-mapping">SFTP to Pepsi and NAVEX Sub-Process Component Mapping</h4>
+<table>
+<thead>
+<tr>
+<th>Boomi Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start Event (shape1)</td>
+<td>Start Message Event</td>
+<td>Initiates the file transfer process</td>
+</tr>
+<tr>
+<td>Send Files Decision (shape8)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Determines if files should be sent to vendors</td>
+</tr>
+<tr>
+<td>PGP Encryption (shape26, shape2)</td>
+<td>PGP Encryption</td>
+<td>Encrypts files before transfer for security</td>
+</tr>
+<tr>
+<td>Set NAVEX Directory (shape3)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets the target directory for NAVEX transfer</td>
+</tr>
+<tr>
+<td>NAVEX SFTP Transfer (shape6)</td>
+<td>SFTP Adapter (Sender)</td>
+<td>Transfers encrypted files to NAVEX SFTP server</td>
+</tr>
+<tr>
+<td>Send Files to Pepsico Decision (shape11)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Determines if files should be sent to PepsiCo</td>
+</tr>
+<tr>
+<td>Encrypt Archive File (shape13)</td>
+<td>PGP Encryption</td>
+<td>Encrypts archive files for PepsiCo transfer</td>
+</tr>
+<tr>
+<td>Set Remote Directory for Archive (shape4)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Sets the target directory for PepsiCo archive</td>
+</tr>
+<tr>
+<td>PepsiCo SFTP Transfer (shape5)</td>
+<td>SFTP Adapter (Sender)</td>
+<td>Transfers encrypted files to PepsiCo SFTP server</td>
+</tr>
+<tr>
+<td>Notification Handling (shapes 10, 17, 18)</td>
+<td>Mail Adapter (Sender)</td>
+<td>Sends success/failure notifications via email</td>
+</tr>
+<tr>
+<td>Exception Handling (shapes 15, 23)</td>
+<td>Exception Subprocess</td>
+<td>Handles transfer errors and exceptions</td>
+</tr>
+</tbody>
+</table>
+<h4 id="control-error-report-subprocess-component-mapping">Control and Error Report Process Component Mapping</h4>
+<table>
+<thead>
+<tr>
+<th>Boomi Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start Event (shape1)</td>
+<td>Start Message Event</td>
+<td>Initiates the report generation process</td>
+</tr>
+<tr>
+<td>Report Generation (shape2)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Generates control and error report data</td>
+</tr>
+<tr>
+<td>Transform Report Data (shape3)</td>
+<td>Message Mapping</td>
+<td>Transforms report data using ControlReportMap</td>
+</tr>
+<tr>
+<td>Control Report Detail (shape4)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Creates detailed control report for attachment</td>
+</tr>
+<tr>
+<td>Error Report Details (shape5)</td>
+<td>Content Modifier (Set Properties)</td>
+<td>Creates detailed error report information</td>
+</tr>
+<tr>
+<td>Archive Decision (shapes 7, 10)</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Determines if reports should be archived to SFTP</td>
+</tr>
+<tr>
+<td>SFTP Archive (shapes 6, 9)</td>
+<td>SFTP Adapter (Sender)</td>
+<td>Archives control and error reports to SFTP</td>
+</tr>
+<tr>
+<td>Email Notification (shapes 12, 13)</td>
+<td>Mail Adapter (Sender)</td>
+<td>Sends control and error reports via email</td>
+</tr>
+<tr>
+<td>End Event (shape14)</td>
+<td>End Message Event</td>
+<td>Completes the report generation process</td>
+</tr>
+</tbody>
+</table>
+<h3 id="integration-flow-visualization">Integration Flow Visualization</h3>
+<h4 id="main-integration-flow-ec372-ec-to-navex">Main Integration Flow: EC372 - EC to NAVEX</h4>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for Boomi/SAP Integration Suite components
+classDef httpAdapter fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef contentModifier fill:#98FB98,stroke:#333,stroke-width:2px
+classDef mapping fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef adapter fill:#FFD700,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef router fill:#F5F5DC,stroke:#333,stroke-width:2px
+classDef processCall fill:#D3D3D3,stroke:#333,stroke-width:2px
+
+%% Node Definitions
+Start((Start)):::event
+DeltaRunCheck{"Delta Run?"}:::router
+FilterLSRD{"Filter LSRD is NULL"}:::router
+SetExtensions[Set extensions]:::contentModifier
+SetLSRD1[SetLastSuccessRunDate]:::contentModifier
+SetLSRD2[SetLastSuccessRunDate]:::contentModifier
+ProcessExecution[Process Execution]:::processCall
+SetSFTPFileName[Set SFTP fileName]:::contentModifier
+SendFilesToSFTP[Send Files to SFTP]:::adapter
+End((End)):::event
+
+%% Main Process Flow
+Start --> DeltaRunCheck
+DeltaRunCheck -->|Yes| FilterLSRD
+DeltaRunCheck -->|No| SetExtensions
+
+FilterLSRD -->|Yes| SetLSRD1
+FilterLSRD -->|No| SetLSRD2
+
+SetLSRD1 --> ProcessExecution
+SetLSRD2 --> ProcessExecution
+SetExtensions --> ProcessExecution
+
+ProcessExecution --> SetSFTPFileName
+SetSFTPFileName --> SendFilesToSFTP
+SendFilesToSFTP --> End
+
+%% Sub-process calls from Process Execution
+</pre>
+<h4 id="sub-process-where-clause-dynamic-filter_1">Sub-Process: Where Clause (Dynamic Filter)</h4>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for Boomi/SAP Integration Suite components
+classDef httpAdapter fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef contentModifier fill:#98FB98,stroke:#333,stroke-width:2px
+classDef mapping fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef adapter fill:#FFD700,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef router fill:#F5F5DC,stroke:#333,stroke-width:2px
+classDef script fill:#FFE4B5,stroke:#333,stroke-width:2px
+
+%% Where Clause Dynamic Filter Flow
+DeltaRunCheck{DeltaRunCheck}:::router
+EmployeeClassCheck{EmployeeClassCheck}:::router
+EmployeeClassCheck{"employee_class{EmployeeClassCheck{"employee_class}:::router
+End((End)):::event[End((End)):::event]:::contentModifier
+FillQuotes[FillQuotes]:::contentModifier
+FillQuotes[Fill[FillQuotes[Fill]:::contentModifier
+GPIDCheck{GPIDCheck}:::router
+GPIDCheck{"GPID{GPIDCheck{"GPID}:::router
+GetWhereProperty[GetWhereProperty]:::contentModifier
+GetWhereProperty[Get[GetWhereProperty[Get]:::contentModifier
+LegalEntityCheck{LegalEntityCheck}:::router
+LegalEntityCheck{"Legal{LegalEntityCheck{"Legal}:::router
+SetEffectiveEndDate[SetEffectiveEndDate]:::contentModifier
+SetEffectiveEndDate[Set[SetEffectiveEndDate[Set]:::contentModifier
+SetEmployeeClass[SetEmployeeClass]:::contentModifier
+SetEmployeeClass[Set[SetEmployeeClass[Set]:::contentModifier
+SetGPID[SetGPID]:::contentModifier
+SetGPID[Set[SetGPID[Set]:::contentModifier
+SetLastModified[SetLastModified]:::contentModifier
+SetLastModified[Set[SetLastModified[Set]:::contentModifier
+SetLegalEntity[SetLegalEntity]:::contentModifier
+SetLegalEntity[Set[SetLegalEntity[Set]:::contentModifier
+SetTerritory[SetTerritory]:::contentModifier
+SetTerritory[Set[SetTerritory[Set]:::contentModifier
+SetWhere[SetWhere]:::contentModifier
+SetWhere[Set[SetWhere[Set]:::contentModifier
+TerritoryCheck{TerritoryCheck}:::router
+TerritoryCheck{"company_territory_code{TerritoryCheck{"company_territory_code}:::router
+
+
+DeltaRunCheck -->|Yes| SetLastModified[Set last modified >]:::contentModifier
+DeltaRunCheck -->|Yes| SetEffectiveEndDate[Set effective_end_date >=]:::contentModifier
+
+SetLastModified --> TerritoryCheck{"company_territory_code not blank?"}:::router
+SetEffectiveEndDate --> TerritoryCheck
+
+TerritoryCheck -->|Yes| SetTerritory[Set company_territory_code IN]:::contentModifier
+TerritoryCheck -->|No| LegalEntityCheck{"Legal Entity not blank?"}:::router
+SetTerritory --> LegalEntityCheck
+
+LegalEntityCheck -->|Yes| SetLegalEntity[Set Legal Entity IN]:::contentModifier
+LegalEntityCheck -->|No| EmployeeClassCheck{"employee_class not blank?"}:::router
+SetLegalEntity --> EmployeeClassCheck
+
+EmployeeClassCheck -->|Yes| SetEmployeeClass[Set employee_class IN]:::contentModifier
+EmployeeClassCheck -->|No| GPIDCheck{"GPID IS NOT BLANK?"}:::router
+SetEmployeeClass --> GPIDCheck
+
+GPIDCheck -->|Yes| SetGPID[Set GPID IN]:::contentModifier
+GPIDCheck -->|No| GetWhereProperty[Get where Property]:::contentModifier
+SetGPID --> GetWhereProperty
+
+GetWhereProperty --> FillQuotes[Fill in single quotes]:::script
+FillQuotes --> SetWhere[Set where]:::contentModifier
+SetWhere --> End((End)):::event
+</pre>
+<h4 id="sub-process-extract-data_1">Sub-Process: Extract Data</h4>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for Boomi/SAP Integration Suite components
+classDef httpAdapter fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef contentModifier fill:#98FB98,stroke:#333,stroke-width:2px
+classDef mapping fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef adapter fill:#FFD700,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef router fill:#F5F5DC,stroke:#333,stroke-width:2px
+classDef splitter fill:#E6E6FA,stroke:#333,stroke-width:2px
+
+%% Extract Data Flow
+CombineDocuments[CombineDocuments]:::contentModifier
+CombineDocuments[Combine[CombineDocuments[Combine]:::contentModifier
+DataExtraction[DataExtraction]:::contentModifier
+DemographicData[DemographicData]:::contentModifier
+DemographicData[Demographic[DemographicData[Demographic]:::contentModifier
+End((End)):::event[End((End)):::event]:::contentModifier
+EndScope([End[EndScope([End]:::contentModifier
+ErrorMessageDetails[ErrorMessageDetails]:::contentModifier
+ErrorMessageDetails[Error[ErrorMessageDetails[Error]:::contentModifier
+HardErrors[HardErrors]:::contentModifier
+HardErrors[Hard[HardErrors[Hard]:::contentModifier
+MailServer[Mail[MailServer[Mail]:::contentModifier
+ProcessExpats[ProcessExpats]:::contentModifier
+ProcessExpats[Orighirdate[ProcessExpats[Orighirdate]:::contentModifier
+ProcessScope[ProcessScope]:::contentModifier
+ProcessScope[Scope]:::contentModifier[ProcessScope[Scope]:::contentModifier]:::contentModifier
+SetErrorCounts[SetErrorCounts]:::contentModifier
+SetErrorCounts[Set[SetErrorCounts[Set]:::contentModifier
+SetErrorMsgProps[SetErrorMsgProps]:::contentModifier
+SetErrorMsgProps[Set[SetErrorMsgProps[Set]:::contentModifier
+SetFileName[SetFileName]:::contentModifier
+SetFileName[Set[SetFileName[Set]:::contentModifier
+SetSuccessCounts[SetSuccessCounts]:::contentModifier
+SetSuccessCounts[Set[SetSuccessCounts[Set]:::contentModifier
+SplitEmpInfo[SplitEmpInfo]:::contentModifier
+SplitEmpInfo[Split[SplitEmpInfo[Split]:::contentModifier
+SplitLogItem[SplitLogItem]:::contentModifier
+SplitLogItem[SplitON[SplitLogItem[SplitON]:::contentModifier
+SuccessRecordCount[SuccessRecordCount]:::contentModifier
+SuccessRecordCount[Total[SuccessRecordCount[Total]:::contentModifier
+TotalErrorCount[Total[TotalErrorCount[Total]:::contentModifier
+TransformData[TransformData]:::contentModifier
+TransformData[Transform:[TransformData[Transform:]:::contentModifier
+TransformErrors[TransformErrors]:::contentModifier
+TransformErrors[Transform:[TransformErrors[Transform:]:::contentModifier
+
+DataExtraction --> SplitLogItem[SplitON Log_Item]:::splitter
+DataExtraction --> SplitEmpInfo[Split on EmpInfo]:::splitter
+
+SplitLogItem --> TransformErrors[Transform: Error Processing]:::mapping
+TransformErrors --> CombineDocuments[Combine Documents]:::contentModifier
+CombineDocuments --> ErrorMessageDetails[Error Message Details]:::contentModifier
+ErrorMessageDetails --> MailServer[Mail server]:::adapter
+
+SplitEmpInfo --> ProcessExpats[Orighirdate from Expats]:::contentModifier
+ProcessExpats --> ProcessScope[Scope]:::contentModifier
+
+ProcessScope --> TransformData[Transform: Data Processing]:::mapping
+ProcessScope --> EndScope([End Scope]):::event
+
+TransformData --> HardErrors[Hard Errors]:::errorHandler
+HardErrors --> SetSuccessCounts[Set Success Counts PCR]:::contentModifier
+HardErrors --> SetErrorCounts[Set Error Record Count Property]:::contentModifier
+
+SetSuccessCounts --> SuccessRecordCount[Total Success Record Count]:::contentModifier
+SetErrorCounts --> SetErrorMsgProps[Set Error Message Properties]:::contentModifier
+SetErrorMsgProps --> TotalErrorCount[Total Error Count]:::contentModifier
+
+SuccessRecordCount --> SetFileName[Set FileName]:::contentModifier
+SetFileName --> DemographicData[Demographic Data]:::contentModifier
+DemographicData --> End((End)):::event
+</pre>
+<h4 id="sub-process-sftp-to-pepsi-and-navex_1">Sub-Process: SFTP to Pepsi and NAVEX</h4>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for Boomi/SAP Integration Suite components
+classDef httpAdapter fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef contentModifier fill:#98FB98,stroke:#333,stroke-width:2px
+classDef mapping fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef adapter fill:#FFD700,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef router fill:#F5F5DC,stroke:#333,stroke-width:2px
+classDef encryption fill:#FFDAB9,stroke:#333,stroke-width:2px
+
+%% Node Definitions
+Start((Start)):::event
+SendFilesToVendor{"Send Files to Vendor?"}:::router
+PGPEncryption1[PGP Encryption]:::encryption
+SetNAVEXDir[Set NAVEX Directory]:::contentModifier
+NAVEXTransfer[NAVEX SFTP Connector Operation]:::adapter
+MailBody[Mail Body (Notification Message)]:::contentModifier
+NAVEXException[Exception in NAVEX SFTP]:::errorHandler
+SetMailProps[Set Mail Properties for successful file transfer]:::contentModifier
+SendNotification[Inline Notification Mail Message]:::adapter
+SendPepsiCheck{"Send Files to Pepsico SFTP?"}:::router
+EncryptArchive[Encrypt Archive File]:::encryption
+PGPEncryption2[PGP Encryption]:::encryption
+SetRemoteDir[Set Remote Directory for Archive file]:::contentModifier
+PepsiSFTP[Send File to PepsiCo SFTP]:::adapter
+PepsiException[Exception in Pepsi SFTP (File Archive)]:::errorHandler
+EndProcess((End)):::event
+
+%% SFTP to Pepsi and NAVEX Flow
+Start --> SendFilesToVendor
+
+SendFilesToVendor -->|Yes| PGPEncryption1
+SendFilesToVendor -->|No| EndProcess
+
+PGPEncryption1 --> SetNAVEXDir
+SetNAVEXDir --> NAVEXTransfer
+
+NAVEXTransfer -->|Success| MailBody
+NAVEXTransfer -->|Error| NAVEXException
+
+MailBody --> SetMailProps
+SetMailProps --> SendNotification
+SendNotification --> SendPepsiCheck
+
+SendPepsiCheck -->|Yes| EncryptArchive
+SendPepsiCheck -->|No| EndProcess
+
+EncryptArchive --> PGPEncryption2
+PGPEncryption2 --> SetRemoteDir
+SetRemoteDir --> PepsiSFTP
+
+PepsiSFTP -->|Success| EndProcess
+PepsiSFTP -->|Error| PepsiException
+PepsiException --> EndProcess
+</pre>
+<h4 id="sub-process-process-for-control-and-error-report">Sub-Process: Process for Control and Error Report</h4>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for Boomi/SAP Integration Suite components
+classDef httpAdapter fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef contentModifier fill:#98FB98,stroke:#333,stroke-width:2px
+classDef mapping fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef adapter fill:#FFD700,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef router fill:#F5F5DC,stroke:#333,stroke-width:2px
+
+%% Process for Control and Error Report Flow
+ArchiveControlCheck{ArchiveControlCheck}:::router
+ArchiveControlCheck{"Archive{ArchiveControlCheck{"Archive}:::router
+ArchiveControl[SFTP[ArchiveControl[SFTP]:::contentModifier
+ArchiveError[ArchiveError]:::contentModifier
+ArchiveError[SFTP[ArchiveError[SFTP]:::contentModifier
+ControlReport[ControlReport]:::contentModifier
+ControlReport[ControlReport[ControlReport[ControlReport]:::contentModifier
+End((End)):::event
+End((End)):::event[End((End)):::event]:::contentModifier
+ErrorReport[ErrorReport]:::contentModifier
+ErrorReportCheck{ErrorReportCheck}:::router
+ErrorReportCheck{"Archive{ErrorReportCheck{"Archive}:::router
+ErrorReport[Error[ErrorReport[Error]:::contentModifier
+ReportGeneration[ReportGeneration]:::contentModifier
+SendControlEmail[SendControlEmail]:::contentModifier
+SendControlEmail[Notification[SendControlEmail[Notification]:::contentModifier
+SendErrorEmail[SendErrorEmail]:::contentModifier
+SendErrorEmail[Notification[SendErrorEmail[Notification]:::contentModifier
+SkipArchiveControl[SkipArchiveControl]:::contentModifier
+SkipArchiveControl([Skip[SkipArchiveControl([Skip]:::contentModifier
+SkipErrorReport[SkipErrorReport]:::contentModifier
+SkipErrorReport([Skip[SkipErrorReport([Skip]:::contentModifier
+TransformReport[TransformReport]:::contentModifier
+TransformReport[Transform:[TransformReport[Transform:]:::contentModifier
+
+ReportGeneration --> TransformReport[Transform: ControlReportMap]:::mapping
+ReportGeneration --> ErrorReportCheck{"Archive file to SFTP?"}:::router
+
+TransformReport --> ControlReport[ControlReport Detail for Attachment]:::contentModifier
+ControlReport --> ArchiveControlCheck{"Archive file to SFTP?"}:::router
+
+ArchiveControlCheck -->|Yes| ArchiveControl[SFTP Put Reports Operation]:::adapter
+ArchiveControlCheck -->|No| SkipArchiveControl([Skip Archive]):::event
+
+ErrorReportCheck -->|Yes| ErrorReport[Error Report Details]:::contentModifier
+ErrorReportCheck -->|No| SkipErrorReport([Skip Error Report]):::event
+
+ErrorReport --> ArchiveError[SFTP Put Reports Operation]:::adapter
+ArchiveError --> SendControlEmail[Notification mail message]:::adapter
+ArchiveError --> SendErrorEmail[Notification mail message]:::adapter
+
+SendControlEmail --> End((End)):::event
+SendErrorEmail --> End
+SkipArchiveControl --> End
+SkipErrorReport --> End
+</pre>
+<h3 id="configuration-details">Configuration Details</h3>
+<p><strong>Main Process Configuration:</strong>
+- Delta Run Parameter: Boolean parameter to determine if the process should run as delta or full extract
+- Last Success Run Date (LSRD): Date parameter to store the last successful run date for delta extracts
+- File Name Pattern: Pattern for generating output file names, including timestamp and run type indicators</p>
+<p><strong>Where Clause Configuration:</strong>
+- Filter Conditions: Dynamic SQL filter conditions based on various parameters
+- Date Format: Format for date values in SQL filters
+- Quote Handling: Logic for properly quoting string values in SQL filters</p>
+<p><strong>Extract Data Configuration:</strong>
+- OData Query Parameters: Parameters for querying SuccessFactors OData API
+- Error Handling: Configuration for error detection and reporting
+- Record Counting: Parameters for tracking success and error record counts</p>
+<p><strong>SFTP Configuration:</strong>
+- NAVEX SFTP Connection: Host, port, username, password/key for NAVEX SFTP server
+- PepsiCo SFTP Connection: Host, port, username, password/key for PepsiCo SFTP server
+- Directory Paths: Remote directory paths for file transfers
+- PGP Encryption: PGP key configuration for file encryption</p>
+<p><strong>Email Notification Configuration:</strong>
+- SMTP Server: Connection details for email server
+- Email Templates: Templates for success and error notifications
+- Recipient Lists: Email addresses for notifications</p>
+<h2 id="environment-configuration">Environment Configuration</h2>
+<p><strong>Connection Parameters:</strong>
+- SuccessFactors OData API: Base URL, authentication credentials, API version
+- NAVEX SFTP: Host, port, username, authentication method (password or key)
+- PepsiCo SFTP: Host, port, username, authentication method (password or key)
+- SMTP Server: Host, port, authentication credentials</p>
+<p><strong>Security Settings:</strong>
+- PGP Encryption Keys: Public keys for NAVEX and PepsiCo for file encryption
+- Authentication Credentials: Stored securely in connection profiles
+- Certificate Management: SSL certificates for secure connections</p>
+<p><strong>Process Parameters:</strong>
+- isDeltaRun: Boolean parameter to control delta vs. full extract behavior
+- lastSuccessRunDate: Date parameter to store the last successful run date
+- sendToVendor: Boolean parameter to control sending files to NAVEX
+- sendToPepsiSFTP: Boolean parameter to control sending files to PepsiCo SFTP
+- archiveToSFTP: Boolean parameter to control archiving reports to SFTP</p>
+<p><strong>Error Handling Configuration:</strong>
+- Error Email Recipients: Email addresses for error notifications
+- Error Severity Levels: Configuration for error severity classification
+- Error Retry Logic: Configuration for retry attempts on failures</p>
+<p><strong>Resource Requirements:</strong>
+- Memory: Minimum 4GB recommended for processing large data sets
+- CPU: Multi-core processor recommended for parallel processing
+- Disk Space: Sufficient space for temporary file storage during processing</p>
+<h2 id="api-reference">API Reference</h2>
+<p><strong>SuccessFactors OData API Endpoints:</strong></p>
+<ol>
+<li><strong>GET /odata/v2/EmpEmployment</strong></li>
+<li><strong>Purpose</strong>: Retrieve employee employment information</li>
+<li><strong>Authentication</strong>: OAuth 2.0 Bearer Token</li>
+<li><strong>Parameters</strong>:<ul>
+<li>$filter: Dynamic filter based on last modified date, employee class, etc.</li>
+<li>$expand: Related entities to include in the response</li>
+<li>$select: Specific fields to retrieve</li>
+</ul>
+</li>
+<li><strong>Response Format</strong>: JSON/XML with employee employment records</li>
+<li>
+<p><strong>Error Codes</strong>:</p>
+<ul>
+<li>400: Bad Request</li>
+<li>401: Unauthorized</li>
+<li>403: Forbidden</li>
+<li>500: Internal Server Error</li>
+</ul>
+</li>
+<li>
+<p><strong>GET /odata/v2/PicklistOption</strong></p>
+</li>
+<li><strong>Purpose</strong>: Retrieve picklist option values</li>
+<li><strong>Authentication</strong>: OAuth 2.0 Bearer Token</li>
+<li><strong>Parameters</strong>:<ul>
+<li>$filter: Filter by picklist ID</li>
+</ul>
+</li>
+<li><strong>Response Format</strong>: JSON/XML with picklist option values</li>
+<li><strong>Error Codes</strong>:<ul>
+<li>400: Bad Request</li>
+<li>401: Unauthorized</li>
+<li>403: Forbidden</li>
+<li>500: Internal Server Error</li>
+</ul>
+</li>
+</ol>
+<p><strong>SFTP Operations:</strong></p>
+<ol>
+<li><strong>PUT /navex/[filename]</strong></li>
+<li><strong>Purpose</strong>: Upload encrypted employee data file to NAVEX SFTP server</li>
+<li><strong>Authentication</strong>: Username/Password or SSH Key</li>
+<li><strong>Parameters</strong>:<ul>
+<li>filename: Dynamic file name based on timestamp and run type</li>
+</ul>
+</li>
+<li><strong>Request Body</strong>: PGP encrypted file content</li>
+<li><strong>Response</strong>: Success/Failure status</li>
+<li>
+<p><strong>Error Codes</strong>:</p>
+<ul>
+<li>Connection errors</li>
+<li>Authentication errors</li>
+<li>Permission errors</li>
+</ul>
+</li>
+<li>
+<p><strong>PUT /pepsico/[filename]</strong></p>
+</li>
+<li><strong>Purpose</strong>: Upload encrypted employee data file to PepsiCo SFTP server</li>
+<li><strong>Authentication</strong>: Username/Password or SSH Key</li>
+<li><strong>Parameters</strong>:<ul>
+<li>filename: Dynamic file name based on timestamp and run type</li>
+</ul>
+</li>
+<li><strong>Request Body</strong>: PGP encrypted file content</li>
+<li><strong>Response</strong>: Success/Failure status</li>
+<li><strong>Error Codes</strong>:<ul>
+<li>Connection errors</li>
+<li>Authentication errors</li>
+<li>Permission errors</li>
+</ul>
+</li>
+</ol>
+<p><strong>Email Notification API:</strong></p>
+<ol>
+<li><strong>SMTP Send</strong></li>
+<li><strong>Purpose</strong>: Send email notifications for process completion and errors</li>
+<li><strong>Authentication</strong>: SMTP authentication</li>
+<li><strong>Parameters</strong>:<ul>
+<li>recipients: Email addresses of recipients</li>
+<li>subject: Email subject</li>
+<li>body: Email body content</li>
+<li>attachments: Control and error reports</li>
+</ul>
+</li>
+<li><strong>Response</strong>: Success/Failure status</li>
+<li><strong>Error Codes</strong>:<ul>
+<li>Connection errors</li>
+<li>Authentication errors</li>
+<li>Delivery errors</li>
+</ul>
+</li>
+</ol>
+    
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

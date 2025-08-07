@@ -1,44 +1,50 @@
 {
-  "process_name": "Connect SAP SuccessFactors to SFTP with Error Handling",
-  "description": "This integration extracts employee data from SAP SuccessFactors, transforms it into Kafka Avro format, and transfers it to an SFTP server with comprehensive error handling capabilities.",
+  "process_name": "Salesforce to SAP Customer Integration",
+  "description": "Integration process that synchronizes Salesforce accounts with SAP customer master data by creating SAP customers and updating Salesforce with generated customer numbers",
   "endpoints": [
     {
-      "method": "GET",
-      "path": "/successfactors/employee-data",
-      "purpose": "Extract employee data from SuccessFactors, transform it, and upload to SFTP server",
+      "method": "POST",
+      "path": "/salesforce-sap-customer-sync",
+      "purpose": "Synchronize Salesforce accounts to SAP customer master data with bi-directional updates",
       "components": [
         {
-          "type": "request_reply",
-          "name": "Get_SuccessFactors_Employee_Data",
-          "id": "successfactors_get_1",
+          "type": "enricher",
+          "name": "Set_Account_Properties",
+          "id": "set_properties_1",
           "config": {
-            "endpoint_path": "/odata/v2/User",
-            "address": "https://api.successfactors.com"
+            "content": "Set Account ID and Account Name as exchange properties for use throughout the process"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Transform_Canonical_To_Kafka_Avro",
-          "id": "transform_canonical_to_kafka_1",
+          "name": "Transform_SF_Account_to_SAP",
+          "id": "transform_sf_to_sap_1",
           "config": {
-            "script": "CanonicalToKafkaAvroTransformation.groovy"
-          }
-        },
-        {
-          "type": "enricher",
-          "name": "Prepare_SFTP_Upload",
-          "id": "prepare_sftp_1",
-          "config": {
-            "content": "${property.SFTPFilePath}/${date:now:yyyyMMdd}_employee_data.json"
+            "script": "TransformSFAccountToSAP.groovy"
           }
         },
         {
           "type": "request_reply",
-          "name": "Upload_To_SFTP",
-          "id": "sftp_upload_1",
+          "name": "Create_SAP_Customer",
+          "id": "sap_customer_create_1",
           "config": {
-            "endpoint_path": "${property.SFTPFilePath}",
-            "address": "sftp://${property.SFTPHost}"
+            "endpoint_path": "/sap/bc/rest/bapi_customer_createfromdata1"
+          }
+        },
+        {
+          "type": "groovy_script",
+          "name": "Transform_SAP_Response_to_SF",
+          "id": "transform_sap_to_sf_1",
+          "config": {
+            "script": "TransformSAPResponseToSF.groovy"
+          }
+        },
+        {
+          "type": "request_reply",
+          "name": "Update_Salesforce_Account",
+          "id": "sf_account_update_1",
+          "config": {
+            "endpoint_path": "/services/data/v58.0/sobjects/Account"
           }
         }
       ],
@@ -46,21 +52,20 @@
         "exception_subprocess": [
           {
             "type": "enricher",
-            "name": "Prepare_Error_Notification",
-            "id": "error_notification_1",
+            "name": "Error_Message_Handler",
+            "id": "error_msg_1",
             "trigger": "any_error",
             "config": {
-              "content": "{\n  \"error\": \"Integration failure\",\n  \"process\": \"Connect SAP SuccessFactors to SFTP\",\n  \"timestamp\": \"${date:now:yyyy-MM-dd'T'HH:mm:ss}\",\n  \"details\": \"${exception.message}\"\n}"
+              "content": "Process error occurred during Salesforce to SAP synchronization"
             }
           },
           {
             "type": "request_reply",
             "name": "Send_Error_Notification",
-            "id": "send_notification_1",
+            "id": "error_notify_1",
             "trigger": "any_error",
             "config": {
-              "endpoint_path": "/api/notifications",
-              "address": "https://notification-service.example.com"
+              "endpoint_path": "/notification/error"
             }
           }
         ]
@@ -69,33 +74,42 @@
         "type": "exclusive",
         "branches": [
           {
-            "condition": "default",
+            "condition": "New account creation successful",
             "components": [
-              "successfactors_get_1",
-              "transform_canonical_to_kafka_1",
-              "prepare_sftp_1",
-              "sftp_upload_1"
+              "sf_account_update_1"
             ],
             "sequence": [
-              "successfactors_get_1",
-              "transform_canonical_to_kafka_1",
-              "prepare_sftp_1",
-              "sftp_upload_1"
+              "sf_account_update_1"
+            ]
+          },
+          {
+            "condition": "Account already exists",
+            "components": [
+              "info_log_1"
+            ],
+            "sequence": [
+              "info_log_1"
             ]
           }
         ]
       },
       "sequence": [
-        "successfactors_get_1",
-        "transform_canonical_to_kafka_1",
-        "prepare_sftp_1",
-        "sftp_upload_1"
+        "set_properties_1",
+        "transform_sf_to_sap_1",
+        "sap_customer_create_1",
+        "transform_sap_to_sf_1",
+        "sf_account_update_1"
       ],
       "transformations": [
         {
-          "name": "CanonicalToKafkaAvroTransformation.groovy",
+          "name": "TransformSFAccountToSAP.groovy",
           "type": "groovy",
-          "script": "import groovy.json.*\n\ndef inputBody = message.getBody(String.class)\ndef jsonSlurper = new JsonSlurper()\ndef data = jsonSlurper.parseText(inputBody)\n\ndef result = [\n  \"Object\": [\n    \"batchProcessingDirectives\": [\n      \"Object\": [\n        \"accountID\": [\n          \"Object\": [\n            \"username\": data.profileElement9 // Map profile element 9 to username\n          ]\n        ],\n        \"batchProcessingOption\": [\n          \"Array\": [\n            \"ArrayElement1\": [\n              \"Object\": [\n                \"name\": data.profileElement118 // Map profile element 118 to name\n              ]\n            ]\n          ]\n        ]\n      ]\n    ],\n    \"batchContactList\": [\n      \"Array\": [\n        \"ArrayElement1\": [\n          \"Object\": [\n            \"contact\": [\n              \"Array\": [\n                \"ArrayElement1\": [\n                  \"Object\": [\n                    \"contactID\": data.profileElement91, // Map profile element 91 to contactID\n                    \"contactPointList\": [\n                      \"Array\": [\n                        \"ArrayElement1\": [\n                          \"Object\": [\n                            \"contactPoint\": [\n                              \"Array\": [\n                                \"ArrayElement1\": [\n                                  \"Object\": [\n                                    \"type\": data.profileElement111 // Map profile element 111 to type\n                                  ]\n                                ]\n                              ]\n                            ]\n                          ]\n                        ]\n                      ]\n                    ]\n                  ]\n                ]\n              ]\n            ]\n          ]\n        ]\n      ]\n    ]\n  ]\n]\n\nmessage.setBody(JsonOutput.toJson(result))\nreturn message"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.json.JsonBuilder\nimport groovy.json.JsonSlurper\n\ndef Message processData(Message message) {\n    def body = message.getBody(String)\n    def jsonSlurper = new JsonSlurper()\n    def sfAccount = jsonSlurper.parseText(body)\n    \n    def sapRequest = [\n        IMPORT: [\n            Object: [\n                I_PI_COMPANYDATA: [\n                    Object: [\n                        NAME: sfAccount.Name,\n                        STREET: sfAccount.BillingStreet,\n                        CITY: sfAccount.BillingCity,\n                        REGION: sfAccount.BillingState,\n                        POSTL_COD1: sfAccount.BillingPostalCode,\n                        COUNTRY: sfAccount.BillingCountry\n                    ]\n                ]\n            ]\n        ]\n    ]\n    \n    def jsonBuilder = new JsonBuilder(sapRequest)\n    message.setBody(jsonBuilder.toString())\n    return message\n}"
+        },
+        {
+          "name": "TransformSAPResponseToSF.groovy",
+          "type": "groovy",
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.json.JsonBuilder\nimport groovy.json.JsonSlurper\n\ndef Message processData(Message message) {\n    def body = message.getBody(String)\n    def jsonSlurper = new JsonSlurper()\n    def sapResponse = jsonSlurper.parseText(body)\n    \n    def accountId = message.getProperty('AccountID')\n    def accountName = message.getProperty('AccountName')\n    def customerNumber = sapResponse.EXPORT?.CUSTOMERNO\n    \n    def sfUpdateRequest = [\n        Id: accountId,\n        Name: accountName,\n        Description: customerNumber\n    ]\n    \n    def jsonBuilder = new JsonBuilder(sfUpdateRequest)\n    message.setBody(jsonBuilder.toString())\n    return message\n}"
         }
       ]
     }

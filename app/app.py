@@ -4,6 +4,10 @@ import uuid
 import json
 import zipfile
 import shutil
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from flask import Flask, request, jsonify, send_file, render_template
 from utils.cors_helper import enable_cors
@@ -21,6 +25,18 @@ try:
 except Exception as e:
     print(f"Warning: Document processor initialization failed: {str(e)}")
     document_processor = None
+
+# Import database integration
+try:
+    import sys
+    import io
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+    from database_integration.integrated_manager import integrated_manager
+    DATABASE_ENABLED = True
+    print("Database integration enabled")
+except ImportError as e:
+    print(f"Warning: Database integration not available: {e}")
+    DATABASE_ENABLED = False
 
 # Set up NLTK data
 try:
@@ -346,6 +362,90 @@ def create_job(job_id, filename, enhance_with_llm=False, platform='mulesoft'):
 def allowed_file(filename):
     """Check if the file has an allowed extension"""
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def upload_file_to_s3_and_db(file, job_id, filename, platform='mulesoft', user_id=None):
+    """
+    Upload file to S3 and create database records
+    Returns: (job_record, file_url, success)
+    """
+    if not DATABASE_ENABLED:
+        print("⚠️ Database not enabled, skipping S3 and DB integration")
+        return None, None, False
+
+    try:
+        # Read file content
+        file_content = file.read()
+        file.seek(0)  # Reset for potential reuse
+
+        # Create job record in database
+        job_data = {
+            'id': job_id,
+            'filename': filename,
+            'platform': platform,
+            'user_id': user_id or 'anonymous',
+            'status': 'processing',
+            'enhance_with_llm': True,
+            'file_info': {
+                'original_filename': filename,
+                'file_size': len(file_content),
+                'content_type': getattr(file, 'content_type', 'application/octet-stream')
+            }
+        }
+
+        # Create file object for upload
+        file_obj = io.BytesIO(file_content)
+
+        # Create job with file upload
+        job_record = integrated_manager.create_job_with_file(
+            job_data=job_data,
+            file_obj=file_obj,
+            filename=filename
+        )
+
+        if job_record:
+            file_url = job_record.get('upload_path')
+            print(f"✅ File uploaded to S3 and job created: {job_id}")
+
+            # Track user activity
+            integrated_manager.db.create_user_activity(
+                user_id or 'anonymous',
+                'file_upload',
+                {
+                    'job_id': job_id,
+                    'filename': filename,
+                    'platform': platform,
+                    'file_size': job_data['file_info']['file_size']
+                }
+            )
+
+            return job_record, file_url, True
+        else:
+            print(f"❌ Failed to create job record: {job_id}")
+            return None, None, False
+
+    except Exception as e:
+        print(f"❌ Error uploading to S3 and DB: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return None, None, False
+
+def update_job_status(job_id, status, updates=None):
+    """Update job status in database"""
+    if not DATABASE_ENABLED:
+        return False
+
+    try:
+        update_data = {'status': status}
+        if updates:
+            update_data.update(updates)
+
+        success = integrated_manager.db.update_job(job_id, update_data)
+        if success:
+            print(f"✅ Job status updated: {job_id} -> {status}")
+        return success
+    except Exception as e:
+        print(f"❌ Error updating job status: {str(e)}")
+        return False
 
 def extract_zip(zip_path, extract_to):
     """Extract a ZIP file to the specified directory"""
@@ -949,6 +1049,20 @@ def upload_documentation():
         os.makedirs(os.path.dirname(file_path), exist_ok=True)
         file.save(file_path)
 
+        # Upload to S3 and create database record
+        file.seek(0)  # Reset file pointer for S3 upload
+        job_record, file_url, s3_success = upload_file_to_s3_and_db(
+            file, job_id, filename, platform, user_id='anonymous'
+        )
+
+        if s3_success:
+            logging.info(f"Job {job_id}: Documentation uploaded to S3: {filename}")
+        else:
+            logging.warning(f"Job {job_id}: S3 upload failed for documentation: {filename}")
+
+        # Reset file pointer for further processing
+        file.seek(0)
+
         # Process the document
         processed_doc = document_processor.process_document(file_path, filename)
 
@@ -1012,7 +1126,13 @@ def upload_documentation():
             },
             'ready_for_iflow_generation': True,
             'image_count': processed_doc.get('image_count', 0),
-            'images_analyzed': processed_doc.get('images_analyzed', 0)
+            'images_analyzed': processed_doc.get('images_analyzed', 0),
+            's3_upload': {
+                'success': s3_success,
+                'file_url': file_url if s3_success else None,
+                'job_record': job_record.get('id') if job_record else None
+            },
+            'database_enabled': DATABASE_ENABLED
         }
 
         # Add format-specific info
@@ -1027,6 +1147,15 @@ def upload_documentation():
         # Store job
         jobs[job_id] = job_data
         save_jobs(jobs)
+
+        # Update database job status if enabled
+        if DATABASE_ENABLED and s3_success:
+            update_job_status(job_id, 'documentation_ready', {
+                'processing_step': 'documentation_uploaded',
+                'processing_message': f'Documentation uploaded and processed successfully from {filename}',
+                'ready_for_iflow_generation': True,
+                'source_type': 'uploaded_documentation'
+            })
 
         return jsonify({
             'message': 'Documentation uploaded and processed successfully',
@@ -1305,13 +1434,35 @@ def generate_docs():
         xml_files_found = False
         mule_dir = None
 
-        # Save uploaded files
+        # Save uploaded files and upload to S3
+        s3_uploaded_files = []
         for file in files:
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file_path = os.path.join(job_folder, filename)
+
+                # Save locally (for backward compatibility)
                 file.save(file_path)
                 logging.info(f"Job {job_id}: Saved uploaded file: {filename}")
+
+                # Upload to S3 and create database record
+                file.seek(0)  # Reset file pointer for S3 upload
+                job_record, file_url, s3_success = upload_file_to_s3_and_db(
+                    file, job_id, filename, platform, user_id='anonymous'
+                )
+
+                if s3_success:
+                    s3_uploaded_files.append({
+                        'filename': filename,
+                        'file_url': file_url,
+                        'job_record': job_record
+                    })
+                    logging.info(f"Job {job_id}: File uploaded to S3: {filename}")
+                else:
+                    logging.warning(f"Job {job_id}: S3 upload failed for: {filename}")
+
+                # Reset file pointer for further processing
+                file.seek(0)
 
                 # If it's a ZIP file, extract it
                 if filename.lower().endswith('.zip'):
@@ -1370,12 +1521,22 @@ def generate_docs():
             'enhance': enhance,
             'platform': platform,
             'input_directory': process_dir,
-            'zip_file': zip_processed
+            'zip_file': zip_processed,
+            's3_files': s3_uploaded_files,  # Include S3 upload information
+            'database_enabled': DATABASE_ENABLED
         }
 
         jobs[job_id] = job_data
         save_jobs(jobs)  # Save job data to file
         logging.info(f"Job {job_id}: Created new {platform} job, starting documentation processing")
+
+        # Update database job status if enabled
+        if DATABASE_ENABLED and s3_uploaded_files:
+            update_job_status(job_id, 'queued', {
+                'input_directory': process_dir,
+                'zip_file': zip_processed,
+                'enhance_with_llm': enhance
+            })
 
         # Start processing in background with platform information
         logging.info(f"Job {job_id}: Starting background processing with enhance={enhance}, platform={platform}")
@@ -1395,7 +1556,57 @@ def generate_docs():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/jobs/<job_id>', methods=['GET'])
+@app.route('/api/jobs/<job_id>', methods=['GET', 'DELETE'])
+def handle_job(job_id):
+    if request.method == 'DELETE':
+        return delete_job(job_id)
+    else:
+        return get_job_status(job_id)
+
+def delete_job(job_id):
+    """Delete a job and its associated files"""
+    try:
+        if job_id not in jobs:
+            return jsonify({'error': 'Job not found'}), 404
+
+        job = jobs[job_id]
+
+        # Delete job from database if using database storage
+        if use_database:
+            try:
+                db_manager.delete_job(job_id)
+                logging.info(f"Job {job_id} deleted from database")
+            except Exception as e:
+                logging.error(f"Failed to delete job {job_id} from database: {str(e)}")
+
+        # Delete local files
+        job_folder = os.path.join(app.config['UPLOAD_FOLDER'], job_id)
+        if os.path.exists(job_folder):
+            import shutil
+            shutil.rmtree(job_folder)
+            logging.info(f"Deleted job folder: {job_folder}")
+
+        # Delete results folder if it exists
+        results_folder = os.path.join('results', job_id)
+        if os.path.exists(results_folder):
+            import shutil
+            shutil.rmtree(results_folder)
+            logging.info(f"Deleted results folder: {results_folder}")
+
+        # Remove from in-memory jobs
+        del jobs[job_id]
+        save_jobs(jobs)
+
+        logging.info(f"Job {job_id} deleted successfully")
+        return jsonify({
+            'message': 'Job deleted successfully',
+            'job_id': job_id
+        }), 200
+
+    except Exception as e:
+        logging.error(f"Error deleting job {job_id}: {str(e)}")
+        return jsonify({'error': f'Failed to delete job: {str(e)}'}), 500
+
 def get_job_status(job_id):
     if job_id not in jobs:
         return jsonify({'error': 'Job not found'}), 404

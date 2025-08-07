@@ -177,6 +177,17 @@ export const getAllJobs = async () => {
     }
 }
 
+// Delete a job and its associated files
+export const deleteJob = async jobId => {
+    try {
+        const response = await api.delete(`/jobs/${jobId}`)
+        return response.data
+    } catch (error) {
+        console.error("Error deleting job:", error)
+        throw error
+    }
+}
+
 // Update getDocumentation to use axios with responseType blob
 export const getDocumentation = async (jobId, fileType) => {
     try {
