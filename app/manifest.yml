@@ -7,7 +7,7 @@ applications:
   buildpacks:
   - python_buildpack
   path: .
-  command: python app.py
+  # command: python app.py  # Use Procfile instead
   routes:
   - route: it-resonance-main-api.cfapps.eu10-005.hana.ondemand.com
   env:
