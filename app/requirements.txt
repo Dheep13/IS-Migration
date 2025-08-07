@@ -30,6 +30,10 @@ pdfplumber==0.10.3
 
 # Additional dependencies for Cloud Foundry
 gunicorn==21.2.0
-boto3==1.34.0
+boto3==1.34.34
+botocore==1.34.34
 supabase==2.3.4
 pillow==10.1.0
+
+# Database integration dependencies
+openai==1.12.0

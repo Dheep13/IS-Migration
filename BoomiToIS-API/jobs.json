@@ -1169,5 +1169,26 @@
       "response_code": 201,
       "method": "Bearer + Minimal Headers"
     }
+  },
+  "29545ab5-9543-459d-b15c-a0a3701837f2": {
+    "id": "29545ab5-9543-459d-b15c-a0a3701837f2",
+    "original_job_id": "674aa64a-8370-4d19-b1b8-235737e09000",
+    "status": "completed",
+    "created": "5405975b-73a9-11f0-a7ef-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\29545ab5-9543-459d-b15c-a0a3701837f2\\BoomiFlow_674aa64a.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_674aa64a.xml": "genai_debug\\final_iflow_BoomiFlow_674aa64a.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_674aa64a"
   }
 }

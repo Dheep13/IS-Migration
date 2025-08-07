@@ -28,14 +28,20 @@ except Exception as e:
 
 # Import database integration
 try:
-    import sys
     import io
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-    from database_integration.integrated_manager import integrated_manager
-    DATABASE_ENABLED = True
-    print("Database integration enabled")
+    # Try local import first (for Cloud Foundry deployment)
+    try:
+        from database_integration.integrated_manager import integrated_manager
+        DATABASE_ENABLED = True
+        print("✅ Database integration enabled (local)")
+    except ImportError:
+        # Try parent directory import (for local development)
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+        from database_integration.integrated_manager import integrated_manager
+        DATABASE_ENABLED = True
+        print("✅ Database integration enabled (parent)")
 except ImportError as e:
-    print(f"Warning: Database integration not available: {e}")
+    print(f"⚠️ Database integration not available: {e}")
     DATABASE_ENABLED = False
 
 # Set up NLTK data
