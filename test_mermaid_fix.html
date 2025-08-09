@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Mermaid Fix</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+</head>
+<body>
+    <h1>Test Fixed Mermaid Diagram</h1>
+    
+    <div class="mermaid">
+flowchart TD
+%% Define node styles for MuleSoft/SAP Integration Suite components
+classDef httpListener fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef httpRequest fill:#98FB98,stroke:#333,stroke-width:2px
+classDef transform fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef choice fill:#FFD700,stroke:#333,stroke-width:2px
+classDef salesforce fill:#FF6347,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef flowRef fill:#ADD8E6,stroke:#333,stroke-width:2px
+classDef cerner fill:#90EE90,stroke:#333,stroke-width:2px
+classDef availity fill:#FFB6C1,stroke:#333,stroke-width:2px
+
+%% Main API Gateway Flow
+Start((Start)):::event
+HTTPListener["HTTP Listener: /api/*"]:::httpListener
+APIKitRouter{"APIKit Router"}:::choice
+
+%% Patient Operations
+GetPatient["GET /Patient"]:::httpListener
+GetPatientById["GET /Patient/id"]:::httpListener
+PostSyncPatient["POST /syncPatient"]:::httpListener
+PostVerifyBenefits["POST /verifyBenefits"]:::httpListener
+
+%% Implementation Flows
+ImplPatient[implementation_patient]:::flowRef
+ImplSyncPatient[implementation_sync_patient]:::flowRef
+ImplVerifyBenefits[implementation_verifyBenefits]:::flowRef
+
+%% External System Calls
+CernerLookup[Cerner Patient Lookup]:::cerner
+CernerCoverage[Cerner Coverage Lookup]:::cerner
+AvailityVerify[Availity Benefits Verification]:::availity
+SFPatientSync[SF Health Cloud Patient Sync]:::salesforce
+SFOrgLookup[SF Organization Lookup]:::salesforce
+SFCoverageSync[SF Coverage Sync]:::salesforce
+
+%% Transformations
+TransformPatient[Transform: Remove GP/Org]:::transform
+TransformSync[Transform: Add Identifier]:::transform
+TransformCoverage[Transform: Coverage Format]:::transform
+TransformResponse[Transform: FHIR Response]:::transform
+
+%% Error Handling
+ErrorHandler[(Global Error Handler)]:::errorHandler
+ErrorTransform[Transform: FHIR OperationOutcome]:::transform
+ErrorEnd((Error Response)):::event
+
+%% Success End
+SuccessEnd((Success Response)):::event
+
+%% Main Flow Connections
+Start --> HTTPListener
+HTTPListener --> APIKitRouter
+
+%% Route to specific endpoints
+APIKitRouter -->|"Patient"| GetPatient
+APIKitRouter -->|"Patient by ID"| GetPatientById
+APIKitRouter -->|"Sync Patient"| PostSyncPatient
+APIKitRouter -->|"Verify Benefits"| PostVerifyBenefits
+
+%% Patient Flow
+GetPatient --> ImplPatient
+GetPatientById --> ImplPatient
+ImplPatient --> CernerLookup
+CernerLookup --> TransformPatient
+TransformPatient --> SuccessEnd
+
+%% Sync Patient Flow
+PostSyncPatient --> ImplSyncPatient
+ImplSyncPatient --> CernerLookup
+CernerLookup --> TransformSync
+TransformSync --> SFPatientSync
+SFPatientSync --> SuccessEnd
+
+%% Benefits Verification Flow
+PostVerifyBenefits --> ImplVerifyBenefits
+ImplVerifyBenefits --> CernerCoverage
+CernerCoverage --> AvailityVerify
+AvailityVerify --> SFOrgLookup
+SFOrgLookup --> SFPatientSync
+SFPatientSync --> TransformCoverage
+TransformCoverage --> SFCoverageSync
+SFCoverageSync --> TransformResponse
+TransformResponse --> SuccessEnd
+
+%% Error Flow Connections
+CernerLookup -->|Error| ErrorHandler
+AvailityVerify -->|Error| ErrorHandler
+SFPatientSync -->|Error| ErrorHandler
+SFCoverageSync -->|Error| ErrorHandler
+ErrorHandler --> ErrorTransform
+ErrorTransform --> ErrorEnd
+    </div>
+    
+    <p>If you can see the flowchart above, the Mermaid syntax is now correct!</p>
+</body>
+</html>

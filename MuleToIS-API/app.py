@@ -356,7 +356,8 @@ def process_iflow_generation(job_id, markdown_content, iflow_name=None):
             markdown_content=markdown_content,
             api_key=ANTHROPIC_API_KEY,
             output_dir=job_result_dir,
-            iflow_name=iflow_name
+            iflow_name=iflow_name,
+            job_id=job_id  # Pass job_id for real-time status updates
         )
 
         if result["status"] == "success":
@@ -941,5 +942,5 @@ def direct_deploy_to_sap(job_id):
         }), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5001))
+    port = int(os.environ.get('PORT', 5002))  # Changed from 5001 to 5002 to match startup script
     app.run(host='0.0.0.0', port=port, debug=True)

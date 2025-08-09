@@ -19,7 +19,7 @@ class EnhancedGenAIIFlowGenerator:
     An enhanced version of the GenAI iFlow Generator that ensures compatibility with SAP Integration Suite
     """
 
-    def __init__(self, api_key=None, model="gpt-4", provider="openai"):
+    def __init__(self, api_key=None, model="claude-sonnet-4-20250514", provider="claude"):
         """
         Initialize the generator
 
@@ -38,6 +38,187 @@ class EnhancedGenAIIFlowGenerator:
         self.generation_approach = "unknown"
         self.generation_details = {}
 
+        # MuleSoft-specific component mapping
+        self.mulesoft_component_mapping = self.templates.get_mulesoft_component_mapping()
+
+        # Job status tracking for real-time updates
+        self.current_job_id = None
+
+        # Initialize AI providers
+        self._initialize_ai_providers(provider, api_key)
+
+    def _update_job_status(self, job_id, status, message):
+        """Update job status for progress tracking"""
+        if job_id:
+            try:
+                # Try to update the global jobs file
+                import json
+                import os
+                jobs_file = "jobs.json"
+                jobs = {}
+
+                if os.path.exists(jobs_file):
+                    with open(jobs_file, 'r') as f:
+                        jobs = json.load(f)
+
+                if job_id in jobs:
+                    jobs[job_id]['status'] = status
+                    jobs[job_id]['message'] = message
+
+                    with open(jobs_file, 'w') as f:
+                        json.dump(jobs, f, indent=2)
+
+                    print(f"📊 Job {job_id[:8]}: {status} - {message}")
+            except Exception as e:
+                print(f"Warning: Could not update job status: {e}")
+
+    def _detect_mulesoft_components(self, markdown_content):
+        """
+        Detect MuleSoft-specific components in the markdown content
+
+        Args:
+            markdown_content (str): The markdown content to analyze
+
+        Returns:
+            dict: Detected MuleSoft components and their configurations
+        """
+        detected_components = {
+            "http_listeners": [],
+            "http_requests": [],
+            "transforms": [],
+            "choice_routers": [],
+            "scatter_gathers": [],
+            "salesforce_operations": [],
+            "database_operations": [],
+            "error_handlers": [],
+            "loggers": [],
+            "validators": []
+        }
+
+        # Patterns for detecting MuleSoft components
+        patterns = {
+            "http:listener": r"http:listener.*?(?:path|config-ref|doc:name).*?(?:\n|$)",
+            "http:request": r"http:request.*?(?:url|method|config-ref).*?(?:\n|$)",
+            "transform": r"(?:transform|ee:transform).*?(?:dataweave|script).*?(?:\n|$)",
+            "choice": r"choice.*?(?:when|otherwise).*?(?:\n|$)",
+            "scatter-gather": r"scatter-gather.*?(?:route|timeout).*?(?:\n|$)",
+            "salesforce": r"salesforce:(?:query|create|update|delete).*?(?:\n|$)",
+            "database": r"db:(?:select|insert|update|delete).*?(?:\n|$)",
+            "error-handler": r"error-handler.*?(?:on-error|type).*?(?:\n|$)",
+            "logger": r"logger.*?(?:message|level).*?(?:\n|$)",
+            "validation": r"validation:.*?(?:is-|all).*?(?:\n|$)"
+        }
+
+        for component_type, pattern in patterns.items():
+            matches = re.findall(pattern, markdown_content, re.IGNORECASE | re.MULTILINE)
+            if matches:
+                print(f"🔍 Detected {len(matches)} {component_type} components")
+
+                # Map to our detection structure
+                if "http:listener" in component_type:
+                    detected_components["http_listeners"].extend(matches)
+                elif "http:request" in component_type:
+                    detected_components["http_requests"].extend(matches)
+                elif "transform" in component_type:
+                    detected_components["transforms"].extend(matches)
+                elif "choice" in component_type:
+                    detected_components["choice_routers"].extend(matches)
+                elif "scatter-gather" in component_type:
+                    detected_components["scatter_gathers"].extend(matches)
+                elif "salesforce" in component_type:
+                    detected_components["salesforce_operations"].extend(matches)
+                elif "database" in component_type:
+                    detected_components["database_operations"].extend(matches)
+                elif "error-handler" in component_type:
+                    detected_components["error_handlers"].extend(matches)
+                elif "logger" in component_type:
+                    detected_components["loggers"].extend(matches)
+                elif "validation" in component_type:
+                    detected_components["validators"].extend(matches)
+
+        return detected_components
+
+    def _map_mulesoft_to_sap_components(self, detected_components):
+        """
+        Map detected MuleSoft components to SAP Integration Suite equivalents
+
+        Args:
+            detected_components (dict): Detected MuleSoft components
+
+        Returns:
+            list: List of SAP Integration Suite component configurations
+        """
+        sap_components = []
+
+        # Map HTTP Listeners to HTTP Sender adapters
+        for listener in detected_components["http_listeners"]:
+            sap_components.append({
+                "type": "https_sender",
+                "name": "HTTP_Listener_Equivalent",
+                "config": {
+                    "url_path": "/api/*",
+                    "sender_auth": "RoleBased",
+                    "user_role": "ESBMessaging.send"
+                },
+                "mulesoft_origin": "http:listener"
+            })
+
+        # Map HTTP Requests to HTTP Receiver adapters
+        for request in detected_components["http_requests"]:
+            sap_components.append({
+                "type": "http_receiver",
+                "name": "HTTP_Request_Equivalent",
+                "config": {
+                    "address": "https://api.example.com",
+                    "http_method": "GET",
+                    "timeout": "30000"
+                },
+                "mulesoft_origin": "http:request"
+            })
+
+        # Map Transform Message to Groovy Script
+        for transform in detected_components["transforms"]:
+            sap_components.append({
+                "type": "groovy_script",
+                "name": "Transform_Message_Equivalent",
+                "config": {
+                    "script_function": "processData",
+                    "script_content": "// MuleSoft Transform Message equivalent\nreturn message;"
+                },
+                "mulesoft_origin": "transform"
+            })
+
+        # Map Choice Router to Router
+        for choice in detected_components["choice_routers"]:
+            sap_components.append({
+                "type": "router",
+                "name": "Choice_Router_Equivalent",
+                "config": {
+                    "conditions": [
+                        {"expression": "true", "flow": "route1"}
+                    ]
+                },
+                "mulesoft_origin": "choice"
+            })
+
+        # Map Salesforce operations to OData Request-Reply
+        for sf_op in detected_components["salesforce_operations"]:
+            sap_components.append({
+                "type": "request_reply",
+                "name": "Salesforce_Operation_Equivalent",
+                "receiver_adapter": {
+                    "type": "odata_adapter",
+                    "operation": "Query(GET)",
+                    "service_url": "https://your-salesforce-instance.salesforce.com/services/data/v52.0/sobjects",
+                    "entity_set": "Account"
+                },
+                "mulesoft_origin": "salesforce"
+            })
+
+        return sap_components
+
+    def _initialize_ai_providers(self, provider, api_key):
+        """Initialize AI providers based on configuration"""
         # Initialize OpenAI if needed
         if provider == "openai" and api_key:
             try:
@@ -57,71 +238,402 @@ class EnhancedGenAIIFlowGenerator:
                 print("Anthropic package not found. Please install it with 'pip install anthropic'")
                 self.provider = "local"
 
-    def generate_iflow(self, markdown_content, output_path, iflow_name):
+    def generate_iflow(self, markdown_content, output_path, iflow_name, job_id=None):
         """
-        Generate an iFlow from markdown content
+        Generate an iFlow from markdown content with MuleSoft-specific optimizations
 
         Args:
             markdown_content (str): The markdown content to analyze
             output_path (str): Path to save the generated iFlow
             iflow_name (str): Name of the iFlow
+            job_id (str): Optional job ID for progress tracking
 
         Returns:
             str: Path to the generated iFlow ZIP file
         """
-        # Step 1: Use GenAI to analyze the markdown and determine components
-        components = self._analyze_with_genai(markdown_content)
+        self.current_job_id = job_id
+        self._update_job_status(job_id, "processing", "Starting MuleSoft to SAP Integration Suite migration...")
 
-        # Step 2: Generate the iFlow files
+        # Step 1: Detect MuleSoft-specific components
+        self._update_job_status(job_id, "processing", "Analyzing MuleSoft components...")
+        detected_mulesoft = self._detect_mulesoft_components(markdown_content)
+
+        # Step 2: Map MuleSoft components to SAP equivalents
+        self._update_job_status(job_id, "processing", "Mapping MuleSoft components to SAP Integration Suite...")
+        mapped_components = self._map_mulesoft_to_sap_components(detected_mulesoft)
+
+        # Step 3: Use GenAI to analyze the markdown and determine additional components
+        self._update_job_status(job_id, "processing", "Analyzing integration requirements with AI...")
+        components = self._analyze_with_genai(markdown_content, job_id=job_id)
+
+        # Step 4: Merge mapped MuleSoft components with GenAI analysis
+        if mapped_components:
+            self._update_job_status(job_id, "processing", "Integrating MuleSoft-specific components...")
+            components = self._merge_component_analysis(components, mapped_components)
+
+        # Step 5: Generate the iFlow files
+        self._update_job_status(job_id, "processing", "Generating iFlow XML and configuration files...")
         iflow_files = self._generate_iflow_files(components, iflow_name, markdown_content)
 
-        # Step 3: Create the ZIP file
+        # Step 6: Create the ZIP file
+        self._update_job_status(job_id, "processing", "Creating final iFlow package...")
         zip_path = self._create_zip_file(iflow_files, output_path, iflow_name)
 
+        self._update_job_status(job_id, "completed", f"MuleSoft to SAP Integration Suite migration completed: {iflow_name}")
         return zip_path
 
-    def _analyze_with_genai(self, markdown_content):
+    def _merge_component_analysis(self, genai_components, mulesoft_components):
         """
-        Use GenAI to analyze the markdown content and determine components
+        Merge GenAI analysis with MuleSoft-specific component mapping
+
+        Args:
+            genai_components (dict): Components from GenAI analysis
+            mulesoft_components (list): Mapped MuleSoft components
+
+        Returns:
+            dict: Merged component analysis
+        """
+        # Add MuleSoft-specific components to the endpoints
+        if "endpoints" not in genai_components:
+            genai_components["endpoints"] = []
+
+        # Create an endpoint for MuleSoft components if none exists
+        if not genai_components["endpoints"]:
+            genai_components["endpoints"].append({
+                "method": "POST",
+                "path": "/mulesoft-migration",
+                "components": []
+            })
+
+        # Add mapped components to the first endpoint
+        endpoint = genai_components["endpoints"][0]
+        if "components" not in endpoint:
+            endpoint["components"] = []
+
+        endpoint["components"].extend(mulesoft_components)
+
+        print(f"🔄 Merged {len(mulesoft_components)} MuleSoft-specific components with GenAI analysis")
+        return genai_components
+
+    def _analyze_with_genai(self, markdown_content, max_retries=5, job_id=None):
+        """
+        Use GenAI to analyze the markdown content and determine components, with validation and retry logic.
 
         Args:
             markdown_content (str): The markdown content to analyze
+            max_retries (int): Maximum number of retry attempts
+            job_id (str): Optional job ID for progress tracking
 
         Returns:
             dict: Structured representation of components needed for the iFlow
         """
-        # Create a prompt for the LLM
+        self._update_job_status(job_id, "processing", "Analyzing integration requirements with AI...")
+
         prompt = self._create_detailed_analysis_prompt(markdown_content)
+        attempt = 0
+        while attempt < max_retries:
+            self._update_job_status(job_id, "processing", f"AI Analysis attempt {attempt + 1}/{max_retries}...")
 
-        # Call the LLM API
-        response = self._call_llm_api(prompt)
+            try:
+                # Call the LLM API
+                response = self._call_llm_api(prompt)
 
-        # Save the raw response for debugging
-        os.makedirs("genai_debug", exist_ok=True)
-        with open("genai_debug/raw_analysis_response.txt", "w", encoding="utf-8") as f:
-            f.write(response)
-        print("Saved raw analysis response to genai_debug/raw_analysis_response.txt")
+                # Save the raw response for debugging
+                os.makedirs("genai_debug", exist_ok=True)
+                with open(f"genai_debug/raw_analysis_response_attempt{attempt+1}.txt", "w", encoding="utf-8") as f:
+                    f.write(response)
+                print(f"Saved raw analysis response attempt {attempt+1} to genai_debug/")
 
-        # Parse the response to get the components
-        components = self._parse_llm_response(response)
+                # Parse the response to get the components
+                components = self._parse_llm_response(response)
 
-        # Save the parsed components for debugging
-        with open("genai_debug/parsed_components.json", "w", encoding="utf-8") as f:
-            json.dump(components, f, indent=2)
-        print("Saved parsed components to genai_debug/parsed_components.json")
+                # Validate the response
+                if self._validate_component_structure(components):
+                    self._update_job_status(job_id, "processing", "AI analysis completed successfully")
+                    return components
+                else:
+                    print(f"❌ Attempt {attempt+1} failed: Invalid component structure")
+                    self._update_job_status(job_id, "processing", f"Validation failed, retrying... ({attempt + 1}/{max_retries})")
+                    attempt += 1
+                    if attempt < max_retries:
+                        print("Retrying with more explicit prompt...")
+                        prompt = self._create_more_explicit_prompt(markdown_content, "Invalid component structure")
+                    continue
 
-        # Generate Groovy scripts for complex transformations
-        components = self._generate_transformation_scripts(components)
+            except Exception as e:
+                print(f"❌ Attempt {attempt+1} failed: Error during analysis: {e}")
+                self._update_job_status(job_id, "processing", f"Analysis failed, retrying... ({attempt + 1}/{max_retries})")
+                attempt += 1
+                if attempt < max_retries:
+                    print("Retrying with more explicit prompt...")
+                    prompt = self._create_more_explicit_prompt(markdown_content, f"Analysis error: {e}")
+                continue
 
-        # Apply intelligent connection logic to ensure proper component connections
-        components = self._create_intelligent_connections(components)
+        # If all attempts fail, FAIL THE PROCESS - NO FALLBACK
+        error_message = f"🚨 CRITICAL FAILURE: All {max_retries} GenAI attempts failed to generate valid analysis."
+        print(error_message)
+        print("❌ NO FALLBACK ALLOWED - Process must fail to ensure data quality.")
+        self._update_job_status(job_id, "failed", error_message)
+        raise Exception(error_message)
 
-        # Save the final components with scripts for debugging
-        with open("genai_debug/final_components.json", "w", encoding="utf-8") as f:
-            json.dump(components, f, indent=2)
-        print("Saved final components to genai_debug/final_components.json")
+    def _validate_component_structure(self, components):
+        """
+        Validate that the component structure is valid
 
-        return components
+        Args:
+            components (dict): Components to validate
+
+        Returns:
+            bool: True if valid, False otherwise
+        """
+        if not isinstance(components, dict):
+            return False
+
+        # Check for required structure
+        if "endpoints" not in components and "components" not in components:
+            return False
+
+        return True
+
+    def _create_more_explicit_prompt(self, markdown_content, error_message):
+        """
+        Create a more explicit prompt for retry attempts
+
+        Args:
+            markdown_content (str): The markdown content
+            error_message (str): The error from previous attempt
+
+        Returns:
+            str: More explicit prompt
+        """
+        return f"""
+CRITICAL: Previous attempt failed with error: {error_message}
+
+You MUST generate a valid JSON response for MuleSoft to SAP Integration Suite migration.
+
+Analyze this MuleSoft documentation and create SAP Integration Suite components:
+
+{markdown_content}
+
+REQUIRED JSON FORMAT:
+{{
+    "endpoints": [
+        {{
+            "method": "POST",
+            "path": "/api/endpoint",
+            "components": [
+                {{
+                    "type": "content_enricher",
+                    "name": "Component_Name",
+                    "config": {{}}
+                }}
+            ]
+        }}
+    ]
+}}
+
+Focus on MuleSoft patterns:
+- HTTP Listeners → HTTPS Sender adapters
+- HTTP Requests → HTTP Receiver adapters
+- Transform Message → Groovy Scripts
+- Choice Router → Router components
+- Salesforce connectors → OData Request-Reply patterns
+
+RESPOND ONLY WITH VALID JSON. NO EXPLANATIONS.
+"""
+
+    def _analyze_with_genai(self, markdown_content, max_retries=5, job_id=None):
+        """
+        Use GenAI to analyze the markdown content and determine components, with validation and retry logic.
+
+        Args:
+            markdown_content (str): The markdown content to analyze
+            max_retries (int): Maximum number of retry attempts
+            job_id (str): Optional job ID for progress tracking
+
+        Returns:
+            dict: Structured representation of components needed for the iFlow
+        """
+        self._update_job_status(job_id, "processing", "Analyzing integration requirements with AI...")
+
+        prompt = self._create_detailed_analysis_prompt(markdown_content)
+        attempt = 0
+        while attempt < max_retries:
+            self._update_job_status(job_id, "processing", f"AI Analysis attempt {attempt + 1}/{max_retries}...")
+
+            try:
+                # Call the LLM API
+                response = self._call_llm_api(prompt)
+
+                # Save the raw response for debugging
+                os.makedirs("genai_debug", exist_ok=True)
+                with open(f"genai_debug/raw_analysis_response_attempt{attempt+1}.txt", "w", encoding="utf-8") as f:
+                    f.write(response)
+                print(f"Saved raw analysis response attempt {attempt+1} to genai_debug/")
+
+                # Parse the response to get the components
+                components = self._parse_llm_response(response)
+
+                # Validate the response
+                if self._validate_component_structure(components):
+                    self._update_job_status(job_id, "processing", "AI analysis completed successfully")
+
+                    # Save the parsed components for debugging
+                    with open("genai_debug/parsed_components.json", "w", encoding="utf-8") as f:
+                        json.dump(components, f, indent=2)
+                    print("Saved parsed components to genai_debug/parsed_components.json")
+
+                    return components
+                else:
+                    print(f"❌ Attempt {attempt+1} failed: Invalid component structure")
+                    self._update_job_status(job_id, "processing", f"Validation failed, retrying... ({attempt + 1}/{max_retries})")
+                    attempt += 1
+                    if attempt < max_retries:
+                        print("Retrying with more explicit prompt...")
+                        prompt = self._create_more_explicit_prompt(markdown_content, "Invalid component structure")
+                    continue
+
+            except Exception as e:
+                print(f"❌ Attempt {attempt+1} failed: Error during analysis: {e}")
+                self._update_job_status(job_id, "processing", f"Analysis failed, retrying... ({attempt + 1}/{max_retries})")
+                attempt += 1
+                if attempt < max_retries:
+                    print("Retrying with more explicit prompt...")
+                    prompt = self._create_more_explicit_prompt(markdown_content, f"Analysis error: {e}")
+                continue
+
+        # If all attempts fail, FAIL THE PROCESS - NO FALLBACK
+        error_message = f"🚨 CRITICAL FAILURE: All {max_retries} GenAI attempts failed to generate valid analysis."
+        print(error_message)
+        print("❌ NO FALLBACK ALLOWED - Process must fail to ensure data quality.")
+        self._update_job_status(job_id, "failed", error_message)
+        raise Exception(error_message)
+
+    def _should_use_mulesoft_template(self, component_type, mulesoft_origin):
+        """
+        Determine if a MuleSoft-specific template should be used
+
+        Args:
+            component_type (str): The component type
+            mulesoft_origin (str): The original MuleSoft component type
+
+        Returns:
+            bool: True if MuleSoft-specific template should be used
+        """
+        mulesoft_specific_mappings = {
+            "https_sender": ["http:listener"],
+            "http_receiver": ["http:request"],
+            "groovy_script": ["transform", "logger", "validation"],
+            "router": ["choice"],
+            "request_reply": ["salesforce:query", "salesforce:create", "salesforce:update", "database:select"]
+        }
+
+        return mulesoft_origin in mulesoft_specific_mappings.get(component_type, [])
+
+    def _create_mulesoft_specific_component(self, component, endpoint_components, templates, used_ids):
+        """
+        Create a component using MuleSoft-specific templates
+
+        Args:
+            component (dict): Component configuration
+            endpoint_components (dict): Endpoint components structure
+            templates: Template instance
+            used_ids (set): Set of used IDs
+        """
+        component_type = component.get("type", "")
+        component_name = component.get("name", "Component")
+        component_config = component.get("config", {})
+        mulesoft_origin = component.get("mulesoft_origin", "")
+
+        print(f"🔄 Creating MuleSoft-specific component: {mulesoft_origin} → {component_type}")
+
+        if mulesoft_origin == "http:listener":
+            # Use MuleSoft HTTP Listener template
+            sender_participant_id = templates.generate_unique_id("Participant")
+            endpoint_components["participants"].append(templates.participant_template(
+                id=sender_participant_id,
+                name=f"Sender_{component_name}",
+                type="EndpointSender",
+                enable_basic_auth="false"
+            ))
+
+            listener_template = templates.mulesoft_http_listener_template(
+                id=component["id"],
+                name=component_name,
+                path=component_config.get("url_path", "/api/*"),
+                method=component_config.get("method", "GET"),
+                enable_cors=component_config.get("enable_cors", "true")
+            )
+
+            endpoint_components["message_flows"].append(
+                listener_template.replace("{{source_ref}}", sender_participant_id)
+                              .replace("{{target_ref}}", "Participant_Process_1")
+            )
+
+        elif mulesoft_origin == "http:request":
+            # Use MuleSoft HTTP Request template
+            receiver_participant_id = templates.generate_unique_id("Participant")
+            endpoint_components["participants"].append(templates.participant_template(
+                id=receiver_participant_id,
+                name=f"Receiver_{component_name}",
+                type="EndpointRecevier"
+            ))
+
+            request_template = templates.mulesoft_http_request_template(
+                id=component["id"],
+                name=component_name,
+                url=component_config.get("address", "https://api.example.com"),
+                method=component_config.get("http_method", "GET"),
+                timeout=component_config.get("timeout", "30000")
+            )
+
+            endpoint_components["message_flows"].append(
+                request_template.replace("{{source_ref}}", "Participant_Process_1")
+                               .replace("{{target_ref}}", receiver_participant_id)
+            )
+
+        elif mulesoft_origin == "transform":
+            # Use MuleSoft Transform Message template
+            transform_template = templates.mulesoft_transform_message_template(
+                id=component["id"],
+                name=component_name,
+                transformation_script=component_config.get("script_content", "// Transform logic here\nreturn message;"),
+                output_format=component_config.get("output_format", "application/json")
+            )
+
+            endpoint_components["process_components"].append(transform_template)
+
+        elif mulesoft_origin == "choice":
+            # Use MuleSoft Choice Router template
+            choice_template = templates.mulesoft_choice_router_template(
+                id=component["id"],
+                name=component_name,
+                when_conditions=component_config.get("conditions", []),
+                otherwise_flow=component_config.get("otherwise_flow", "")
+            )
+
+            endpoint_components["process_components"].append(choice_template)
+
+        elif mulesoft_origin in ["salesforce:query", "salesforce:create", "salesforce:update"]:
+            # Use OData Request-Reply pattern for Salesforce
+            receiver_adapter = component.get("receiver_adapter", {})
+            pattern = templates.odata_request_reply_pattern(
+                service_task_id=component["id"],
+                participant_id=templates.generate_unique_id("Participant"),
+                message_flow_id=templates.generate_unique_id("MessageFlow"),
+                name=component_name,
+                service_url=receiver_adapter.get("service_url", "https://your-instance.salesforce.com/services/data/v52.0"),
+                entity_set=receiver_adapter.get("entity_set", "Account"),
+                operation=receiver_adapter.get("operation", "Query(GET)"),
+                resource_path=receiver_adapter.get("resource_path", "sobjects/Account")
+            )
+
+            endpoint_components["process_components"].append(pattern["service_task"])
+            endpoint_components["participants"].append(pattern["participant"])
+            endpoint_components["message_flows"].append(pattern["message_flow"])
+
+        else:
+            print(f"⚠️ No specific MuleSoft template for {mulesoft_origin}, using standard template")
 
     def _create_detailed_analysis_prompt(self, markdown_content):
         """
@@ -2211,7 +2723,15 @@ def Message processError(Message message) {{
             # Store the component ID for connections
             component_id_map[component_name] = current_component_id
 
-            # Create the component based on its type
+            # Create the component based on its type with MuleSoft-specific logic
+            mulesoft_origin = component.get("mulesoft_origin", "")
+
+            # Apply MuleSoft-specific template selection
+            if mulesoft_origin and self._should_use_mulesoft_template(component_type, mulesoft_origin):
+                self._create_mulesoft_specific_component(component, endpoint_components, templates, used_ids)
+                continue
+
+            # Standard component creation logic
             if component_type == "https_sender":
                 # Add a participant for the sender
                 sender_participant_id = templates.generate_unique_id("Participant")

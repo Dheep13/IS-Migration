@@ -1,74 +1,50 @@
 {
-  "process_name": "EC372 - EmployeeCentral to NAVEX Global Employee Data Integration",
-  "description": "Automated transfer of employee data from SAP SuccessFactors Employee Central to NAVEX Global's ethics and compliance platform with delta/full synchronization, PGP encryption, and comprehensive error handling",
+  "process_name": "PepsiCo EC372 - Employee Central to NAVEX Integration",
+  "description": "Comprehensive employee data synchronization system that extracts employee information from SAP SuccessFactors Employee Central and transmits it to NAVEX Global for compliance and ethics management with delta processing, error handling, and multi-destination file distribution",
   "endpoints": [
     {
       "method": "GET",
-      "path": "/employee-data-sync",
-      "purpose": "Extract employee data from SuccessFactors and transmit to NAVEX Global via SFTP",
+      "path": "/employee-sync",
+      "purpose": "Synchronize employee demographic data from Employee Central to NAVEX Global with delta processing support",
       "components": [
         {
           "type": "enricher",
-          "name": "Delta_Run_Decision_Properties",
+          "name": "Delta_Run_Decision_Setup",
           "id": "delta_decision_1",
           "config": {
-            "content": "Set delta run configuration and last successful run date properties"
-          }
-        },
-        {
-          "type": "enricher",
-          "name": "Set_Last_Success_Run_Date",
-          "id": "set_lsrd_1",
-          "config": {
-            "content": "Current timestamp calculation and formatting for delta processing"
-          }
-        },
-        {
-          "type": "enricher",
-          "name": "Set_Extensions_Properties",
-          "id": "set_extensions_1",
-          "config": {
-            "content": "Configure file extensions and naming conventions for output files"
+            "content": "Set up delta run decision properties and last success run date validation"
           }
         },
         {
           "type": "request_reply",
-          "name": "Extract_EmpJob_Data",
-          "id": "extract_empjob_1",
+          "name": "Extract_Employee_Data",
+          "id": "ec_extract_1",
           "config": {
             "endpoint_path": "/odata/v2/EmpJob"
           }
         },
         {
-          "type": "request_reply",
-          "name": "Extract_PerPerson_Data",
-          "id": "extract_perperson_1",
+          "type": "enricher",
+          "name": "File_Preparation_Properties",
+          "id": "file_prep_1",
           "config": {
-            "endpoint_path": "/odata/v2/PerPerson"
+            "content": "Set file naming, encryption flags, and distribution properties"
           }
         },
         {
           "type": "enricher",
-          "name": "Set_SFTP_File_Name",
-          "id": "set_filename_1",
+          "name": "Update_Last_Success_Date",
+          "id": "update_lsrd_1",
           "config": {
-            "content": "Generate timestamp-based file names for SFTP transmission"
+            "content": "Update LastSuccessRunDate property with current timestamp"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Dynamic_Where_Clause_Builder",
+          "name": "Dynamic_WHERE_Clause_Construction",
           "id": "where_clause_1",
           "config": {
-            "script": "BuildDynamicWhereClause.groovy"
-          }
-        },
-        {
-          "type": "groovy_script",
-          "name": "PGP_Encryption",
-          "id": "pgp_encrypt_1",
-          "config": {
-            "script": "PGPEncryption.groovy"
+            "script": "ConstructWhereClause.groovy"
           }
         },
         {
@@ -81,42 +57,42 @@
         },
         {
           "type": "request_reply",
-          "name": "Query_Picklist_Values_SF",
-          "id": "query_picklist_1",
+          "name": "Query_Picklist_Values",
+          "id": "picklist_query_1",
           "config": {
-            "endpoint_path": "/odata/v2/Picklist"
+            "endpoint_path": "/odata/v2/PicklistOption"
           }
         },
         {
           "type": "request_reply",
-          "name": "SFTP_to_NAVEX",
+          "name": "SFTP_Distribution_NAVEX",
           "id": "sftp_navex_1",
           "config": {
-            "endpoint_path": "/navex/employee-data"
+            "endpoint_path": "/upload/navex"
           }
         },
         {
           "type": "request_reply",
-          "name": "SFTP_to_Pepsi_Archive",
+          "name": "SFTP_Distribution_PepsiCo",
           "id": "sftp_pepsi_1",
           "config": {
-            "endpoint_path": "/archive/ec372"
+            "endpoint_path": "/upload/pepsi"
           }
         },
         {
           "type": "request_reply",
-          "name": "Send_Success_Notification",
-          "id": "success_notify_1",
+          "name": "Send_Email_Notification",
+          "id": "email_notify_1",
           "config": {
-            "endpoint_path": "/mail/notification"
+            "endpoint_path": "/notifications/email"
           }
         },
         {
           "type": "groovy_script",
-          "name": "Transform_Employee_Data_EC372",
-          "id": "transform_employee_1",
+          "name": "Transform_EC_to_NAVEX_Data",
+          "id": "transform_main_1",
           "config": {
-            "script": "TransformEmployeeDataEC372.groovy"
+            "script": "TransformECToNAVEX.groovy"
           }
         }
       ],
@@ -124,38 +100,38 @@
         "exception_subprocess": [
           {
             "type": "enricher",
-            "name": "Error_Message_Properties",
-            "id": "error_props_1",
+            "name": "Error_Message_Preparation",
+            "id": "error_prep_1",
             "trigger": "validation_error",
             "config": {
-              "content": "Set error message properties for reporting"
+              "content": "Prepare error message with GPID, severity, and error text"
             }
           },
           {
             "type": "groovy_script",
-            "name": "Transform_Error_Records",
-            "id": "error_transform_1",
-            "trigger": "data_error",
+            "name": "Error_Message_Mapping",
+            "id": "error_map_1",
+            "trigger": "any_error",
             "config": {
-              "script": "TransformErrorRecords.groovy"
+              "script": "MapErrorMessages.groovy"
             }
           },
           {
             "type": "request_reply",
             "name": "Send_Error_Notification",
             "id": "error_notify_1",
-            "trigger": "any_error",
+            "trigger": "critical_error",
             "config": {
-              "endpoint_path": "/mail/error-notification"
+              "endpoint_path": "/notifications/error"
             }
           },
           {
-            "type": "request_reply",
-            "name": "SFTP_Error_Handler",
-            "id": "sftp_error_1",
-            "trigger": "connection_error",
+            "type": "enricher",
+            "name": "Error_Statistics_Update",
+            "id": "error_stats_1",
+            "trigger": "any_error",
             "config": {
-              "endpoint_path": "/mail/sftp-error"
+              "content": "Update error count and processing statistics"
             }
           }
         ]
@@ -164,161 +140,140 @@
         "type": "exclusive",
         "branches": [
           {
-            "condition": "Delta run mode",
+            "condition": "LastSuccessRunDate is NULL",
             "components": [
               "delta_decision_1",
-              "set_lsrd_1"
+              "where_clause_1",
+              "picklist_query_1",
+              "ec_extract_1"
             ],
             "sequence": [
               "delta_decision_1",
-              "set_lsrd_1"
+              "where_clause_1",
+              "picklist_query_1",
+              "ec_extract_1"
             ]
           },
           {
-            "condition": "Full refresh mode",
+            "condition": "LastSuccessRunDate exists",
             "components": [
-              "set_extensions_1"
+              "where_clause_1",
+              "picklist_query_1",
+              "ec_extract_1"
             ],
             "sequence": [
-              "set_extensions_1"
+              "where_clause_1",
+              "picklist_query_1",
+              "ec_extract_1"
             ]
           }
         ]
       },
       "sequence": [
         "delta_decision_1",
-        "set_lsrd_1",
-        "set_extensions_1",
         "where_clause_1",
-        "query_picklist_1",
-        "extract_empjob_1",
-        "extract_perperson_1",
-        "transform_employee_1",
-        "set_filename_1",
-        "pgp_encrypt_1",
+        "picklist_query_1",
+        "ec_extract_1",
+        "transform_main_1",
+        "file_prep_1",
         "sftp_navex_1",
         "sftp_pepsi_1",
         "control_report_1",
-        "success_notify_1"
+        "email_notify_1",
+        "update_lsrd_1"
       ],
       "transformations": [
         {
-          "name": "BuildDynamicWhereClause.groovy",
+          "name": "ConstructWhereClause.groovy",
           "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport java.util.HashMap\n\ndef Message processData(Message message) {\n    def properties = message.getProperties()\n    def isDelta = properties.get('isDeltaRun')\n    def whereClause = ''\n    \n    if (isDelta == 'true') {\n        def lastRunDate = properties.get('lastSuccessfulRunDate')\n        whereClause = \"lastModifiedDateTime ge datetime'${lastRunDate}'\"\n    } else {\n        whereClause = \"employeeStatus eq 'Active'\"\n    }\n    \n    // Add additional filters\n    def legalEntity = properties.get('legalEntity')\n    def employeeClass = properties.get('employeeClass')\n    def companyTerritory = properties.get('companyTerritory')\n    \n    if (legalEntity) {\n        whereClause += \" and legalEntity eq '${legalEntity}'\"\n    }\n    if (employeeClass) {\n        whereClause += \" and employeeClass eq '${employeeClass}'\"\n    }\n    if (companyTerritory) {\n        whereClause += \" and companyTerritoryCode eq '${companyTerritory}'\"\n    }\n    \n    message.setProperty('dynamicWhereClause', whereClause)\n    return message\n}"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport java.util.HashMap\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String)\n    def properties = message.getProperties()\n    \n    // Construct dynamic WHERE clause for Employee Central API\n    def whereClause = new StringBuilder()\n    \n    // Add territory filtering\n    if (properties.get('Territory') != null) {\n        whereClause.append(\"territory eq '\").append(properties.get('Territory')).append(\"'\")\n    }\n    \n    // Add employee class filtering\n    if (properties.get('EmployeeClass') != null) {\n        if (whereClause.length() > 0) whereClause.append(\" and \")\n        whereClause.append(\"employeeClass eq '\").append(properties.get('EmployeeClass')).append(\"'\")\n    }\n    \n    // Add delta date filtering if LastSuccessRunDate exists\n    if (properties.get('LastSuccessRunDate') != null) {\n        if (whereClause.length() > 0) whereClause.append(\" and \")\n        whereClause.append(\"lastModifiedDateTime gt datetime'\").append(properties.get('LastSuccessRunDate')).append(\"'\")\n    }\n    \n    // Add effective end date filtering\n    if (whereClause.length() > 0) whereClause.append(\" and \")\n    whereClause.append(\"(endDate eq null or endDate gt datetime'now()')\")\n    \n    message.setProperty('DynamicWhereClause', whereClause.toString())\n    return message\n}"
         },
         {
-          "name": "TransformEmployeeDataEC372.groovy",
+          "name": "TransformECToNAVEX.groovy",
           "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.json.JsonSlurper\nimport groovy.json.JsonBuilder\n\ndef Message processData(Message message) {\n    def body = message.getBody(String)\n    def jsonSlurper = new JsonSlurper()\n    def empData = jsonSlurper.parseText(body)\n    \n    def transformedRecords = []\n    \n    empData.d.results.each { employee ->\n        def transformedRecord = [:]\n        \n        // Map GPID\n        transformedRecord['GPID'] = employee.personIdExternal ?: ''\n        \n        // Map personal information\n        transformedRecord['First Name'] = employee.firstName ?: ''\n        transformedRecord['Last Name'] = employee.lastName ?: ''\n        \n        // Map employment status with transformation\n        def emplStatus = employee.employeeStatus\n        switch(emplStatus) {\n            case 'A': transformedRecord['Employee Status'] = 'Active'; break\n            case 'T': transformedRecord['Employee Status'] = 'Terminated'; break\n            case 'S': transformedRecord['Employee Status'] = 'Suspended'; break\n            default: transformedRecord['Employee Status'] = 'Unknown'\n        }\n        \n        // Map employee class\n        transformedRecord['Employee Class'] = employee.employeeClass ?: ''\n        \n        // Map position and organizational data\n        transformedRecord['Position Title'] = employee.jobTitle ?: ''\n        transformedRecord['Manager ID'] = employee.managerId ?: ''\n        transformedRecord['Email Address'] = employee.emailAddress ?: ''\n        \n        // Map location information\n        transformedRecord['Country'] = employee.countryCode ?: ''\n        \n        // Map dates with proper formatting\n        if (employee.terminationDate) {\n            def termDate = new Date(employee.terminationDate)\n            transformedRecord['Termination Date'] = termDate.format('yyyy-MM-dd')\n        } else {\n            transformedRecord['Termination Date'] = ''\n        }\n        \n        if (employee.originalHireDate) {\n            def hireDate = new Date(employee.originalHireDate)\n            transformedRecord['Original Hire Date'] = hireDate.format('yyyy-MM-dd')\n        } else {\n            transformedRecord['Original Hire Date'] = ''\n        }\n        \n        transformedRecords.add(transformedRecord)\n    }\n    \n    // Convert to CSV format\n    def csvOutput = new StringBuilder()\n    csvOutput.append('GPID,First Name,Last Name,Employee Status,Employee Class,Position Title,Manager ID,Email Address,Country,Termination Date,Original Hire Date\\n')\n    \n    transformedRecords.each { record ->\n        csvOutput.append(\"${record['GPID']},${record['First Name']},${record['Last Name']},${record['Employee Status']},${record['Employee Class']},${record['Position Title']},${record['Manager ID']},${record['Email Address']},${record['Country']},${record['Termination Date']},${record['Original Hire Date']}\\n\")\n    }\n    \n    message.setBody(csvOutput.toString())\n    message.setProperty('recordCount', transformedRecords.size())\n    \n    return message\n}"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.xml.XmlSlurper\nimport groovy.xml.MarkupBuilder\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String)\n    def xml = new XmlSlurper().parseText(body)\n    def properties = message.getProperties()\n    \n    def writer = new StringWriter()\n    def csv = new MarkupBuilder(writer)\n    \n    // Transform Employee Central data to NAVEX format\n    def transformedRecords = []\n    \n    xml.entry.each { employee ->\n        def record = [:]\n        \n        // Map core employee fields\n        record['GPID'] = employee.content.'m:properties'.'d:personIdExternal'.text()\n        record['First Name'] = employee.content.'m:properties'.'d:firstName'.text()\n        record['Last Name'] = employee.content.'m:properties'.'d:lastName'.text()\n        record['Email Address'] = employee.content.'m:properties'.'d:email'.text()\n        record['Position Title'] = employee.content.'m:properties'.'d:jobTitle'.text()\n        record['Country'] = employee.content.'m:properties'.'d:country'.text()\n        record['manager-id'] = employee.content.'m:properties'.'d:managerId'.text()\n        record['User ID'] = employee.content.'m:properties'.'d:userId'.text()\n        record['Original Hire Date'] = employee.content.'m:properties'.'d:originalStartDate'.text()\n        \n        // Resolve picklist values using cached mappings\n        record['emplStatus'] = resolvePicklistValue(employee.content.'m:properties'.'d:emplStatus'.text(), properties)\n        record['employee-class'] = resolvePicklistValue(employee.content.'m:properties'.'d:emplClass'.text(), properties)\n        record['pay-grade'] = resolvePicklistValue(employee.content.'m:properties'.'d:payGrade'.text(), properties)\n        \n        // Handle union fields\n        record['Is Union Employee'] = employee.content.'m:properties'.'d:isUnionEmployee'.text() ?: 'N'\n        record['Participating in Union'] = employee.content.'m:properties'.'d:unionParticipation'.text() ?: 'N'\n        \n        // Location and organizational data\n        record['location'] = employee.content.'m:properties'.'d:location'.text()\n        record['Region'] = employee.content.'m:properties'.'d:region'.text()\n        record['Sector'] = employee.content.'m:properties'.'d:businessUnit'.text()\n        \n        // Manager information\n        record['Manager name'] = employee.content.'m:properties'.'d:managerName'.text()\n        record['HRA Manager name'] = employee.content.'m:properties'.'d:hraManagerName'.text()\n        \n        // Termination data (if applicable)\n        record['Termination Date'] = employee.content.'m:properties'.'d:endDate'.text()\n        record['Termination Reason'] = resolvePicklistValue(employee.content.'m:properties'.'d:terminationReason'.text(), properties)\n        \n        // Employment relationship\n        record['Relationship Type'] = resolvePicklistValue(employee.content.'m:properties'.'d:emplRelationship'.text(), properties)\n        \n        transformedRecords.add(record)\n    }\n    \n    // Convert to CSV format for NAVEX\n    def csvOutput = new StringBuilder()\n    if (transformedRecords.size() > 0) {\n        // Header row\n        csvOutput.append(transformedRecords[0].keySet().join(','))\n        csvOutput.append('\\n')\n        \n        // Data rows\n        transformedRecords.each { record ->\n            csvOutput.append(record.values().collect { it ?: '' }.join(','))\n            csvOutput.append('\\n')\n        }\n    }\n    \n    message.setBody(csvOutput.toString())\n    message.setProperty('RecordCount', transformedRecords.size())\n    return message\n}\n\ndef resolvePicklistValue(picklistId, properties) {\n    if (!picklistId) return ''\n    return properties.get('Picklist_' + picklistId) ?: picklistId\n}"
         },
         {
-          "name": "PGPEncryption.groovy",
+          "name": "MapErrorMessages.groovy",
           "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport java.security.Security\nimport org.bouncycastle.jce.provider.BouncyCastleProvider\n\ndef Message processData(Message message) {\n    Security.addProvider(new BouncyCastleProvider())\n    \n    def body = message.getBody(String)\n    def properties = message.getProperties()\n    def pgpKeyId = properties.get('pgpKeyId')\n    \n    // PGP encryption logic would be implemented here\n    // For this example, we'll simulate the encryption process\n    def encryptedData = \"-----BEGIN PGP MESSAGE-----\\n\" + \n                       \"Version: GnuPG v2\\n\\n\" +\n                       body.bytes.encodeBase64().toString() +\n                       \"\\n-----END PGP MESSAGE-----\"\n    \n    message.setBody(encryptedData)\n    message.setProperty('isEncrypted', 'true')\n    \n    return message\n}"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.xml.MarkupBuilder\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String)\n    def properties = message.getProperties()\n    \n    def writer = new StringWriter()\n    def xml = new MarkupBuilder(writer)\n    \n    // Transform error records into standardized format\n    xml.ErrorReport {\n        Record {\n            Elements {\n                GPID(properties.get('ErrorGPID') ?: 'UNKNOWN')\n                Severity(properties.get('ErrorSeverity') ?: 'Hard')\n                'Error text'(properties.get('ErrorMessage') ?: 'Processing error occurred')\n                Timestamp(new Date().format('yyyy-MM-dd HH:mm:ss'))\n                ProcessStep(properties.get('ErrorStep') ?: 'Unknown')\n            }\n        }\n    }\n    \n    message.setBody(writer.toString())\n    return message\n}"
         },
         {
           "name": "GenerateControlReport.groovy",
           "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport java.text.SimpleDateFormat\n\ndef Message processData(Message message) {\n    def properties = message.getProperties()\n    def recordCount = properties.get('recordCount') ?: '0'\n    def errorCount = properties.get('errorCount') ?: '0'\n    def processStartTime = properties.get('processStartTime')\n    def currentTime = new Date()\n    \n    def sdf = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')\n    def reportContent = new StringBuilder()\n    \n    reportContent.append('EC372 - Employee Central to NAVEX Integration Control Report\\n')\n    reportContent.append('=' * 60 + '\\n')\n    reportContent.append(\"Process Start Time: ${processStartTime}\\n\")\n    reportContent.append(\"Process End Time: ${sdf.format(currentTime)}\\n\")\n    reportContent.append(\"Records Processed: ${recordCount}\\n\")\n    reportContent.append(\"Errors Encountered: ${errorCount}\\n\")\n    reportContent.append(\"Success Rate: ${((recordCount.toInteger() - errorCount.toInteger()) / recordCount.toInteger() * 100).round(2)}%\\n\")\n    reportContent.append('\\nProcess completed successfully.\\n')\n    \n    message.setBody(reportContent.toString())\n    return message\n}"
-        },
-        {
-          "name": "TransformErrorRecords.groovy",
-          "type": "groovy",
-          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.json.JsonBuilder\n\ndef Message processData(Message message) {\n    def body = message.getBody(String)\n    def properties = message.getProperties()\n    \n    def errorRecord = [:]\n    errorRecord['GPID'] = properties.get('errorGPID') ?: 'Unknown'\n    errorRecord['Severity'] = properties.get('errorSeverity') ?: 'High'\n    errorRecord['Error text'] = properties.get('errorMessage') ?: 'Processing error occurred'\n    errorRecord['Timestamp'] = new Date().format('yyyy-MM-dd HH:mm:ss')\n    \n    def jsonBuilder = new JsonBuilder(errorRecord)\n    message.setBody(jsonBuilder.toString())\n    \n    return message\n}"
+          "script": "import com.sap.gateway.ip.core.customdev.util.Message\nimport groovy.xml.MarkupBuilder\n\ndef Message processData(Message message) {\n    def body = message.getBody(java.lang.String)\n    def properties = message.getProperties()\n    \n    def writer = new StringWriter()\n    def xml = new MarkupBuilder(writer)\n    \n    // Generate comprehensive control report\n    xml.ControlReport {\n        Record {\n            Elements {\n                text(\"EC372 Employee Central to NAVEX Integration Control Report\\n\" +\n                     \"Execution Date: ${new Date().format('yyyy-MM-dd HH:mm:ss')}\\n\" +\n                     \"Processing Mode: ${properties.get('ProcessingMode') ?: 'Full'}\\n\" +\n                     \"Records Processed: ${properties.get('RecordCount') ?: '0'}\\n\" +\n                     \"Records with Errors: ${properties.get('ErrorCount') ?: '0'}\\n\" +\n                     \"Files Distributed: ${properties.get('FilesDistributed') ?: '0'}\\n\" +\n                     \"NAVEX Distribution: ${properties.get('NavexDistribution') ?: 'Success'}\\n\" +\n                     \"PepsiCo Archive: ${properties.get('PepsiArchive') ?: 'Success'}\\n\" +\n                     \"Last Success Run Date: ${properties.get('LastSuccessRunDate') ?: 'N/A'}\")\n            }\n        }\n    }\n    \n    message.setBody(writer.toString())\n    return message\n}"
         }
       ],
       "sequence_flows": [
         {
           "id": "SequenceFlow_Start",
           "source": "delta_decision_1",
-          "target": "set_lsrd_1",
+          "target": "ec_extract_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_Start\" sourceRef=\"delta_decision_1\" targetRef=\"set_lsrd_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_Start\" sourceRef=\"delta_decision_1\" targetRef=\"ec_extract_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_1",
-          "source": "set_lsrd_1",
-          "target": "set_extensions_1",
+          "source": "ec_extract_1",
+          "target": "file_prep_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_1\" sourceRef=\"set_lsrd_1\" targetRef=\"set_extensions_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_1\" sourceRef=\"ec_extract_1\" targetRef=\"file_prep_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_2",
-          "source": "set_extensions_1",
-          "target": "extract_empjob_1",
+          "source": "file_prep_1",
+          "target": "update_lsrd_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_2\" sourceRef=\"set_extensions_1\" targetRef=\"extract_empjob_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_2\" sourceRef=\"file_prep_1\" targetRef=\"update_lsrd_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_3",
-          "source": "extract_empjob_1",
-          "target": "extract_perperson_1",
+          "source": "update_lsrd_1",
+          "target": "where_clause_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_3\" sourceRef=\"extract_empjob_1\" targetRef=\"extract_perperson_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_3\" sourceRef=\"update_lsrd_1\" targetRef=\"where_clause_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_4",
-          "source": "extract_perperson_1",
-          "target": "set_filename_1",
+          "source": "where_clause_1",
+          "target": "control_report_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_4\" sourceRef=\"extract_perperson_1\" targetRef=\"set_filename_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_4\" sourceRef=\"where_clause_1\" targetRef=\"control_report_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_5",
-          "source": "set_filename_1",
-          "target": "where_clause_1",
+          "source": "control_report_1",
+          "target": "picklist_query_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_5\" sourceRef=\"set_filename_1\" targetRef=\"where_clause_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_5\" sourceRef=\"control_report_1\" targetRef=\"picklist_query_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_6",
-          "source": "where_clause_1",
-          "target": "pgp_encrypt_1",
+          "source": "picklist_query_1",
+          "target": "sftp_navex_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_6\" sourceRef=\"where_clause_1\" targetRef=\"pgp_encrypt_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_6\" sourceRef=\"picklist_query_1\" targetRef=\"sftp_navex_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_7",
-          "source": "pgp_encrypt_1",
-          "target": "control_report_1",
-          "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_7\" sourceRef=\"pgp_encrypt_1\" targetRef=\"control_report_1\" isImmediate=\"true\"/>"
-        },
-        {
-          "id": "SequenceFlow_8",
-          "source": "control_report_1",
-          "target": "query_picklist_1",
-          "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_8\" sourceRef=\"control_report_1\" targetRef=\"query_picklist_1\" isImmediate=\"true\"/>"
-        },
-        {
-          "id": "SequenceFlow_9",
-          "source": "query_picklist_1",
-          "target": "sftp_navex_1",
-          "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_9\" sourceRef=\"query_picklist_1\" targetRef=\"sftp_navex_1\" isImmediate=\"true\"/>"
-        },
-        {
-          "id": "SequenceFlow_10",
           "source": "sftp_navex_1",
           "target": "sftp_pepsi_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_10\" sourceRef=\"sftp_navex_1\" targetRef=\"sftp_pepsi_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_7\" sourceRef=\"sftp_navex_1\" targetRef=\"sftp_pepsi_1\" isImmediate=\"true\"/>"
         },
         {
-          "id": "SequenceFlow_11",
+          "id": "SequenceFlow_8",
           "source": "sftp_pepsi_1",
-          "target": "success_notify_1",
+          "target": "email_notify_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_11\" sourceRef=\"sftp_pepsi_1\" targetRef=\"success_notify_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_8\" sourceRef=\"sftp_pepsi_1\" targetRef=\"email_notify_1\" isImmediate=\"true\"/>"
         },
         {
           "id": "SequenceFlow_End",
-          "source": "success_notify_1",
-          "target": "transform_employee_1",
+          "source": "email_notify_1",
+          "target": "transform_main_1",
           "is_immediate": true,
-          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_End\" sourceRef=\"success_notify_1\" targetRef=\"transform_employee_1\" isImmediate=\"true\"/>"
+          "xml_content": "<bpmn2:sequenceFlow id=\"SequenceFlow_End\" sourceRef=\"email_notify_1\" targetRef=\"transform_main_1\" isImmediate=\"true\"/>"
         }
       ]
     }

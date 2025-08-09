@@ -20,7 +20,7 @@ class EnhancedGenAIIFlowGenerator:
     An enhanced version of the GenAI iFlow Generator that ensures compatibility with SAP Integration Suite
     """
 
-    def __init__(self, api_key=None, model="gpt-4", provider="openai"):
+    def __init__(self, api_key=None, model="claude-sonnet-4-20250514", provider="claude"):
         """
         Initialize the generator
 

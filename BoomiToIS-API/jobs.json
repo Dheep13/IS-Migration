@@ -1190,5 +1190,275 @@
       }
     },
     "iflow_name": "BoomiFlow_674aa64a"
+  },
+  "d739b155-9d6b-48ad-90bc-b11845299e2d": {
+    "id": "d739b155-9d6b-48ad-90bc-b11845299e2d",
+    "original_job_id": "3f096557-5d8b-44f9-897e-563b26fb001a",
+    "status": "completed",
+    "created": "daad0c67-74d3-11f0-9333-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\d739b155-9d6b-48ad-90bc-b11845299e2d\\BoomiFlow_3f096557.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_3f096557.xml": "genai_debug\\final_iflow_BoomiFlow_3f096557.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_3f096557"
+  },
+  "81b4ab83-227b-4138-9881-9d76371b5035": {
+    "id": "81b4ab83-227b-4138-9881-9d76371b5035",
+    "original_job_id": "a0735b83-4991-4646-aad4-3abe8054ca50",
+    "status": "failed",
+    "created": "0a0a8b0c-74df-11f0-a448-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "2dc96574-7dd9-4647-adc1-ded772565741": {
+    "id": "2dc96574-7dd9-4647-adc1-ded772565741",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "ed13f512-74e1-11f0-a9fc-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "3d875ac0-34b9-4269-bd89-0f4934eebd8c": {
+    "id": "3d875ac0-34b9-4269-bd89-0f4934eebd8c",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "7a81e4ff-74e4-11f0-a299-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "bd0d4fef-eabd-418a-abcc-8c525d9762e4": {
+    "id": "bd0d4fef-eabd-418a-abcc-8c525d9762e4",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "e9de2e23-74e4-11f0-8909-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "c909c493-f3b8-48bf-bf6b-16f7046702ff": {
+    "id": "c909c493-f3b8-48bf-bf6b-16f7046702ff",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "a1e80158-74e5-11f0-9723-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "050a5924-db7b-4499-83a0-e9631434af2f": {
+    "id": "050a5924-db7b-4499-83a0-e9631434af2f",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "494583df-74eb-11f0-b9bc-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "9b17b233-b027-423b-a569-0e14038a192c": {
+    "id": "9b17b233-b027-423b-a569-0e14038a192c",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "f24a69dd-74eb-11f0-9747-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "a68a10ef-d95e-4ba3-8c3c-d6deb39916ad": {
+    "id": "a68a10ef-d95e-4ba3-8c3c-d6deb39916ad",
+    "original_job_id": "ae7ab534-9d43-4167-b582-e5758c808bda",
+    "status": "failed",
+    "created": "6698d2a1-74ec-11f0-b011-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "dbfca625-60da-46d3-8176-11a2ddd7f944": {
+    "id": "dbfca625-60da-46d3-8176-11a2ddd7f944",
+    "original_job_id": null,
+    "status": "failed",
+    "created": "6b6d1621-74ec-11f0-bad6-743af40c1803",
+    "message": "Error generating iFlow: 'charmap' codec can't encode character '\\u274c' in position 0: character maps to <undefined>",
+    "source_type": "unknown"
+  },
+  "de2f2849-42bc-4f10-bd7b-2b90fd9a926f": {
+    "id": "de2f2849-42bc-4f10-bd7b-2b90fd9a926f",
+    "original_job_id": "caced89a-0eab-400d-9feb-d1b73c6f8973",
+    "status": "failed",
+    "created": "afddd497-74ef-11f0-96d3-743af40c1803",
+    "message": "Error generating iFlow: Failed to generate valid JSON after 5 attempts. Last error: Invalid JSON format: Expecting property name enclosed in double quotes: line 2 column 58 (char 59)",
+    "source_type": "unknown"
+  },
+  "f13510dc-8e45-4618-b7b7-2cdc3b78e7a3": {
+    "id": "f13510dc-8e45-4618-b7b7-2cdc3b78e7a3",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "c4361070-74ef-11f0-ba80-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\f13510dc-8e45-4618-b7b7-2cdc3b78e7a3\\IFlow_caced89a.zip",
+      "debug": {
+        "final_iflow_IFlow_caced89a.xml": "genai_debug\\final_iflow_IFlow_caced89a.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_caced89a"
+  },
+  "2593a1c0-b923-49ec-865b-8cceac2106b9": {
+    "id": "2593a1c0-b923-49ec-865b-8cceac2106b9",
+    "original_job_id": "ff0d8ac1-82a1-4b7f-9d66-557e83934e72",
+    "status": "completed",
+    "created": "334db9a5-74f1-11f0-9a70-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\2593a1c0-b923-49ec-865b-8cceac2106b9\\BoomiFlow_ff0d8ac1.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_ff0d8ac1.xml": "genai_debug\\final_iflow_BoomiFlow_ff0d8ac1.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_ff0d8ac1"
+  },
+  "35319e13-9919-4c3a-8990-b17cbb5768b9": {
+    "id": "35319e13-9919-4c3a-8990-b17cbb5768b9",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "476adc47-74f1-11f0-9e1f-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\35319e13-9919-4c3a-8990-b17cbb5768b9\\IFlow_ff0d8ac1.zip",
+      "debug": {
+        "final_iflow_IFlow_ff0d8ac1.xml": "genai_debug\\final_iflow_IFlow_ff0d8ac1.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_ff0d8ac1"
+  },
+  "33ed51ec-9e5c-41e9-81fd-153c9442dda3": {
+    "id": "33ed51ec-9e5c-41e9-81fd-153c9442dda3",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "77c648b4-74f2-11f0-8a2c-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\33ed51ec-9e5c-41e9-81fd-153c9442dda3\\IFlow_7d8c9b2f.zip",
+      "debug": {
+        "final_iflow_IFlow_7d8c9b2f.xml": "genai_debug\\final_iflow_IFlow_7d8c9b2f.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "IFlow_7d8c9b2f"
+  },
+  "9db91559-d745-4636-8523-a43d8a9bccae": {
+    "id": "9db91559-d745-4636-8523-a43d8a9bccae",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "e1ccbb48-74f5-11f0-a80e-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\9db91559-d745-4636-8523-a43d8a9bccae\\IFlow_6c162a64.zip",
+      "debug": {
+        "final_iflow_IFlow_6c162a64.xml": "genai_debug\\final_iflow_IFlow_6c162a64.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "Integration_mulesoft",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "Integration_mulesoft",
+      "package_id": "ConversionPackages",
+      "iflow_name": "Integration_mulesoft",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "7efe0b99-3792-49aa-81f7-d3b69ba040c8": {
+    "id": "7efe0b99-3792-49aa-81f7-d3b69ba040c8",
+    "original_job_id": null,
+    "status": "completed",
+    "created": "e9384fcc-7503-11f0-8546-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\7efe0b99-3792-49aa-81f7-d3b69ba040c8\\IFlow_8110952d.zip",
+      "debug": {
+        "final_iflow_IFlow_8110952d.xml": "genai_debug\\final_iflow_IFlow_8110952d.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "Integration_boomi_products",
+    "deployment_status": "completed",
+    "deployment_message": "iFlow deployed successfully",
+    "deployment_details": {
+      "status": "success",
+      "message": "iFlow deployed successfully",
+      "iflow_id": "Integration_boomi_products",
+      "package_id": "ConversionPackages",
+      "iflow_name": "Integration_boomi_products",
+      "response_code": 201,
+      "method": "Bearer + Minimal Headers"
+    }
+  },
+  "fa50987b-89b1-4826-b780-d0c80fb0229e": {
+    "id": "fa50987b-89b1-4826-b780-d0c80fb0229e",
+    "original_job_id": "922c76cc-8ea0-48c4-b5d8-1479a1297197",
+    "status": "completed",
+    "created": "30f74f2e-7507-11f0-a1fc-743af40c1803",
+    "message": "iFlow generation completed successfully!",
+    "source_type": "unknown",
+    "files": {
+      "zip": "results\\fa50987b-89b1-4826-b780-d0c80fb0229e\\BoomiFlow_922c76cc.zip",
+      "debug": {
+        "final_iflow_BoomiFlow_922c76cc.xml": "genai_debug\\final_iflow_BoomiFlow_922c76cc.xml",
+        "raw_analysis_response.txt": "genai_debug\\raw_analysis_response.txt",
+        "raw_analysis_response_attempt1.txt": "genai_debug\\raw_analysis_response_attempt1.txt",
+        "raw_analysis_response_attempt2.txt": "genai_debug\\raw_analysis_response_attempt2.txt",
+        "raw_analysis_response_attempt3.txt": "genai_debug\\raw_analysis_response_attempt3.txt",
+        "raw_analysis_response_attempt4.txt": "genai_debug\\raw_analysis_response_attempt4.txt",
+        "raw_analysis_response_attempt5.txt": "genai_debug\\raw_analysis_response_attempt5.txt"
+      }
+    },
+    "iflow_name": "BoomiFlow_922c76cc"
   }
 }

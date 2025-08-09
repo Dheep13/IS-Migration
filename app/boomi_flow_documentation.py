@@ -12,7 +12,8 @@ import json
 import logging
 from typing import Dict, List, Any, Optional
 from datetime import datetime
-from minimal_mermaid_fixer import fix_mermaid_syntax_errors
+# LLM Mermaid fixer available if needed
+# from llm_mermaid_fixer import fix_documentation_with_llm
 
 logger = logging.getLogger(__name__)
 

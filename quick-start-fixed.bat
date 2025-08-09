@@ -1,18 +1,27 @@
 @echo off
 echo ========================================
-echo IMigrate Platform - Quick Start
+echo IS-Migration Platform - Quick Start
 echo ========================================
 echo.
-echo What would you like to do?
+echo NOTICE: This script has been replaced by the new Python launcher.
 echo.
-echo 1. Setup Local Development Environment
-echo 2. Start Local Development Servers
-echo 3. Deploy to Production (All Apps)
-echo 4. Deploy Single App to Production
-echo 5. Check Deployment Status
-echo 6. Clean Environment
-echo 7. Show Help
+echo Please use: python platform_launcher.py
+echo            or: start.bat (simple wrapper)
 echo.
+echo The new Python launcher provides:
+echo - Cross-platform compatibility (Windows/Linux/Mac)
+echo - Better process management and monitoring
+echo - Enhanced logging and health checks
+echo - Real-time server status checking
+echo - Robust error handling and recovery
+echo.
+echo Starting the new Python launcher...
+echo.
+timeout /t 3 /nobreak >nul
+python platform_launcher.py
+exit /b 0
+
+REM Legacy options below (kept for reference)
 set /p choice="Enter your choice (1-7): "
 
 if "%choice%"=="1" goto :setup

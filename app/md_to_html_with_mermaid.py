@@ -9,6 +9,12 @@ import re
 import markdown
 from pathlib import Path
 
+# Import Mermaid validator
+try:
+    from mermaid_validator import MermaidValidator
+except ImportError:
+    MermaidValidator = None
+
 def convert_markdown_to_html(markdown_file, output_file=None):
     """
     Convert Markdown file to HTML with Mermaid support.
@@ -35,7 +41,20 @@ def convert_markdown_to_html(markdown_file, output_file=None):
     
     # Function to replace code blocks with placeholders
     def replace_mermaid(match):
-        mermaid_blocks.append(match.group(1))
+        mermaid_content = match.group(1)
+
+        # Validate and fix Mermaid syntax if validator is available
+        if MermaidValidator:
+            try:
+                validator = MermaidValidator()
+                fixed_content, issues = validator.validate_and_fix(mermaid_content)
+                if issues:
+                    print(f"Fixed Mermaid syntax issues: {issues}")
+                mermaid_content = fixed_content
+            except Exception as e:
+                print(f"Mermaid validation failed: {e}")
+
+        mermaid_blocks.append(mermaid_content)
         return f'MERMAID_PLACEHOLDER_{len(mermaid_blocks) - 1}'
     
     # Replace Mermaid blocks with placeholders
@@ -152,7 +171,44 @@ def convert_markdown_to_html(markdown_file, output_file=None):
     # Write the HTML file
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(final_html)
-    
+
+    # Apply enhanced LLM Mermaid fixes to ensure diagrams render correctly
+    try:
+        from llm_mermaid_fixer import fix_documentation_with_llm
+
+        # Read the generated HTML file
+        with open(output_file, 'r', encoding='utf-8') as f:
+            html_content = f.read()
+
+        # Apply LLM-powered fixes and professional styling
+        fixed_content = fix_documentation_with_llm(html_content)
+
+        # Write back the enhanced content
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(fixed_content)
+
+        print(f"Applied enhanced LLM Mermaid fixes and professional styling to {output_file}")
+
+    except ImportError as ie:
+        print(f"Enhanced LLM Mermaid fixer not available ({ie}), trying minimal fixer...")
+        try:
+            from minimal_mermaid_fixer import fix_mermaid_syntax_in_html
+            fix_mermaid_syntax_in_html(output_file)
+            print(f"Applied minimal Mermaid syntax fixes to {output_file}")
+        except ImportError:
+            print("Mermaid fixer not available, skipping syntax fixes")
+        except Exception as e:
+            print(f"Warning: Could not apply minimal Mermaid fixes: {e}")
+    except Exception as e:
+        print(f"Warning: Could not apply enhanced Mermaid fixes: {e}")
+        # Fallback to minimal fixer
+        try:
+            from minimal_mermaid_fixer import fix_mermaid_syntax_in_html
+            fix_mermaid_syntax_in_html(output_file)
+            print(f"Applied fallback minimal Mermaid syntax fixes to {output_file}")
+        except Exception as fallback_e:
+            print(f"Warning: Fallback Mermaid fixes also failed: {fallback_e}")
+
     print(f"HTML file generated successfully: {output_file}")
     return output_file
 

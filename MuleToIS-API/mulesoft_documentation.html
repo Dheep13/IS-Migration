@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation with Mermaid</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #1565c0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre.mermaid {
+            text-align: center;
+            background: white;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .note {
+            background: #e3f2fd;
+            padding: 10px;
+            border-left: 4px solid #1565c0;
+            margin: 10px 0;
+        }
+        .insights {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .best-practices {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .security {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="benefits-verification-process-api-healthcare-integration-platform">Benefits Verification Process API - Healthcare Integration Platform</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#api-overview">API Overview</a></li>
+<li><a href="#mulesoft-to-sap-integration-suite-component-mapping">MuleSoft to SAP Integration Suite Component Mapping</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#endpoints">Endpoints</a></li>
+<li><a href="#requestresponse-schemas">Request/Response Schemas</a></li>
+<li><a href="#error-codes">Error Codes</a></li>
+<li><a href="#flow-analysis">Flow Analysis</a></li>
+<li><a href="#main-flow-benefits-verification-prc-api-main">Main Flow: benefits-verification-prc-api-main</a></li>
+<li><a href="#console-flow-benefits-verification-prc-api-console">Console Flow: benefits-verification-prc-api-console</a></li>
+<li><a href="#patient-operations">Patient Operations</a></li>
+<li><a href="#implementation-flows">Implementation Flows</a></li>
+<li><a href="#mermaid-flow-diagram">Mermaid Flow Diagram</a></li>
+<li><a href="#technical-implementation-details">Technical Implementation Details</a></li>
+<li><a href="#migration-considerations">Migration Considerations</a></li>
+</ol>
+<h2 id="api-overview">API Overview</h2>
+<p>The Benefits Verification Process API is a comprehensive healthcare integration solution built on MuleSoft that orchestrates patient benefits verification across multiple healthcare systems. This API serves as a central hub for:</p>
+<ul>
+<li><strong>Patient Data Synchronization</strong>: Integrates patient records between Cerner EHR and Salesforce Health Cloud</li>
+<li><strong>Benefits Verification</strong>: Validates insurance coverage through Availity network</li>
+<li><strong>FHIR R4 Compliance</strong>: Implements HL7 FHIR R4 standards for healthcare data exchange</li>
+<li><strong>Multi-System Integration</strong>: Connects Cerner, Salesforce Health Cloud, and Availity systems</li>
+</ul>
+<p><strong>Base URL</strong>: <code>https://{host}:8082/api/</code></p>
+<p><strong>Authentication</strong>: OAuth 2.0 Bearer tokens for external system integrations</p>
+<p><strong>Content Types</strong>: 
+- <code>application/fhir+json</code> (Primary)
+- <code>application/fhir+xml</code> (Secondary)
+- <code>application/json</code> (Error responses)</p>
+<p><strong>Rate Limiting</strong>: Configured per external system with retry mechanisms (2-5 attempts with 2s intervals)</p>
+<h2 id="mulesoft-to-sap-integration-suite-component-mapping">MuleSoft to SAP Integration Suite Component Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>MuleSoft Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+<th>Configuration Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP Listener</td>
+<td>HTTPS Receiver Adapter</td>
+<td>Receives HTTP requests</td>
+<td>Configure sender agreement with JSON/XML content type</td>
+</tr>
+<tr>
+<td>HTTP Request</td>
+<td>HTTP Receiver Adapter</td>
+<td>Makes HTTP calls to external systems</td>
+<td>Map to receiver determination and interface determination</td>
+</tr>
+<tr>
+<td>Transform Message (DataWeave)</td>
+<td>Message Mapping (XSLT/Groovy)</td>
+<td>FHIR data transformation</td>
+<td>Convert DataWeave scripts to XSLT or Groovy</td>
+</tr>
+<tr>
+<td>Choice Router</td>
+<td>Conditional Router (Switch)</td>
+<td>Route based on message content</td>
+<td>Map when/otherwise to case conditions</td>
+</tr>
+<tr>
+<td>Flow Reference</td>
+<td>Integration Process (Local Call)</td>
+<td>Call reusable subprocesses</td>
+<td>Convert to local Enterprise Services</td>
+</tr>
+<tr>
+<td>Error Handler</td>
+<td>Exception Branch</td>
+<td>Error handling and recovery</td>
+<td>Map on-error-propagate to exception subprocesses</td>
+</tr>
+<tr>
+<td>Set Variable</td>
+<td>Dynamic Configuration</td>
+<td>Store runtime variables</td>
+<td>Use XI message attributes or UDFs</td>
+</tr>
+<tr>
+<td>Logger</td>
+<td>Message Monitoring</td>
+<td>Runtime logging</td>
+<td>Map to SAP PI message monitoring</td>
+</tr>
+<tr>
+<td>Until Successful</td>
+<td>Quality of Service (EOIO)</td>
+<td>Retry mechanisms</td>
+<td>Configure retry intervals in receiver agreement</td>
+</tr>
+<tr>
+<td>Try/Catch Block</td>
+<td>Exception Subprocess</td>
+<td>Exception handling patterns</td>
+<td>Implement as exception branches</td>
+</tr>
+<tr>
+<td>Scatter-Gather</td>
+<td>Fork/Join Pattern</td>
+<td>Parallel processing</td>
+<td>Use parallel processing in BPM or multiple receivers</td>
+</tr>
+<tr>
+<td>Async Scope</td>
+<td>Asynchronous Messaging</td>
+<td>Non-blocking operations</td>
+<td>Configure async messaging with XI queues</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="endpoints">Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Request Body</th>
+<th>Response</th>
+<th>Authentication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/api/Patient</td>
+<td>Retrieve patient records</td>
+<td>None</td>
+<td>FHIR Bundle with Patient resources</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/Patient/{id}</td>
+<td>Get patient by FHIR ID</td>
+<td>None</td>
+<td>FHIR Patient resource</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/Patient</td>
+<td>Create new patient</td>
+<td>FHIR Patient (JSON/XML)</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/Patient</td>
+<td>Update patient collection</td>
+<td>FHIR Bundle</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/Patient/{id}</td>
+<td>Update specific patient</td>
+<td>FHIR Patient (JSON/XML)</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/Patient</td>
+<td>Delete patient collection</td>
+<td>None</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/Patient/{id}</td>
+<td>Delete specific patient</td>
+<td>None</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/$syncPatient</td>
+<td>Synchronize patient data</td>
+<td>Custom sync payload</td>
+<td>FHIR Patient resource</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/verifyBenefits</td>
+<td>Verify insurance benefits</td>
+<td>Benefits verification payload</td>
+<td>FHIR CoverageEligibilityResponse</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/console/*</td>
+<td>API console access</td>
+<td>None</td>
+<td>API Console UI</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="requestresponse-schemas">Request/Response Schemas</h3>
+<h4 id="patient-sync-request">Patient Sync Request</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>patientId</td>
+<td>String</td>
+<td>Yes</td>
+<td>Cerner patient FHIR ID</td>
+<td>"12724066"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="benefits-verification-request">Benefits Verification Request</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>patientId</td>
+<td>String</td>
+<td>Yes</td>
+<td>Patient identifier for coverage lookup</td>
+<td>"12724066"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="fhir-patient-resource-response">FHIR Patient Resource (Response)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resourceType</td>
+<td>String</td>
+<td>Yes</td>
+<td>FHIR resource type</td>
+<td>"Patient"</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique patient identifier</td>
+<td>"12724066"</td>
+</tr>
+<tr>
+<td>identifier</td>
+<td>Array</td>
+<td>Yes</td>
+<td>Patient identifiers</td>
+<td>[{"system": "urn:custom:sourcesystem:fhirid", "value": "12724066"}]</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Array</td>
+<td>No</td>
+<td>Patient names</td>
+<td>[{"family": "Doe", "given": ["John"]}]</td>
+</tr>
+<tr>
+<td>gender</td>
+<td>String</td>
+<td>No</td>
+<td>Administrative gender</td>
+<td>"male"</td>
+</tr>
+<tr>
+<td>birthDate</td>
+<td>String</td>
+<td>No</td>
+<td>Date of birth</td>
+<td>"1990-01-15"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="fhir-coverageeligibilityresponse-benefits-verification">FHIR CoverageEligibilityResponse (Benefits Verification)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resourceType</td>
+<td>String</td>
+<td>Yes</td>
+<td>FHIR resource type</td>
+<td>"CoverageEligibilityResponse"</td>
+</tr>
+<tr>
+<td>patient</td>
+<td>Object</td>
+<td>Yes</td>
+<td>Patient reference</td>
+<td>{"reference": "Patient/12724066"}</td>
+</tr>
+<tr>
+<td>insurer</td>
+<td>Object</td>
+<td>Yes</td>
+<td>Insurance organization</td>
+<td>{"reference": "Organization/123"}</td>
+</tr>
+<tr>
+<td>outcome</td>
+<td>String</td>
+<td>Yes</td>
+<td>Verification outcome</td>
+<td>"complete"</td>
+</tr>
+<tr>
+<td>insurance</td>
+<td>Array</td>
+<td>No</td>
+<td>Coverage details</td>
+<td>Insurance benefit information</td>
+</tr>
+</tbody>
+</table>
+<h3 id="error-codes">Error Codes</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Invalid FHIR resource format</td>
+<td>Validate FHIR resource structure</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Missing or invalid OAuth token</td>
+<td>Refresh authentication token</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Resource not found</td>
+<td>Patient or resource not found</td>
+<td>Verify patient ID exists in source system</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+<td>Feature not implemented</td>
+<td>Use alternative endpoint</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>External system integration failure</td>
+<td>Check external system connectivity</td>
+</tr>
+</tbody>
+</table>
+<h2 id="flow-analysis">Flow Analysis</h2>
+<h3 id="main-flow-benefits-verification-prc-api-main">Main Flow: benefits-verification-prc-api-main</h3>
+<ul>
+<li><strong>Purpose</strong>: Primary API gateway that handles all incoming HTTP requests and routes them to appropriate implementation flows</li>
+<li><strong>Trigger</strong>: HTTP Listener on port 8082 with path <code>/api/*</code></li>
+<li><strong>Components</strong>: </li>
+<li>HTTP Listener with APIKit router</li>
+<li>Response builder with headers configuration</li>
+<li>Multiple error handlers for different error types</li>
+<li>Variable setters for HTTP status codes</li>
+<li><strong>Data Transformation</strong>: Error responses transformed to FHIR OperationOutcome format</li>
+<li><strong>External Integrations</strong>: None (routing layer only)</li>
+<li><strong>Error Handling</strong>: Comprehensive error handling with specific transformations for:</li>
+<li>HTTP connectivity errors (501 status)</li>
+<li>Security errors (501 status)  </li>
+<li>Timeout errors (501 status)</li>
+<li>Routing errors (501 status)</li>
+<li>General exceptions (dynamic status codes from error attributes)</li>
+</ul>
+<h3 id="console-flow-benefits-verification-prc-api-console">Console Flow: benefits-verification-prc-api-console</h3>
+<ul>
+<li><strong>Purpose</strong>: Provides API console interface for testing and documentation</li>
+<li><strong>Trigger</strong>: HTTP Listener for console paths</li>
+<li><strong>Components</strong>: Console component for API documentation rendering</li>
+<li><strong>Data Transformation</strong>: 404 error response for invalid console paths</li>
+<li><strong>External Integrations</strong>: None</li>
+<li><strong>Error Handling</strong>: Simple 404 error for resource not found</li>
+</ul>
+<h3 id="patient-operations">Patient Operations</h3>
+<h4 id="get-patient-flows">GET Patient Flows</h4>
+<ul>
+<li><strong>Purpose</strong>: Retrieve patient data from Cerner and return FHIR-compliant responses</li>
+<li><strong>Trigger</strong>: GET requests to <code>/Patient</code> and <code>/Patient/{id}</code></li>
+<li><strong>Components</strong>: Flow reference to <code>implementation_patient</code> subflow</li>
+<li><strong>Data Transformation</strong>: Patient data filtering (removes generalPractitioner and managingOrganization)</li>
+<li><strong>External Integrations</strong>: Cerner administration system API</li>
+<li><strong>Error Handling</strong>: Standard error propagation to main error handler</li>
+</ul>
+<h4 id="postputdelete-patient-flows">POST/PUT/DELETE Patient Flows</h4>
+<ul>
+<li><strong>Purpose</strong>: CRUD operations (currently not implemented)</li>
+<li><strong>Trigger</strong>: Various HTTP methods on Patient resources</li>
+<li><strong>Components</strong>: Transform to set 501 status code and not implemented message</li>
+<li><strong>Data Transformation</strong>: Returns FHIR OperationOutcome with "not-supported" error</li>
+<li><strong>External Integrations</strong>: None</li>
+<li><strong>Error Handling</strong>: Returns structured not implemented response</li>
+</ul>
+<h3 id="implementation-flows">Implementation Flows</h3>
+<h4 id="implementation_sync-patient">implementation_sync-patient</h4>
+<ul>
+<li><strong>Purpose</strong>: Synchronizes patient data from Cerner to Salesforce Health Cloud</li>
+<li><strong>Trigger</strong>: POST to <code>/$syncPatient</code> endpoint</li>
+<li><strong>Components</strong>:</li>
+<li>Variable setup for Cerner API call</li>
+<li>Patient retrieval from Cerner</li>
+<li>Data transformation for Health Cloud format</li>
+<li>Patient creation in Salesforce Health Cloud</li>
+<li><strong>Data Transformation</strong>: </li>
+<li>Extracts patient ID from request</li>
+<li>Removes Cerner system ID</li>
+<li>Adds custom identifier system</li>
+<li><strong>External Integrations</strong>: Cerner Admin API, Salesforce Health Cloud</li>
+<li><strong>Error Handling</strong>: Error propagation with payload generation</li>
+</ul>
+<h4 id="implementation_verifybenefits">implementation_verifyBenefits</h4>
+<ul>
+<li><strong>Purpose</strong>: Orchestrates complete benefits verification workflow</li>
+<li><strong>Trigger</strong>: POST to <code>/verifyBenefits</code> endpoint</li>
+<li><strong>Components</strong>:</li>
+<li>Coverage lookup in Cerner</li>
+<li>Benefits verification via Availity</li>
+<li>Organization lookup in Health Cloud</li>
+<li>Patient lookup in Health Cloud</li>
+<li>Coverage sync to Health Cloud</li>
+<li><strong>Data Transformation</strong>: Multiple transformations for different system formats</li>
+<li><strong>External Integrations</strong>: Cerner Financial API, Availity API, Salesforce Health Cloud</li>
+<li><strong>Error Handling</strong>: Comprehensive error handling at each integration point</li>
+</ul>
+<h4 id="implementation_cerner-sys-api-request">implementation_cerner-sys-api-request</h4>
+<ul>
+<li><strong>Purpose</strong>: Generic HTTP client for Cerner system integration</li>
+<li><strong>Trigger</strong>: Flow reference from other implementation flows</li>
+<li><strong>Components</strong>: Choice router for Patient vs other resource handling</li>
+<li><strong>Data Transformation</strong>: Query parameter and URI parameter handling</li>
+<li><strong>External Integrations</strong>: Cerner administration and financial systems</li>
+<li><strong>Error Handling</strong>: Try/catch with error payload generation</li>
+</ul>
+<h4 id="implementation_availity-fhir-request">implementation_availity-fhir-request</h4>
+<ul>
+<li><strong>Purpose</strong>: Handles Availity network benefits verification</li>
+<li><strong>Trigger</strong>: Flow reference from verifyBenefits</li>
+<li><strong>Components</strong>: Until-successful scope for retry logic</li>
+<li><strong>Data Transformation</strong>: Extracts member ID and payer from FHIR Coverage</li>
+<li><strong>External Integrations</strong>: Availity Financial System API</li>
+<li><strong>Error Handling</strong>: Retry mechanism with configurable attempts</li>
+</ul>
+<h2 id="mermaid-flow-diagram">Mermaid Flow Diagram</h2>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for MuleSoft/SAP Integration Suite components
+classDef httpListener fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef httpRequest fill:#98FB98,stroke:#333,stroke-width:2px
+classDef transform fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef choice fill:#FFD700,stroke:#333,stroke-width:2px
+classDef salesforce fill:#FF6347,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef flowRef fill:#ADD8E6,stroke:#333,stroke-width:2px
+classDef cerner fill:#90EE90,stroke:#333,stroke-width:2px
+classDef availity fill:#FFB6C1,stroke:#333,stroke-width:2px
+
+%% Main API Gateway Flow
+Start((Start)):::event
+HTTPListener["HTTP Listener: /api/*"]:::httpListener
+APIKitRouter{"APIKit Router"}:::choice
+
+%% Patient Operations
+GetPatient["GET /Patient"]:::httpListener
+GetPatientById["GET /Patient/id"]:::httpListener
+PostSyncPatient["POST /syncPatient"]:::httpListener
+PostVerifyBenefits["POST /verifyBenefits"]:::httpListener
+
+%% Implementation Flows
+ImplPatient[implementation_patient]:::flowRef
+ImplSyncPatient[implementation_sync_patient]:::flowRef
+ImplVerifyBenefits[implementation_verifyBenefits]:::flowRef
+
+%% External System Calls
+CernerLookup[Cerner Patient Lookup]:::cerner
+CernerCoverage[Cerner Coverage Lookup]:::cerner
+AvailityVerify[Availity Benefits Verification]:::availity
+SFPatientSync[SF Health Cloud Patient Sync]:::salesforce
+SFOrgLookup[SF Organization Lookup]:::salesforce
+SFCoverageSync[SF Coverage Sync]:::salesforce
+
+%% Transformations
+TransformPatient[Transform: Remove GP/Org]:::transform
+TransformSync[Transform: Add Identifier]:::transform
+TransformCoverage[Transform: Coverage Format]:::transform
+TransformResponse[Transform: FHIR Response]:::transform
+
+%% Error Handling
+ErrorHandler[(Global Error Handler)]:::errorHandler
+ErrorTransform[Transform: FHIR OperationOutcome]:::transform
+ErrorEnd((Error Response)):::event
+
+%% Success End
+SuccessEnd((Success Response)):::event
+
+%% Main Flow Connections
+Start --> HTTPListener
+HTTPListener --> APIKitRouter
+
+%% Route to specific endpoints
+APIKitRouter -->|"Patient"| GetPatient
+APIKitRouter -->|"Patient by ID"| GetPatientById
+APIKitRouter -->|"Sync Patient"| PostSyncPatient
+APIKitRouter -->|"Verify Benefits"| PostVerifyBenefits
+
+%% Patient Flow
+GetPatient --> ImplPatient
+GetPatientById --> ImplPatient
+ImplPatient --> CernerLookup
+CernerLookup --> TransformPatient
+TransformPatient --> SuccessEnd
+
+%% Sync Patient Flow
+PostSyncPatient --> ImplSyncPatient
+ImplSyncPatient --> CernerLookup
+CernerLookup --> TransformSync
+TransformSync --> SFPatientSync
+SFPatientSync --> SuccessEnd
+
+%% Benefits Verification Flow
+PostVerifyBenefits --> ImplVerifyBenefits
+ImplVerifyBenefits --> CernerCoverage
+CernerCoverage --> AvailityVerify
+AvailityVerify --> SFOrgLookup
+SFOrgLookup --> SFPatientSync
+SFPatientSync --> TransformCoverage
+TransformCoverage --> SFCoverageSync
+SFCoverageSync --> TransformResponse
+TransformResponse --> SuccessEnd
+
+%% Error Flow Connections
+CernerLookup -->|Error| ErrorHandler
+AvailityVerify -->|Error| ErrorHandler
+SFPatientSync -->|Error| ErrorHandler
+SFCoverageSync -->|Error| ErrorHandler
+ErrorHandler --> ErrorTransform
+ErrorTransform --> ErrorEnd
+</pre>
+<h2 id="technical-implementation-details">Technical Implementation Details</h2>
+<h3 id="configuration-properties">Configuration Properties</h3>
+<p><strong>HTTP Listener Configuration</strong>
+- Host: <code>0.0.0.0</code> (all interfaces)
+- Port: <code>8082</code>
+- Base Path: <code>/api/</code>
+- Protocol: HTTP/HTTPS with TLS support</p>
+<p><strong>External System Configurations</strong></p>
+<ol>
+<li><strong>Salesforce Health Cloud</strong></li>
+<li>Host: Environment-specific (CloudHub deployment)</li>
+<li>Port: 443 (HTTPS)</li>
+<li>Timeout: 60 seconds</li>
+<li>
+<p>Retry: 2 attempts with 2-second intervals</p>
+</li>
+<li>
+<p><strong>Cerner Integration</strong></p>
+</li>
+<li>Administration Host: Separate from Financial Host</li>
+<li>Identifier System: <code>urn:custom:sourcesystem:fhirid</code></li>
+<li>Timeout: 60 seconds</li>
+<li>
+<p>Retry: 2 attempts with 2-second intervals</p>
+</li>
+<li>
+<p><strong>Availity Network</strong></p>
+</li>
+<li>Coverage Verification Retry: 5 attempts with 2-second intervals</li>
+<li>Specialized retry logic for coverage lookups</li>
+</ol>
+<h3 id="security-configurations">Security Configurations</h3>
+<ul>
+<li><strong>Keystore Management</strong>: JKS keystore with alias-based certificate management</li>
+<li><strong>Property Encryption</strong>: Environment-specific encrypted properties</li>
+<li><strong>OAuth Integration</strong>: Bearer token authentication for external systems</li>
+</ul>
+<h3 id="performance-considerations">Performance Considerations</h3>
+<ul>
+<li><strong>Connection Pooling</strong>: HTTP request configurations with persistent connections</li>
+<li><strong>Retry Mechanisms</strong>: Configurable retry policies per external system</li>
+<li><strong>Async Processing</strong>: Until-successful scopes for resilient processing</li>
+<li><strong>Memory Management</strong>: Streaming for large FHIR bundles</li>
+</ul>
+<h3 id="monitoring-and-logging">Monitoring and Logging</h3>
+<ul>
+<li><strong>Structured Logging</strong>: Healthcare-specific logger package</li>
+<li><strong>Error Correlation</strong>: Correlation IDs for distributed tracing</li>
+<li><strong>Performance Metrics</strong>: Response time tracking per external system</li>
+<li><strong>Health Checks</strong>: Built-in connectivity validation</li>
+</ul>
+<h2 id="migration-considerations">Migration Considerations</h2>
+<h3 id="key-differences-between-mulesoft-and-sap-integration-suite">Key Differences Between MuleSoft and SAP Integration Suite</h3>
+<ol>
+<li><strong>Message Processing</strong></li>
+<li>MuleSoft: Event-driven with Mule Message objects</li>
+<li>SAP IS: Document-based processing with XI messages</li>
+<li>
+<p><strong>Migration</strong>: Convert Mule Message attributes to XI message headers</p>
+</li>
+<li>
+<p><strong>DataWeave vs Message Mapping</strong></p>
+</li>
+<li>MuleSoft: DataWeave 2.0 with functional programming</li>
+<li>SAP IS: XSLT/Groovy with imperative programming</li>
+<li>
+<p><strong>Migration</strong>: Reconstruct transformation logic in XSLT or Groovy scripts</p>
+</li>
+<li>
+<p><strong>Error Handling</strong></p>
+</li>
+<li>MuleSoft: Try/catch with on-error-propagate</li>
+<li>SAP IS: Exception branches with alert handling</li>
+<li><strong>Migration</strong>: Map error handling to exception subprocesses</li>
+</ol>
+<h3 id="required-configuration-changes">Required Configuration Changes</h3>
+<ol>
+<li><strong>Connection Management</strong></li>
+<li>Replace HTTP Request configs with HTTP receiver channels</li>
+<li>Configure sender/receiver agreements for each external system</li>
+<li>
+<p>Map OAuth configurations to SAP security artifacts</p>
+</li>
+<li>
+<p><strong>Routing Logic</strong></p>
+</li>
+<li>Convert Choice routers to Conditional routing steps</li>
+<li>Map APIKit routing to interface determination</li>
+<li>
+<p>Transform flow references to local integration processes</p>
+</li>
+<li>
+<p><strong>FHIR Processing</strong></p>
+</li>
+<li>Implement FHIR validation using SAP's healthcare accelerators</li>
+<li>Configure message types for FHIR R4 resources</li>
+<li>Set up content-based routing for different FHIR resource types</li>
+</ol>
+<h3 id="data-format-considerations">Data Format Considerations</h3>
+<ul>
+<li><strong>FHIR JSON/XML</strong>: Both formats supported in SAP IS with appropriate message types</li>
+<li><strong>Variable Handling</strong>: Convert Mule variables to XI message attributes or dynamic configuration</li>
+<li><strong>Streaming</strong>: Implement large message handling for FHIR bundles</li>
+</ul>
+<h3 id="authentication-mapping">Authentication Mapping</h3>
+<ul>
+<li><strong>OAuth 2.0</strong>: Map to SAP's OAuth implementation with token management</li>
+<li><strong>Certificate Management</strong>: Migrate JKS keystores to SAP keystore management</li>
+<li><strong>Security Policies</strong>: Implement WS-Security policies for SOAP-based integrations</li>
+</ul>
+<h3 id="error-handling-strategy-changes">Error Handling Strategy Changes</h3>
+<ol>
+<li><strong>Alerting</strong>: Implement SAP alert framework for error notifications</li>
+<li><strong>Monitoring</strong>: Configure message monitoring with business-relevant metrics</li>
+<li><strong>Recovery</strong>: Set up error queues and replay mechanisms</li>
+<li><strong>Logging</strong>: Map structured logging to SAP's log and trace functionality</li>
+</ol>
+<p><strong>Recommended Migration Approach:</strong>
+1. Start with patient synchronization flow (simpler integration pattern)
+2. Migrate external system connections one at a time
+3. Implement FHIR validation and transformation layers
+4. Add error handling and monitoring as final step
+5. Perform end-to-end testing with healthcare test data</p>
+    
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

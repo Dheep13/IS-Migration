@@ -1,11 +1,6 @@
-<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Account>\n    <Id>${accountId}</Id>\n    <Name>${accountName}</Name>\n    <Description>SAP Customer Number: ${customerNumber}</Description>\n</Account>\"\"\"\n\n// Set property to determine if this is a new account\nif (sapResponse.EXPORT.RETURN.TYPE == 'S') {\n    property('isNewAccount', true)\n} else {\n    property('isNewAccount', false)\n}\n\nmessage.setBody(sfUpdateXml)\nreturn message"
-                },
-                {
-                    "name": "FormatErrorLog.groovy",
-                    "type": "groovy",
-                    "script": "def errorMessage = property('ErrorMessage')\ndef errorSource = property('ErrorSource')\ndef timestamp = new Date().format(\"yyyy-MM-dd'T'HH:mm:ss.SSSZ\")\n\ndef errorLog = \"\"\"{\n    \"timestamp\": \"${timestamp}\",\n    \"source\": \"${errorSource}\",\n    \"message\": \"${errorMessage}\",\n    \"process\": \"Salesforce to SAP Customer Creation\",\n    \"severity\": \"ERROR\"\n}\"\"\"\n\nmessage.setBody(errorLog)\nreturn message"
-                }
-            ]
+<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n    <sObjects xmlns=\"urn:enterprise.soap.sforce.com:2006-04-01\">\n        <type>Opportunity</type>\n        <Name>''' + properties.get('OpportunityName') + '''</Name>\n        <Description>''' + properties.get('OpportunityDescription') + '''</Description>\n        <CloseDate>''' + properties.get('OpportunityCloseDate') + '''</CloseDate>\n        <StageName>Prospecting</StageName>\n    </sObjects>'''\n    \n    message.setBody(opportunityXml)\n    return message\n}"
         }
-    ]
+      ]
+    }
+  ]
 }

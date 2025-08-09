@@ -9,6 +9,10 @@ from dotenv import load_dotenv
 # Add parent directory to path for imports
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+# Import Mermaid validator and LLM fixer
+from mermaid_validator import validate_mermaid_in_documentation
+from llm_mermaid_fixer import fix_documentation_with_llm
+
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -68,11 +72,12 @@ class DocumentationEnhancer:
             except Exception as e:
                 logger.error(f"Failed to initialize Anthropic client: {str(e)}")
 
-    def enhance_documentation(self, base_documentation: str, generate_json: bool = True, output_dir: str = None) -> str:
+    def enhance_documentation(self, base_documentation: str, generate_json: bool = True, output_dir: str = None, platform: str = 'boomi') -> str:
         """Enhance documentation using the configured LLM service.
 
         Args:
             base_documentation: Base documentation to enhance
+            platform: The platform type ('boomi' or 'mulesoft') - overrides content detection
 
         Returns:
             Enhanced documentation or original if enhancement fails
@@ -80,7 +85,13 @@ class DocumentationEnhancer:
         # Modified to use a variable to track enhancement success
         enhancement_successful = False
 
-        prompt = f"""You are a Dell Boomi and SAP Integration Suite specialist. Based on the following technical
+        # Use platform parameter instead of content detection
+        logger.info(f"Using platform-based enhancement: {platform}")
+
+        if platform == 'mulesoft':
+            prompt = self._create_mulesoft_enhancement_prompt(base_documentation)
+        else:
+            prompt = f"""You are a Dell Boomi and SAP Integration Suite specialist. Based on the following technical
     documentation, create comprehensive documentation that includes API details, flow logic,
     and detailed SAP Integration Suite visualization. Use SAP Integration Suite components and connections for
     the visualization.
@@ -658,6 +669,28 @@ class DocumentationEnhancer:
         else:
             final_content = enhanced_content
 
+        # Validate and fix Mermaid diagrams
+        try:
+            # First try basic validation
+            final_content = validate_mermaid_in_documentation(final_content)
+            logger.info("Basic Mermaid diagram validation completed")
+
+            # If basic validation doesn't work well, try LLM fixing
+            if "```mermaid" in final_content:
+                logger.info("Attempting LLM-powered Mermaid fixing for better results")
+                final_content = fix_documentation_with_llm(final_content)
+                logger.info("LLM Mermaid fixing completed")
+
+        except Exception as e:
+            logger.warning(f"Mermaid validation failed: {e}")
+            # Try LLM fixing as fallback
+            try:
+                logger.info("Attempting LLM Mermaid fixing as fallback")
+                final_content = fix_documentation_with_llm(final_content)
+                logger.info("LLM Mermaid fixing fallback completed")
+            except Exception as llm_e:
+                logger.warning(f"LLM Mermaid fixing also failed: {llm_e}")
+
         # Generate JSON components if requested
         if generate_json and output_dir and enhancement_successful:
             try:
@@ -682,7 +715,7 @@ class DocumentationEnhancer:
 
         try:
             response = self.openai_client.chat.completions.create(
-                model="gpt-4",  # Can be configured based on needs
+                model="gpt-4o",  # Updated to latest GPT model
                 messages=[
                     {"role": "system", "content": "You are an expert integration specialist helping convert Dell Boomi processes to SAP Integration Suite."},
                     {"role": "user", "content": prompt}
@@ -747,10 +780,10 @@ class DocumentationEnhancer:
                 logger.error(f"Error type: {type(api_error).__name__}")
 
                 # Try with a different model as fallback
-                logger.info("Trying fallback to claude-3-opus-20240229 model...")
+                logger.info("Trying fallback to claude-sonnet-4-20250514 model with different settings...")
                 try:
                     response = self.anthropic_client.messages.create(
-                        model="claude-3-opus-20240229",
+                        model="claude-sonnet-4-20250514",
                         max_tokens=20000,
                         temperature=0.2,
                         timeout=600,
@@ -766,7 +799,7 @@ class DocumentationEnhancer:
                             }
                         ]
                     )
-                    logger.info("Fallback to claude-3-opus-20240229 model succeeded")
+                    logger.info("Fallback to claude-sonnet-4-20250514 model with different settings succeeded")
                 except Exception as fallback_error:
                     logger.error(f"Fallback API call also failed: {str(fallback_error)}")
                     raise fallback_error
@@ -1035,7 +1068,7 @@ RESPOND WITH ONLY JSON:"""
         """Call OpenAI API specifically for JSON generation."""
         try:
             response = self.openai_client.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4o",
                 messages=[
                     {"role": "system", "content": "You are an expert at converting Dell Boomi processes to SAP Integration Suite JSON configurations. Respond only with valid JSON."},
                     {"role": "user", "content": prompt}
@@ -1180,3 +1213,205 @@ def Message processData(Message message) {
         except Exception as e:
             logger.warning(f"Error creating intelligent connections: {e}")
             return components
+
+    def _detect_mulesoft_content(self, content: str) -> bool:
+        """Detect if the content is MuleSoft-related"""
+        mulesoft_indicators = [
+            'mule-app', 'mule-config', 'http:listener', 'http:request',
+            'transform', 'choice', 'scatter-gather', 'salesforce:',
+            'dataweave', 'ee:transform', 'mule-artifact', 'flow name=',
+            'sub-flow', 'error-handler', 'apikit:', 'vm:', 'jms:'
+        ]
+        content_lower = content.lower()
+        return any(indicator in content_lower for indicator in mulesoft_indicators)
+
+    def _create_mulesoft_enhancement_prompt(self, base_documentation: str) -> str:
+        """Create MuleSoft-specific enhancement prompt"""
+        return f"""You are a MuleSoft and SAP Integration Suite specialist. Based on the following MuleSoft technical
+    documentation, create comprehensive documentation that includes API details, flow logic,
+    and detailed SAP Integration Suite visualization. Use SAP Integration Suite components and connections for
+    the visualization.
+
+    Transform this MuleSoft documentation into a comprehensive guide that shows:
+    1. How MuleSoft components map to SAP Integration Suite equivalents
+    2. Complete API reference with tabular format
+    3. Proper Mermaid diagrams that render correctly
+    4. Detailed flow analysis and component mappings
+
+    Here is the source MuleSoft documentation:
+
+    {base_documentation}
+
+    Please structure your response in Markdown with these sections:
+
+    # [Descriptive Title Based on the MuleSoft Application Purpose]
+
+    ## Table of Contents
+    Create a detailed table of contents with hyperlinks to all sections and subsections in the document. Use Markdown link syntax like [Section Name](#section-name) to create clickable links to each section. Include ALL sections and subsections.
+
+    ## API Overview
+    - Comprehensive description of what this MuleSoft application does and its business purpose
+    - Base URL/endpoint pattern from HTTP listeners
+    - Authentication mechanisms used in the flows
+    - Rate limiting information (if available)
+    - General response format and content types
+
+    ## MuleSoft to SAP Integration Suite Component Mapping
+    Create a detailed table showing how each MuleSoft component maps to SAP Integration Suite:
+
+    | MuleSoft Component | SAP Integration Suite Equivalent | Purpose | Configuration Notes |
+    |-------------------|----------------------------------|---------|-------------------|
+    | HTTP Listener | HTTPS Sender Adapter | Receives HTTP requests | Maps to inbound endpoint |
+    | HTTP Request | HTTP Receiver Adapter | Makes HTTP calls | Maps to outbound calls |
+    | Transform Message | Groovy Script | Data transformation | DataWeave → Groovy conversion |
+    | Choice Router | Router (Exclusive Gateway) | Conditional routing | When/otherwise logic |
+    | Scatter-Gather | Multicast | Parallel processing | Concurrent execution |
+    | Salesforce Connector | OData Request-Reply | Salesforce integration | Maps to OData operations |
+    | Error Handler | Exception Subprocess | Error handling | Try-catch equivalent |
+
+    ## API Reference
+    Create a comprehensive API reference in tabular format:
+
+    ### Endpoints
+    | Method | Path | Description | Request Body | Response | Authentication |
+    |--------|------|-------------|--------------|----------|----------------|
+    | GET | /api/customers | Retrieve customer list | None | Customer array | Bearer token |
+    | POST | /api/customers | Create new customer | Customer object | Created customer | Bearer token |
+    | PUT | /api/customers/{{id}} | Update customer | Customer object | Updated customer | Bearer token |
+    | DELETE | /api/customers/{{id}} | Delete customer | None | Success message | Bearer token |
+
+    ### Request/Response Schemas
+    #### Customer Object
+    | Field | Type | Required | Description | Example |
+    |-------|------|----------|-------------|---------|
+    | id | String | No | Unique identifier | "12345" |
+    | name | String | Yes | Customer name | "John Doe" |
+    | email | String | Yes | Email address | "john@example.com" |
+    | phone | String | No | Phone number | "+1-555-0123" |
+
+    ### Error Codes
+    | Code | Message | Description | Resolution |
+    |------|---------|-------------|------------|
+    | 400 | Bad Request | Invalid request format | Check request syntax |
+    | 401 | Unauthorized | Missing/invalid auth | Provide valid token |
+    | 404 | Not Found | Resource not found | Check resource ID |
+    | 500 | Internal Error | Server error | Contact support |
+
+    ## Flow Analysis
+    Provide detailed analysis of each MuleSoft flow:
+
+    ### Main Flow: [Flow Name]
+    - **Purpose**: What this flow accomplishes
+    - **Trigger**: How the flow is initiated (HTTP listener, scheduler, etc.)
+    - **Components**: List all components in execution order
+    - **Data Transformation**: Describe any DataWeave transformations
+    - **External Integrations**: List external systems called
+    - **Error Handling**: Describe error handling strategy
+
+    ## Mermaid Flow Diagram
+    Create a Mermaid diagram that accurately represents the MuleSoft flows and their SAP Integration Suite equivalents:
+
+    **CRITICAL MERMAID REQUIREMENTS:**
+    1. Use `flowchart TD` (top-down direction)
+    2. Include ALL style definitions for proper rendering
+    3. Use proper node shapes for different component types
+    4. Follow exact syntax for connections and labels
+    5. Include error handling flows if present
+
+    ```mermaid
+    flowchart TD
+    %% Define node styles for MuleSoft/SAP Integration Suite components
+    classDef httpListener fill:#87CEEB,stroke:#333,stroke-width:2px
+    classDef httpRequest fill:#98FB98,stroke:#333,stroke-width:2px
+    classDef transform fill:#DDA0DD,stroke:#333,stroke-width:2px
+    classDef choice fill:#FFD700,stroke:#333,stroke-width:2px
+    classDef salesforce fill:#FF6347,stroke:#333,stroke-width:2px
+    classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+    classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+
+    %% MuleSoft Flow Components
+    Start((Start)):::event
+    HTTPListener[HTTP Listener: /api/customers]:::httpListener
+    ValidateInput[Transform: Validate Input]:::transform
+    ChoiceRouter{{"Customer Type?"}}:::choice
+    PremiumFlow[HTTP Request: Premium Service]:::httpRequest
+    StandardFlow[HTTP Request: Standard Service]:::httpRequest
+    SalesforceCreate[Salesforce: Create Record]:::salesforce
+    ResponseTransform[Transform: Format Response]:::transform
+    End((End)):::event
+
+    %% Error Handling
+    ErrorHandler[(Error Handler)]:::errorHandler
+    LogError[Transform: Log Error]:::transform
+    ErrorResponse[Transform: Error Response]:::transform
+    ErrorEnd((Error End)):::event
+
+    %% Main Flow Connections
+    Start --> HTTPListener
+    HTTPListener --> ValidateInput
+    ValidateInput --> ChoiceRouter
+    ChoiceRouter -->|Premium| PremiumFlow
+    ChoiceRouter -->|Standard| StandardFlow
+    PremiumFlow --> SalesforceCreate
+    StandardFlow --> SalesforceCreate
+    SalesforceCreate --> ResponseTransform
+    ResponseTransform --> End
+
+    %% Error Flow Connections
+    HTTPListener -->|Error| ErrorHandler
+    ValidateInput -->|Error| ErrorHandler
+    SalesforceCreate -->|Error| ErrorHandler
+    ErrorHandler --> LogError
+    LogError --> ErrorResponse
+    ErrorResponse --> ErrorEnd
+    ```
+
+    **MERMAID DIAGRAM RULES FOR MULESOFT:**
+    1. Use TD (top-down) direction
+    2. Include ALL style definitions exactly as shown above
+    3. Use these exact node shapes:
+       - ((name)) for Start/End events
+       - [name] for regular components (HTTP Listener, Transform, etc.)
+       - {{"name"}} for choice routers (IMPORTANT: use quotes inside double curly braces)
+       - [(name)] for error handlers
+    4. Use these style classes based on MuleSoft component types:
+       - :::httpListener for HTTP Listeners
+       - :::httpRequest for HTTP Requests
+       - :::transform for Transform Message, DataWeave
+       - :::choice for Choice routers
+       - :::salesforce for Salesforce connectors
+       - :::event for Start/End events
+       - :::errorHandler for error handling components
+    5. Use -->|label| for labeled connections
+    6. Group error handlers separately
+    7. Follow the exact sequence from MuleSoft flow execution
+
+    ## Technical Implementation Details
+    - Configuration properties and their purposes
+    - Environment-specific settings
+    - Security configurations
+    - Performance considerations
+    - Monitoring and logging setup
+
+    ## Migration Considerations
+    - Key differences between MuleSoft and SAP Integration Suite
+    - Required configuration changes
+    - Data format considerations
+    - Authentication mapping
+    - Error handling strategy changes
+
+    Make sure the final document has:
+    1. A descriptive title that reflects the purpose of the MuleSoft application
+    2. A comprehensive table of contents with hyperlinks to all sections
+    3. Clear headings and subheadings for all sections
+    4. Properly formatted tables for API reference and component mappings
+    5. A working Mermaid diagram that renders correctly in HTML
+    6. Complete flow analysis with technical details
+    7. Practical migration guidance for SAP Integration Suite
+
+    CRITICAL FINAL REMINDERS:
+    - This is a MULESOFT application - use MuleSoft-specific terminology throughout
+    - Create tables for API references, component mappings, and schemas
+    - Ensure Mermaid diagrams follow the exact syntax and styling shown
+    - Include comprehensive error handling documentation
+    - Provide practical SAP Integration Suite migration guidance"""

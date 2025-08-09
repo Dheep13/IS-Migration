@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation with Mermaid</title>
+    
+    <style>
+        /* Professional Technical Document Styling */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fafafa;
+            color: #333;
+        }
+
+        /* Header and Title Styling */
+        h1 {
+            color: #1e3a8a;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        h2 {
+            color: #1e40af;
+            border-left: 4px solid #3b82f6;
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            font-weight: 500;
+        }
+
+        h3 {
+            color: #1e40af;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            font-weight: 500;
+        }
+
+        h4 {
+            color: #374151;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        /* Content Container */
+        .document-container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            color: #1e40af;
+            border: none;
+            padding: 0;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .toc li {
+            margin: 8px 0;
+        }
+
+        .toc a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Code and Technical Elements */
+        code {
+            background: #f1f5f9;
+            color: #e11d48;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 20px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        /* Mermaid Diagrams */
+        pre.mermaid {
+            text-align: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Tables */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        th {
+            background: #3b82f6;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tr:hover {
+            background: #f1f5f9;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        /* Strong and Emphasis */
+        strong {
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        em {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        /* Paragraphs */
+        p {
+            margin: 15px 0;
+            text-align: justify;
+            line-height: 1.7;
+        }
+
+        /* Links */
+        a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #1d4ed8;
+            text-decoration: underline;
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid #3b82f6;
+            margin: 20px 0;
+            padding: 15px 20px;
+            background: #f8fafc;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+
+        /* Document Header */
+        .document-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .document-header h1 {
+            color: white;
+            border: none;
+            margin: 0;
+            font-size: 2.8em;
+        }
+
+        .document-subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        /* Company Logo */
+        .company-logo {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            height: 60px;
+            width: auto;
+            opacity: 0.9;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container svg {
+            height: 80px;
+            width: auto;
+            margin-right: 20px;
+        }
+
+        /* Footer */
+        .document-footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9em;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .document-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+
+            .document-header {
+                background: #3b82f6 !important;
+                -webkit-print-color-adjust: exact;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .document-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="document-container">
+
+    <div class="document-header">
+        <div class="logo-container">
+            <svg width="507" height="206" viewBox="0 0 507 206" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M70.2578 134.616C71.3379 112.751 80.8662 95.298 100.193 83.445C108.911 78.1131 118.478 74.7759 128.469 72.7812C133.754 71.7455 139.154 71.1318 144.516 70.4029C146.599 70.1344 148.683 70.0194 150.766 69.9043C151.036 69.9043 151.46 70.2879 151.614 70.5947C153.543 74.5457 155.086 78.6501 156.282 82.8696C157.555 87.4344 158.519 92.0758 158.751 96.8323C158.944 100.63 159.137 104.427 158.867 108.225C157.786 123.453 152.579 137.148 143.089 149.192C132.404 162.733 118.593 171.594 101.851 175.89C96.9909 177.118 92.0532 177.77 87.0383 178C86.7297 178 86.3054 177.731 86.1125 177.463C81.9849 172.208 78.5516 166.531 75.8899 160.432C73.4211 154.793 71.6851 148.885 70.875 142.786C70.5279 140.255 70.4893 137.685 70.2578 134.616Z" fill="#F36F21"/>
+<path d="M9 91.999C12.6261 63.8435 35.6173 34.729 71.3386 29.0135C109.76 22.876 139.464 45.6613 150.766 69.0987C150.303 69.0987 149.956 69.0987 149.57 69.0987C125.383 69.0987 101.158 69.0987 76.9706 69.022C73.8074 69.022 70.6056 68.8302 67.4424 68.9069C48.1931 69.2905 30.6796 74.9676 15.2493 86.5521C13.2819 88.0481 11.5074 89.7742 9.61721 91.4237C9.42433 91.5771 9.23146 91.7689 9 91.999Z" fill="#F36F21"/>
+<path d="M61.3469 174.855C58.8781 173.934 56.7179 173.128 54.519 172.323C54.3647 172.284 54.2104 172.208 54.0561 172.131C51.0986 170.878 48.9255 168.794 47.5368 165.878C44.2578 159.089 42.0976 151.993 41.0946 144.512C40.516 140.331 40.2074 136.15 40.6317 131.969C41.2489 125.947 42.7148 120.078 44.9522 114.439C50.1985 101.205 59.4181 91.5005 71.6853 84.4041C80.6349 79.2256 90.3174 75.8883 100.308 73.4716C101.196 73.2415 102.083 73.0498 103.24 72.7812C100.347 73.8937 97.724 74.8143 95.178 75.8884C83.8753 80.6832 73.5755 87.0125 65.1274 96.0269C57.8366 103.775 52.8603 112.751 50.7772 123.185C50.1985 126.062 49.7742 129.015 49.6971 131.969C49.3113 147.044 53.0917 161.084 60.9226 174.011C61.0383 174.164 61.1155 174.356 61.3469 174.778V174.855Z" fill="#F36F21"/>
+<path d="M90.1253 71.5151C75.0421 73.5098 60.6533 77.5375 47.6533 85.6696C37.6236 91.9221 29.7155 100.169 24.6235 110.91C22.0775 116.319 20.303 121.996 19.6087 127.941C19.0686 132.353 18.8757 136.802 18.5285 141.099C18.5285 141.099 18.3357 140.83 18.1814 140.6C15.9054 136.649 14.0152 132.506 12.4336 128.248C12.0864 127.328 12.125 126.484 12.3178 125.601C14.2852 116.012 17.9885 107.189 24.0449 99.3638C29.7155 92.0372 36.7749 86.3984 44.9916 82.1405C53.2854 77.806 62.1192 75.1592 71.3003 73.5098C77.5496 72.3974 83.8374 71.7452 90.1639 71.5535L90.1253 71.5151Z" fill="#F36F21"/>
+<path d="M189.28 104V57.14H196.672V104H189.28ZM250.888 63.674H235.312V104H227.854V63.674H212.212V57.14H250.888V63.674ZM266.412 104V57.14H286.806C288.918 57.14 290.854 57.58 292.614 58.46C294.374 59.34 295.892 60.506 297.168 61.958C298.488 63.41 299.5 65.038 300.204 66.842C300.952 68.646 301.326 70.494 301.326 72.386C301.326 74.454 300.952 76.434 300.204 78.326C299.456 80.218 298.378 81.846 296.97 83.21C295.606 84.574 294 85.564 292.152 86.18L303.174 104H294.858L284.694 87.698H273.804V104H266.412ZM273.804 81.164H286.74C288.104 81.164 289.314 80.768 290.37 79.976C291.426 79.184 292.262 78.128 292.878 76.808C293.494 75.444 293.802 73.97 293.802 72.386C293.802 70.758 293.45 69.306 292.746 68.03C292.042 66.71 291.118 65.654 289.974 64.862C288.874 64.07 287.664 63.674 286.344 63.674H273.804V81.164ZM347.271 65.918C346.611 65.17 345.841 64.51 344.961 63.938C344.081 63.322 343.091 62.794 341.991 62.354C340.891 61.914 339.703 61.562 338.427 61.298C337.195 61.034 335.875 60.902 334.467 60.902C330.375 60.902 327.361 61.694 325.425 63.278C323.533 64.818 322.587 66.93 322.587 69.614C322.587 71.462 323.027 72.914 323.907 73.97C324.831 75.026 326.261 75.884 328.197 76.544C330.133 77.204 332.597 77.886 335.589 78.59C338.933 79.294 341.815 80.13 344.235 81.098C346.655 82.066 348.525 83.386 349.845 85.058C351.165 86.686 351.825 88.908 351.825 91.724C351.825 93.88 351.407 95.75 350.571 97.334C349.735 98.918 348.569 100.238 347.073 101.294C345.577 102.35 343.795 103.142 341.727 103.67C339.659 104.154 337.393 104.396 334.929 104.396C332.509 104.396 330.177 104.154 327.933 103.67C325.733 103.142 323.643 102.394 321.663 101.426C319.683 100.414 317.835 99.138 316.119 97.598L318.429 93.836C319.265 94.716 320.255 95.552 321.399 96.344C322.587 97.092 323.885 97.774 325.293 98.39C326.745 99.006 328.285 99.49 329.913 99.842C331.585 100.15 333.301 100.304 335.061 100.304C338.801 100.304 341.705 99.622 343.773 98.258C345.885 96.894 346.941 94.87 346.941 92.186C346.941 90.25 346.413 88.71 345.357 87.566C344.301 86.378 342.717 85.41 340.605 84.662C338.493 83.914 335.897 83.188 332.817 82.484C329.561 81.736 326.811 80.9 324.567 79.976C322.323 79.052 320.629 77.842 319.485 76.346C318.385 74.806 317.835 72.782 317.835 70.274C317.835 67.37 318.539 64.928 319.947 62.948C321.399 60.924 323.379 59.406 325.887 58.394C328.395 57.338 331.277 56.81 334.533 56.81C336.601 56.81 338.515 57.03 340.275 57.47C342.079 57.866 343.729 58.46 345.225 59.252C346.765 60.044 348.195 61.034 349.515 62.222L347.271 65.918ZM397.195 104H392.707V84.794C392.707 80.922 392.025 78.018 390.661 76.082C389.297 74.102 387.339 73.112 384.787 73.112C383.115 73.112 381.443 73.552 379.771 74.432C378.143 75.268 376.691 76.434 375.415 77.93C374.183 79.382 373.303 81.054 372.775 82.946V104H368.287V55.82H372.775V77.402C374.139 74.85 376.031 72.826 378.451 71.33C380.915 69.79 383.533 69.02 386.305 69.02C388.285 69.02 389.957 69.372 391.321 70.076C392.729 70.78 393.851 71.814 394.687 73.178C395.567 74.498 396.205 76.06 396.601 77.864C396.997 79.624 397.195 81.626 397.195 83.87V104ZM416.005 104V69.614H420.493V104H416.005ZM416.005 62.42V55.82H420.493V62.42H416.005ZM441.269 104V73.178H436.517V69.614H441.269V68.69C441.269 65.874 441.665 63.454 442.457 61.43C443.293 59.406 444.459 57.866 445.955 56.81C447.495 55.71 449.299 55.16 451.367 55.16C452.731 55.16 454.051 55.358 455.327 55.754C456.603 56.15 457.703 56.678 458.627 57.338L457.241 60.572C456.669 60.088 455.921 59.714 454.997 59.45C454.073 59.186 453.149 59.054 452.225 59.054C450.157 59.054 448.551 59.868 447.407 61.496C446.307 63.124 445.757 65.478 445.757 68.558V69.614H455.261V73.178H445.757V104H441.269ZM487.144 102.35C486.792 102.482 486.242 102.724 485.494 103.076C484.746 103.428 483.844 103.736 482.788 104C481.732 104.264 480.588 104.396 479.356 104.396C478.08 104.396 476.87 104.154 475.726 103.67C474.626 103.186 473.746 102.46 473.086 101.492C472.426 100.48 472.096 99.248 472.096 97.796V73.178H467.344V69.614H472.096V57.998H476.584V69.614H484.504V73.178H476.584V96.542C476.672 97.774 477.112 98.698 477.904 99.314C478.74 99.93 479.686 100.238 480.742 100.238C481.974 100.238 483.096 100.04 484.108 99.644C485.12 99.204 485.736 98.896 485.956 98.72L487.144 102.35Z" fill="black"/>
+<path d="M186.96 155V126.6H206.04V131.44H192.48V138.76H203.76V143.24H192.48V155H186.96ZM219.929 155V126.6H225.449V150.16H239.929V155H219.929ZM264.783 155.2C262.703 155.2 260.81 154.8 259.103 154C257.423 153.2 255.97 152.12 254.743 150.76C253.543 149.373 252.61 147.827 251.943 146.12C251.276 144.387 250.943 142.613 250.943 140.8C250.943 138.907 251.29 137.107 251.983 135.4C252.703 133.667 253.676 132.133 254.903 130.8C256.156 129.44 257.623 128.373 259.303 127.6C261.01 126.8 262.876 126.4 264.903 126.4C266.956 126.4 268.823 126.813 270.503 127.64C272.21 128.467 273.663 129.573 274.863 130.96C276.063 132.347 276.996 133.893 277.663 135.6C278.33 137.307 278.663 139.067 278.663 140.88C278.663 142.747 278.316 144.547 277.623 146.28C276.93 147.987 275.956 149.52 274.703 150.88C273.476 152.213 272.01 153.267 270.303 154.04C268.623 154.813 266.783 155.2 264.783 155.2ZM256.543 140.8C256.543 142.027 256.73 143.213 257.103 144.36C257.476 145.507 258.01 146.533 258.703 147.44C259.423 148.32 260.29 149.027 261.303 149.56C262.343 150.067 263.516 150.32 264.823 150.32C266.156 150.32 267.343 150.053 268.383 149.52C269.423 148.96 270.29 148.227 270.983 147.32C271.676 146.387 272.196 145.36 272.543 144.24C272.916 143.093 273.103 141.947 273.103 140.8C273.103 139.573 272.903 138.4 272.503 137.28C272.13 136.133 271.583 135.12 270.863 134.24C270.17 133.333 269.303 132.627 268.263 132.12C267.25 131.587 266.103 131.32 264.823 131.32C263.463 131.32 262.263 131.6 261.223 132.16C260.21 132.693 259.356 133.413 258.663 134.32C257.97 135.227 257.436 136.24 257.063 137.36C256.716 138.48 256.543 139.627 256.543 140.8ZM301.485 126.68H306.605L309.845 136.08L313.125 126.68H318.205L313.325 139.6L316.925 148.64L324.965 126.6H330.965L319.605 155H314.845L309.845 143.08L304.885 155H300.125L288.805 126.6H294.725L302.805 148.64L306.325 139.6L301.485 126.68Z" fill="#F36F21"/>
+</svg>
+            <div>
+                <h1>Benefits Verification Process API - Healthcare Integration Platform</h1>
+                <div class="document-subtitle">Technical Design Document</div>
+            </div>
+        </div>
+    </div>
+
+    
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#api-overview">API Overview</a></li>
+<li><a href="#mulesoft-to-sap-integration-suite-component-mapping">MuleSoft to SAP Integration Suite Component Mapping</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#endpoints">Endpoints</a></li>
+<li><a href="#requestresponse-schemas">Request/Response Schemas</a></li>
+<li><a href="#error-codes">Error Codes</a></li>
+<li><a href="#flow-analysis">Flow Analysis</a></li>
+<li><a href="#main-flow-benefits-verification-prc-api-main">Main Flow: benefits-verification-prc-api-main</a></li>
+<li><a href="#console-flow-benefits-verification-prc-api-console">Console Flow: benefits-verification-prc-api-console</a></li>
+<li><a href="#patient-operations">Patient Operations</a></li>
+<li><a href="#implementation-flows">Implementation Flows</a></li>
+<li><a href="#mermaid-flow-diagram">Mermaid Flow Diagram</a></li>
+<li><a href="#technical-implementation-details">Technical Implementation Details</a></li>
+<li><a href="#migration-considerations">Migration Considerations</a></li>
+</ol>
+<h2 id="api-overview">API Overview</h2>
+<p>The Benefits Verification Process API is a comprehensive healthcare integration solution built on MuleSoft that orchestrates patient benefits verification across multiple healthcare systems. This API serves as a central hub for:</p>
+<ul>
+<li><strong>Patient Data Synchronization</strong>: Integrates patient records between Cerner EHR and Salesforce Health Cloud</li>
+<li><strong>Benefits Verification</strong>: Validates insurance coverage through Availity network</li>
+<li><strong>FHIR R4 Compliance</strong>: Implements HL7 FHIR R4 standards for healthcare data exchange</li>
+<li><strong>Multi-System Integration</strong>: Connects Cerner, Salesforce Health Cloud, and Availity systems</li>
+</ul>
+<p><strong>Base URL</strong>: <code>https://{host}:8082/api/</code></p>
+<p><strong>Authentication</strong>: OAuth 2.0 Bearer tokens for external system integrations</p>
+<p><strong>Content Types</strong>: 
+- <code>application/fhir+json</code> (Primary)
+- <code>application/fhir+xml</code> (Secondary)
+- <code>application/json</code> (Error responses)</p>
+<p><strong>Rate Limiting</strong>: Configured per external system with retry mechanisms (2-5 attempts with 2s intervals)</p>
+<h2 id="mulesoft-to-sap-integration-suite-component-mapping">MuleSoft to SAP Integration Suite Component Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>MuleSoft Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+<th>Configuration Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP Listener</td>
+<td>HTTPS Receiver Adapter</td>
+<td>Receives HTTP requests</td>
+<td>Configure sender agreement with JSON/XML content type</td>
+</tr>
+<tr>
+<td>HTTP Request</td>
+<td>HTTP Receiver Adapter</td>
+<td>Makes HTTP calls to external systems</td>
+<td>Map to receiver determination and interface determination</td>
+</tr>
+<tr>
+<td>Transform Message (DataWeave)</td>
+<td>Message Mapping (XSLT/Groovy)</td>
+<td>FHIR data transformation</td>
+<td>Convert DataWeave scripts to XSLT or Groovy</td>
+</tr>
+<tr>
+<td>Choice Router</td>
+<td>Conditional Router (Switch)</td>
+<td>Route based on message content</td>
+<td>Map when/otherwise to case conditions</td>
+</tr>
+<tr>
+<td>Flow Reference</td>
+<td>Integration Process (Local Call)</td>
+<td>Call reusable subprocesses</td>
+<td>Convert to local Enterprise Services</td>
+</tr>
+<tr>
+<td>Error Handler</td>
+<td>Exception Branch</td>
+<td>Error handling and recovery</td>
+<td>Map on-error-propagate to exception subprocesses</td>
+</tr>
+<tr>
+<td>Set Variable</td>
+<td>Dynamic Configuration</td>
+<td>Store runtime variables</td>
+<td>Use XI message attributes or UDFs</td>
+</tr>
+<tr>
+<td>Logger</td>
+<td>Message Monitoring</td>
+<td>Runtime logging</td>
+<td>Map to SAP PI message monitoring</td>
+</tr>
+<tr>
+<td>Until Successful</td>
+<td>Quality of Service (EOIO)</td>
+<td>Retry mechanisms</td>
+<td>Configure retry intervals in receiver agreement</td>
+</tr>
+<tr>
+<td>Try/Catch Block</td>
+<td>Exception Subprocess</td>
+<td>Exception handling patterns</td>
+<td>Implement as exception branches</td>
+</tr>
+<tr>
+<td>Scatter-Gather</td>
+<td>Fork/Join Pattern</td>
+<td>Parallel processing</td>
+<td>Use parallel processing in BPM or multiple receivers</td>
+</tr>
+<tr>
+<td>Async Scope</td>
+<td>Asynchronous Messaging</td>
+<td>Non-blocking operations</td>
+<td>Configure async messaging with XI queues</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="endpoints">Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Request Body</th>
+<th>Response</th>
+<th>Authentication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/api/Patient</td>
+<td>Retrieve patient records</td>
+<td>None</td>
+<td>FHIR Bundle with Patient resources</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/Patient/{id}</td>
+<td>Get patient by FHIR ID</td>
+<td>None</td>
+<td>FHIR Patient resource</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/Patient</td>
+<td>Create new patient</td>
+<td>FHIR Patient (JSON/XML)</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/Patient</td>
+<td>Update patient collection</td>
+<td>FHIR Bundle</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/Patient/{id}</td>
+<td>Update specific patient</td>
+<td>FHIR Patient (JSON/XML)</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/Patient</td>
+<td>Delete patient collection</td>
+<td>None</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/Patient/{id}</td>
+<td>Delete specific patient</td>
+<td>None</td>
+<td>HTTP 501 Not Implemented</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/$syncPatient</td>
+<td>Synchronize patient data</td>
+<td>Custom sync payload</td>
+<td>FHIR Patient resource</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/verifyBenefits</td>
+<td>Verify insurance benefits</td>
+<td>Benefits verification payload</td>
+<td>FHIR CoverageEligibilityResponse</td>
+<td>OAuth Bearer</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/console/*</td>
+<td>API console access</td>
+<td>None</td>
+<td>API Console UI</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="requestresponse-schemas">Request/Response Schemas</h3>
+<h4 id="patient-sync-request">Patient Sync Request</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>patientId</td>
+<td>String</td>
+<td>Yes</td>
+<td>Cerner patient FHIR ID</td>
+<td>"12724066"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="benefits-verification-request">Benefits Verification Request</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>patientId</td>
+<td>String</td>
+<td>Yes</td>
+<td>Patient identifier for coverage lookup</td>
+<td>"12724066"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="fhir-patient-resource-response">FHIR Patient Resource (Response)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resourceType</td>
+<td>String</td>
+<td>Yes</td>
+<td>FHIR resource type</td>
+<td>"Patient"</td>
+</tr>
+<tr>
+<td>id</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique patient identifier</td>
+<td>"12724066"</td>
+</tr>
+<tr>
+<td>identifier</td>
+<td>Array</td>
+<td>Yes</td>
+<td>Patient identifiers</td>
+<td>[{"system": "urn:custom:sourcesystem:fhirid", "value": "12724066"}]</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Array</td>
+<td>No</td>
+<td>Patient names</td>
+<td>[{"family": "Doe", "given": ["John"]}]</td>
+</tr>
+<tr>
+<td>gender</td>
+<td>String</td>
+<td>No</td>
+<td>Administrative gender</td>
+<td>"male"</td>
+</tr>
+<tr>
+<td>birthDate</td>
+<td>String</td>
+<td>No</td>
+<td>Date of birth</td>
+<td>"1990-01-15"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="fhir-coverageeligibilityresponse-benefits-verification">FHIR CoverageEligibilityResponse (Benefits Verification)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>resourceType</td>
+<td>String</td>
+<td>Yes</td>
+<td>FHIR resource type</td>
+<td>"CoverageEligibilityResponse"</td>
+</tr>
+<tr>
+<td>patient</td>
+<td>Object</td>
+<td>Yes</td>
+<td>Patient reference</td>
+<td>{"reference": "Patient/12724066"}</td>
+</tr>
+<tr>
+<td>insurer</td>
+<td>Object</td>
+<td>Yes</td>
+<td>Insurance organization</td>
+<td>{"reference": "Organization/123"}</td>
+</tr>
+<tr>
+<td>outcome</td>
+<td>String</td>
+<td>Yes</td>
+<td>Verification outcome</td>
+<td>"complete"</td>
+</tr>
+<tr>
+<td>insurance</td>
+<td>Array</td>
+<td>No</td>
+<td>Coverage details</td>
+<td>Insurance benefit information</td>
+</tr>
+</tbody>
+</table>
+<h3 id="error-codes">Error Codes</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Invalid FHIR resource format</td>
+<td>Validate FHIR resource structure</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Missing or invalid OAuth token</td>
+<td>Refresh authentication token</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Resource not found</td>
+<td>Patient or resource not found</td>
+<td>Verify patient ID exists in source system</td>
+</tr>
+<tr>
+<td>501</td>
+<td>Not Implemented</td>
+<td>Feature not implemented</td>
+<td>Use alternative endpoint</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>External system integration failure</td>
+<td>Check external system connectivity</td>
+</tr>
+</tbody>
+</table>
+<h2 id="flow-analysis">Flow Analysis</h2>
+<h3 id="main-flow-benefits-verification-prc-api-main">Main Flow: benefits-verification-prc-api-main</h3>
+<ul>
+<li><strong>Purpose</strong>: Primary API gateway that handles all incoming HTTP requests and routes them to appropriate implementation flows</li>
+<li><strong>Trigger</strong>: HTTP Listener on port 8082 with path <code>/api/*</code></li>
+<li><strong>Components</strong>: </li>
+<li>HTTP Listener with APIKit router</li>
+<li>Response builder with headers configuration</li>
+<li>Multiple error handlers for different error types</li>
+<li>Variable setters for HTTP status codes</li>
+<li><strong>Data Transformation</strong>: Error responses transformed to FHIR OperationOutcome format</li>
+<li><strong>External Integrations</strong>: None (routing layer only)</li>
+<li><strong>Error Handling</strong>: Comprehensive error handling with specific transformations for:</li>
+<li>HTTP connectivity errors (501 status)</li>
+<li>Security errors (501 status)  </li>
+<li>Timeout errors (501 status)</li>
+<li>Routing errors (501 status)</li>
+<li>General exceptions (dynamic status codes from error attributes)</li>
+</ul>
+<h3 id="console-flow-benefits-verification-prc-api-console">Console Flow: benefits-verification-prc-api-console</h3>
+<ul>
+<li><strong>Purpose</strong>: Provides API console interface for testing and documentation</li>
+<li><strong>Trigger</strong>: HTTP Listener for console paths</li>
+<li><strong>Components</strong>: Console component for API documentation rendering</li>
+<li><strong>Data Transformation</strong>: 404 error response for invalid console paths</li>
+<li><strong>External Integrations</strong>: None</li>
+<li><strong>Error Handling</strong>: Simple 404 error for resource not found</li>
+</ul>
+<h3 id="patient-operations">Patient Operations</h3>
+<h4 id="get-patient-flows">GET Patient Flows</h4>
+<ul>
+<li><strong>Purpose</strong>: Retrieve patient data from Cerner and return FHIR-compliant responses</li>
+<li><strong>Trigger</strong>: GET requests to <code>/Patient</code> and <code>/Patient/{id}</code></li>
+<li><strong>Components</strong>: Flow reference to <code>implementation_patient</code> subflow</li>
+<li><strong>Data Transformation</strong>: Patient data filtering (removes generalPractitioner and managingOrganization)</li>
+<li><strong>External Integrations</strong>: Cerner administration system API</li>
+<li><strong>Error Handling</strong>: Standard error propagation to main error handler</li>
+</ul>
+<h4 id="postputdelete-patient-flows">POST/PUT/DELETE Patient Flows</h4>
+<ul>
+<li><strong>Purpose</strong>: CRUD operations (currently not implemented)</li>
+<li><strong>Trigger</strong>: Various HTTP methods on Patient resources</li>
+<li><strong>Components</strong>: Transform to set 501 status code and not implemented message</li>
+<li><strong>Data Transformation</strong>: Returns FHIR OperationOutcome with "not-supported" error</li>
+<li><strong>External Integrations</strong>: None</li>
+<li><strong>Error Handling</strong>: Returns structured not implemented response</li>
+</ul>
+<h3 id="implementation-flows">Implementation Flows</h3>
+<h4 id="implementation_sync-patient">implementation_sync-patient</h4>
+<ul>
+<li><strong>Purpose</strong>: Synchronizes patient data from Cerner to Salesforce Health Cloud</li>
+<li><strong>Trigger</strong>: POST to <code>/$syncPatient</code> endpoint</li>
+<li><strong>Components</strong>:</li>
+<li>Variable setup for Cerner API call</li>
+<li>Patient retrieval from Cerner</li>
+<li>Data transformation for Health Cloud format</li>
+<li>Patient creation in Salesforce Health Cloud</li>
+<li><strong>Data Transformation</strong>: </li>
+<li>Extracts patient ID from request</li>
+<li>Removes Cerner system ID</li>
+<li>Adds custom identifier system</li>
+<li><strong>External Integrations</strong>: Cerner Admin API, Salesforce Health Cloud</li>
+<li><strong>Error Handling</strong>: Error propagation with payload generation</li>
+</ul>
+<h4 id="implementation_verifybenefits">implementation_verifyBenefits</h4>
+<ul>
+<li><strong>Purpose</strong>: Orchestrates complete benefits verification workflow</li>
+<li><strong>Trigger</strong>: POST to <code>/verifyBenefits</code> endpoint</li>
+<li><strong>Components</strong>:</li>
+<li>Coverage lookup in Cerner</li>
+<li>Benefits verification via Availity</li>
+<li>Organization lookup in Health Cloud</li>
+<li>Patient lookup in Health Cloud</li>
+<li>Coverage sync to Health Cloud</li>
+<li><strong>Data Transformation</strong>: Multiple transformations for different system formats</li>
+<li><strong>External Integrations</strong>: Cerner Financial API, Availity API, Salesforce Health Cloud</li>
+<li><strong>Error Handling</strong>: Comprehensive error handling at each integration point</li>
+</ul>
+<h4 id="implementation_cerner-sys-api-request">implementation_cerner-sys-api-request</h4>
+<ul>
+<li><strong>Purpose</strong>: Generic HTTP client for Cerner system integration</li>
+<li><strong>Trigger</strong>: Flow reference from other implementation flows</li>
+<li><strong>Components</strong>: Choice router for Patient vs other resource handling</li>
+<li><strong>Data Transformation</strong>: Query parameter and URI parameter handling</li>
+<li><strong>External Integrations</strong>: Cerner administration and financial systems</li>
+<li><strong>Error Handling</strong>: Try/catch with error payload generation</li>
+</ul>
+<h4 id="implementation_availity-fhir-request">implementation_availity-fhir-request</h4>
+<ul>
+<li><strong>Purpose</strong>: Handles Availity network benefits verification</li>
+<li><strong>Trigger</strong>: Flow reference from verifyBenefits</li>
+<li><strong>Components</strong>: Until-successful scope for retry logic</li>
+<li><strong>Data Transformation</strong>: Extracts member ID and payer from FHIR Coverage</li>
+<li><strong>External Integrations</strong>: Availity Financial System API</li>
+<li><strong>Error Handling</strong>: Retry mechanism with configurable attempts</li>
+</ul>
+<h2 id="mermaid-flow-diagram">Mermaid Flow Diagram</h2>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for MuleSoft/SAP Integration Suite components
+classDef httpListener fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef httpRequest fill:#98FB98,stroke:#333,stroke-width:2px
+classDef transform fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef choice fill:#FFD700,stroke:#333,stroke-width:2px
+classDef salesforce fill:#FF6347,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef flowRef fill:#ADD8E6,stroke:#333,stroke-width:2px
+classDef cerner fill:#90EE90,stroke:#333,stroke-width:2px
+classDef availity fill:#FFB6C1,stroke:#333,stroke-width:2px
+
+%% Main API Gateway Flow
+Start((Start)):::event
+HTTPListener["HTTP Listener: /api/*"]:::httpListener
+APIKitRouter{"APIKit Router"}:::choice
+
+%% Patient Operations
+GetPatient["GET /Patient"]:::httpListener
+GetPatientById["GET /Patient/id"]:::httpListener
+PostSyncPatient["POST /syncPatient"]:::httpListener
+PostVerifyBenefits["POST /verifyBenefits"]:::httpListener
+
+%% Implementation Flows
+ImplPatient[implementation_patient]:::flowRef
+ImplSyncPatient[implementation_sync_patient]:::flowRef
+ImplVerifyBenefits[implementation_verifyBenefits]:::flowRef
+
+%% External System Calls
+CernerLookup[Cerner Patient Lookup]:::cerner
+CernerCoverage[Cerner Coverage Lookup]:::cerner
+AvailityVerify[Availity Benefits Verification]:::availity
+SFPatientSync[SF Health Cloud Patient Sync]:::salesforce
+SFOrgLookup[SF Organization Lookup]:::salesforce
+SFCoverageSync[SF Coverage Sync]:::salesforce
+
+%% Transformations
+TransformPatient["Transform: Remove GP/Org"]:::transform
+TransformSync["Transform: Add Identifier"]:::transform
+TransformCoverage["Transform: Coverage Format"]:::transform
+TransformResponse["Transform: FHIR Response"]:::transform
+
+%% Error Handling
+ErrorHandler[("Global Error Handler")]:::errorHandler
+ErrorTransform["Transform: FHIR OperationOutcome"]:::transform
+ErrorEnd(("Error Response")):::event
+
+%% Success End
+SuccessEnd(("Success Response")):::event
+
+%% Main Flow Connections
+Start --> HTTPListener
+HTTPListener --> APIKitRouter
+
+%% Route to specific endpoints
+APIKitRouter -->|Patient| GetPatient
+APIKitRouter -->|"Patient by ID"| GetPatientById
+APIKitRouter -->|"Sync Patient"| PostSyncPatient
+APIKitRouter -->|"Verify Benefits"| PostVerifyBenefits
+
+%% Patient Flow
+GetPatient --> ImplPatient
+GetPatientById --> ImplPatient
+ImplPatient --> CernerLookup
+CernerLookup --> TransformPatient
+TransformPatient --> SuccessEnd
+
+%% Sync Patient Flow
+PostSyncPatient --> ImplSyncPatient
+ImplSyncPatient --> CernerLookup
+CernerLookup --> TransformSync
+TransformSync --> SFPatientSync
+SFPatientSync --> SuccessEnd
+
+%% Benefits Verification Flow
+PostVerifyBenefits --> ImplVerifyBenefits
+ImplVerifyBenefits --> CernerCoverage
+CernerCoverage --> AvailityVerify
+AvailityVerify --> SFOrgLookup
+SFOrgLookup --> SFPatientSync
+SFPatientSync --> TransformCoverage
+TransformCoverage --> SFCoverageSync
+SFCoverageSync --> TransformResponse
+TransformResponse --> SuccessEnd
+
+%% Error Flow Connections
+CernerLookup -->|Error| ErrorHandler
+AvailityVerify -->|Error| ErrorHandler
+SFPatientSync -->|Error| ErrorHandler
+SFCoverageSync -->|Error| ErrorHandler
+ErrorHandler --> ErrorTransform
+ErrorTransform --> ErrorEnd
+</pre>
+<h2 id="technical-implementation-details">Technical Implementation Details</h2>
+<h3 id="configuration-properties">Configuration Properties</h3>
+<p><strong>HTTP Listener Configuration</strong>
+- Host: <code>0.0.0.0</code> (all interfaces)
+- Port: <code>8082</code>
+- Base Path: <code>/api/</code>
+- Protocol: HTTP/HTTPS with TLS support</p>
+<p><strong>External System Configurations</strong></p>
+<ol>
+<li><strong>Salesforce Health Cloud</strong></li>
+<li>Host: Environment-specific (CloudHub deployment)</li>
+<li>Port: 443 (HTTPS)</li>
+<li>Timeout: 60 seconds</li>
+<li>
+<p>Retry: 2 attempts with 2-second intervals</p>
+</li>
+<li>
+<p><strong>Cerner Integration</strong></p>
+</li>
+<li>Administration Host: Separate from Financial Host</li>
+<li>Identifier System: <code>urn:custom:sourcesystem:fhirid</code></li>
+<li>Timeout: 60 seconds</li>
+<li>
+<p>Retry: 2 attempts with 2-second intervals</p>
+</li>
+<li>
+<p><strong>Availity Network</strong></p>
+</li>
+<li>Coverage Verification Retry: 5 attempts with 2-second intervals</li>
+<li>Specialized retry logic for coverage lookups</li>
+</ol>
+<h3 id="security-configurations">Security Configurations</h3>
+<ul>
+<li><strong>Keystore Management</strong>: JKS keystore with alias-based certificate management</li>
+<li><strong>Property Encryption</strong>: Environment-specific encrypted properties</li>
+<li><strong>OAuth Integration</strong>: Bearer token authentication for external systems</li>
+</ul>
+<h3 id="performance-considerations">Performance Considerations</h3>
+<ul>
+<li><strong>Connection Pooling</strong>: HTTP request configurations with persistent connections</li>
+<li><strong>Retry Mechanisms</strong>: Configurable retry policies per external system</li>
+<li><strong>Async Processing</strong>: Until-successful scopes for resilient processing</li>
+<li><strong>Memory Management</strong>: Streaming for large FHIR bundles</li>
+</ul>
+<h3 id="monitoring-and-logging">Monitoring and Logging</h3>
+<ul>
+<li><strong>Structured Logging</strong>: Healthcare-specific logger package</li>
+<li><strong>Error Correlation</strong>: Correlation IDs for distributed tracing</li>
+<li><strong>Performance Metrics</strong>: Response time tracking per external system</li>
+<li><strong>Health Checks</strong>: Built-in connectivity validation</li>
+</ul>
+<h2 id="migration-considerations">Migration Considerations</h2>
+<h3 id="key-differences-between-mulesoft-and-sap-integration-suite">Key Differences Between MuleSoft and SAP Integration Suite</h3>
+<ol>
+<li><strong>Message Processing</strong></li>
+<li>MuleSoft: Event-driven with Mule Message objects</li>
+<li>SAP IS: Document-based processing with XI messages</li>
+<li>
+<p><strong>Migration</strong>: Convert Mule Message attributes to XI message headers</p>
+</li>
+<li>
+<p><strong>DataWeave vs Message Mapping</strong></p>
+</li>
+<li>MuleSoft: DataWeave 2.0 with functional programming</li>
+<li>SAP IS: XSLT/Groovy with imperative programming</li>
+<li>
+<p><strong>Migration</strong>: Reconstruct transformation logic in XSLT or Groovy scripts</p>
+</li>
+<li>
+<p><strong>Error Handling</strong></p>
+</li>
+<li>MuleSoft: Try/catch with on-error-propagate</li>
+<li>SAP IS: Exception branches with alert handling</li>
+<li><strong>Migration</strong>: Map error handling to exception subprocesses</li>
+</ol>
+<h3 id="required-configuration-changes">Required Configuration Changes</h3>
+<ol>
+<li><strong>Connection Management</strong></li>
+<li>Replace HTTP Request configs with HTTP receiver channels</li>
+<li>Configure sender/receiver agreements for each external system</li>
+<li>
+<p>Map OAuth configurations to SAP security artifacts</p>
+</li>
+<li>
+<p><strong>Routing Logic</strong></p>
+</li>
+<li>Convert Choice routers to Conditional routing steps</li>
+<li>Map APIKit routing to interface determination</li>
+<li>
+<p>Transform flow references to local integration processes</p>
+</li>
+<li>
+<p><strong>FHIR Processing</strong></p>
+</li>
+<li>Implement FHIR validation using SAP's healthcare accelerators</li>
+<li>Configure message types for FHIR R4 resources</li>
+<li>Set up content-based routing for different FHIR resource types</li>
+</ol>
+<h3 id="data-format-considerations">Data Format Considerations</h3>
+<ul>
+<li><strong>FHIR JSON/XML</strong>: Both formats supported in SAP IS with appropriate message types</li>
+<li><strong>Variable Handling</strong>: Convert Mule variables to XI message attributes or dynamic configuration</li>
+<li><strong>Streaming</strong>: Implement large message handling for FHIR bundles</li>
+</ul>
+<h3 id="authentication-mapping">Authentication Mapping</h3>
+<ul>
+<li><strong>OAuth 2.0</strong>: Map to SAP's OAuth implementation with token management</li>
+<li><strong>Certificate Management</strong>: Migrate JKS keystores to SAP keystore management</li>
+<li><strong>Security Policies</strong>: Implement WS-Security policies for SOAP-based integrations</li>
+</ul>
+<h3 id="error-handling-strategy-changes">Error Handling Strategy Changes</h3>
+<ol>
+<li><strong>Alerting</strong>: Implement SAP alert framework for error notifications</li>
+<li><strong>Monitoring</strong>: Configure message monitoring with business-relevant metrics</li>
+<li><strong>Recovery</strong>: Set up error queues and replay mechanisms</li>
+<li><strong>Logging</strong>: Map structured logging to SAP's log and trace functionality</li>
+</ol>
+<p><strong>Recommended Migration Approach:</strong>
+1. Start with patient synchronization flow (simpler integration pattern)
+2. Migrate external system connections one at a time
+3. Implement FHIR validation and transformation layers
+4. Add error handling and monitoring as final step
+5. Perform end-to-end testing with healthcare test data</p>
+    
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+
+        <div class="document-footer">
+            Generated on 2025-08-09 14:48:09 | Technical Design Document
+        </div>
+    </div></body>
+</html>

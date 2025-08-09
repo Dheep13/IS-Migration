@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation with Mermaid</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #1565c0;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        pre.mermaid {
+            text-align: center;
+            background: white;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .note {
+            background: #e3f2fd;
+            padding: 10px;
+            border-left: 4px solid #1565c0;
+            margin: 10px 0;
+        }
+        .insights {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .best-practices {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .security {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="mulesoft-products-api-service-documentation">MuleSoft Products API Service Documentation</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#api-overview">API Overview</a></li>
+<li><a href="#mulesoft-to-sap-integration-suite-component-mapping">MuleSoft to SAP Integration Suite Component Mapping</a></li>
+<li><a href="#api-reference">API Reference</a></li>
+<li><a href="#endpoints">Endpoints</a></li>
+<li><a href="#query-parameters">Query Parameters</a></li>
+<li><a href="#requestresponse-schemas">Request/Response Schemas</a></li>
+<li><a href="#error-codes">Error Codes</a></li>
+<li><a href="#flow-analysis">Flow Analysis</a></li>
+<li><a href="#main-flow-products-main">Main Flow: products-main</a></li>
+<li><a href="#console-flow-products-console">Console Flow: products-console</a></li>
+<li><a href="#api-flow-getproductsproducts-config">API Flow: get:\products:products-config</a></li>
+<li><a href="#subflow-get-product-details-flow">Subflow: get-product-details-flow</a></li>
+<li><a href="#mermaid-flow-diagram">Mermaid Flow Diagram</a></li>
+<li><a href="#technical-implementation-details">Technical Implementation Details</a></li>
+<li><a href="#migration-considerations">Migration Considerations</a></li>
+</ul>
+<h2 id="api-overview">API Overview</h2>
+<p>This MuleSoft application provides a comprehensive Products API service that integrates with SAP HANA systems to retrieve product information. The application serves as a middleware layer that:</p>
+<ul>
+<li><strong>Primary Purpose</strong>: Exposes product data from SAP HANA through RESTful APIs</li>
+<li><strong>Business Function</strong>: Enables product lookup and validation with detailed product information retrieval</li>
+<li><strong>Integration Pattern</strong>: Acts as a gateway between external consumers and SAP HANA product database</li>
+<li><strong>Base URL</strong>: Configured through HTTP_Listener_config (typically <code>/api/products</code>)</li>
+<li><strong>Authentication</strong>: Bearer token authentication (inferred from enterprise patterns)</li>
+<li><strong>Response Format</strong>: JSON format with comprehensive product details</li>
+<li><strong>Rate Limiting</strong>: Configured at the API gateway level (not specified in flows)</li>
+</ul>
+<p>The service validates product identifiers against a configured list and retrieves detailed product information including pricing, dimensions, categories, and supplier details from SAP HANA using OData queries.</p>
+<h2 id="mulesoft-to-sap-integration-suite-component-mapping">MuleSoft to SAP Integration Suite Component Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>MuleSoft Component</th>
+<th>SAP Integration Suite Equivalent</th>
+<th>Purpose</th>
+<th>Configuration Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP Listener</td>
+<td>HTTPS Sender Adapter</td>
+<td>Receives HTTP requests</td>
+<td>Maps to inbound REST endpoint with same path patterns</td>
+</tr>
+<tr>
+<td>HTTP Request (HANA)</td>
+<td>OData Receiver Adapter</td>
+<td>SAP HANA integration</td>
+<td>Configure OData service connection with $filter and $select operations</td>
+</tr>
+<tr>
+<td>Transform Message (DataWeave)</td>
+<td>Message Mapping</td>
+<td>Data transformation</td>
+<td>Convert DataWeave scripts to XSLT or Groovy scripts</td>
+</tr>
+<tr>
+<td>Choice Router</td>
+<td>Router (Exclusive Gateway)</td>
+<td>Conditional routing</td>
+<td>Implement when/otherwise logic using XPath conditions</td>
+</tr>
+<tr>
+<td>Flow Reference</td>
+<td>Local Call</td>
+<td>Subflow execution</td>
+<td>Convert to local integration process calls</td>
+</tr>
+<tr>
+<td>Set Variable</td>
+<td>Content Modifier</td>
+<td>Variable assignment</td>
+<td>Use exchange properties or headers for variable storage</td>
+</tr>
+<tr>
+<td>Logger</td>
+<td>Trace/Log</td>
+<td>Logging operations</td>
+<td>Configure message processing log with same log levels</td>
+</tr>
+<tr>
+<td>APIKit Router</td>
+<td>API Management</td>
+<td>REST API routing</td>
+<td>Use API Management for RAML-based routing configuration</td>
+</tr>
+<tr>
+<td>APIKit Console</td>
+<td>API Portal</td>
+<td>API documentation</td>
+<td>Migrate to SAP API Management portal</td>
+</tr>
+<tr>
+<td>Error Handler (Global)</td>
+<td>Exception Subprocess</td>
+<td>Error handling</td>
+<td>Implement using exception handling with same error types</td>
+</tr>
+<tr>
+<td>Set Payload</td>
+<td>Content Modifier</td>
+<td>Payload modification</td>
+<td>Use content modifier to set message body</td>
+</tr>
+<tr>
+<td>Query Parameters</td>
+<td>Content Modifier</td>
+<td>Parameter handling</td>
+<td>Extract query parameters using XPath expressions</td>
+</tr>
+</tbody>
+</table>
+<h2 id="api-reference">API Reference</h2>
+<h3 id="endpoints">Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Path</th>
+<th>Description</th>
+<th>Request Body</th>
+<th>Response</th>
+<th>Authentication</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/products</td>
+<td>Retrieve product details by identifier</td>
+<td>None</td>
+<td>Product object or error</td>
+<td>Bearer Token</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/console</td>
+<td>Access API console interface</td>
+<td>None</td>
+<td>HTML console</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="query-parameters">Query Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+<th>Validation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>productIdentifier</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique product identifier</td>
+<td>"PRODUCT123"</td>
+<td>Must exist in configured product list</td>
+</tr>
+</tbody>
+</table>
+<h3 id="requestresponse-schemas">Request/Response Schemas</h3>
+<h4 id="product-response-object-success">Product Response Object (Success)</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ProductId</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unique product identifier</td>
+<td>"PRODUCT123"</td>
+</tr>
+<tr>
+<td>Category</td>
+<td>String</td>
+<td>Yes</td>
+<td>Product category code</td>
+<td>"ELECTRONICS"</td>
+</tr>
+<tr>
+<td>CategoryName</td>
+<td>String</td>
+<td>Yes</td>
+<td>Product category name</td>
+<td>"Electronics &amp; Gadgets"</td>
+</tr>
+<tr>
+<td>CurrencyCode</td>
+<td>String</td>
+<td>Yes</td>
+<td>Price currency</td>
+<td>"USD"</td>
+</tr>
+<tr>
+<td>DimensionDepth</td>
+<td>Number</td>
+<td>No</td>
+<td>Product depth</td>
+<td>15.5</td>
+</tr>
+<tr>
+<td>DimensionHeight</td>
+<td>Number</td>
+<td>No</td>
+<td>Product height</td>
+<td>10.2</td>
+</tr>
+<tr>
+<td>DimensionUnit</td>
+<td>String</td>
+<td>No</td>
+<td>Dimension unit</td>
+<td>"CM"</td>
+</tr>
+<tr>
+<td>DimensionWidth</td>
+<td>Number</td>
+<td>No</td>
+<td>Product width</td>
+<td>8.3</td>
+</tr>
+<tr>
+<td>LongDescription</td>
+<td>String</td>
+<td>No</td>
+<td>Detailed description</td>
+<td>"High-quality electronic device..."</td>
+</tr>
+<tr>
+<td>Name</td>
+<td>String</td>
+<td>Yes</td>
+<td>Product name</td>
+<td>"Premium Smartphone"</td>
+</tr>
+<tr>
+<td>PictureUrl</td>
+<td>String</td>
+<td>No</td>
+<td>Product image URL</td>
+<td>"https://example.com/image.jpg"</td>
+</tr>
+<tr>
+<td>Price</td>
+<td>Number</td>
+<td>Yes</td>
+<td>Product price</td>
+<td>599.99</td>
+</tr>
+<tr>
+<td>QuantityUnit</td>
+<td>String</td>
+<td>Yes</td>
+<td>Unit of measure</td>
+<td>"EACH"</td>
+</tr>
+<tr>
+<td>ShortDescription</td>
+<td>String</td>
+<td>No</td>
+<td>Brief description</td>
+<td>"Premium smartphone with advanced features"</td>
+</tr>
+<tr>
+<td>SupplierId</td>
+<td>String</td>
+<td>Yes</td>
+<td>Supplier identifier</td>
+<td>"SUPPLIER001"</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>Number</td>
+<td>No</td>
+<td>Product weight</td>
+<td>0.2</td>
+</tr>
+<tr>
+<td>WeightUnit</td>
+<td>String</td>
+<td>No</td>
+<td>Weight unit</td>
+<td>"KG"</td>
+</tr>
+</tbody>
+</table>
+<h4 id="error-response-object">Error Response Object</h4>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>status</td>
+<td>String</td>
+<td>Yes</td>
+<td>Error status</td>
+<td>"error"</td>
+</tr>
+<tr>
+<td>message</td>
+<td>String</td>
+<td>Yes</td>
+<td>Error description</td>
+<td>"The product identifier INVALID123 was not found."</td>
+</tr>
+<tr>
+<td>errorCode</td>
+<td>String</td>
+<td>Yes</td>
+<td>Error code</td>
+<td>"PRODUCT_NOT_FOUND"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="error-codes">Error Codes</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>HTTP Status</th>
+<th>Message</th>
+<th>Description</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRODUCT_NOT_FOUND</td>
+<td>404</td>
+<td>Product identifier not found</td>
+<td>Product ID not in configured list or doesn't exist</td>
+<td>Verify product identifier exists in system</td>
+</tr>
+<tr>
+<td>APIKIT:BAD_REQUEST</td>
+<td>400</td>
+<td>Bad Request</td>
+<td>Invalid request format or missing required parameters</td>
+<td>Check request syntax and required parameters</td>
+</tr>
+<tr>
+<td>APIKIT:NOT_FOUND</td>
+<td>404</td>
+<td>Not Found</td>
+<td>API endpoint not found</td>
+<td>Verify endpoint path and method</td>
+</tr>
+<tr>
+<td>APIKIT:METHOD_NOT_ALLOWED</td>
+<td>405</td>
+<td>Method Not Allowed</td>
+<td>HTTP method not supported</td>
+<td>Use supported HTTP method</td>
+</tr>
+<tr>
+<td>APIKIT:NOT_ACCEPTABLE</td>
+<td>406</td>
+<td>Not Acceptable</td>
+<td>Accept header not supported</td>
+<td>Set proper Accept header</td>
+</tr>
+<tr>
+<td>APIKIT:UNSUPPORTED_MEDIA_TYPE</td>
+<td>415</td>
+<td>Unsupported Media Type</td>
+<td>Content-Type not supported</td>
+<td>Use supported content type</td>
+</tr>
+<tr>
+<td>APIKIT:NOT_IMPLEMENTED</td>
+<td>501</td>
+<td>Not Implemented</td>
+<td>Feature not implemented</td>
+<td>Contact support for feature availability</td>
+</tr>
+</tbody>
+</table>
+<h2 id="flow-analysis">Flow Analysis</h2>
+<h3 id="main-flow-products-main">Main Flow: products-main</h3>
+<ul>
+<li><strong>Purpose</strong>: Main entry point for the Products API, handles HTTP requests and routes them to appropriate handlers</li>
+<li><strong>Trigger</strong>: HTTP listener configured to receive REST API requests</li>
+<li><strong>Components</strong>: </li>
+<li>HTTP Listener - receives incoming requests</li>
+<li>Response handler - manages response formatting  </li>
+<li>Headers handler - processes HTTP headers</li>
+<li>Error response handler - formats error responses</li>
+<li>Router - routes requests to appropriate flows</li>
+<li><strong>Data Transformation</strong>: Header manipulation and response formatting</li>
+<li><strong>External Integrations</strong>: Routes to APIKit for request processing</li>
+<li><strong>Error Handling</strong>: Global error handler with structured error responses</li>
+</ul>
+<h3 id="console-flow-products-console">Console Flow: products-console</h3>
+<ul>
+<li><strong>Purpose</strong>: Provides API console interface for testing and documentation</li>
+<li><strong>Trigger</strong>: HTTP listener for console endpoint</li>
+<li><strong>Components</strong>:</li>
+<li>HTTP Listener - receives console requests</li>
+<li>Response handler - manages console response</li>
+<li>Headers handler - sets appropriate headers for console</li>
+<li>Console component - serves API console interface</li>
+<li><strong>Data Transformation</strong>: HTML response formatting for console</li>
+<li><strong>External Integrations</strong>: None (serves static console)</li>
+<li><strong>Error Handling</strong>: Basic error response for console access</li>
+</ul>
+<h3 id="api-flow-getproductsproducts-config">API Flow: get:\products:products-config</h3>
+<ul>
+<li><strong>Purpose</strong>: Handles GET requests for products endpoint, validates and routes to product details subflow</li>
+<li><strong>Trigger</strong>: APIKit router based on RAML configuration</li>
+<li><strong>Components</strong>:</li>
+<li>Flow reference to get-product-details-flow</li>
+<li><strong>Data Transformation</strong>: Delegates to subflow</li>
+<li><strong>External Integrations</strong>: Via subflow to SAP HANA</li>
+<li><strong>Error Handling</strong>: Inherits from global error handler</li>
+</ul>
+<h3 id="subflow-get-product-details-flow">Subflow: get-product-details-flow</h3>
+<ul>
+<li><strong>Purpose</strong>: Core business logic for product validation and retrieval from SAP HANA</li>
+<li><strong>Trigger</strong>: Flow reference from API endpoint</li>
+<li><strong>Components</strong>:</li>
+<li><strong>Transform Message</strong>: Validates product identifier against configured list using DataWeave</li>
+<li><strong>Set Variable</strong>: Stores validation result in <code>isExistProduct</code> variable</li>
+<li><strong>Choice Router</strong>: Routes based on product validation<ul>
+<li><strong>When (Valid Product)</strong>:</li>
+<li>Logger: Logs successful request processing</li>
+<li>HTTP Request: Calls SAP HANA with OData query</li>
+<li>Transform Message: Formats response payload</li>
+<li><strong>Otherwise (Invalid Product)</strong>:</li>
+<li>Logger: Logs validation failure</li>
+<li>Transform Message: Creates error response</li>
+</ul>
+</li>
+<li><strong>Data Transformation</strong>: </li>
+<li>Product validation using configured identifiers</li>
+<li>OData query construction with $filter and $select</li>
+<li>JSON response formatting</li>
+<li><strong>External Integrations</strong>: SAP HANA via HTTP Request with OData protocol</li>
+<li><strong>Error Handling</strong>: Choice-based validation with structured error responses</li>
+</ul>
+<h2 id="mermaid-flow-diagram">Mermaid Flow Diagram</h2>
+<pre class="mermaid">
+flowchart TD
+%% Define node styles for MuleSoft/SAP Integration Suite components
+classDef httpListener fill:#87CEEB,stroke:#333,stroke-width:2px
+classDef httpRequest fill:#98FB98,stroke:#333,stroke-width:2px
+classDef transform fill:#DDA0DD,stroke:#333,stroke-width:2px
+classDef choice fill:#FFD700,stroke:#333,stroke-width:2px
+classDef logger fill:#F0E68C,stroke:#333,stroke-width:2px
+classDef event fill:#C0C0C0,stroke:#333,stroke-width:2px
+classDef errorHandler fill:#FFA07A,stroke:#333,stroke-width:2px
+classDef flowRef fill:#ADD8E6,stroke:#333,stroke-width:2px
+classDef router fill:#FFA500,stroke:#333,stroke-width:2px
+
+%% Start Events
+Start((Start)):::event
+ConsoleStart((Console Start)):::event
+
+%% Main Flow Components
+HTTPListener[""HTTP Listener: /products""]:::httpListener
+ConsoleListener[""HTTP Listener: /console""]:::httpListener
+MainRouter[APIKit Router]:::router
+ConsoleComponent[Console Component]:::httpListener
+
+%% API Flow Components
+ProductsAPI[get:\products:products-config]:::flowRef
+ProductDetailsRef[Flow-Ref: get-product-details-flow]:::flowRef
+
+%% Subflow Components
+ValidateProduct[Transform: Validate Product Identifier]:::transform
+SetVariable[Set Variable: isExistProduct]:::choice
+ProductChoice{"Product Valid?"}:::choice
+
+%% Valid Product Path
+LogSuccess[Logger: Request Processing Success]:::logger
+HanaRequest[HTTP Request: SAP HANA OData Query]:::httpRequest
+ResponseTransform[Transform: Format JSON Response]:::transform
+
+%% Invalid Product Path
+LogError[Logger: Product Validation Failed]:::logger
+ErrorTransform[Transform: Create Error Response]:::transform
+
+%% End Events
+SuccessEnd((Success Response)):::event
+ErrorEnd((Error Response)):::event
+ConsoleEnd((Console Response)):::event
+
+%% Error Handling
+GlobalErrorHandler[(Global Error Handler)]:::errorHandler
+BadRequestError[APIKIT:BAD_REQUEST Handler]:::errorHandler
+NotFoundError[APIKIT:NOT_FOUND Handler]:::errorHandler
+MethodNotAllowedError[APIKIT:METHOD_NOT_ALLOWED Handler]:::errorHandler
+
+%% Main Flow Connections
+Start --gt HTTPListener
+HTTPListener --gt MainRouter
+MainRouter --gt ProductsAPI
+ProductsAPI --gt ProductDetailsRef
+
+%% Console Flow Connections
+ConsoleStart --gt ConsoleListener
+ConsoleListener --gt ConsoleComponent
+ConsoleComponent --gt ConsoleEnd
+
+%% Subflow Connections
+ProductDetailsRef --gt ValidateProduct
+ValidateProduct --gt SetVariable
+SetVariable --gt ProductChoice
+ProductChoice --gt|""Valid Product""| LogSuccess
+ProductChoice --gt|""Invalid Product""| LogError
+
+%% Valid Product Flow
+LogSuccess --gt HanaRequest
+HanaRequest --gt ResponseTransform
+ResponseTransform --gt SuccessEnd
+
+%% Invalid Product Flow
+LogError --gt ErrorTransform
+ErrorTransform --gt ErrorEnd
+
+%% Error Handler Connections
+HTTPListener --gt|""Error""| GlobalErrorHandler
+HanaRequest --gt|""Error""| GlobalErrorHandler
+GlobalErrorHandler --gt BadRequestError
+GlobalErrorHandler --gt NotFoundError
+GlobalErrorHandler --gt MethodNotAllowedError
+BadRequestError --gt ErrorEnd
+NotFoundError --gt ErrorEnd
+MethodNotAllowedError --gt ErrorEnd
+</pre>
+<h2 id="technical-implementation-details">Technical Implementation Details</h2>
+<h3 id="configuration-properties">Configuration Properties</h3>
+<ul>
+<li><strong>odata.productIdentifiers</strong>: Comma-separated list of valid product identifiers for validation</li>
+<li><strong>HTTP_Listener_config</strong>: HTTP listener configuration for main API endpoints</li>
+<li><strong>Hana_HTTP_Request_Configuration</strong>: SAP HANA connection configuration for OData requests</li>
+<li><strong>products-config</strong>: APIKit configuration referencing products.raml specification</li>
+</ul>
+<h3 id="environment-specific-settings">Environment-Specific Settings</h3>
+<ul>
+<li><strong>SAP HANA Connection</strong>: Configure endpoint URL, authentication credentials, and timeout settings</li>
+<li><strong>Product Identifier List</strong>: Environment-specific valid product codes</li>
+<li><strong>Logging Levels</strong>: Configurable log levels for request processing and error tracking</li>
+<li><strong>HTTP Ports</strong>: Environment-specific port configurations for different deployment stages</li>
+</ul>
+<h3 id="security-configurations">Security Configurations</h3>
+<ul>
+<li><strong>Bearer Token Authentication</strong>: Implemented at API gateway level</li>
+<li><strong>HTTPS Enforcement</strong>: SSL/TLS termination at load balancer or API gateway</li>
+<li><strong>Input Validation</strong>: Product identifier validation against whitelist</li>
+<li><strong>Error Message Sanitization</strong>: Structured error responses without sensitive information</li>
+</ul>
+<h3 id="performance-considerations">Performance Considerations</h3>
+<ul>
+<li><strong>Connection Pooling</strong>: HTTP request configuration uses connection pooling for SAP HANA</li>
+<li><strong>Caching</strong>: Consider implementing product data caching for frequently accessed items</li>
+<li><strong>Timeout Configuration</strong>: Appropriate timeout settings for HANA database queries</li>
+<li><strong>Async Processing</strong>: Current implementation is synchronous; consider async for high-volume scenarios</li>
+</ul>
+<h3 id="monitoring-and-logging-setup">Monitoring and Logging Setup</h3>
+<ul>
+<li><strong>Business Events</strong>: Log successful product retrievals with product identifier</li>
+<li><strong>Error Events</strong>: Log validation failures and HANA connection issues</li>
+<li><strong>Performance Metrics</strong>: Track response times for HANA queries</li>
+<li><strong>Health Checks</strong>: Implement health check endpoints for monitoring systems</li>
+</ul>
+<h2 id="migration-considerations">Migration Considerations</h2>
+<h3 id="key-differences-between-mulesoft-and-sap-integration-suite">Key Differences Between MuleSoft and SAP Integration Suite</h3>
+<ol>
+<li><strong>Runtime Environment</strong>: MuleSoft runtime vs. SAP Cloud Platform Integration runtime</li>
+<li><strong>Development Tools</strong>: Anypoint Studio vs. SAP Integration Suite tooling</li>
+<li><strong>Connector Ecosystem</strong>: MuleSoft connectors vs. SAP adapters</li>
+<li><strong>Message Format</strong>: Mule message structure vs. SAP message format</li>
+<li><strong>Error Handling</strong>: MuleSoft error types vs. SAP exception handling patterns</li>
+</ol>
+<h3 id="required-configuration-changes">Required Configuration Changes</h3>
+<ul>
+<li><strong>DataWeave to Groovy/XSLT</strong>: Convert DataWeave transformations to Groovy scripts or XSLT</li>
+<li><strong>HTTP Configurations</strong>: Map HTTP listener configurations to HTTPS sender adapters  </li>
+<li><strong>OData Integration</strong>: Configure OData receiver adapter for SAP HANA connectivity</li>
+<li><strong>Error Mapping</strong>: Map MuleSoft error types to SAP Integration Suite exception types</li>
+<li><strong>Variable Handling</strong>: Convert Mule variables to exchange properties or message headers</li>
+</ul>
+<h3 id="data-format-considerations">Data Format Considerations</h3>
+<ul>
+<li><strong>JSON Processing</strong>: Ensure JSON processing capabilities in message mapping</li>
+<li><strong>OData Query Translation</strong>: Verify OData $filter and $select operations work identically</li>
+<li><strong>Character Encoding</strong>: Maintain UTF-8 encoding throughout the integration flow</li>
+<li><strong>Date/Time Formats</strong>: Ensure consistent date/time handling between platforms</li>
+</ul>
+<h3 id="authentication-mapping">Authentication Mapping</h3>
+<ul>
+<li><strong>Bearer Token</strong>: Implement OAuth 2.0 authentication in SAP Integration Suite</li>
+<li><strong>SAP HANA Authentication</strong>: Configure appropriate authentication method for HANA connectivity</li>
+<li><strong>Certificate Management</strong>: Set up certificate-based authentication if required</li>
+</ul>
+<h3 id="error-handling-strategy-changes">Error Handling Strategy Changes</h3>
+<ul>
+<li><strong>Exception Subprocess</strong>: Implement global exception handling using exception subprocess</li>
+<li><strong>Error Message Format</strong>: Maintain consistent error response structure</li>
+<li><strong>Retry Logic</strong>: Implement appropriate retry mechanisms for HANA connectivity issues</li>
+<li><strong>Dead Letter Queue</strong>: Configure error message persistence for failed processing</li>
+</ul>
+<h3 id="migration-steps">Migration Steps</h3>
+<ol>
+<li><strong>Assessment</strong>: Analyze current DataWeave transformations and identify conversion requirements</li>
+<li><strong>Connectivity</strong>: Set up SAP HANA connectivity using OData receiver adapter</li>
+<li><strong>Message Mapping</strong>: Convert DataWeave scripts to appropriate mapping format</li>
+<li><strong>Error Handling</strong>: Implement exception subprocess with equivalent error handling logic</li>
+<li><strong>Testing</strong>: Comprehensive testing of product validation and retrieval scenarios</li>
+<li><strong>Monitoring</strong>: Set up equivalent monitoring and alerting capabilities</li>
+</ol>
+    
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

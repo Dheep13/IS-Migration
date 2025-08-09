@@ -6,20 +6,35 @@ IMigrate is a comprehensive platform for migrating integration flows from Boomi 
 
 ### **System Architecture**
 - **Main API** (Port 5000): Core documentation processing and job management
-- **BoomiToIS-API** (Port 5003): Boomi XML processing and iFlow generation  
+- **BoomiToIS-API** (Port 5003): Boomi XML processing and iFlow generation
 - **MuleToIS-API** (Port 5001): MuleSoft XML processing and iFlow generation
+- **Gemma-3 API** (Port 5002): RunPod Gemma-3 integration for alternative LLM processing
 - **Frontend** (React/Vite): User interface for uploads and workflow management
+
+### **🚀 Python Launcher Features**
+The new **`platform_launcher.py`** provides:
+- **Cross-platform compatibility** (Windows, Linux, Mac)
+- **Interactive menu system** with organized options
+- **Process management** with proper cleanup and monitoring
+- **Real-time server status** checking and health monitoring
+- **Unified logging** with timestamped log files
+- **Deployment management** for Cloud Foundry
+- **Environment cleanup** and dependency management
 
 ### **Quick Commands**
 ```bash
-# Start all services locally
-./quick-start.bat
+# Primary launcher (Python - Cross-platform)
+python platform_launcher.py
 
-# Deploy to Cloud Foundry
-./deploy_fix.bat
+# Simple wrapper scripts
+./start.bat        # Windows
+./start.sh         # Linux/Mac
 
-# Test API routing
-./test_api_routing.bat
+# Legacy launcher (redirects to Python launcher)
+./quick-start-fixed.bat
+
+# Direct Python execution
+python platform_launcher.py
 ```
 
 ## 📖 Documentation

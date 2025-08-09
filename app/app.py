@@ -172,11 +172,12 @@ class CustomLLMDocumentationEnhancer:
                 self.enhancer = None
                 logging.error("Using dummy enhancer that returns original documentation.")
 
-    def enhance_documentation(self, base_documentation: str) -> str:
+    def enhance_documentation(self, base_documentation: str, platform: str = 'boomi') -> str:
         """Enhance documentation using LLM.
 
         Args:
             base_documentation: Base documentation to enhance
+            platform: The platform type ('boomi' or 'mulesoft')
 
         Returns:
             Enhanced documentation
@@ -201,7 +202,7 @@ class CustomLLMDocumentationEnhancer:
             # Function to run in a separate thread
             def run_enhancement():
                 try:
-                    result["enhanced_documentation"] = self.enhancer.enhance_documentation(base_documentation)
+                    result["enhanced_documentation"] = self.enhancer.enhance_documentation(base_documentation, platform=platform)
                 except Exception as e:
                     result["error"] = e
 
@@ -287,7 +288,8 @@ def save_jobs(jobs_dict):
         print(f"Error saving jobs file: {str(e)}")
 
 # Initialize job storage
-if use_database:
+# Force file-based storage if database is not enabled
+if use_database and DATABASE_ENABLED:
     # Migrate existing jobs from file to database
     try:
         migrate_existing_jobs(app, app.config['JOBS_FILE'])
@@ -296,9 +298,12 @@ if use_database:
 
     # Use database for job storage
     jobs = {}  # Keep empty dict for compatibility
+    logging.info("Using database for job storage")
 else:
     # Fall back to file-based storage
     jobs = load_jobs()
+    use_database = False  # Force file-based storage
+    logging.info(f"Using file-based storage, loaded {len(jobs)} jobs from jobs.json")
 
 # Save the job state
 def update_job(job_id, updates):
@@ -454,7 +459,7 @@ def update_job_status(job_id, status, updates=None):
         return False
 
 def extract_zip(zip_path, extract_to):
-    """Extract a ZIP file to the specified directory"""
+    """Extract a ZIP file to the specified directory with Windows long path support"""
     try:
         logging.info(f"Extracting ZIP file from {zip_path} to {extract_to}")
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
@@ -466,11 +471,57 @@ def extract_zip(zip_path, extract_to):
             file_count = len(zip_ref.namelist())
             logging.info(f"ZIP contains {file_count} files")
 
-            # Extract all files
-            zip_ref.extractall(extract_to)
-            logging.info(f"Successfully extracted all {file_count} files")
+            # Extract files one by one with path length checking
+            extracted_count = 0
+            skipped_count = 0
 
+            for file_info in zip_ref.infolist():
+                try:
+                    # Skip directories
+                    if file_info.is_dir():
+                        continue
+
+                    # Get the target path
+                    target_path = os.path.join(extract_to, file_info.filename)
+
+                    # Check if path is too long for Windows (260 character limit)
+                    if len(target_path) > 250:  # Leave some buffer
+                        # Create a shortened path
+                        dir_path = os.path.dirname(target_path)
+                        file_name = os.path.basename(target_path)
+
+                        # Truncate the directory path if needed
+                        if len(dir_path) > 200:
+                            # Keep only the last few directories
+                            path_parts = dir_path.split(os.sep)
+                            shortened_parts = path_parts[-3:] if len(path_parts) > 3 else path_parts
+                            dir_path = os.path.join(extract_to, *shortened_parts)
+
+                        # Truncate filename if needed
+                        if len(file_name) > 40:
+                            name, ext = os.path.splitext(file_name)
+                            file_name = name[:35] + ext
+
+                        target_path = os.path.join(dir_path, file_name)
+                        logging.warning(f"Shortened long path for: {file_info.filename}")
+
+                    # Create directory if it doesn't exist
+                    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+
+                    # Extract the file
+                    with zip_ref.open(file_info) as source, open(target_path, 'wb') as target:
+                        target.write(source.read())
+
+                    extracted_count += 1
+
+                except Exception as file_error:
+                    logging.warning(f"Skipping file due to error: {file_info.filename} - {str(file_error)}")
+                    skipped_count += 1
+                    continue
+
+            logging.info(f"Successfully extracted {extracted_count} files, skipped {skipped_count} files")
             return True
+
     except Exception as e:
         logging.error(f"Error extracting ZIP file: {str(e)}")
         return False
@@ -691,7 +742,7 @@ def process_boomi_documentation(job_id, input_dir, enhance=False):
                 def enhance_with_timeout():
                     nonlocal documentation
                     try:
-                        enhanced_content = llm_enhancer.enhance_documentation(documentation)
+                        enhanced_content = llm_enhancer.enhance_documentation(documentation, platform='boomi')
                         if enhanced_content:
                             documentation = enhanced_content
                             return True
@@ -936,7 +987,7 @@ def process_mulesoft_documentation(job_id, input_dir, enhance=False):
                     def enhance_with_timeout():
                         nonlocal doc_content
                         try:
-                            enhanced_content = llm_enhancer.enhance_documentation(doc_content)
+                            enhanced_content = llm_enhancer.enhance_documentation(doc_content, platform='mulesoft')
                             if enhanced_content:
                                 doc_content = enhanced_content
                                 return True

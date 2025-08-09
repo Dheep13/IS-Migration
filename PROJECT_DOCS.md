@@ -172,4 +172,27 @@ VITE_IFLOW_API_HOST=localhost:5003
 - Data encryption in transit
 - Privacy compliance measures
 
+## ⚠️ Known Issues
+
+### Database Integration
+- Supabase integration is disabled (`DATABASE_ENABLED = False`) due to dependency conflicts
+- Jobs are stored in memory/file-based storage instead of database
+- Job persistence issues when applications restart
+
+### Boomi API Parsing Limitations
+- **Critical Issue**: Current Boomi XML parser does NOT extract key API elements:
+  - ❌ API endpoints and URLs (ConnectionOverride sections)
+  - ❌ Query parameters (pageSize, timeout, batchSize, sleep)
+  - ❌ Filter parameters (Filter_LSRD, Filter_company_territory_code, etc.)
+  - ❌ SuccessFactors operations (only handles Salesforce)
+  - ❌ Object types and operation types (objectType, operationType)
+  - ❌ Connection configuration details (connectorType, connection IDs)
+- **Impact**: Generated SAP Integration Suite equivalents may miss critical API calls, filters, and operations
+- **Location**: `BoomiToIS-API/boomi_xml_processor.py` needs enhancement
+- **Required**: Add parsing for ConnectionOverride, OverrideableDefinedProcessPropertyValue, ObjectDefinitions, and GenericOperationConfig sections
+
+### Deployment
+- Cloud Foundry deployments require hardcoded values in manifest.yml files
+- Environment variables need to be configured for each deployment environment
+
 For setup and usage instructions, see [HOW_TO_RUN_GUIDE.md](./HOW_TO_RUN_GUIDE.md).

@@ -19,7 +19,7 @@ class EnhancedPromptGenerator(FinalIFlowGenerator):
     A class that extends FinalIFlowGenerator with an enhanced prompt and improved component handling
     """
 
-    def __init__(self, api_key=None, model="gpt-4", provider="openai"):
+    def __init__(self, api_key=None, model="claude-sonnet-4-20250514", provider="claude"):
         """
         Initialize the generator
 
@@ -1301,14 +1301,14 @@ def main():
     parser.add_argument('--output', required=True, help='Path to save the generated iFlow')
     parser.add_argument('--name', required=True, help='Name of the iFlow')
     parser.add_argument('--api-key', help='API key for the LLM service (overrides .env file)')
-    parser.add_argument('--model', default='gpt-4', help='Model to use for the LLM service')
+    parser.add_argument('--model', default='claude-sonnet-4-20250514', help='Model to use for the LLM service')
     parser.add_argument('--provider', default='claude', choices=['openai', 'claude', 'local'],
                         help='AI provider to use (openai, claude, or local)')
 
     args = parser.parse_args()
 
     # Set default models based on provider
-    if args.provider == 'claude' and args.model == 'gpt-4':
+    if args.provider == 'claude' and args.model == 'claude-sonnet-4-20250514':
         # Use the correct Claude model name
         args.model = 'claude-sonnet-4-20250514'
 

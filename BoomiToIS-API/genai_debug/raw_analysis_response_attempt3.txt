@@ -1,111 +1,56 @@
 {
-  "process_name": "Salesforce to SAP Customer Creation Integration",
-  "description": "This integration connects Salesforce with SAP to create customer records in SAP based on Salesforce Account data. When a new account is created in Salesforce, the integration retrieves the account details, transforms them into the SAP customer data format, and creates a new customer record in SAP using the BAPI_CUSTOMER_CREATEFROMDATA1 function. The SAP customer number is then written back to the Salesforce Account record.",
-  "endpoints": [
-    {
-      "method": "POST",
-      "path": "/salesforce-to-sap-customer-creation",
-      "purpose": "Creates a customer record in SAP based on Salesforce Account data and updates the Salesforce Account with the SAP customer number",
-      "components": [
+    "process_name": "Create Salesforce Opportunities from Stripe Subscriptions",
+    "description": "Integration that creates Salesforce Opportunities from Stripe subscription completion events with data transformation and dynamic property enhancement",
+    "endpoints": [
         {
-          "type": "enricher",
-          "name": "Set_SF_Account_Properties",
-          "id": "set_properties_1",
-          "config": {
-            "content": "SF_Account_ID=${property.SF_Account_ID}\nSF_Account_Name=${property.SF_Account_Name}"
-          }
-        },
-        {
-          "type": "groovy_script",
-          "name": "Transform_SF_Account_to_SAP_Customer",
-          "id": "transform_sf_to_sap",
-          "config": {
-            "script": "TransformSFAccountToSAPCustomer.groovy"
-          }
-        },
-        {
-          "type": "request_reply",
-          "name": "Create_SAP_Customer",
-          "id": "create_sap_customer",
-          "config": {
-            "endpoint_path": "/sap/bc/srt/rfc/sap/bapi_customer_createfromdata1",
-            "address": "https://sap-system.example.com"
-          }
-        },
-        {
-          "type": "groovy_script",
-          "name": "Transform_SAP_Response_to_SF_Update",
-          "id": "transform_sap_to_sf",
-          "config": {
-            "script": "TransformSAPResponseToSFUpdate.groovy"
-          }
-        },
-        {
-          "type": "request_reply",
-          "name": "Update_Salesforce_Account",
-          "id": "update_sf_account",
-          "config": {
-            "endpoint_path": "/services/data/v52.0/sobjects/Account/${property.SF_Account_ID}",
-            "address": "https://salesforce.example.com"
-          }
+            "method": "POST",
+            "path": "/stripe/webhook/subscription-completed",
+            "purpose": "Receives Stripe subscription completion events and creates corresponding opportunities in Salesforce",
+            "components": [
+                {
+                    "type": "enricher",
+                    "name": "Set_Dynamic_Properties_from_Boomi",
+                    "id": "enricher_dynamic_props",
+                    "config": {
+                        "content": "Calculate opportunity name, description, and close date from subscription data"
+                    }
+                },
+                {
+                    "type": "groovy_script",
+                    "name": "Transform_Subscription_to_Opportunity_from_Boomi",
+                    "id": "transform_subscription_data",
+                    "config": {
+                        "script": "TransformSubscriptionToOpportunity.groovy"
+                    }
+                },
+                {
+                    "type": "request_reply",
+                    "name": "SF_Opportunity_CREATE_Operation_from_Boomi",
+                    "id": "salesforce_create_opportunity",
+                    "config": {
+                        "endpoint_path": "/services/data/v58.0/sobjects/Opportunity"
+                    }
+                }
+            ],
+            "error_handling": {
+                "exception_subprocess": []
+            },
+            "branching": {
+                "type": "exclusive",
+                "branches": []
+            },
+            "sequence": [
+                "enricher_dynamic_props",
+                "transform_subscription_data", 
+                "salesforce_create_opportunity"
+            ],
+            "transformations": [
+                {
+                    "name": "TransformSubscriptionToOpportunity.groovy",
+                    "type": "groovy",
+                    "script": "import com.sap.gateway.ip.core.customdev.util.Message\\nimport groovy.json.JsonSlurper\\nimport groovy.json.JsonBuilder\\n\\ndef Message processData(Message message) {\\n    def body = message.getBody(String)\\n    def jsonSlurper = new JsonSlurper()\\n    def subscription = jsonSlurper.parseText(body)\\n    \\n    // Get dynamic properties calculated in previous step\\n    def opportunityName = message.getProperty('Opportunity.Name')\\n    def opportunityDescription = message.getProperty('Opportunity.Description')\\n    def opportunityCloseDate = message.getProperty('Opportunity.CloseDate')\\n    \\n    // Transform to Salesforce Opportunity format\\n    def opportunity = [\\n        Name: opportunityName,\\n        Description: opportunityDescription,\\n        CloseDate: opportunityCloseDate,\\n        StageName: 'Prospecting',\\n        Amount: subscription.data?.object?.items?.data[0]?.price?.unit_amount ? subscription.data.object.items.data[0].price.unit_amount / 100 : null\\n    ]\\n    \\n    def jsonBuilder = new JsonBuilder(opportunity)\\n    message.setBody(jsonBuilder.toString())\\n    \\n    return message\\n}"
+                }
+            ]
         }
-      ],
-      "error_handling": {
-        "exception_subprocess": [
-          {
-            "type": "enricher",
-            "name": "Set_Error_Message",
-            "id": "set_error_message",
-            "trigger": "any_error",
-            "config": {
-              "content": "ErrorMessage=Error occurred during Salesforce to SAP customer creation: ${exception.message}"
-            }
-          },
-          {
-            "type": "request_reply",
-            "name": "Send_Error_Notification",
-            "id": "send_error_notification",
-            "trigger": "any_error",
-            "config": {
-              "endpoint_path": "/services/data/v52.0/sobjects/ErrorLog__c",
-              "address": "https://salesforce.example.com"
-            }
-          }
-        ]
-      },
-      "branching": {
-        "type": "exclusive",
-        "branches": [
-          {
-            "condition": "${property.isNewAccount} == 'true'",
-            "components": ["update_sf_account"],
-            "sequence": ["transform_sap_to_sf", "update_sf_account"]
-          },
-          {
-            "condition": "${property.isNewAccount} == 'false'",
-            "components": ["account_exists_info"],
-            "sequence": ["account_exists_info"]
-          }
-        ]
-      },
-      "sequence": [
-        "set_properties_1",
-        "transform_sf_to_sap",
-        "create_sap_customer",
-        "transform_sap_to_sf"
-      ],
-      "transformations": [
-        {
-          "name": "TransformSFAccountToSAPCustomer.groovy",
-          "type": "groovy",
-          "script": "import groovy.json.*\n\ndef inputMessage = message.getBody(String.class)\ndef sfAccount = new XmlSlurper().parseText(inputMessage)\n\ndef sapCustomer = [\n  'IMPORT': [\n    'Object': [\n      'I_PI_COMPANYDATA': [\n        'Object': [\n          'NAME': sfAccount.Account.Name.text(),\n          'STREET': sfAccount.Account.BillingStreet.text(),\n          'CITY': sfAccount.Account.BillingCity.text(),\n          'REGION': sfAccount.Account.BillingState.text(),\n          'POSTL_COD1': sfAccount.Account.BillingPostalCode.text(),\n          'COUNTRY': sfAccount.Account.BillingCountry.text()\n        ]\n      ]\n    ]\n  ]\n]\n\nmessage.setBody(new JsonBuilder(sapCustomer).toPrettyString())\nreturn message"
-        },
-        {
-          "name": "TransformSAPResponseToSFUpdate.groovy",
-          "type": "groovy",
-          "script": "import groovy.json.*\n\ndef inputMessage = message.getBody(String.class)\ndef sapResponse = new JsonSlurper().parseText(inputMessage)\n\ndef sfAccountId = property.get('SF_Account_ID')\ndef sfAccountName = property.get('SF_Account_Name')\ndef sapCustomerNumber = sapResponse.EXPORT.E_CUSTOMER\n\n// Check if this is a new account or existing one\nproperty.set('isNewAccount', sapResponse.RETURN.TYPE != 'E' ? 'true' : 'false')\n\ndef sfUpdateXml = \"\"\"\n<Account>\n  <Id>${sfAccountId}</Id>\n  <Name>${sfAccountName}</Name>\n  <Description>SAP Customer Number: ${sapCustomerNumber}</Description>\n</Account>\n\"\"\"\n\nmessage.setBody(sfUpdateXml)\nreturn message"
-        }
-      ]
-    }
-  ]
+    ]
 }

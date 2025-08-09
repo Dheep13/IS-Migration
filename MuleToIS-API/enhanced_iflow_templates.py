@@ -1,12 +1,18 @@
 """
-Enhanced iFlow Component Templates Library
+Enhanced iFlow Component Templates Library for MuleSoft Integration
 
 This module provides comprehensive templates for SAP Integration Suite components
-based on analysis of real-world iFlow files. It includes detailed configuration
-options and supports a wide range of component types.
+specifically optimized for MuleSoft to SAP Integration Suite migrations.
+Based on analysis of real-world iFlow files and MuleSoft integration patterns.
 
 Each template is parameterized with placeholders that can be replaced
-with actual values when generating the iFlow.
+with actual values when generating the iFlow from MuleSoft applications.
+
+Key Features:
+- MuleSoft-specific component mappings
+- Enhanced error handling patterns
+- Request-reply patterns optimized for MuleSoft flows
+- Comprehensive logging and monitoring templates
 """
 
 import uuid
@@ -16,14 +22,937 @@ from typing import Dict, List, Optional, Union, Any
 
 class EnhancedIFlowTemplates:
     """
-    A comprehensive collection of templates for SAP Integration Suite components.
+    A comprehensive collection of templates for SAP Integration Suite components
+    optimized for MuleSoft to SAP Integration Suite migrations.
+
+    This class provides templates that map common MuleSoft patterns to
+    SAP Integration Suite equivalents with proper configuration.
     """
 
     def __init__(self):
-        """Initialize the templates library"""
+        """Initialize the templates library for MuleSoft migrations"""
         pass
 
     # ===== iFlow Configuration =====
+
+    def iflow_configuration_template(self, namespace_mapping="", log_level="All events", csrf_protection="false"):
+        """
+        Template for iFlow configuration optimized for MuleSoft migrations
+
+        Args:
+            namespace_mapping (str): XML namespace mappings
+            log_level (str): Logging level (e.g., "All events", "Errors only")
+            csrf_protection (str): CSRF protection enabled ("true"/"false")
+
+        Returns:
+            str: XML template for iFlow configuration
+        """
+        return f'''<bpmn2:extensionElements>
+            <ifl:property>
+                <key>namespaceMapping</key>
+                <value>{namespace_mapping}</value>
+            </ifl:property>
+            <ifl:property>
+                <key>httpSessionHandling</key>
+                <value>None</value>
+            </ifl:property>
+            <ifl:property>
+                <key>returnExceptionToSender</key>
+                <value>false</value>
+            </ifl:property>
+            <ifl:property>
+                <key>log</key>
+                <value>{log_level}</value>
+            </ifl:property>
+            <ifl:property>
+                <key>corsEnabled</key>
+                <value>false</value>
+            </ifl:property>
+            <ifl:property>
+                <key>componentVersion</key>
+                <value>1.2</value>
+            </ifl:property>
+            <ifl:property>
+                <key>ServerTrace</key>
+                <value>false</value>
+            </ifl:property>
+            <ifl:property>
+                <key>xsrfProtection</key>
+                <value>{csrf_protection}</value>
+            </ifl:property>
+            <ifl:property>
+                <key>cmdVariantUri</key>
+                <value>ctype::IFlowVariant/cname::IFlowConfiguration/version::1.2.4</value>
+            </ifl:property>
+        </bpmn2:extensionElements>'''
+
+    # ===== Participant Templates =====
+
+    def participant_template(self, id, name, type="EndpointRecevier", enable_basic_auth="false"):
+        """
+        Template for Participant - optimized for MuleSoft endpoint patterns
+
+        Args:
+            id (str): Participant ID
+            name (str): Participant name
+            type (str): Participant type (EndpointSender, EndpointRecevier, IntegrationProcess)
+            enable_basic_auth (str): Enable basic authentication ("true"/"false")
+
+        Returns:
+            str: XML template for Participant
+        """
+        auth_element = ""
+        if type == "EndpointSender":
+            auth_element = f'''
+                <ifl:property>
+                    <key>enableBasicAuthentication</key>
+                    <value>{enable_basic_auth}</value>
+                </ifl:property>'''
+
+        return f'''<bpmn2:participant id="{id}" ifl:type="{type}" name="{name}">
+            <bpmn2:extensionElements>{auth_element}
+                <ifl:property>
+                    <key>ifl:type</key>
+                    <value>{type}</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+        </bpmn2:participant>'''
+
+    def integration_process_participant_template(self, id, name, process_ref):
+        """
+        Template for Integration Process Participant
+
+        Args:
+            id (str): Participant ID
+            name (str): Participant name
+            process_ref (str): Process reference ID
+
+        Returns:
+            str: XML template for Integration Process Participant
+        """
+        return f'''<bpmn2:participant id="{id}" ifl:type="IntegrationProcess" name="{name}" processRef="{process_ref}">
+            <bpmn2:extensionElements/>
+        </bpmn2:participant>'''
+
+    # ===== MuleSoft-Specific Adapter Templates =====
+
+    def mulesoft_http_listener_template(self, id, name, path="/api/*", method="GET", enable_cors="true"):
+        """
+        Template for MuleSoft HTTP Listener equivalent in SAP Integration Suite
+        Maps to HTTP Sender adapter with appropriate configuration
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            path (str): HTTP path pattern
+            method (str): HTTP method
+            enable_cors (str): Enable CORS support
+
+        Returns:
+            str: XML template for HTTP Sender equivalent
+        """
+        return f'''<bpmn2:messageFlow id="{id}" name="HTTP Listener" sourceRef="{{{{source_ref}}}}" targetRef="{{{{target_ref}}}}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>ComponentType</key>
+                    <value>HTTP</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>Description</key>
+                    <value>MuleSoft HTTP Listener equivalent - {name}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>address</key>
+                    <value>{path}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>allowedMethods</key>
+                    <value>{method}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>corsEnabled</key>
+                    <value>{enable_cors}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.9</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>TransportProtocolVersion</key>
+                    <value>1.9.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>MessageProtocolVersion</key>
+                    <value>1.9.0</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+        </bpmn2:messageFlow>'''
+
+    def mulesoft_http_request_template(self, id, name, url, method="GET", timeout="30000"):
+        """
+        Template for MuleSoft HTTP Request equivalent in SAP Integration Suite
+        Maps to HTTP Receiver adapter
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            url (str): Target URL
+            method (str): HTTP method
+            timeout (str): Request timeout
+
+        Returns:
+            str: XML template for HTTP Receiver equivalent
+        """
+        return f'''<bpmn2:messageFlow id="{id}" name="HTTP Request" sourceRef="{{{{source_ref}}}}" targetRef="{{{{target_ref}}}}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>ComponentType</key>
+                    <value>HTTP</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>Description</key>
+                    <value>MuleSoft HTTP Request equivalent - {name}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>address</key>
+                    <value>{url}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>httpMethod</key>
+                    <value>{method}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>httpRequestTimeout</key>
+                    <value>{timeout}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.9</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>TransportProtocolVersion</key>
+                    <value>1.9.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>MessageProtocolVersion</key>
+                    <value>1.9.0</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+        </bpmn2:messageFlow>'''
+
+    # ===== OData Templates =====
+
+    def odata_receiver_template(self, id, name, service_url, entity_set="", auth_method="None", credential_name="", timeout="60000", system="", operation="Query(GET)", resource_path=""):
+        """
+        Template for OData Receiver Adapter with enhanced SAP Integration Suite compatibility
+        Optimized for MuleSoft Salesforce and OData connectors
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            service_url (str): OData service URL
+            entity_set (str): Entity set name
+            auth_method (str): Authentication method
+            credential_name (str): Credential name
+            timeout (str): Request timeout
+            system (str): System name
+            operation (str): OData operation (Query(GET), Create(POST), etc.)
+            resource_path (str): Resource path for the OData call
+        """
+        # Ensure serviceUrl has a default value
+        if not service_url:
+            service_url = "https://example.com/odata/service"
+
+        # Use entity_set as resource_path if resource_path is not provided
+        if not resource_path and entity_set:
+            resource_path = entity_set
+
+        return f'''<bpmn2:messageFlow id="{id}" name="OData" sourceRef="{{{{source_ref}}}}" targetRef="{{{{target_ref}}}}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>ComponentType</key>
+                    <value>HCIOData</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>Description</key>
+                    <value>OData connection to {entity_set}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>address</key>
+                    <value>{service_url}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>resourcePath</key>
+                    <value>{resource_path}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>operation</key>
+                    <value>{operation}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>ComponentNS</key>
+                    <value>sap</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.25</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>TransportProtocolVersion</key>
+                    <value>1.25.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>MessageProtocolVersion</key>
+                    <value>1.25.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>authenticationMethod</key>
+                    <value>{auth_method}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>credentialName</key>
+                    <value>{credential_name}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>httpRequestTimeout</key>
+                    <value>{timeout}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>system</key>
+                    <value>{system}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>TransportProtocol</key>
+                    <value>HTTP</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::AdapterVariant/cname::sap:HCIOData/tp::HTTP/mp::Exclusive/direction::Receiver/version::1.25.0</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+        </bpmn2:messageFlow>'''
+
+    def odata_request_reply_pattern(self, service_task_id, participant_id, message_flow_id, name, service_url, entity_set="", operation="Query(GET)", resource_path=""):
+        """
+        Complete OData Request-Reply pattern optimized for MuleSoft Salesforce integrations
+
+        This creates a complete pattern with:
+        1. Service Task for the request-reply operation
+        2. Participant for the external OData service
+        3. Message Flow with proper OData adapter configuration
+
+        Args:
+            service_task_id (str): ID for the service task
+            participant_id (str): ID for the participant
+            message_flow_id (str): ID for the message flow
+            name (str): Name for the components
+            service_url (str): OData service URL
+            entity_set (str): Entity set name
+            operation (str): OData operation
+            resource_path (str): Resource path
+        """
+        # Use entity_set as resource_path if not provided
+        if not resource_path and entity_set:
+            resource_path = entity_set
+
+        service_task = f'''<bpmn2:serviceTask id="{service_task_id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>ExternalCall</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::ExternalCall/version::1.0.4</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:serviceTask>'''
+
+        participant = f'''<bpmn2:participant id="{participant_id}" ifl:type="EndpointRecevier" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>ifl:type</key>
+                    <value>EndpointRecevier</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+        </bpmn2:participant>'''
+
+        message_flow = self.odata_receiver_template(
+            id=message_flow_id,
+            name=name,
+            service_url=service_url,
+            entity_set=entity_set,
+            operation=operation,
+            resource_path=resource_path
+        ).replace("{{source_ref}}", service_task_id).replace("{{target_ref}}", participant_id)
+
+        return {
+            "service_task": service_task,
+            "participant": participant,
+            "message_flow": message_flow
+        }
+
+    # ===== Content Processing Templates =====
+
+    def content_enricher_template(self, id, name, property_table="", header_table="", body_type="expression", body_content="", wrap_content=""):
+        """
+        Template for Content Enricher (SAP Integration Suite uses Enricher for content modifiers)
+        Optimized for MuleSoft Transform Message and Set Payload equivalents
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            property_table (str): XML representation of property table
+            header_table (str): XML representation of header table
+            body_type (str): Body type (expression/constant)
+            body_content (str): Content to set
+            wrap_content (str): Wrap content configuration
+        """
+        return f'''<bpmn2:callActivity id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>bodyType</key>
+                    <value>{body_type}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>propertyTable</key>
+                    <value>{property_table}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>headerTable</key>
+                    <value>{header_table}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>wrapContent</key>
+                    <value>{wrap_content}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.5</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>Enricher</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::Enricher/version::1.5.1</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>bodyContent</key>
+                    <value>{body_content}</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:callActivity>'''
+
+    def mulesoft_transform_message_template(self, id, name, transformation_script="", output_format="application/json"):
+        """
+        Template for MuleSoft Transform Message equivalent using Groovy Script
+        Maps MuleSoft DataWeave transformations to SAP Integration Suite Groovy scripts
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            transformation_script (str): Groovy transformation script
+            output_format (str): Output format (application/json, application/xml, etc.)
+        """
+        return f'''<bpmn2:callActivity id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>scriptFunction</key>
+                    <value>processData</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>script</key>
+                    <value>{transformation_script}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.5</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>Script</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::GroovyScript/version::1.5.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>outputFormat</key>
+                    <value>{output_format}</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:callActivity>'''
+
+    def json_to_xml_converter_template(self, id, name, root_element="root", suppress_json_root="false"):
+        """
+        Template for JSON to XML Converter - common in MuleSoft flows
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            root_element (str): Root element name for XML
+            suppress_json_root (str): Suppress JSON root element
+        """
+        return f'''<bpmn2:callActivity id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>additionalRootElementName</key>
+                    <value>{root_element}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>suppressJsonRootElement</key>
+                    <value>{suppress_json_root}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.1</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>JsonToXmlConverter</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::JsonToXmlConverter/version::1.1.2</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:callActivity>'''
+
+    def xml_to_json_converter_template(self, id, name, json_output_encoding="UTF-8", suppress_json_root="false"):
+        """
+        Template for XML to JSON Converter - common in MuleSoft flows
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            json_output_encoding (str): JSON output encoding
+            suppress_json_root (str): Suppress JSON root element
+        """
+        return f'''<bpmn2:callActivity id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>jsonOutputEncoding</key>
+                    <value>{json_output_encoding}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>suppressJsonRootElement</key>
+                    <value>{suppress_json_root}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.1</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>XmlToJsonConverter</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::XmlToJsonConverter/version::1.1.2</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:callActivity>'''
+
+    # ===== Flow Control Templates =====
+
+    def mulesoft_choice_router_template(self, id, name, when_conditions=None, otherwise_flow=""):
+        """
+        Template for MuleSoft Choice Router equivalent using Router
+        Maps MuleSoft Choice component to SAP Integration Suite Router
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            when_conditions (list): List of when conditions with expressions and flows
+            otherwise_flow (str): Otherwise flow reference
+        """
+        if when_conditions is None:
+            when_conditions = []
+
+        conditions_xml = ""
+        for i, condition in enumerate(when_conditions):
+            conditions_xml += f'''
+                <ifl:property>
+                    <key>condition_{i}</key>
+                    <value>{condition.get('expression', 'true')}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>route_{i}</key>
+                    <value>{condition.get('flow', '')}</value>
+                </ifl:property>'''
+
+        return f'''<bpmn2:exclusiveGateway id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>Router</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::Router/version::1.0.0</value>
+                </ifl:property>{conditions_xml}
+                <ifl:property>
+                    <key>otherwiseRoute</key>
+                    <value>{otherwise_flow}</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow_1}}}}</bpmn2:outgoing>
+            <bpmn2:outgoing>{{{{outgoing_flow_2}}}}</bpmn2:outgoing>
+        </bpmn2:exclusiveGateway>'''
+
+    def mulesoft_scatter_gather_template(self, id, name, parallel_routes=None):
+        """
+        Template for MuleSoft Scatter-Gather equivalent using Multicast
+        Maps MuleSoft Scatter-Gather to SAP Integration Suite Multicast
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            parallel_routes (list): List of parallel route configurations
+        """
+        if parallel_routes is None:
+            parallel_routes = []
+
+        routes_xml = ""
+        for i, route in enumerate(parallel_routes):
+            routes_xml += f'''
+                <ifl:property>
+                    <key>route_{i}</key>
+                    <value>{route.get('name', f'Route_{i}')}</value>
+                </ifl:property>'''
+
+        return f'''<bpmn2:callActivity id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.2</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>Multicast</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::Multicast/version::1.2.0</value>
+                </ifl:property>{routes_xml}
+                <ifl:property>
+                    <key>parallelProcessing</key>
+                    <value>true</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:callActivity>'''
+
+    # ===== Error Handling Templates =====
+
+    def mulesoft_error_handler_template(self, id, name, error_types=None, default_handler=""):
+        """
+        Template for MuleSoft Error Handler equivalent using Exception Subprocess
+        Maps MuleSoft Error Handling to SAP Integration Suite Exception Subprocess
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            error_types (list): List of error types to handle
+            default_handler (str): Default error handler flow
+        """
+        if error_types is None:
+            error_types = ["java.lang.Exception"]
+
+        error_types_xml = ""
+        for error_type in error_types:
+            error_types_xml += f'''
+                <ifl:property>
+                    <key>errorType</key>
+                    <value>{error_type}</value>
+                </ifl:property>'''
+
+        return f'''<bpmn2:subProcess id="{id}" name="{name}" triggeredByEvent="true">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>ExceptionSubprocess</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::ExceptionSubprocess/version::1.0.0</value>
+                </ifl:property>{error_types_xml}
+                <ifl:property>
+                    <key>defaultHandler</key>
+                    <value>{default_handler}</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:startEvent id="{id}_start" name="Error Start">
+                <bpmn2:outgoing>{id}_flow</bpmn2:outgoing>
+                <bpmn2:errorEventDefinition/>
+            </bpmn2:startEvent>
+            <bpmn2:endEvent id="{id}_end" name="Error End">
+                <bpmn2:incoming>{id}_flow</bpmn2:incoming>
+            </bpmn2:endEvent>
+            <bpmn2:sequenceFlow id="{id}_flow" sourceRef="{id}_start" targetRef="{id}_end"/>
+        </bpmn2:subProcess>'''
+
+    def groovy_script_template(self, id, name, script_name="", script_function="processData", script_content=""):
+        """
+        Template for Groovy Script - equivalent to MuleSoft custom components
+
+        Args:
+            id (str): Component ID
+            name (str): Component name
+            script_name (str): Name of the Groovy script file
+            script_function (str): Name of the function to call in the script
+            script_content (str): Inline script content
+        """
+        return f'''<bpmn2:callActivity id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>scriptFunction</key>
+                    <value>{script_function}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>script</key>
+                    <value>{script_content}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>scriptName</key>
+                    <value>{script_name}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.5</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>activityType</key>
+                    <value>Script</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::GroovyScript/version::1.5.0</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+        </bpmn2:callActivity>'''
+
+    # ===== Process and Flow Templates =====
+
+    def process_template(self, id, name, transaction_timeout="30", transactional_handling="Not Required"):
+        """
+        Template for Integration Process with correct placeholder
+
+        Args:
+            id (str): Process ID
+            name (str): Process name
+            transaction_timeout (str): Transaction timeout in seconds
+            transactional_handling (str): Transactional handling mode
+        """
+        return f'''<bpmn2:process id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>transactionTimeout</key>
+                    <value>{transaction_timeout}</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.2</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::ProcessVariant/cname::IntegrationProcess/version::1.2.1</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>transactionalHandling</key>
+                    <value>{transactional_handling}</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            {{{{process_content}}}}
+        </bpmn2:process>'''
+
+    def start_event_template(self, id, name="Start"):
+        """
+        Template for Start Event
+
+        Args:
+            id (str): Event ID
+            name (str): Event name
+        """
+        return f'''<bpmn2:startEvent id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.0</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::MessageStartEvent/version::1.0</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:outgoing>{{{{outgoing_flow}}}}</bpmn2:outgoing>
+            <bpmn2:messageEventDefinition/>
+        </bpmn2:startEvent>'''
+
+    def end_event_template(self, id, name="End"):
+        """
+        Template for End Event
+
+        Args:
+            id (str): Event ID
+            name (str): Event name
+        """
+        return f'''<bpmn2:endEvent id="{id}" name="{name}">
+            <bpmn2:extensionElements>
+                <ifl:property>
+                    <key>componentVersion</key>
+                    <value>1.1</value>
+                </ifl:property>
+                <ifl:property>
+                    <key>cmdVariantUri</key>
+                    <value>ctype::FlowstepVariant/cname::MessageEndEvent/version::1.1.0</value>
+                </ifl:property>
+            </bpmn2:extensionElements>
+            <bpmn2:incoming>{{{{incoming_flow}}}}</bpmn2:incoming>
+            <bpmn2:messageEventDefinition/>
+        </bpmn2:endEvent>'''
+
+    def sequence_flow_template(self, id, source_ref, target_ref, name=""):
+        """
+        Template for Sequence Flow
+
+        Args:
+            id (str): Flow ID
+            source_ref (str): Source element ID
+            target_ref (str): Target element ID
+            name (str): Flow name
+        """
+        return f'''<bpmn2:sequenceFlow id="{id}" name="{name}" sourceRef="{source_ref}" targetRef="{target_ref}"/>'''
+
+    # ===== XML Generation Templates =====
+
+    def generate_iflow_xml(self, collaboration_content, process_content):
+        """
+        Generate complete iFlow XML structure
+
+        Args:
+            collaboration_content (str): Collaboration section content
+            process_content (str): Process section content
+
+        Returns:
+            str: Complete iFlow XML
+        """
+        return f'''<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:ifl="http:///com.sap.ifl.model/Ifl.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1">
+  <bpmn2:collaboration id="Collaboration_1" name="Collaboration">
+    <bpmn2:documentation id="Documentation_1" textFormat="text/plain">MuleSoft to SAP Integration Suite Migration</bpmn2:documentation>
+    <bpmn2:extensionElements>
+      <ifl:property>
+        <key>namespaceMapping</key>
+        <value></value>
+      </ifl:property>
+      <ifl:property>
+        <key>httpSessionHandling</key>
+        <value>None</value>
+      </ifl:property>
+      <ifl:property>
+        <key>returnExceptionToSender</key>
+        <value>false</value>
+      </ifl:property>
+      <ifl:property>
+        <key>log</key>
+        <value>All events</value>
+      </ifl:property>
+      <ifl:property>
+        <key>corsEnabled</key>
+        <value>false</value>
+      </ifl:property>
+      <ifl:property>
+        <key>componentVersion</key>
+        <value>1.2</value>
+      </ifl:property>
+      <ifl:property>
+        <key>ServerTrace</key>
+        <value>false</value>
+      </ifl:property>
+      <ifl:property>
+        <key>xsrfProtection</key>
+        <value>false</value>
+      </ifl:property>
+      <ifl:property>
+        <key>cmdVariantUri</key>
+        <value>ctype::IFlowVariant/cname::IFlowConfiguration/version::1.2.4</value>
+      </ifl:property>
+    </bpmn2:extensionElements>
+    {collaboration_content}
+  </bpmn2:collaboration>
+  {process_content}
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1" id="BPMNPlane_1">
+      <!-- Shapes and edges will be added here -->
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>'''
+
+    # ===== MuleSoft-Specific Component Mapping =====
+
+    def get_mulesoft_component_mapping(self):
+        """
+        Get mapping of MuleSoft components to SAP Integration Suite templates
+
+        Returns:
+            dict: Mapping of MuleSoft component types to template methods
+        """
+        return {
+            # MuleSoft Core Components
+            "http:listener": self.mulesoft_http_listener_template,
+            "http:request": self.mulesoft_http_request_template,
+            "transform": self.mulesoft_transform_message_template,
+            "set-payload": self.content_enricher_template,
+            "choice": self.mulesoft_choice_router_template,
+            "scatter-gather": self.mulesoft_scatter_gather_template,
+            "error-handler": self.mulesoft_error_handler_template,
+
+            # MuleSoft Connectors
+            "salesforce:query": self.odata_request_reply_pattern,
+            "salesforce:create": self.odata_request_reply_pattern,
+            "salesforce:update": self.odata_request_reply_pattern,
+            "database:select": self.odata_request_reply_pattern,
+            "database:insert": self.odata_request_reply_pattern,
+
+            # Data Transformation
+            "json-to-xml": self.json_to_xml_converter_template,
+            "xml-to-json": self.xml_to_json_converter_template,
+            "groovy": self.groovy_script_template,
+
+            # Flow Control
+            "enricher": self.content_enricher_template,
+            "logger": self.groovy_script_template,
+            "validator": self.groovy_script_template
+        }
 
     def iflow_configuration_template(self, namespace_mapping="", log_level="All events", csrf_protection="false"):
         """

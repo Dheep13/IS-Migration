@@ -1,4 +1,4 @@
-<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\n<Account>\n  <Id>${propertyMap.get('SF_Account_ID')}</Id>\n  <Name>${propertyMap.get('SF_Account_Name')}</Name>\n  <Description>SAP Customer Number: ${customerNumber}</Description>\n</Account>\"\"\"\n\nreturn sfUpdateXml"
+<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>\\n<sObjects xmlns=\\\"urn:enterprise.soap.sforce.com:2006-04-01\\\">\\n    <type>Opportunity</type>\\n    <Name>''' + opportunity.Name + '''</Name>\\n    <Description>''' + opportunity.Description + '''</Description>\\n    <CloseDate>''' + opportunity.CloseDate + '''</CloseDate>\\n    <StageName>''' + opportunity.StageName + '''</StageName>\\n    <LeadSource>''' + opportunity.LeadSource + '''</LeadSource>\\n</sObjects>'''\\n    \\n    message.setBody(xml)\\n    return message\\n}"
         }
       ]
     }

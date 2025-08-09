@@ -1,8 +1,8 @@
 # iFlow Generation Details
 
-## IFlow_cf3168dc
+## TestMuleSoftIFlow
 - **Generation Approach**: genai-enhanced
-- **Timestamp**: 2025-06-12T00:11:37.927048
+- **Timestamp**: 2025-08-09T14:23:33.548958
 - **Model**: N/A
 - **Reason**: Using GenAI for descriptions and enhancements
 
