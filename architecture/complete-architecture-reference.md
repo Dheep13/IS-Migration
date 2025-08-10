@@ -2,7 +2,7 @@
 
 ## 🏗️ System Overview
 
-The IS-Migration platform is a comprehensive AI-powered solution for migrating integration flows from legacy platforms (Dell Boomi, MuleSoft) to SAP Integration Suite. The platform leverages multiple AI providers and template-based generation to ensure reliable, SAP-compliant iFlow creation.
+The IS-Migration platform is a comprehensive AI-powered solution for migrating integration flows from legacy platforms (Boomi, MuleSoft) to SAP Integration Suite. The platform leverages multiple AI providers and template-based generation to ensure reliable, SAP-compliant iFlow creation.
 
 ## 🎯 Core Architecture Principles
 
@@ -137,7 +137,7 @@ React Frontend (CF Static) → Main API (CF) → Processing APIs (CF)
 - **API Response Times**: Performance metrics collection
 - **Error Rate Monitoring**: System health tracking
 
-## 🚀 Key Innovations
+##  Key Innovations
 
 ### 1. **Enhanced Request-Reply Processing**
 - Solves "hanging Start Message Event" problem

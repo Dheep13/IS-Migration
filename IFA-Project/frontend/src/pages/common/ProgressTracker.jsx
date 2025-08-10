@@ -139,9 +139,9 @@ const ProgressTracker = ({
                            statusMessage?.match(/iFlow.*?name.*?[:\s](.+?)(?:\s|$)/i)?.[1];
 
       if (deployedName) {
-        return `🚀 Deployed: ${deployedName}`;
+        return ` Deployed: ${deployedName}`;
       }
-      return "🚀 Deployed to SAP Integration Suite!";
+      return " Deployed to SAP Integration Suite!";
     } else if (deploymentStatus === "failed") {
       return "Deployment failed"
     }
@@ -305,7 +305,7 @@ const ProgressTracker = ({
                     : "bg-gray-300 text-gray-600"
                 }`}>
                   {deploymentStatus === "completed" ? "✓" :
-                   deploymentStatus === "deploying" ? "🚀" : "3"}
+                   deploymentStatus === "deploying" ? "" : "3"}
                 </div>
                 <span className={`ml-1 font-medium ${
                   deploymentStatus === "deploying"

@@ -181,7 +181,7 @@ def example_test_connections():
 
 def main():
     """Run all examples"""
-    print("🚀 Database Integration Examples")
+    print(" Database Integration Examples")
     print("=" * 50)
     
     # Test connections first

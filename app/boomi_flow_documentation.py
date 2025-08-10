@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Dell Boomi Flow Documentation Generator
+Boomi Flow Documentation Generator
 
-This module provides functionality to parse Dell Boomi process XML files
+This module provides functionality to parse Boomi process XML files
 and generate comprehensive documentation for migration to SAP Integration Suite.
 """
 
@@ -18,7 +18,7 @@ from datetime import datetime
 logger = logging.getLogger(__name__)
 
 class BoomiFlowDocumentationGenerator:
-    """Generator for Dell Boomi process documentation"""
+    """Generator for Boomi process documentation"""
     
     def __init__(self):
         self.namespaces = {
@@ -478,7 +478,7 @@ class BoomiFlowDocumentationGenerator:
         doc_lines = []
         
         # Header
-        doc_lines.append("# Dell Boomi Integration Documentation")
+        doc_lines.append("# Boomi Integration Documentation")
         doc_lines.append("")
         doc_lines.append(f"**Generated on:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         doc_lines.append("")
@@ -496,7 +496,7 @@ class BoomiFlowDocumentationGenerator:
         
         # Processes
         if processing_results['processes']:
-            doc_lines.append("## Dell Boomi Processes")
+            doc_lines.append("## Boomi Processes")
             doc_lines.append("")
             
             for i, process in enumerate(processing_results['processes'], 1):

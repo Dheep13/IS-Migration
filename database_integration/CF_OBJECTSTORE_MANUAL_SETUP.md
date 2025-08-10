@@ -1,6 +1,6 @@
 # Cloud Foundry ObjectStore Manual Setup Guide
 
-## 🚀 Automated Setup (Recommended)
+##  Automated Setup (Recommended)
 
 Run the automated setup script:
 ```bash
@@ -206,4 +206,4 @@ After setup, you'll have:
 4. **Monitor usage** through CF dashboard
 5. **Scale as needed** for production workloads
 
-Your IS-Migration application now has enterprise-grade object storage through Cloud Foundry! 🚀
+Your IS-Migration application now has enterprise-grade object storage through Cloud Foundry! 

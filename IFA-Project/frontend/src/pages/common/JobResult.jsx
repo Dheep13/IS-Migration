@@ -475,7 +475,7 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
       const packageId = (customPackageName && customPackageName.trim()) ? customPackageName.trim() : "ConversionPackages"
 
       // Use the direct deployment approach with platform information
-      console.log(`🚀 DEPLOYMENT INFO:`)
+      console.log(` DEPLOYMENT INFO:`)
       console.log(`  - Job ID: ${deployJobId}`)
       console.log(`  - iFlow Name: ${iflowName}`)
       console.log(`  - iFlow ID: ${iflowId}`)
@@ -1045,7 +1045,7 @@ const JobResult = ({ jobInfo, onNewJob, onJobUpdate }) => {
                   <div className="flex items-center gap-2 mb-2">
                     <CheckCircle className="h-5 w-5 text-green-600" />
                     <h4 className="font-semibold text-green-800">
-                      🚀 Deployed to SAP Integration Suite
+                       Deployed to SAP Integration Suite
                     </h4>
                   </div>
 

@@ -110,7 +110,7 @@ const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hi
                   MuleSoft - Anypoint Platform integration flows
                 </option>
                 <option value="boomi">
-                  Dell Boomi - AtomSphere integration processes
+                  Boomi - AtomSphere integration processes
                 </option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
@@ -163,7 +163,7 @@ const FileUploadForm = ({ onSubmit, isLoading, selectedPlatform = 'mulesoft', hi
               <p className="text-lg font-medium text-gray-700">
                 {files.length > 0
                   ? `${files.length} file${files.length > 1 ? "s" : ""} selected`
-                  : `Drag & drop ${(hidePlatformSelector ? selectedPlatform : platform) === 'mulesoft' ? 'MuleSoft' : 'Dell Boomi'} XML files or ZIP archive here`}
+                  : `Drag & drop ${(hidePlatformSelector ? selectedPlatform : platform) === 'mulesoft' ? 'MuleSoft' : 'Boomi'} XML files or ZIP archive here`}
               </p>
               <p className="text-gray-500 mt-1">
                 {files.length > 0 ? files.map(f => f.name).join(", ") : "or"}

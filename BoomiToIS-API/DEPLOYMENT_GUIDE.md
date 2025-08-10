@@ -1,6 +1,6 @@
 # BoomiToIS-API Cloud Foundry Deployment Guide
 
-## 🚀 **Deployment Overview**
+##  **Deployment Overview**
 
 This guide covers deploying the BoomiToIS-API to SAP Cloud Foundry, similar to the MuleToIS-API deployment.
 
@@ -31,7 +31,7 @@ MAIN_API_URL=https://it-resonance-api-wacky-panther-za.cfapps.us10-001.hana.onde
 CORS_ORIGIN=https://ifa-frontend.cfapps.us10-001.hana.ondemand.com
 ```
 
-### **🚀 Deployment Steps**
+### ** Deployment Steps**
 
 #### **Option 1: Windows Deployment**
 ```bash
@@ -68,7 +68,7 @@ After deployment, verify the API is working:
    {
      "status": "ok",
      "message": "BoomiToIS API is running",
-     "platform": "Dell Boomi",
+     "platform": "Boomi",
      "api_key_configured": true
    }
    ```

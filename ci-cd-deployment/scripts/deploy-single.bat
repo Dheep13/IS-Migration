@@ -28,7 +28,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo.
-echo 🚀 Deploying %1 to Cloud Foundry...
+echo  Deploying %1 to Cloud Foundry...
 python deployment/deploy.py deploy --app %1
 
 if %ERRORLEVEL% neq 0 (

@@ -142,7 +142,7 @@ class DeploymentManager:
         app_path = self.resolve_app_path(app_name)
         cf_app_name = app_config['name']
         
-        print(f"🚀 Deploying {app_name} to Cloud Foundry...")
+        print(f" Deploying {app_name} to Cloud Foundry...")
         
         # Build frontend if needed
         if build_frontend and app_name == 'frontend':
@@ -190,7 +190,7 @@ class DeploymentManager:
             self.create_env_file(app_name, 'local')
         
         print("\n✅ Local development environment setup complete!")
-        print("\n🚀 To start local development:")
+        print("\n To start local development:")
         print("  Main API: cd app && python app.py")
         print("  MuleToIS API: cd MuleToIS-API && python app.py")
         print("  BoomiToIS API: cd BoomiToIS-API && python app.py")

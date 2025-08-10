@@ -45,7 +45,7 @@ Space:          your-space-name
 | `CF_USERNAME` | Your CF username/email | `your-email@domain.com` |
 | `CF_PASSWORD` | Your CF password | `your-cf-password` |
 
-## 🚀 Step 3: Test the Pipeline
+##  Step 3: Test the Pipeline
 
 ### **Option A: Push to Main Branch**
 ```bash
@@ -151,4 +151,4 @@ After setup, you'll have:
 3. **Monitor the first deployment** in GitHub Actions
 4. **Verify all apps are working** after deployment
 
-Once configured, every push to main will automatically deploy to Cloud Foundry! 🚀
+Once configured, every push to main will automatically deploy to Cloud Foundry! 

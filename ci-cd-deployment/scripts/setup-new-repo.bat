@@ -30,7 +30,7 @@ if "%1"=="" (
 
 set REPO_URL=%1
 
-echo 🚀 Starting complete repository setup...
+echo  Starting complete repository setup...
 echo Repository URL: %REPO_URL%
 echo.
 
@@ -91,7 +91,7 @@ echo 1. Go to your GitHub repository
 echo 2. Add the GitHub Secrets shown above
 echo 3. Test the deployment pipeline
 echo.
-echo 🚀 Quick commands:
+echo  Quick commands:
 echo   Local setup:    deployment\scripts\deploy-local.bat
 echo   Start local:    deployment\scripts\start-local.bat
 echo   Deploy prod:    deployment\scripts\deploy-production.bat

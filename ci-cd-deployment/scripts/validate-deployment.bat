@@ -19,7 +19,7 @@ if %ERRORLEVEL% equ 0 (
     echo.
     echo Your project is ready for deployment!
     echo.
-    echo 🚀 Next steps:
+    echo  Next steps:
     echo 1. Set up GitHub Secrets:
     echo    - Go to: https://github.com/DheepLearningITR/IMigrate/settings/secrets/actions
     echo    - Add CF_ORG, CF_SPACE, CF_USERNAME, CF_PASSWORD

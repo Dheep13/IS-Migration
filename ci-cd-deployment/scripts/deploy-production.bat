@@ -15,7 +15,7 @@ if %ERRORLEVEL% neq 0 (
 )
 
 echo.
-echo 🚀 Starting complete production deployment...
+echo  Starting complete production deployment...
 echo This will deploy all applications to Cloud Foundry
 echo.
 set /p confirm="Continue? (y/N): "

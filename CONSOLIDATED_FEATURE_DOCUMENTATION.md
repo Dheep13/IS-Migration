@@ -144,7 +144,7 @@ Created `test_documentation_viewing.py` to verify:
 3. **test_documentation_viewing.py** (NEW)
    - Test script to verify functionality
 
-## 🚀 **How to Use**
+##  **How to Use**
 
 1. **Start the application**:
    ```bash
@@ -591,7 +591,7 @@ console.log("iFlow generation status:", statusResult);
 }
 ```
 
-## 🚀 **Future Enhancements**
+##  **Future Enhancements**
 
 ### **Potential Additions**
 - **Progress percentage** based on current step

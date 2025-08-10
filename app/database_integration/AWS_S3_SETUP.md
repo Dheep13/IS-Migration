@@ -6,7 +6,7 @@
 - **AWS Account**: `830858425934`
 - **Type**: Direct AWS S3 (not BTP ObjectStore)
 
-## 🚀 Quick Setup (Automated)
+##  Quick Setup (Automated)
 
 Run the setup script with your AWS credentials:
 
@@ -243,4 +243,4 @@ Set up lifecycle policies to automatically move old files to cheaper storage cla
 4. **Deploy and test** your applications
 5. **Monitor usage** in AWS S3 Console
 
-Your IS-Migration application now has direct AWS S3 storage! 🚀
+Your IS-Migration application now has direct AWS S3 storage! 

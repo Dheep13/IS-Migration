@@ -683,7 +683,7 @@ def generate_boomi_iflow_metadata(job_id, documentation, processing_results):
         return False
 
 def process_boomi_documentation(job_id, input_dir, enhance=False):
-    """Process Dell Boomi documentation generation"""
+    """Process Boomi documentation generation"""
     try:
         # Create job results directory
         job_result_dir = os.path.join(app.config['RESULTS_FOLDER'], job_id)
@@ -695,7 +695,7 @@ def process_boomi_documentation(job_id, input_dir, enhance=False):
         # Update job status
         update_job(job_id, {
             'processing_step': 'file_analysis',
-            'processing_message': 'Analyzing Dell Boomi files...'
+            'processing_message': 'Analyzing Boomi files...'
         })
 
         # Initialize Boomi documentation generator
@@ -718,7 +718,7 @@ def process_boomi_documentation(job_id, input_dir, enhance=False):
                 'errors': len(processing_results['errors'])
             },
             'processing_step': 'documentation_generation',
-            'processing_message': 'Generating Dell Boomi documentation...'
+            'processing_message': 'Generating Boomi documentation...'
         })
 
         # Generate base documentation
@@ -815,7 +815,7 @@ def process_boomi_documentation(job_id, input_dir, enhance=False):
         update_job(job_id, {
             'status': 'completed',
             'processing_step': 'completed',
-            'processing_message': f'Dell Boomi documentation generation completed successfully {enhancement_status}',
+            'processing_message': f'Boomi documentation generation completed successfully {enhancement_status}',
             'files': {
                 'markdown': os.path.join('results', job_id, 'boomi_documentation.md'),
                 'html': os.path.join('results', job_id, 'boomi_documentation.html')
@@ -823,7 +823,7 @@ def process_boomi_documentation(job_id, input_dir, enhance=False):
             'parsed_details': processing_results
         })
 
-        logging.info(f"Job {job_id}: Dell Boomi documentation generation completed successfully")
+        logging.info(f"Job {job_id}: Boomi documentation generation completed successfully")
 
     except Exception as e:
         logging.error(f"Error in process_boomi_documentation for job {job_id}: {str(e)}")
@@ -831,7 +831,7 @@ def process_boomi_documentation(job_id, input_dir, enhance=False):
             'status': 'failed',
             'error': str(e),
             'processing_step': 'error',
-            'processing_message': f'Dell Boomi processing failed: {str(e)}'
+            'processing_message': f'Boomi processing failed: {str(e)}'
         })
 
 def process_mulesoft_documentation(job_id, input_dir, enhance=False):

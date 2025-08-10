@@ -14,7 +14,7 @@
 ### 1. **Primary Business Objectives**
 
 #### **Strategic Goals**
-- **Legacy Migration**: Migrate integration flows from Dell Boomi and MuleSoft to SAP Integration Suite
+- **Legacy Migration**: Migrate integration flows from Boomi and MuleSoft to SAP Integration Suite
 - **Cost Reduction**: Reduce manual migration effort by 80-90%
 - **Time Acceleration**: Complete migrations in days instead of months
 - **Quality Assurance**: Ensure SAP-compliant iFlow generation

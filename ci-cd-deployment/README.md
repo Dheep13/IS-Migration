@@ -1,4 +1,4 @@
-# 🚀 IFA Project Deployment Automation
+#  IFA Project Deployment Automation
 
 Complete deployment automation system for local development and Cloud Foundry production deployments.
 

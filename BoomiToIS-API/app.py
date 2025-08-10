@@ -1,6 +1,6 @@
 """
 Flask API for the BoomiToIS iFlow Generator.
-This module provides a REST API for generating iFlows from Dell Boomi process documentation.
+This module provides a REST API for generating iFlows from Boomi process documentation.
 """
 
 import os
@@ -160,7 +160,7 @@ def health_check():
     response = jsonify({
         'status': 'ok',
         'message': 'BoomiToIS API is running',
-        'platform': 'Dell Boomi',
+        'platform': 'Boomi',
         'api_key_configured': bool(ANTHROPIC_API_KEY)
     })
     # Add CORS headers

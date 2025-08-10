@@ -91,14 +91,14 @@ class DocumentationEnhancer:
         if platform == 'mulesoft':
             prompt = self._create_mulesoft_enhancement_prompt(base_documentation)
         else:
-            prompt = f"""You are a Dell Boomi and SAP Integration Suite specialist. Based on the following technical
+            prompt = f"""You are a Boomi and SAP Integration Suite specialist. Based on the following technical
     documentation, create comprehensive documentation that includes API details, flow logic,
     and detailed SAP Integration Suite visualization. Use SAP Integration Suite components and connections for
     the visualization.
 
     IMPORTANT:
     1. Do NOT make assumptions about adapters or systems not explicitly mentioned in the source documentation.
-    2. Use ONLY the components and connections present in the original Dell Boomi process.
+    2. Use ONLY the components and connections present in the original Boomi process.
     3. When describing the SAP Integration Suite implementation, maintain the same integration pattern.
     4. If a connection type is unclear, mark it as a configuration decision.
     5. PRESERVE ALL TECHNICAL EXPRESSIONS EXACTLY AS WRITTEN, especially:
@@ -165,9 +165,9 @@ class DocumentationEnhancer:
     - Example request/response if available
     - Error handling for this endpoint
 
-    ## Current Dell Boomi Flow Logic
+    ## Current Boomi Flow Logic
     ### Process Flow Overview
-    Provide a high-level overview of the Dell Boomi process including:
+    Provide a high-level overview of the Boomi process including:
     1. What triggers the process (Start Event configuration)
     2. Main processing steps and their purpose in sequence
     3. Data transformations that occur
@@ -420,9 +420,9 @@ class DocumentationEnhancer:
     ## SAP Integration Suite Implementation
     ### Component Mapping
 
-    This section provides a detailed mapping of Dell Boomi components to their SAP Integration Suite equivalents, organized by subprocess for clear implementation guidance.
+    This section provides a detailed mapping of Boomi components to their SAP Integration Suite equivalents, organized by subprocess for clear implementation guidance.
 
-    Map each Dell Boomi component to its SAP Integration Suite equivalent using this comprehensive mapping:
+    Map each Boomi component to its SAP Integration Suite equivalent using this comprehensive mapping:
 
     **Core Boomi Components:**
     - Start Event (shapetype="start") → Start Message Event
@@ -524,7 +524,7 @@ class DocumentationEnhancer:
     5. If you create multiple diagrams, ensure they are logically grouped and clearly labeled
     6. FOLLOW THE EXAMPLE DIAGRAM STRUCTURE PROVIDED BELOW - it shows the correct syntax and formatting
 
-    Create a Mermaid diagram that accurately represents the flows, components, and connections found in the original Dell Boomi process. The diagram should follow this format:
+    Create a Mermaid diagram that accurately represents the flows, components, and connections found in the original Boomi process. The diagram should follow this format:
     **IMPORTANT**: Your model output must be *only* the Mermaid code block (```mermaid …```) with no shell prompts or extra text.
     Use real line breaks in labels (or `<br/>`), not `\n` literals.
 
@@ -625,7 +625,7 @@ class DocumentationEnhancer:
     - Versioning information
 
     Make sure the final document has:
-    1. A descriptive title that reflects the purpose of the Dell Boomi integration
+    1. A descriptive title that reflects the purpose of the Boomi integration
     2. A comprehensive table of contents with hyperlinks to all sections
     3. Clear headings and subheadings for all sections
     4. Properly labeled Mermaid diagrams with descriptive headings that render correctly in HTML
@@ -637,7 +637,7 @@ class DocumentationEnhancer:
     10. All external system dependencies and API calls
 
     CRITICAL FINAL REMINDERS:
-    - This is a DELL BOOMI process - use Boomi-specific terminology throughout
+    - This is a Boomi process - use Boomi-specific terminology throughout
     - Analyze the XML structure thoroughly to capture ALL technical details
     - Maintain the exact sequence of operations as defined in the Boomi process
     - Include ALL Document Properties calculations and HTTP connector calls
@@ -717,7 +717,7 @@ class DocumentationEnhancer:
             response = self.openai_client.chat.completions.create(
                 model="gpt-4o",  # Updated to latest GPT model
                 messages=[
-                    {"role": "system", "content": "You are an expert integration specialist helping convert Dell Boomi processes to SAP Integration Suite."},
+                    {"role": "system", "content": "You are an expert integration specialist helping convert Boomi processes to SAP Integration Suite."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.2,
@@ -902,7 +902,7 @@ class DocumentationEnhancer:
             from datetime import datetime
 
             # Create a JSON generation prompt
-            json_prompt = f"""Based on the following Dell Boomi documentation, generate a JSON structure that represents the SAP Integration Suite components needed for this integration.
+            json_prompt = f"""Based on the following Boomi documentation, generate a JSON structure that represents the SAP Integration Suite components needed for this integration.
 
 CRITICAL: Respond with ONLY valid JSON in the exact format specified below. Do NOT include any explanations, markdown, or other text.
 
@@ -1070,7 +1070,7 @@ RESPOND WITH ONLY JSON:"""
             response = self.openai_client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "system", "content": "You are an expert at converting Dell Boomi processes to SAP Integration Suite JSON configurations. Respond only with valid JSON."},
+                    {"role": "system", "content": "You are an expert at converting Boomi processes to SAP Integration Suite JSON configurations. Respond only with valid JSON."},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.1,  # Lower temperature for more consistent JSON

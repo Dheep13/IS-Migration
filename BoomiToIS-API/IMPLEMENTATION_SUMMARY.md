@@ -155,7 +155,7 @@ This document summarizes the comprehensive implementation of missing iFlow artif
 5. **`BoomiToIS-API/test_iflow_generation.py`** - End-to-end testing
 6. **`BoomiToIS-API/IMPLEMENTATION_SUMMARY.md`** - This summary document
 
-## 🚀 Usage Examples
+##  Usage Examples
 
 ### Using New Templates
 ```python

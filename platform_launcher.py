@@ -91,7 +91,7 @@ class PlatformLauncher:
         """Print the main menu"""
         print(f"{Colors.YELLOW}What would you like to do?{Colors.RESET}\n")
         
-        print(f"{Colors.BLUE}🚀 DEVELOPMENT{Colors.RESET}")
+        print(f"{Colors.BLUE} DEVELOPMENT{Colors.RESET}")
         print("  1. Setup Development Environment")
         print("  2. Start All Servers (Local)")
         print("  3. Start Individual Service")
@@ -298,7 +298,7 @@ class PlatformLauncher:
 
     def start_all_servers(self):
         """Start all services locally"""
-        print(f"\n{Colors.CYAN}🚀 Starting all servers locally...{Colors.RESET}\n")
+        print(f"\n{Colors.CYAN} Starting all servers locally...{Colors.RESET}\n")
         
         if not self.check_prerequisites():
             return
@@ -365,7 +365,7 @@ class PlatformLauncher:
 
     def start_individual_service(self):
         """Start a single service"""
-        print(f"\n{Colors.CYAN}🚀 Start Individual Service{Colors.RESET}\n")
+        print(f"\n{Colors.CYAN} Start Individual Service{Colors.RESET}\n")
         
         services = list(self.config["services"].items())
         

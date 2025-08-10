@@ -118,7 +118,7 @@ def test_database_setup():
 
 def main():
     """Main setup function"""
-    print("🚀 IS-Migration Database Setup")
+    print(" IS-Migration Database Setup")
     print("=" * 50)
     
     # Check if .env file exists

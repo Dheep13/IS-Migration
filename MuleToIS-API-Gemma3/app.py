@@ -562,7 +562,7 @@ def process_iflow_generation(job_id):
 
 def create_iflow_prompt(markdown_content, iflow_name, platform='mulesoft'):
     """Create prompt for iFlow generation with structured output optimized for Gemma 3n"""
-    platform_text = "MuleSoft" if platform == 'mulesoft' else "Dell Boomi"
+    platform_text = "MuleSoft" if platform == 'mulesoft' else "Boomi"
 
     # Use Gemma 3n chat template format for better instruction following
     return f"""<start_of_turn>user
@@ -629,7 +629,7 @@ Generate the complete structured response with all files:"""
 
 def create_chunked_prompt(chunk, chunk_index, total_chunks, iflow_name, platform='mulesoft'):
     """Create prompt for chunked processing with structured output optimized for Gemma 3n"""
-    platform_text = "MuleSoft" if platform == 'mulesoft' else "Dell Boomi"
+    platform_text = "MuleSoft" if platform == 'mulesoft' else "Boomi"
     if chunk_index == 0:
         return f"""<start_of_turn>user
 You are an expert SAP Integration Suite developer. I will provide you with {platform_text} documentation in {total_chunks} parts. This is part {chunk_index + 1}/{total_chunks}.

@@ -1,6 +1,6 @@
 # IS-Migration Database Integration Setup Guide
 
-## 🚀 Quick Setup
+##  Quick Setup
 
 ### 1. Install Dependencies
 ```bash
@@ -156,7 +156,7 @@ print(f"Average rating: {stats['average_rating']}")
 print(f"Storage usage: {stats['storage']['total_size_mb']} MB")
 ```
 
-## 🚀 Next Steps
+##  Next Steps
 
 1. **Run the setup** following steps 1-4 above
 2. **Test with examples** using `integration_example.py`

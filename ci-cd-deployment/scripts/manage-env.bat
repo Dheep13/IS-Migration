@@ -34,7 +34,7 @@ if "%1"=="setup-local" (
 )
 
 if "%1"=="deploy-all" (
-    echo 🚀 Deploying all applications to production...
+    echo  Deploying all applications to production...
     python deployment/deploy.py deploy-all
     goto :end
 )
@@ -46,7 +46,7 @@ if "%1"=="deploy-single" (
         pause
         exit /b 1
     )
-    echo 🚀 Deploying %2 to production...
+    echo  Deploying %2 to production...
     python deployment/deploy.py deploy --app %2
     goto :end
 )
@@ -70,7 +70,7 @@ if "%1"=="clean" (
 )
 
 if "%1"=="start-local" (
-    echo 🚀 Starting local development servers...
+    echo  Starting local development servers...
     call deployment\scripts\start-local.bat
     goto :end
 )

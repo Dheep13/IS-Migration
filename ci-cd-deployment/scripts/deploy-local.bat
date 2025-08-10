@@ -17,7 +17,7 @@ if %ERRORLEVEL% neq 0 (
 echo.
 echo ✅ Local development environment ready!
 echo.
-echo 🚀 To start development servers:
+echo  To start development servers:
 echo   Main API:     cd app ^&^& python app.py
 echo   MuleToIS API: cd MuleToIS-API ^&^& python app.py  
 echo   BoomiToIS API: cd BoomiToIS-API ^&^& python app.py

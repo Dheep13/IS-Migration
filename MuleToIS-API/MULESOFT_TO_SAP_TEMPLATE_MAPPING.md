@@ -307,7 +307,7 @@ mapping = templates.get_mulesoft_component_mapping()
 
 ---
 
-## 🚀 **Migration Best Practices**
+##  **Migration Best Practices**
 
 ### **1. DataWeave to Groovy Conversion**
 - **MuleSoft DataWeave** expressions should be converted to **Groovy scripts**

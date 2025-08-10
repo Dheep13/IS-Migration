@@ -164,7 +164,7 @@
 
     <h2><span class="emoji">🎯</span> <strong>Project Objective</strong></h2>
 
-    <p>The <strong>BoomiToIS Integration Platform</strong> is an AI-powered system designed to automate the migration of integration flows from <strong>Dell Boomi</strong> and <strong>MuleSoft</strong> platforms to <strong>SAP Integration Suite</strong>. This addresses the critical business need for organizations transitioning their integration architecture to SAP's cloud-native integration platform.</p>
+    <p>The <strong>BoomiToIS Integration Platform</strong> is an AI-powered system designed to automate the migration of integration flows from <strong>Boomi</strong> and <strong>MuleSoft</strong> platforms to <strong>SAP Integration Suite</strong>. This addresses the critical business need for organizations transitioning their integration architecture to SAP's cloud-native integration platform.</p>
 
     <h3><strong>Business Challenge</strong></h3>
     <ul>
@@ -227,7 +227,7 @@
         </thead>
         <tbody>
             <tr>
-                <td><strong>Dell Boomi</strong></td>
+                <td><strong>Boomi</strong></td>
                 <td>SAP Integration Suite</td>
                 <td><span class="emoji">✅</span> Production Ready</td>
                 <td>Claude, GPT, Azure OpenAI, <strong>Gemma-3</strong></td>
@@ -259,7 +259,7 @@
 
     <h2>System Overview</h2>
 
-    <p>The BoomiToIS system transforms Dell Boomi and MuleSoft integration processes into SAP Integration Suite iFlows through a multi-stage pipeline involving AI analysis, component processing, and XML generation.</p>
+    <p>The BoomiToIS system transforms Boomi and MuleSoft integration processes into SAP Integration Suite iFlows through a multi-stage pipeline involving AI analysis, component processing, and XML generation.</p>
 
     <h3><strong>How We Achieve This Conversion</strong></h3>
 
@@ -290,9 +290,9 @@
         <li><strong>SAP Compliance</strong>: Templates ensure adherence to SAP Integration Suite standards</li>
     </ul>
 
-    <h4><strong><span class="emoji">🚀</span> Multi-Platform Support</strong></h4>
+    <h4><strong><span class="emoji"></span> Multi-Platform Support</strong></h4>
     <ul>
-        <li><strong>Dell Boomi</strong>: XML parsing → Component extraction → SAP iFlow generation</li>
+        <li><strong>Boomi</strong>: XML parsing → Component extraction → SAP iFlow generation</li>
         <li><strong>MuleSoft</strong>: Flow analysis → Pattern recognition → SAP iFlow generation</li>
         <li><strong>Documentation</strong>: Manual input → AI enhancement → SAP iFlow generation</li>
     </ul>
@@ -310,7 +310,7 @@
     <div class="mermaid">
 graph TD
     %% Input Sources
-    A[Dell Boomi ZIP File] --> B[BoomiXMLProcessor]
+    A[Boomi ZIP File] --> B[BoomiXMLProcessor]
     A1[Manual Markdown Input] --> D[Basic Markdown Documentation]
     A2[JSON Configuration] --> D
 
@@ -482,7 +482,7 @@ graph TD
 
     <h3>1. Input Processing Layer (Pure Code)</h3>
     <ul>
-        <li><strong>BoomiXMLProcessor</strong>: Extracts and parses Dell Boomi ZIP files</li>
+        <li><strong>BoomiXMLProcessor</strong>: Extracts and parses Boomi ZIP files</li>
         <li><strong>XML Parser</strong>: Processes process components, connectors, and data maps</li>
         <li><strong>Basic Markdown Generator</strong>: Converts XML to structured markdown documentation</li>
     </ul>
@@ -507,7 +507,7 @@ graph TD
         <li><strong>JSON Validation</strong>: Ensures valid JSON structure with retry logic</li>
     </ul>
 
-    <h4><strong><span class="emoji">🚀</span> RunPod Gemma-3 Integration (Latest Addition)</strong></h4>
+    <h4><strong><span class="emoji"></span> RunPod Gemma-3 Integration (Latest Addition)</strong></h4>
     <ul>
         <li><strong>Model</strong>: <code>google/gemma-3-4b-it</code> via RunPod vLLM Worker</li>
         <li><strong>Endpoint</strong>: OpenAI-compatible API (<code>/openai/v1/chat/completions</code>)</li>
@@ -675,7 +675,7 @@ graph LR
         <li><strong>No LLM involvement</strong> in XML generation, validation, or package assembly</li>
     </ol>
 
-    <h2><span class="emoji">🚀</span> Recent Architecture Updates (Latest)</h2>
+    <h2><span class="emoji"></span> Recent Architecture Updates (Latest)</h2>
 
     <h3>RunPod Gemma-3 Integration Enhancement</h3>
 
@@ -709,7 +709,7 @@ graph LR
         <li>
             <strong>Unified Platform Support</strong>: Single service handles both platforms
             <ul>
-                <li><strong>Dell Boomi</strong>: Platform detection and specialized prompts</li>
+                <li><strong>Boomi</strong>: Platform detection and specialized prompts</li>
                 <li><strong>MuleSoft</strong>: Platform detection and specialized prompts</li>
                 <li><strong>Model</strong>: <code>google/gemma-3-4b-it</code> (verified working model)</li>
             </ul>
@@ -760,7 +760,7 @@ graph LR
 ├── api-integration-patterns.md      # Integration pattern examples (future)
 └── debugging-guide.md              # Debugging and troubleshooting (future)</code></pre>
 
-    <p>This architecture documentation provides a complete understanding of how the BoomiToIS system transforms Dell Boomi processes into SAP Integration Suite iFlows through intelligent analysis, enhanced processing, and template-based generation, now enhanced with robust RunPod Gemma-3 integration.</p>
+    <p>This architecture documentation provides a complete understanding of how the BoomiToIS system transforms Boomi processes into SAP Integration Suite iFlows through intelligent analysis, enhanced processing, and template-based generation, now enhanced with robust RunPod Gemma-3 integration.</p>
 
     <script>
         // Initialize Mermaid

@@ -135,7 +135,7 @@ if (receiver_adapter.get("type") == "odata_adapter" or
 3. **Basic**: Lacks SAP Integration Suite production features
 4. **Manual Assembly**: Requires manual component connection
 
-## 🚀 **Recommendation**
+##  **Recommendation**
 
 **Continue using `enhanced_iflow_templates.py`** - it's the superior template system that properly handles:
 - ✅ OData receiver adapters with HCIOData component type

@@ -1,8 +1,8 @@
 """
-Enhanced GenAI iFlow Generator for Dell Boomi
+Enhanced GenAI iFlow Generator for Boomi
 
 This module provides a self-contained implementation of the GenAI iFlow Generator
-specifically for Dell Boomi processes. It analyzes Boomi process documentation and
+specifically for Boomi processes. It analyzes Boomi process documentation and
 generates SAP Integration Suite iFlows with proper component mapping.
 """
 
@@ -127,7 +127,7 @@ class EnhancedGenAIIFlowGenerator:
         Returns:
             str: Path to the generated iFlow ZIP file
         """
-        print(f"🚀 Processing Boomi ZIP file: {boomi_zip_path}")
+        print(f" Processing Boomi ZIP file: {boomi_zip_path}")
 
         # Step 1: Process the Boomi ZIP file to extract component information
         processor = BoomiXMLProcessor()
@@ -317,8 +317,8 @@ class EnhancedGenAIIFlowGenerator:
         - Example: "script": "line1\\nline2\\nline3" NOT "script": "line1\nline2\nline3"
         - Test your JSON validity before responding
 
-        You are an expert in Dell Boomi integration processes and SAP Integration Suite. Analyze the following
-        Dell Boomi process documentation and extract the components needed for an equivalent SAP Integration Suite iFlow.
+        You are an expert in Boomi integration processes and SAP Integration Suite. Analyze the following
+        Boomi process documentation and extract the components needed for an equivalent SAP Integration Suite iFlow.
 
         RESPOND WITH ONLY THE JSON STRUCTURE - NO OTHER TEXT, XML, OR CODE.
 
@@ -686,7 +686,7 @@ class EnhancedGenAIIFlowGenerator:
           }
         }
 
-        Analyze the following Dell Boomi process documentation and convert it to SAP Integration Suite equivalent:
+        Analyze the following Boomi process documentation and convert it to SAP Integration Suite equivalent:
         """
 
         # Append the markdown content to the prompt

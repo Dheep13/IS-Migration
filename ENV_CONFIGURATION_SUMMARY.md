@@ -49,7 +49,7 @@ SIMILARITY_THRESHOLD=0.7
 MAX_SEARCH_RESULTS=10
 ```
 
-### 🚀 **Performance Configuration**
+###  **Performance Configuration**
 ```env
 REQUEST_TIMEOUT_SECONDS=300
 MAX_CONCURRENT_UPLOADS=5
@@ -170,4 +170,4 @@ Your IS-Migration application now has:
 - ✅ **Security and performance optimizations**
 - ✅ **Feature flags for easy control**
 
-Everything is configured and ready for deployment! 🚀
+Everything is configured and ready for deployment! 

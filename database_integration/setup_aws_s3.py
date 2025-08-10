@@ -280,7 +280,7 @@ def setup_cf_environment_variables(credentials):
 
 def main():
     """Main setup function"""
-    print("🚀 AWS S3 Direct Setup for IS-Migration")
+    print(" AWS S3 Direct Setup for IS-Migration")
     print("=" * 50)
     print("Setting up your existing AWS S3 bucket:")
     print(f"Bucket: is-migration-dzassg3x3mde9njpznqo3fwc376waeun1a-s3alias")

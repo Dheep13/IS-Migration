@@ -213,7 +213,7 @@ class CFDeploymentValidator:
     
     def check_deployment_scripts(self):
         """Check deployment automation scripts"""
-        print("\n🚀 Checking deployment scripts...")
+        print("\n Checking deployment scripts...")
         
         scripts = {
             'Python deployment script': 'deployment/deploy.py',
@@ -325,7 +325,7 @@ class CFDeploymentValidator:
         if len(self.issues) == 0:
             print(f"\n🎉 VALIDATION PASSED!")
             print(f"✅ Your project is ready for Cloud Foundry deployment!")
-            print(f"\n🚀 Next steps:")
+            print(f"\n Next steps:")
             print(f"   1. Set up GitHub Secrets (CF credentials)")
             print(f"   2. Push to main branch to trigger deployment")
             print(f"   3. Monitor GitHub Actions for deployment status")

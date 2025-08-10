@@ -95,7 +95,7 @@ VITE_IFLOW_API_PROTOCOL=http
 VITE_IFLOW_API_HOST=localhost:5003
 ```
 
-## 🚀 Deployment Architecture
+##  Deployment Architecture
 
 ### Local Development
 - All services run on localhost with different ports

@@ -331,7 +331,7 @@ return message</value>
 
 ---
 
-## 🚀 **Complete MuleSoft Flow Example**
+##  **Complete MuleSoft Flow Example**
 
 ### **Input JSON:**
 ```json

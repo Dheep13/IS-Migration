@@ -1,6 +1,6 @@
 # IMigrate - Integration Migration Platform
 
-## 🚀 Quick Start
+##  Quick Start
 
 IMigrate is a comprehensive platform for migrating integration flows from Boomi and MuleSoft to SAP Integration Suite. The platform provides automated documentation generation, AI-powered iFlow creation, and seamless deployment capabilities.
 
@@ -11,7 +11,7 @@ IMigrate is a comprehensive platform for migrating integration flows from Boomi 
 - **Gemma-3 API** (Port 5002): RunPod Gemma-3 integration for alternative LLM processing
 - **Frontend** (React/Vite): User interface for uploads and workflow management
 
-### **🚀 Python Launcher Features**
+### ** Python Launcher Features**
 The new **`platform_launcher.py`** provides:
 - **Cross-platform compatibility** (Windows, Linux, Mac)
 - **Interactive menu system** with organized options

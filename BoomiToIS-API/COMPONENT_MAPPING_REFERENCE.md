@@ -1,6 +1,6 @@
 # Boomi to SAP Integration Suite Component Mapping Reference
 
-This document provides a comprehensive mapping between Dell Boomi components and their SAP Integration Suite equivalents, including all the newly added components in the bpmn_templates.py file.
+This document provides a comprehensive mapping between Boomi components and their SAP Integration Suite equivalents, including all the newly added components in the bpmn_templates.py file.
 
 ## Core Components
 

@@ -81,7 +81,7 @@
 <li><a href="#get-employee-data">GET Employee Data</a></li>
 </ul>
 </li>
-<li><a href="#current-dell-boomi-flow-logic">Current Dell Boomi Flow Logic</a><ul>
+<li><a href="#current-dell-boomi-flow-logic">Current Boomi Flow Logic</a><ul>
 <li><a href="#process-flow-overview">Process Flow Overview</a></li>
 <li><a href="#step-by-step-flow-description">Step-by-Step Flow Description</a></li>
 <li><a href="#main-process-ec372---ec-to-navex-ob">Main Process: EC372 - EC to NAVEX (OB)</a></li>
@@ -117,7 +117,7 @@
 <p>The EC372 - EC to NAVEX integration is designed to extract employee data from SuccessFactors Employee Central (EC) and transfer it to NAVEX, a third-party ethics and compliance solution. The integration performs data extraction, transformation, and secure file transfer to both NAVEX and PepsiCo SFTP servers.</p>
 <ul>
 <li><strong>Base URL/endpoint pattern</strong>: The integration uses SuccessFactors OData API endpoints to extract employee data</li>
-<li><strong>Authentication mechanisms</strong>: Authentication is handled through connector profiles configured in Dell Boomi</li>
+<li><strong>Authentication mechanisms</strong>: Authentication is handled through connector profiles configured in Boomi</li>
 <li><strong>Rate limiting information</strong>: Standard SuccessFactors API rate limits apply</li>
 <li><strong>General response format</strong>: Data is extracted in XML format, transformed, and delivered as encrypted files</li>
 </ul>
@@ -141,7 +141,7 @@
 <li><strong>Response format</strong>: JSON data containing employee records</li>
 <li><strong>Error handling</strong>: HTTP status codes (400, 401, 403, 500) with error messages</li>
 </ul>
-<h2 id="current-dell-boomi-flow-logic">Current Dell Boomi Flow Logic</h2>
+<h2 id="current-dell-boomi-flow-logic">Current Boomi Flow Logic</h2>
 <h3 id="process-flow-overview">Process Flow Overview</h3>
 <p>The EC372 - EC to NAVEX integration follows these high-level steps:</p>
 <ol>
@@ -626,7 +626,7 @@
 1. <code>1</code> → <code>Record/Elements/text</code> (profile)</p>
 <h2 id="sap-integration-suite-implementation">SAP Integration Suite Implementation</h2>
 <h3 id="component-mapping">Component Mapping</h3>
-<p>This section provides a detailed mapping of Dell Boomi components to their SAP Integration Suite equivalents, organized by subprocess for clear implementation guidance.</p>
+<p>This section provides a detailed mapping of Boomi components to their SAP Integration Suite equivalents, organized by subprocess for clear implementation guidance.</p>
 
 <h4 id="main-process-component-mapping">Main Process Component Mapping</h4>
 <table>

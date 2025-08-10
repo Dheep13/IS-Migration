@@ -64,7 +64,7 @@ goto :end
 
 :start_local
 echo.
-echo 🚀 Starting local development servers...
+echo  Starting local development servers...
 echo.
 echo Starting Main API (Port 5000)...
 cd app
@@ -123,21 +123,21 @@ echo   frontend    - Frontend Application (IFA-Project/frontend folder)
 echo.
 set /p app="Enter app name: "
 if "%app%"=="main_api" (
-    echo 🚀 Deploying Main API...
+    echo  Deploying Main API...
     cd app
     cf push
     cd ..
     goto :end
 )
 if "%app%"=="boomi_api" (
-    echo 🚀 Deploying BoomiToIS API...
+    echo  Deploying BoomiToIS API...
     cd BoomiToIS-API
     cf push
     cd ..
     goto :end
 )
 if "%app%"=="frontend" (
-    echo 🚀 Deploying Frontend...
+    echo  Deploying Frontend...
     cd IFA-Project\frontend
     npm run build
     cf push

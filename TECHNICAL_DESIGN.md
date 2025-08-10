@@ -322,7 +322,7 @@ Request:
 
 ---
 
-## 🚀 Deployment Architecture
+##  Deployment Architecture
 
 ### 1. **Cloud Foundry Deployment**
 

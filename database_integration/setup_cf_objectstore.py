@@ -235,7 +235,7 @@ def bind_service_to_apps(service_name: str, apps: list = None) -> bool:
 
 def main():
     """Main setup function"""
-    print("🚀 Cloud Foundry ObjectStore Setup for IS-Migration")
+    print(" Cloud Foundry ObjectStore Setup for IS-Migration")
     print("=" * 60)
     
     service_name = "is-migration-storage"

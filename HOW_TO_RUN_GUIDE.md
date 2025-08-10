@@ -1,6 +1,6 @@
 # HOW TO RUN GUIDE - IS-Migration Platform
 
-## 🚀 Quick Start Options
+##  Quick Start Options
 
 ### Option 1: Python Launcher (Recommended)
 ```bash
@@ -67,7 +67,7 @@ pip install psutil requests
 
 ## 🔧 Python Launcher Menu Options
 
-### 🚀 DEVELOPMENT
+###  DEVELOPMENT
 1. **Setup Development Environment** - Installs all dependencies for all services
 2. **Start All Servers (Local)** - Starts all services with logging
 3. **Start Individual Service** - Start a single service for debugging
@@ -251,7 +251,7 @@ logs/
 ## 📁 Project Structure Reference
 
 ```
-├── platform_launcher.py       # 🚀 MAIN LAUNCHER (Python)
+├── platform_launcher.py       #  MAIN LAUNCHER (Python)
 ├── launcher_requirements.txt   # Launcher dependencies
 ├── start.bat / start.sh       # Simple wrapper scripts
 ├── quick-start-fixed.bat      # Legacy launcher (redirects)
@@ -296,7 +296,7 @@ logs/
 ## 🎯 Quick Reference Commands
 
 ```bash
-# 🚀 Start everything (recommended)
+#  Start everything (recommended)
 python platform_launcher.py
 
 # 🔧 Install launcher dependencies
